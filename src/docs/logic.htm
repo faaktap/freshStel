@@ -1,0 +1,102 @@
+<html>
+<body>
+<pre>
+
+<h1>User Login </h1>
+ 
+CREATE TABLE dkhs_learner (
+  userid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_name varchar(16) NOT NULL,
+  user_password varchar(16),
+  user_email varchar(180),
+  user_cell varchar(16),
+  user_token varchar(255),
+  user_grade varchar(8),
+  user_fullname varchar(60) DEFAULT NULL,
+  user_type varchar(30),
+  studentid int(11) DEFAULT NULL,
+  lastlogindate timestamp default current_timestamp(),
+  firstlogindate timestamp default current_timestamp(),
+  logins int(11)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `dkhs_learner` (`userid`, `user_name`, `user_password`, `user_email`, `user_cell`, `user_token`, `user_grade`, `user_fullname`, `user_type`, `studentid`, `lastlogindate`, `firstlogindate`, `logins`) VALUES ('1', 'werner', 'werner', 'email', 'cell', NULL, 'G10', 'Werries', 'student', '16000', null, null, '1');
+
+First we see if the username is in our centrallogin table.
+ if it is, we check if password match, and allow access (sending type back, and maybe all other detail)
+
+If not. We check in student db if username is numeric, or in pers if it is a string.
+
+If we find it, we create centrallogin table with relevant data.
+then we allocate a password
+<hr>
+
+
+
+<h1>Learner Content </h1>
+dkhs_subject contain 
+  subjectid, subjectname, subjectafrname, subjectengname
+  
+CREATE TABLE dkhs_lcontent (
+  contentid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sortorder int(4),
+  name varchar(80) NOT NULL,
+  description varchar(255),  
+  type varchar(20),            -- subject,other
+  subjectid int(11),             -- lookup to subjectid  
+  grade int(11),               -- lookup to grade
+  icon varchar(32),
+  folder varchar(180),          -- folder needed if no subitems
+  accesstype varchar(30),       -- folder, fi
+  persid int(11) DEFAULT NULL,
+  create_date DATE DEFAULT CURRENT_DATE,
+  create_time TIME DEFAULT CURRENT_TIME,
+  update_date DATE DEFAULT CURRENT_DATE,
+  update_time TIME DEFAULT CURRENT_TIME
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE dkhs_lcontent (
+  contentid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sortorder int(4),
+  name varchar(80) NOT NULL,
+  description varchar(1024),  
+  type varchar(20),            -- subject,other
+  subjectid int(11),             -- lookup to subjectid  
+  grade int(11),               -- lookup to grade
+  icon varchar(32),
+  folder varchar(180),          -- folder needed if no subitems
+  accesstype varchar(30),       -- folder, fi
+  persid int(11) DEFAULT NULL,
+  create_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+column_name TIMESTAMP NOT NULL
+                    DEFAULT CURRENT_TIMESTAMP
+                    ON UPDATE CURRENT_TIMESTAMP
+
+
+CREATE TABLE dkhs_litem (
+  litemid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sortorder int(4),
+  name varchar(80) NOT NULL,
+  description varchar(255),  
+  type varchar(20),             -- folder, url, item, whatever...
+  execute varchar(255),         -- what we wil do
+  ownerid int(11) DEFAULT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE dkhs_teacher (
+  teacherid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name varchar(80) NOT NULL,
+  username int(11) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE dkhs_teachersubject (
+  tsid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  teacherid int(11) NOT NULL 
+  subjectid int(11) NOT NULL 
+  name varchar(80) NOT NULL,
+  username int(11) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+

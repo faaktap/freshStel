@@ -1,0 +1,6 @@
+https://www.smashingmagazine.com/2020/08/vue-router-features/ 
+https://dev.to/berniwittmann/my-approach-on-vue-router-architecture-and-nested-routes-2kmo 
+https://www.smashingmagazine.com/2020/10/authentication-in-vue-js/
+https://vuejsexamples.com/visual-json-editor-built-as-an-vue-component/ 
+https://dev.to/3zzy/using-vue-observable-as-a-lightweight-state-management-alternative-to-vuex-1pb5 
+C:\Xtra\Dev\GDrive\F_VK\ZML\dkhs\2021 
