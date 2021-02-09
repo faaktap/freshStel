@@ -38,4 +38,24 @@ function zmlFetch(task,callback,errcallback) {
         });
     }
 
+//https://www.codepanion.com/posts/2020-02-02-how-to-use-async-await-promises-with-fetch-in-vue-js-vuex/
+// eslint-disable-next-line
+/*
+async function http(url, 
+    method = 'GET',
+    data,
+) {
+    try {
+      const response = await fetch(url, {
+        method,
+        data
+      });
+    
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+}
+*/
+
 export {zmlFetch};    

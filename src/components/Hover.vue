@@ -1,6 +1,15 @@
 <template>
   <div>
-   {{ getZml }}
+   login:{{ getZml.login }}
+   <hr />
+   grade:{{ getZml.grade }}
+   <hr />
+   subject:{{ getZml.subject }} id : {{ getZml.subjectid }}
+   <hr />
+   subjects:{{ getZml.subjects }}
+   <hr />
+   local:{{ getZml.locale }}   
+
     <div
       @mouseover="hover = true"
       @mouseleave="hover = false"
@@ -225,6 +234,39 @@
         </v-card>
       </v-col>
     </v-row>
+
+<div class="filter">
+ <v-row> 
+  <v-col cols="6">
+   <auto-sel id="zyx2" 
+            :asLabel="'Some Label for User (' + selectedFruit + ')'" 
+            :initialValue="selectedFruit" 
+            :itemArr="fruitOptions" 
+             v-model="selectedFruit1">
+   </auto-sel>
+  </v-col>
+  <v-col>
+   <auto-sel id="zyx1" 
+             asLabel="Select your Fruit!" 
+            :initialValue="selectedFruit" 
+            :itemArr="fruitOptions" 
+             v-model="selectedFruit2">
+   </auto-sel>
+  </v-col>   
+
+  <v-col>
+   <auto-sel-obj id="zyx1" 
+             asLabel="Select your Fruit!" 
+            :initialValue="selectedFruitNo" 
+            :itemObj="fruitObject" 
+             v-model="selectedFruitNo" >
+   </auto-sel-obj>
+  </v-col>   
+
+
+ </v-row>
+</div>
+SF = {{ selectedFruit }}{{ selectedFruit1 }}{{ selectedFruit2 }}{{ selectedFruitNo }}
   </v-container>
 
   
@@ -233,9 +275,21 @@
 
 <script>
 import { getters } from "@/api/store"
+import AutoSel from '@/components/AutoSel.vue'
+import AutoSelObj from '@/components/AutoSelObj.vue'
 export default {
+  components: {
+    AutoSel, AutoSelObj
+  },  
  data: () => ({
   getZml: getters.getState({ object: "gZml" }),
+  fruitOptions: ['appels','pere','tamaties','waatlemoen'],
+  fruitObject: [{id:1,name:'appels'},{id:2,name:'pere'},
+                {id:3,name:'tamaties'},{id:4,name:'waatlemoen'}],
+  selectedFruit: "appels",
+  selectedFruit1: "",
+  selectedFruit2: "",
+  selectedFruitNo:{id:4,name:'waatlemoen'}, //but 4 would work as well
   clicks: 1,
   hover: 1,
   show: false,

@@ -8,6 +8,8 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task)
         case "/about": 
             return zmlReRoute(tr, task)
+        case "/viewlearn":   //teacher start
+            return zmlReRoute(tr, task)
         case "/hover": 
             return zmlReRoute(tr, task)
         case "/translate": 
@@ -16,7 +18,7 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task)
         case "/nested/dialog": 
             return zmlReRoute(tr, task)
-        case "/material": 
+        case "/material":    //student start
             return zmlReRoute(tr, task + "/Grade")
 
         default:

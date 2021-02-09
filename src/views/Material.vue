@@ -5,6 +5,7 @@
        <v-toolbar flat color="primary" dark class="mb-4">
         <v-toolbar-title>
             <v-btn  small class="ml-1" v-if="kies" @click="kies=''" color="info"> Clear </v-btn>
+            <template v-if="!kies"> Every </template>
             {{ heading }} {{ kies }}
             
         </v-toolbar-title>
@@ -31,40 +32,38 @@
          justify-space-around
          xs-12
          >
-         <material-item :item="item" :heading="heading" />
+         <material-item language="A" :item="item" :heading="heading" />
 
         </v-flex>
        </v-layout>
     </v-container>
-
 </v-sheet>
 </template>
 
 <script>
 import { getters } from "@/api/store"
 import MaterialItem from "@/components/MaterialItem"
-//import { zmlConfig } from '@/api/constants.js';
-//import { zmlFetch } from '@/api/zmlFetch.js';
-  export default {
+import router from "@/router"
+import { infoSnackbar } from '@/api/GlobalActions';
+export default {
     name: "Material",
     components: ( {MaterialItem} ),
     props: { heading: {default:"Grade"} },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        kies: '',
+        kies: 8,
         groupnames:[],
-        content:[]
+        content:[],
+        language:null,
     }),
     activated: function () {
     },
     computed: {
        filterByGroup() {
-         console.log('kies = ', this.kies)
          if (this.kies == '') {
           return this.content;
          }
          let filterObj = {gid: this.kies}
-         console.log('filterObj = ', filterObj)
          let selectedData = [...this.content]
          for (const grp in filterObj) {
            // For each property, filter the selected data to matching objects
@@ -81,17 +80,18 @@ import MaterialItem from "@/components/MaterialItem"
       },
       doLoadGrades() {
         this.groupnames = [{id:8,name: 'G08'}
-                    ,{id:9,name: 'G09'}
-                    ,{id:10,name: 'G10'}
-                    ,{id:11,name: 'G11'}
-                    ,{id:12,name: 'G12'}
-                    ]
+                          ,{id:9,name: 'G09'}
+                          ,{id:10,name: 'G10'}
+                          ,{id:11,name: 'G11'}
+                          ,{id:12,name: 'G12'}
+                          ]
         this.groupnames.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
              if (sub.subjectid > 0 && sub.subjectid < 98) {
                  let obj = {gid: grp.id
                            ,id: sub.subjectid
                            ,name: sub.subjectengname
+                           ,nameafr: sub.subjectafrname
                            ,title: sub.subjectname + ' ' + grp.id
                           }
                  this.content.push(obj)
@@ -99,34 +99,25 @@ import MaterialItem from "@/components/MaterialItem"
           })
          })
       },
-      doLoadSubjects() {
-         alert('Wait a bit....')
-      },
-      doLoadOther() {
-        this.groupnames = [{id:8,name: 'AFR'}
-                    ,{id:9,name: 'ENG'}
-                    ,{id:10,name: 'KAKA'}
-                    ,{id:11,name: 'DODO LEA'}
-                    ,{id:12,name: 'FISIESE WETENSKAP'}
-                    ]
-        this.content = [{gid:8  ,id:1  ,name:'Boek1'}
-                 ,{gid:9  ,id:2  ,name:'Folder 2 '}
-                 ,{gid:9  ,id:3  ,name:'Een of ander ander lang ding'}
-                 ,{gid:9  ,id:4  ,name:'nog iets'}
-                 ,{gid:10 ,id:10 ,name:'Etc 2'}
-                 ,{gid:11 ,id:11 ,name:'Etc 33'}
-                 ,{gid:12 ,id:12 ,name:'Etc 44'}
-        ]
-      }
     },
     mounted: function () {
-        alert('lenght of subjects = ', this.getZml.subjects.length)
+        if (this.getZml.subjects.length < 2) {
+          infoSnackbar("No Data to display - Have you logged in?");
+          return;
+        }
         if (this.heading == "Grade") {
             this.doLoadGrades()
-        } else if (this.heading == "G08") {
-            this.doLoadSubjects()
         } else {
-            this.doLoadOther()
+            router.push({name:'Platform' 
+                       ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
+                       ,meta: {layout: "AppLayoutGray" }})
+
+            //Here we could push to current tree (files layout), or we could list lcontent
+            /*
+            router.push({name:'LearnTree' 
+                       ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
+                       ,meta: {layout: "AppLayoutGray" }})
+            */
         }
     },
     watch: { 

@@ -9,6 +9,9 @@ const state = Vue.observable({
            store: {totalItems: 0},
            grade: '',
            subject: '',
+           subjectid: '',
+           subjects: [],
+           folders: [],
            locale: 'af',
            atester: false,
           }

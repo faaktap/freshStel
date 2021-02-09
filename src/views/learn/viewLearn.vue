@@ -1,22 +1,25 @@
 <template>
 <div>
  <v-card>
+   <v-row>
+     <v-col cols="6">
   <div class="text-center">
-      Grade Content
+     <v-toolbar dark color="primary" dense flat>
+        <v-toolbar-title class="white--text"> Grade Content </v-toolbar-title>
+      </v-toolbar>    
    </div>
-     <v-card-title>
-      <v-spacer>title</v-spacer>
-    </v-card-title>
-    <edit_content />
+     </v-col>
+   </v-row>
+    <view-content />
  </v-card>
 
 </div>
 </template>
 <script>
 import { zmlConfig } from '@/api/constants.js';
-import editContent from '@/views/learn/editContent.vue';
+import viewContent from '@/views/learn/viewContent.vue';
   export default {
-      components: {edit_content:editContent},
+      components: {viewContent},
     data: () => ({
     }),
     methods: {

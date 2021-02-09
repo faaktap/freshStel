@@ -3,10 +3,42 @@
 
 <v-container>
   <div v-if="getZml.login.isAuthenticated > 0">
-  <p>Current route name: {{ $route.name }} {{$route.params }}
+  <p>Current route name: {{ $route.name }} {{$route.params.grade }}
     <br>Autolist {{ currentSubjectID}}, {{currentSubject }}
   </p>
   </div>
+  <v-sheet class="pa-4 secondary lighten-2">
+      <v-expansion-panels accordion v-model="expOptions">
+       <v-expansion-panel>
+        <v-expansion-panel-header >Options       </v-expansion-panel-header>
+         <v-expansion-panel-content class="pa-4 primary lighten-2">
+          <v-row>
+           <v-col>
+            <v-checkbox
+              v-model="caseSensitive"
+              hide-details
+              label="Case sensitive search"
+            ></v-checkbox>     
+              
+            <v-radio-group  v-model="language">
+             <v-radio label="Afrikaans" value="a"></v-radio>
+             <v-radio label="English"   value="e"></v-radio>
+            </v-radio-group>
+           </v-col>
+          </v-row>
+          <v-row dense class="d-flex flex-wrap">
+           <v-col v-for="item in subjects" :key="item.subjectid">
+            <v-btn @click="showSubjects(item)">
+             <v-icon>  mdi-text-subject  </v-icon>
+             <span class="hidden-sm-and-down"> {{ lang(item) }} </span>
+            </v-btn>
+           </v-col>
+          </v-row>
+         </v-expansion-panel-content>
+       </v-expansion-panel>
+      </v-expansion-panels>
+    </v-sheet>    
+
   <v-toolbar short color="accent" dense elevation="-2">
      <v-toolbar-title>
       Resources
@@ -192,7 +224,6 @@ import FileUploader from '@/components/learn/FileUploader';
 import { getters } from "@/api/store";
   export default {
     name: "dkhstree",
-    props: {currentSubjectID: {type:String, default:"1"}, grade: {default: "8"}},
     components: {AutoList, FileUploader},
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),
@@ -203,7 +234,7 @@ import { getters } from "@/api/store";
       treesearch:'',
       caseSensitive: false,
       currentSubject: 'Click on Options for a Subject List',
-      
+      currentSubjectID: null,
       treeEdit: [
         {id:1,icon: 'mdi-update'    , color:'green', text:'Update filename'},
         {id:2,icon: 'mdi-delete'    , color:'red'  , text:'Delete filename'},
@@ -277,6 +308,18 @@ import { getters } from "@/api/store";
           console.log('operationError:' , response);
           alert('operationError:' + response);
         },        
+        showSubjects(item) {
+          console.log('showSubjects : ' , item.subjectdesc);
+          if (item.subjectdesc == 'Imported') { 
+            alert('Nothing loaded here yet');
+            return;
+          }
+          this.currentSubjectID = item.subjectid;
+          this.currentSubject = item.subjectdesc;
+          this.loadOurTree(item.subjectdesc);
+          this.expOptions = null;
+          
+        },
         onItemClick(item) {
           this.fileButton = 'View ' + item.name;
           this.curItem = item;
@@ -295,32 +338,22 @@ import { getters } from "@/api/store";
             //alert('poem ' + p.name);
             console.log('OpenMe : ', p.name, p.file, p.iets);
             this.localShowFile = true;
-        },
-        showSubjects(item) {
-          console.log('showSubjects : ' , item.subjectdesc);
-          if (item.subjectdesc == 'Imported') { 
-            alert('Nothing loaded here yet');
-            return;
-          }
-          //this.currentSubjectID = item.subjectid;
-          this.loadFresh()
-        },
-        loadFresh() {
-          let idx = this.getZml.subjects.findIndex(ele => ele.subjectid == this.currentSubjectID)
-          this.currentSubject = this.getZml.subjects[ idx ].subjectafrname
-          let foldername =  this.getZml.subjects[ idx ].subjectdesc
-          this.loadOurTree(foldername);
-          this.expOptions = null;
-        },
+        },/*
+        renameMe(p) {
+            //Popup a dialog box, with current name (without path) and if changed tell server.
+            //Then rename it here as well if successfull
+            alert(p.name);
+            console.log(p);
+            this.localRenameFile = true;
+            //this.edit = true;
+        },*/
         loadOurTree(passedfolder) {
           let passedFolder = passedfolder;
-          if (this.getZml.grade < 8 || this.getZml.grade > 12) {
-            this.getZml.grade = '12'
-          } 
-          let gr = this.getZml.grade.toString()
-          this.currentGrade = 'GR' + gr.padStart(2, '0')
+          this.currentGrade = this.$route.params.grade;
+          this.currentGrade = 'GR12'; //zml - we only have data for GR12!!!!!
           if (passedfolder.indexOf('Subject') > -1) {
             //leave the passedfolder  as is.
+            
           } else {
             passedFolder = 'Subjects/' + this.currentGrade + '/' + passedfolder;
           }
@@ -342,9 +375,8 @@ import { getters } from "@/api/store";
           console.log(this.folderItems);
         },
         loadSubjects(response) {
-          console.log('Subjects : ', response)
-          this.getZml.subjects = response
-          this.loadFresh()
+          console.log('Subjects : ', response);
+          this.subjects = response;
         },
         loadError(error) {
           console.log(error);
@@ -397,11 +429,7 @@ import { getters } from "@/api/store";
     },
     mounted: function () {
       console.log('TR:mounted - zml:');
-      if (this.getZml.subjects.length > 2) {
-        this.loadFresh
-      } else {
-         zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError)
-      }
+      zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError);
     },    
  watch: {
     /*folderItems: {

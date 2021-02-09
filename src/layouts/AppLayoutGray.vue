@@ -8,8 +8,7 @@
    </v-main>  
    
    <v-footer app>
-    <v-row>
-
+    <v-row v-if="showFooter">
      <v-col cols="6">
       <v-card color="grey lighten-3" align="center" class="ml-0 mr-0 pt-1 mb-1 fill-height">
         <v-btn icon @click="whatever"> <v-img src="img/logo.png" width="20" height="20" /><h3 class="pt-2 pb-2 green--text"> De Kuilen High School Social Links</h3> </v-btn>
@@ -43,8 +42,10 @@
         <v-btn class="mx-3" dark fab bottom color="tertiary" small @click="nomail">
           <v-icon>mdi-email</v-icon>
         </v-btn>
-
+        <!-- Hide the footer -->
+        <v-btn icon @click="showFooter = false"><v-icon> mdi-close </v-icon> </v-btn> 
       </v-card>
+      
      </v-col>
     </v-row>
    </v-footer>
@@ -63,6 +64,7 @@ export default {
   data: () => ({
     appVar:'This is appVar',
     demo:1,
+    showFooter: true
   }),
   methods: {
     nomail() {

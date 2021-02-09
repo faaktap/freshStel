@@ -40,8 +40,8 @@
 
 <script>
 import { getters } from "@/api/store"
-import ToolbarButtons from '@/components/toolbarButtons'
 import LoginButton from '@/components/loginButton'
+import ToolbarButtons from '@/components/toolbarButtons'
 import zmlTitle from '@/components/zmlTitle'
 export default {
 name: "AppLayoutLinks",

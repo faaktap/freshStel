@@ -31,10 +31,25 @@ then we allocate a password
 <hr>
 
 
+<h1> lfolder </h1>
+CREATE TABLE dkhs_lfolder (
+  folderid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sortorder int(4),
+  foldername varchar(180) NOT NULL,
+  realfoldername varchar(180) NOT NULL,  
+  subjectid int(11),             -- lookup to subjectid  
+  grade int(11),               -- lookup to grade  
+  icon varchar(32),
+  create_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 <h1>Learner Content </h1>
 dkhs_subject contain 
   subjectid, subjectname, subjectafrname, subjectengname
+
   
 CREATE TABLE dkhs_lcontent (
   contentid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,

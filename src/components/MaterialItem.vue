@@ -1,15 +1,39 @@
 <template>
 <div>
-<v-row justify="center" class="fill-height" xalign="stretch">
+<v-row justify="center" class="fill-height" align="stretch">
    <v-col>
     <v-hover v-slot:default="{ hover }">
-    <v-card max-width=200 min-width=200
+    <v-card max-width=300
             :elevation="hover ? 12 : 2"
-            :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}">
-     <v-card-title align="center"> {{ item.title}} </v-card-title>
-     <v-card-text class="ma-2"> {{ item.name }} </v-card-text>
+            :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+            class= "ma-2"
+            color="deep-purple lighten-5"
+            >
+
+      <v-card-title class="text-h3-md wordbreak" align="center" > 
+        <template v-if="language=='A'">
+         {{ item.nameafr}} 
+        </template>
+        <template v-else>
+          {{ item.name}} 
+        </template>
+      </v-card-title> 
+       <!--h3 color="info" class="pa-2 ma-2 " align="center"> {{ item.name}} </h3-->
+       
+     <v-card-text align="center"> 
+       {{ item.title}} - 
+        <template v-if="language=='A'">
+         {{ item.name}} 
+        </template>
+        <template v-else>
+          {{ item.nameafr}} 
+        </template>
+
+       </v-card-text>       
+
      <v-card-actions>
-       <v-btn @click="subject(item)" icon> Open </v-btn>
+       <v-spacer />
+       <v-btn @click="subject(item)" color="primary"> {{ item.title}} </v-btn>
      </v-card-actions>
     </v-card>
     </v-hover>
@@ -28,20 +52,30 @@ export default {
     components: {
  //      Material: () => import('@/views/Material.vue')
     },
-    props: {item:Object, heading: {type: String, default: ""} },
+    props: {item:Object, heading: {type: String, default: ""}, language:{default:"E"} },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         title:''
     }),
     methods:{
         subject(xx) {
-          switch (this.heading) {
-          case 'Grade': this.getZml.grade = xx.name; break;
-          case 'Subject': this.getZml.subject = xx.name; break;
-          }
+          console.log('selected item :' ,xx)
+             this.getZml.grade = xx.gid
+             this.getZml.subject = xx.name
+             this.getZml.subjectid = xx.id
           router.push({ name: 'Material',params:{heading:xx.name} ,meta: {layout: "AppLayoutGray" }})
         }
     }
 
 }
 </script>
+
+<style scoped>
+.wordbreak {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+}
+</style>

@@ -5,21 +5,21 @@
     <v-col v-if="getZml.login.isAuthenticated" 
            class="mx-auto my-12">
      <v-card max-width="500"
-           color=#F5F5F5
-           style="overflow: auto;"
-          :elevation="hover ? 12 : 2"
-          :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
-     >
+           color=#F5F5F5>
       <v-card-title>
        <h2> Kuilies Logout  </h2>
       </v-card-title>  
-      <v-card-text>
+      <v-card-text class="ma-4">
        Thanks for using the system {{ getZml.login.name }}!
        <br>You will be logged out once you click the button.
       </v-card-text>
       <v-card-actions>
+       <v-btn  @click="showProfile = !showProfile" color="info">
+        Profile
+       </v-btn>          
+       <v-btn color="info" @click="startLearning"> Continue </v-btn>
         <v-spacer />
-       <v-btn class="mx-0 mt-3"  @click="logout" color="info">
+       <v-btn  @click="logout" color="info">
         Logout
        </v-btn>  
       </v-card-actions>        
@@ -73,7 +73,8 @@
       </v-card>
   </v-hover>
  </v-col><!-- Else End-->
-    </v-row>
+     </v-row>
+     
     <v-row>
       <v-col> 
         <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == false"> 
@@ -89,7 +90,7 @@
       </v-col>
     </v-row>
     <v-container>
-    <v-dialog v-model="showDialog" :scrollable="false" persistent width="50%" dark>
+    <v-dialog v-model="showProfile" :scrollable="false" persistent width="50%" dark>
       <v-row>
         <v-col cols="12">
       <v-card>
@@ -98,13 +99,24 @@
         <v-card-text>
           <v-row>
             <v-col cols="6">
-         <v-text-field v-model="getZml.login.username" label="Username" required />
+         <v-text-field 
+               v-model="getZml.login.username" 
+               :disabled="getZml.login.userid==0"
+               label="Username" 
+               required />
             </v-col>
             <v-col cols="6">
-         <v-text-field v-model="getZml.login.password" label="Password" required />
+         <v-text-field 
+            v-model="getZml.login.password" 
+            label="Password" 
+            prepend-icon="mdi-lock" 
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
+            :type="showPassword ? 'text' : 'password'" 
+            required />
             </v-col>
             <v-col cols="6">
-         <v-text-field v-model="getZml.login.name" label="Fullname" required />
+         <v-text-field v-model="getZml.login.fullname" label="Fullname" required />
             </v-col>
             <v-col cols="6">
          <v-text-field v-model="getZml.login.type" label="Type" disabled />
@@ -113,8 +125,11 @@
          <v-text-field v-model="getZml.login.grade" label="Grade" disabled />
             </v-col>
             <v-col cols="3">
-         <v-text-field v-model="getZml.login.class" label="Class" disabled />
+         <v-text-field v-model="getZml.login.phone" label="Phone" disabled />
             </v-col>
+            <v-col cols="3">
+         <v-text-field v-model="getZml.login.email" label="Email" disabled />
+            </v-col>            
             <v-col cols="3">
          <v-text-field v-model="getZml.login.studentid" label="StudentID" disabled />
             </v-col>
@@ -162,7 +177,7 @@ export default {
         loginIcon: 'mdi-human-greeting',
         loading: null,
         showPassword: false,
-        showDialog: false,          
+        showProfile: false,          
       }
   }
   ,methods: {
@@ -196,7 +211,7 @@ export default {
               /* Do so php and mysql here... */
               const login = {
                   task: 'login',
-                  api: 'http://localhost:81/api/dkhs/dkhs.php',
+                  api: zmlConfig.apiDKHS,
                   username: this.loginObj.username,
                   password: this.loginObj.password};
               zmlFetch(login,this.doneWithLogin, this.loginFail);
@@ -214,19 +229,24 @@ export default {
           if (!response.error) {
             infoSnackbar('Welcome ' + response.fullname ? response.fullname : response.username)
             this.getZml.login.isAuthenticated = true;
-            this.getZml.login.class = response.class;
-            this.getZml.login.grade = response.grade;
-            this.getZml.login.name = response.name;
+            this.getZml.login.grade = response.grade.substr(1);
+            this.getZml.login.fullname = response.fullname;
+            this.getZml.login.email = response.email;
+            this.getZml.login.phone = response.phone;
             this.getZml.login.password = response.password;
             this.getZml.login.studentid = response.studentid;
             this.getZml.login.type = response.type;
             this.getZml.login.username = response.username;
-            zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError);
+            this.getZml.login.userid = response.userid ? response.userid : 0;
             if (response.added == 1) {
               infoSnackbar('Welcome ' + this.getZml.login.name + ', please update your details');
-              this.showDialog = 1; 
+              this.showProfile = 1; 
             } else {
-              router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+              //router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+              let loginDetails = JSON.stringify(this.getZml.login)
+              localStorage.setItem('login', loginDetails);
+              console.log('SAVED LOGIN:', loginDetails)
+              this.startLearning()
             }
           } else {
             console.log('failed:',response)
@@ -234,18 +254,31 @@ export default {
           }
       },
       loadSubjects(response) {
-          console.log('Subjects : ', response);
+          //Wait for subjects to load and then push the route for showing learning matter.
           this.getZml.subjects = response;
+          router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
       },
       loadError(error) {
           console.log(error);
           alert('Nothing loaded yet (possibly) - error : ' + error);
       },
       startLearning() {
-         router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+         zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError);
       },
       saveDetails() {
-         alert('update details')
+        //we need to send the stuff for an update
+        const login = {
+            task: 'loginupdate',
+            api: zmlConfig.apiDKHS,
+            data: this.getZml.login}
+        zmlFetch(login,this.doneWithUpdate);
+      },
+      doneWithUpdate(response) {
+        if (response.error) {
+           infoSnackbar('Your detals has been updated ' + response.error)
+        } else {
+           infoSnackbar('Your detals has been updated ' + this.getZml.login.fullname)
+        }
       },
       dropAnEmail(){
         let email = {method : "advemail" ,subject  : "User has logged on" + this.getZml.login.name
@@ -256,7 +289,7 @@ export default {
                  ,email_from : "admin@zmlrekenaars.co.za"
                  ,trusted_user : "werner@zmlrekenaars.co.za" };
         let apiConfig = {method: 'POST', headers: {'Accept': 'application/json'
-                         , api: 'http://localhost:81/api/dkhs/dkhs.php'
+                         , api: zmlConfig.apiDKHS
                          , 'Content-Type': 'application/json;charset=UTF-8'},
               body: JSON.stringify(email)};
         fetch(zmlConfig.emailPath, apiConfig);
@@ -266,8 +299,17 @@ export default {
      //console.log('created - login');
   },
   mounted: function () {
-    console.log('mounting :', this.$options.name
-                            , 'c=', this.$children.length)
+    //Check localstorage...
+    console.log('LOGIN _ MNT')
+    if (localStorage.getItem('login')) {
+      try { 
+         console.log('FETCH LOGIN _ MNT')
+         this.getZml.login = JSON.parse(localStorage.getItem('login'));
+      } catch(e) {
+        localStorage.removeItem('login')
+      }
+    }
+    console.log('DONE FETCH LOGIN _ MNT', this.getZml.login.isAuthenticated)
   }
 }
 

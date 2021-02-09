@@ -16,11 +16,7 @@
         outlined
         dense
         autofocus>
-       <!--template v-slot:item="data"-->
-            <!--v-list-item-content v-text="data.item.subjectname"></v-list-item-content-->
-            <!--v-list-item-content :v-text="itemDisplay"></v-list-item-content-->
-            <v-list-item-content style="align:left"> {{ itemDisplay }} </v-list-item-content>
-       <!--/template-->
+
     </v-autocomplete>
 </template>
 

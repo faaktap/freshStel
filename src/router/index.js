@@ -48,19 +48,35 @@ const routes = [
   },  
   {
     component: () => import(/* webpackChunkName: "learn" */ '../views/learn/LearnTree.vue'),
-    path: '/files', name: 'Files',
-    meta: {layout: la[3], authentication: "learner" }
+    path: '/learntree', name: 'LearnTree',
+    meta: {layout: la[3], authentication: "learner" },
+    props: true,
+    params: {currentSubjectID:'2', grade:'12'}
   },
   {
     component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/viewLearn.vue'),
     path: '/viewlearn', name: 'ViewLearn',
-    meta: {layout: la[3], authentication: "teacher" }
+    meta: {layout: la[3], authentication: "teacher" },
+    children: [
+           //editItem component is rendered when /user/:id is matched
+           { path: ':id'
+            , component: () => import(/* webpackChunkName: "learn1" */ '@/views/learn/editItem.vue')
+            , props: true }
+              ]
   },
   {
     component: () => import(/* webpackChunkName: "learn" */ '../views/Material.vue'),
     path: '/material/:heading',
     name: 'Material',
     props: true,
+    meta: {layout: la[3], authentication: "learner" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/platform.vue'),
+    path: '/platform',
+    name: 'Platform',
+    props: true,
+    params: {currentSubjectID:'2', grade:'12'},
     meta: {layout: la[3], authentication: "learner" }
   },
   {

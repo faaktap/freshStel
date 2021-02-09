@@ -1,15 +1,25 @@
-const PROJECT_ID = "onZml02";
-const MEASUREMENT_ID = "Z-ZML02";
-/*
-const API_PATH = "https://zmlrekenaars.co.za/api/zml/zml.php" ;
-const HOME = "https://www.zmlrekenaars.co.za/" ;
-*/
+const PROJECT_ID = "onZml03";
+const MEASUREMENT_ID = "Z-ZML03";
 const DEFAULT_LAYOUT = "AppLayoutDefault";
+
+/*
+  apiPath:    "https://kuiliesonline.co.za/api/candid/candidates.php",
+  apiUpload:  "http://localhost:81/api/fileUpload/fileUpload.php",
+  apiDKHS:    "http://localhost:81/api/dkhs/dkhs.php",
+*/
+
+/*
+  apiPath:    "https://kuiliesonline.co.za/api/candid/candidates.php",
+  apiUpload:  "https://kuiliesonline.co.za/api/fileUpload/fileUpload.php",
+  apiDKHS:    "https://kuiliesonline.co.za/api/dkhs/dkhs.php",
+*/
 
 
 export const zmlConfig = {
-  apiPath:   "https://kuiliesonline.co.za/api/candid/candidates.php",
-  localPath: "https://kuiliesonline.co.za/",  
+  apiPath:    "https://kuiliesonline.co.za/api/candid/candidates.php",
+  apiUpload:  "https://kuiliesonline.co.za/api/fileUpload/fileUpload.php",
+  apiDKHS:    "https://kuiliesonline.co.za/api/dkhs/dkhs.php",
+  localPath:  "https://kuiliesonline.co.za/",
   videoPath: "https://kuiliesonline.co.za/dkhs/",
   projectId: PROJECT_ID,
   measurementId: MEASUREMENT_ID,
