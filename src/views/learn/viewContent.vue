@@ -53,7 +53,7 @@
         <div v-else>{{ item.description }}</div>
       </template>
     <template v-slot:[`item.subjectid`]="{ item }">
-        {{ getZml.subjects[ getZml.subjects.findIndex(ele => ele.subjectid == item.subjectid) ].subjectname }}
+        {{ getZml.subjects[ getZml.subjects.findIndex(ele => ele.subjectid == item.subjectid) ].shortname }}
       </template>
     <template v-slot:[`item.sortorder`]="{ item }">
         {{ item.sortorder}}
@@ -101,7 +101,7 @@
             :search-input.sync="searchInput"
             :hint="`id=${edit.subjectid}`"
             :items="getZml.subjects"
-            item-text="subjectafrname"
+            item-text="shortname"
             item-value="subjectid"
             label="Subject"
           />
@@ -512,24 +512,31 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
           this.loadData();
         },
         loadData() {
-           let ts = {};
-           ts.sql = 'select * from dkhs_lcontent order by sortorder, name';
-           ts.task = 'PlainSql';
-           ts.api = zmlConfig.apiDKHS
-           zmlConfig.cl(ts);
-           zmlFetch(ts, this.showData);
+           if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
+              let ts = {};
+              ts.sql = 'select * from dkhs_lcontent order by sortorder, name';
+              ts.task = 'PlainSql';
+              ts.api = zmlConfig.apiDKHS
+              zmlConfig.cl(ts);
+              zmlFetch(ts, this.showData);
+           }
         },
 
     },
     mounted: function () {
         zmlConfig.cl('Mount:Edit-2-package');
         //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
-        if (this.getZml.subjects.length == 0) {
-           zmlFetch({task: 'getsubjects'}, this.loadSubjects);
-        } else if (this.getZml.folders.length == 0) {
-           zmlFetch({task: 'getfolders',api:zmlConfig.apiDKHS}, this.afterFolders);
+        console.log('MOUNT VL : ', this.getZml.login)
+        if (this.getZml.login.type == 'teacher' && this.getZml.login.isAuthenticated) {
+          if (this.getZml.subjects.length == 0) {
+             zmlFetch({task: 'getsubjects'}, this.loadSubjects);
+          } else if (this.getZml.folders.length == 0) {
+             zmlFetch({task: 'getfolders',api:zmlConfig.apiDKHS}, this.afterFolders);
+          } else {
+            this.loadData();
+          }
         } else {
-          this.loadData();
+          infoSnackbar('You need to login to access this information')
         }
     },
     watch: {

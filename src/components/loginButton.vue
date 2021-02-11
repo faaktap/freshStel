@@ -27,7 +27,15 @@
       <v-card elevation="3" color="primary" dark> 
         <v-card-title> Profile  </v-card-title>
         <v-card-subtitle>{{ getZml.login.fullname}} </v-card-subtitle>
-        <v-card-text>  {{ getZml.login }} </v-card-text>
+        <v-card-text> 
+                Logins : {{ getZml.login.logins }}
+           <br/>Last Login : {{ getZml.login.lastdate }}
+           
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+           <v-btn to="/login" align="right" class="white--text font-weight-black"> Logout </v-btn>
+        </v-card-actions>
         <div class="ma-2 caption"> <v-icon small>mdi-brain</v-icon>{{programname}} vers:0.112</div>
       </v-card>
     </v-menu>

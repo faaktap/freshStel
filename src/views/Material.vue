@@ -4,11 +4,14 @@
     <v-col xs-12 lg-4>
        <v-toolbar flat color="primary" dark class="mb-4">
         <v-toolbar-title>
-            <v-btn  small class="ml-1" v-if="kies" @click="kies=''" color="info"> Clear </v-btn>
+            <v-btn  small class="ml-1" v-if="kies" @click="kies='';search=''" color="info"> Clear </v-btn>
             <template v-if="!kies"> Every </template>
-            {{ heading }} {{ kies }}
+            {{ heading }} {{ kies }} 
             
         </v-toolbar-title>
+        <v-spacer />
+        <!--v-text-field dense  v-model="search" label="search" max-width="55"/-->
+        <v-btn @click="editSubjects" v-if="getZml.login.type == 'teacher'"> Edit Subjects </v-btn>
        </v-toolbar>
     </v-col>
     <v-col xs-12 lg-8>
@@ -19,6 +22,9 @@
         <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-2">
             {{ grp.name }}
         </v-btn>
+        </v-flex>
+        <v-flex>
+          <v-text-field v-model="search" label="search" />
         </v-flex>
         </v-layout>
         <!--/v-window-->
@@ -48,33 +54,65 @@ import { infoSnackbar } from '@/api/GlobalActions';
 export default {
     name: "Material",
     components: ( {MaterialItem} ),
-    props: { heading: {default:"Grade"} },
+    props: { heading: {default:"Grade"}, passedGradeNo: {default: 12} },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        kies: 8,
+        //kies: 8,
         groupnames:[],
         content:[],
         language:null,
+        kies:9,
+        search:'s'
     }),
     activated: function () {
     },
     computed: {
        filterByGroup() {
          if (this.kies == '') {
-          return this.content;
+           if (this.search.length > 2 ) {
+             //do the search
+                let result = []
+                this.content.forEach(ele => {
+                    const str = JSON.stringify(ele).toLowerCase()
+                    console.log('stringify :', str)
+                    if ( str.includes(this.search.toLowerCase()) ) {
+                      result.push(ele)
+                    }
+                })
+                return result
+
+           } else {
+             return this.content;
+           }
          }
+
          let filterObj = {gid: this.kies}
-         let selectedData = [...this.content]
-         for (const grp in filterObj) {
-           // For each property, filter the selected data to matching objects
-           selectedData = selectedData.filter(o => o[grp] === filterObj[grp]);
+         let selectedData = [...this.content].filter(o => {
+           //console.log(o.gid, filterObj.gid)
+           return o.gid == filterObj.gid;
+            });     
+         
+         if (this.search.length < 3 ) {
+           return(selectedData)           
+         } else {
+           //do search 
+                let result = []
+                selectedData.forEach(ele => {
+                    const str = JSON.stringify(ele).toLowerCase()
+                    console.log('stringify11111 :', str)
+                    if ( str.includes(this.search.toLowerCase()) ) {
+                      result.push(ele)
+                    }
+                })
+                return result
          }
-         // Use your filtered data
-         return(selectedData)
        },
     },
     filters: {},
     methods: {
+      editSubjects() {
+          infoSnackbar('not implemented yet')
+      },
       goTo(where) {
         this.kies = where;
       },
@@ -90,9 +128,9 @@ export default {
              if (sub.subjectid > 0 && sub.subjectid < 98) {
                  let obj = {gid: grp.id
                            ,id: sub.subjectid
-                           ,name: sub.subjectengname
-                           ,nameafr: sub.subjectafrname
-                           ,title: sub.subjectname + ' ' + grp.id
+                           ,name: sub.description
+                           ,nameafr: sub.beskrywing
+                           ,title: sub.shortname + ' ' + grp.id
                           }
                  this.content.push(obj)
              }
@@ -121,6 +159,14 @@ export default {
         }
     },
     watch: { 
+      passedGradeNo(n) {
+        this.kies = n
+      },
+      filterByGroup() {
+        if (this.filterByGroup.length == 0) {
+          //infoSnackbar('no data in the folder')
+        }
+      }
     }
   }
 </script>

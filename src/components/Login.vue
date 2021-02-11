@@ -122,13 +122,13 @@
          <v-text-field v-model="getZml.login.type" label="Type" disabled />
             </v-col>
             <v-col cols="6">
+         <v-text-field v-model="getZml.login.phone" label="Phone"  />
+            </v-col>
+            <v-col cols="6">
+         <v-text-field v-model="getZml.login.email" label="Email"  />
+            </v-col>            
+            <v-col cols="2">
          <v-text-field v-model="getZml.login.grade" label="Grade" disabled />
-            </v-col>
-            <v-col cols="3">
-         <v-text-field v-model="getZml.login.phone" label="Phone" disabled />
-            </v-col>
-            <v-col cols="3">
-         <v-text-field v-model="getZml.login.email" label="Email" disabled />
             </v-col>            
             <v-col cols="3">
          <v-text-field v-model="getZml.login.studentid" label="StudentID" disabled />
@@ -171,7 +171,7 @@ export default {
         loginObj: {username:'', password: ''},
         getZml: getters.getState({ object:"gZml" }),
         inputRules: [
-           v => v.length >= 4 || 'Minimum lenth is 4 characters'
+           v => v.length >= 3 || 'Minimum lenth is 3 characters'
         ],
         submitting: false,
         loginIcon: 'mdi-human-greeting',
@@ -231,7 +231,7 @@ export default {
           if (response.error == '') {
             infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
             this.getZml.login.isAuthenticated = true;
-            this.getZml.login.grade = response.grade ? response.grade.substr(1) : 0;
+            this.getZml.login.grade = response.grade;
             this.getZml.login.fullname = response.fullname;
             this.getZml.login.email = response.email;
             this.getZml.login.phone = response.phone;
@@ -240,6 +240,9 @@ export default {
             this.getZml.login.type = response.type;
             this.getZml.login.username = response.username;
             this.getZml.login.userid = response.userid ? response.userid : 0;
+            this.getZml.login.logins = response.logins;
+            this.getZml.login.lastdate = response.lastdate;
+            console.log('WHAT IS IN RESPOSE?????', response)
             if (response.added == 1) {
               infoSnackbar('Welcome ' + this.getZml.login.name + ', please update your details');
               this.showProfile = 1; 
@@ -255,17 +258,28 @@ export default {
             errorSnackbar('Auth Failed:' + response.error)
           }
       },
-      loadSubjects(response) {
+      loadLearn(response) {
           //Wait for subjects to load and then push the route for showing learning matter.
-          this.getZml.subjects = response;
-          router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+          if (!response.error === undefined) {
+            errorSnackbar(response.error + ' happened')
+            return
+          }
+          this.getZml.subjects = response.subjects;
+          this.getZml.folders = response.folders;
+          console.log('LOADLEARN')
+          if (this.getZml.login.grade > 0) {
+            router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.login.grade},meta: {layout: "AppLayoutGray" }});  
+          } else {
+            router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+          }
       },
       loadError(error) {
           console.log(error);
           alert('Nothing loaded yet (possibly) - error : ' + error);
       },
       startLearning() {
-         zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError);
+        let ts = {api: zmlConfig.apiDKHS ,task: 'loadlearn'}
+        zmlFetch(ts, this.loadLearn, this.loadError);
       },
       saveDetails() {
         //we need to send the stuff for an update

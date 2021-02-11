@@ -69,6 +69,7 @@ const routes = [
     path: '/material/:heading',
     name: 'Material',
     props: true,
+    params: {heading: 'Grade', passedGradeNo:10},
     meta: {layout: la[3], authentication: "learner" }
   },
   {

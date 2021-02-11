@@ -1,6 +1,5 @@
-<template>
+ <template>
 <div>
-    
 <v-sheet color="grey lighten-5" class="ma-2">
   <v-row>
     <v-col xs-12 lg-4>
@@ -29,6 +28,12 @@
                  Only Folders
             </v-btn>
          </v-flex>
+         <v-flex  class="pt-3"> 
+            <v-btn small 
+                   @click = "filter='T'" :loading="loadStatus"> 
+                 Only Notes
+            </v-btn>
+         </v-flex>
          <v-flex  class="pt-3">
             <v-btn small @click="loadData()" :loading="loadStatus"> Refresh </v-btn>
          </v-flex>            
@@ -37,10 +42,11 @@
          </v-flex>
 
 
+         <!--@click = "editing = !editing" --> 
          <v-flex  class="pt-3"> 
             <v-btn small 
-                   @click = "loadStatus = !loadStatus" > 
-                 Load Status Displa
+            >
+                 Test
             </v-btn>
          </v-flex>
 
@@ -60,6 +66,7 @@
          xs-12
          >
          
+         
      <v-row justify="center" class="fill-height" xalign="stretch">
         <v-col>
          <v-hover v-slot:default="{ hover }">
@@ -69,44 +76,86 @@
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
             class= "ma-2"
             color="deep-purple lighten-5"                  
-                  >
-         <v-card-title>   
-          <template v-if="item.type=='link'">
-            <v-icon> mdi-link </v-icon>{{ item.name }} 
-          </template>
-          <template v-else>
-              <v-icon :color="col(item.type)"> {{item.icon}} </v-icon>{{ item.name }} 
-          </template>  
-          <p class="caption"> {{ item.folder }}</p>
-         </v-card-title>
+         >
+{{ item }}
+<!--ICON HANDLING FOR TITLE DISPLAY-->
+    <v-card-title>   
+      <v-btn v-if="allowEdit==true" icon @click="editItem(item)">
+        <template v-if="item.type=='link'" class="display-1">
+          <v-icon color="amber lighten-2"> mdi-link </v-icon>
+        </template>
+        <template v-if="item.type=='file'" class="display-1">
+           <v-icon :color="item.description|extColor" > {{ item.description | extIcon }} </v-icon> 
+        </template>
+        <template v-if="item.type=='folder'" class="display-1">
+          <v-icon :color="col(item.type)"> {{item.icon}} </v-icon>
+        </template>
+        <template v-if="item.type=='text'" class="display-1">
+          <v-icon :color="col(item.type)"> {{item.icon}} </v-icon>
+        </template>
+      </v-btn> 
+<!---TITLE DISPLAY -->
+          <div v-if="!item.editing">    {{ item.name }}    
+          <div class="caption">      {{ item.folder }}   </div>
+          </div>
+
+          <div v-if="item.editing" class="px-4 pb-3 pt-3 text-subtitle-2">
+              <v-text-field v-model="item.name" label="item name" />
+              <v-text-field v-model="item.folder" label="folder name" />
+          </div>             
+    </v-card-title>
+
+
          <v-card-text>
            <v-card v-if="['link','file'].includes(item.type)" color="deep-purple lighten-5" align="center">
-             <!--v-img responsive contain src="img/CleanDKHS.png" max-height="50" max-width="50" /-->
+               This is a link or a file, what shall we put here?
            </v-card>
-           <v-card v-else class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
+            <v-card v-else class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
+             <div v-if="!item.editing">
                {{ item.description }}
-            </v-card>
+             </div>  
+            <div v-if="item.editing">
+              <!--v-window>
+              <v-card class="ma-2 pa-2"><v-card-title> EDIT </v-card-title>
+              <v-card-text-->
+               <v-textarea dense outlined v-model="item.description" label="description/name" />
+               <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
+               <!--v-btn @click="item.editing = !item.editing"> Cancel </v-btn>
+               <v-btn @click="item.editing = !item.editing"> Save </v-btn-->
+               <!--/v-card-text>
+              </v-card>
+              </v-window-->
+             </div>           
+           </v-card>
+            <!-- {{ item }} -->
          </v-card-text>
          <v-card-actions>
              <v-btn small @click=displayItem(item)> Open- <v-icon small> {{item.type}} </v-icon> 
              </v-btn>
-             <v-btn v-if="allowEdit==true && item.type=='text'"
-                    @click="editItem"> 
-               <v-icon>mdi-table-edit</v-icon> edit
-            </v-btn>
             <v-spacer/>
+            <v-btn v-if="item.changed && item.changed==true"
+                    @click="saveItem(item)"
+                    title="Important to save your changes here!"
+                    color="primary"
+                    small>  save </v-btn>
+             <v-btn v-if="allowEdit==true && item.type=='text'"
+                    @click="editItem(item)"
+                    color="primary"
+                    :loading="hoekomvatdotsolank"
+                    small> 
+               <v-icon x-small>mdi-pen</v-icon></v-btn>
 
-            <v-hover v-slot:default="{ hover }">
-              <v-card class="text-md-caption font-weight-light text-justify pa-2"
-                      :elevation="hover ? 12 : 2"
-                       :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}">
-                {{ item.days }} day ago
-              <div v-if="hover">
-                       {{ item.create_timestamp.substr(2,8) }}c 
-                  <br> {{ item.update_timestamp.substr(2,8) }}u
-              </div>
-            </v-card>
-            </v-hover>
+              <v-tooltip right bottom open-on-click open-on-hover> 
+               <template v-slot:activator="{ on }">
+                <v-card class="text-md-caption font-weight-light text-justify pa-1"  v-on="on">
+                {{ item.days }} day(s) ago
+                </v-card>
+               </template>
+               <span >          
+                       cr.{{ item.create_timestamp }} 
+                  <br> up.{{ item.update_timestamp }}
+              </span>
+              </v-tooltip>
          </v-card-actions>
          </v-card>
          </v-hover>
@@ -148,11 +197,11 @@ import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { infoSnackbar } from '@/api/GlobalActions';
-//import AutoList from '@/components/learn/AutoList';
+//import contentEdit from '@/components/learn/contentEdit';
 //import PlatformItem from "@/components/learn/PlatformItem"
 export default {
     name: "Platform",
-    //components: {AutoList},
+    components: {},
     props: {  },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -170,11 +219,87 @@ export default {
         feedme:null,
         embedDialog:false,
         allowEdit: false,
+        showEdit: false,
         search:'s',
         loadStatus: false,
         loadSearchStatus: false,
+        hoekomvatdotsolank: false,
     }),
     activated: function () {
+    },
+    filters: {
+       extIcon : function (filename) {
+         if (!filename ) return "mdi-hospital-building"
+         if (filename == 'link' || filename == 'file') return "mdi-hospital-building"
+         filename = filename.toString()
+         const i= [
+               {ext:'html' ,icon: 'mdi-language-html5'},
+               {ext:'htm'  ,icon: 'mdi-language-html5'},
+               {ext:'js:'   ,icon: 'mdi-nodejs'},
+               {ext:'json' ,icon: 'mdi-code-json'},
+               {ext:'md'   ,icon: 'mdi-language-markdown'},
+               {ext:'pdf'  ,icon: 'mdi-file-pdf'},
+               {ext:'txt'  ,icon: 'mdi-file-document'},
+               {ext:'xls'  ,icon: 'mdi-file-excel'},
+               {ext:'xlsx' ,icon: 'mdi-file-excel'},
+               {ext:'doc'  ,icon: 'mdi-file-document'},
+               {ext:'docx' ,icon: 'mdi-file-document'},
+               {ext:'mp4'  ,icon: 'mdi-movie'},
+               {ext:'mpeg' ,icon: 'mdi-movie'},
+               {ext:'mpg'  ,icon: 'mdi-movie'},
+               {ext:'jpg'  ,icon: 'mdi-image'},
+               {ext:'jpeg' ,icon: 'mdi-file-image'},
+               {ext:'png'  ,icon: 'mdi-file-image'},
+               {ext:'ppt'  ,icon: 'mdi-file-powerpoint'},
+               {ext:'pptx' ,icon: 'mdi-file-powerpoint'},
+               {ext:'zip'  ,icon: 'mdi-folder-zip'},
+               {ext:'mp3'  ,icon: 'mdi-music-note'},
+               {ext:'m4a'  ,icon: 'mdi-file-music'},
+               ]
+         const ext = filename.substr(5).split('.').pop().toLowerCase()
+         const index = i.findIndex(p => p.ext == ext)
+         if (index > 0 ) {
+           return i[index].icon
+         } else {
+           return "mdi-hospital-building"
+         }
+       },
+       extColor : function (filename) {
+         if (!filename ) return "mdi-hospital-building"
+         if (filename == 'link' || filename == 'file') return "mdi-hospital-building"
+         filename = filename.toString()
+         const i= [
+               {ext:'html' ,icon: 'mdi-language-html5',    color:'blue'},
+               {ext:'htm'  ,icon: 'mdi-language-html5',    color:'blue'},
+               {ext:'js:'   ,icon: 'mdi-nodejs',           color:'blue'},
+               {ext:'json' ,icon: 'mdi-code-json',         color:'blue'},
+               {ext:'md'   ,icon: 'mdi-language-markdown', color:'blue'},
+               {ext:'pdf'  ,icon: 'mdi-file-pdf',          color:'red'},
+               {ext:'txt'  ,icon: 'mdi-file-document',     color:'blue'},
+               {ext:'xls'  ,icon: 'mdi-file-excel',        color:'green'},
+               {ext:'xlsx' ,icon: 'mdi-file-excel',        color:'green'},
+               {ext:'doc'  ,icon: 'mdi-file-document',     color:'blue'},
+               {ext:'docx' ,icon: 'mdi-file-document',     color:'blue'},
+               {ext:'mp4'  ,icon: 'mdi-movie',             color:'indigo lighten-1'},
+               {ext:'mpeg' ,icon: 'mdi-movie',             color:'indigo lighten-1'},
+               {ext:'mpg'  ,icon: 'mdi-movie',             color:'indigo lighten-1'},
+               {ext:'jpg'  ,icon: 'mdi-image',             color:'purple'},
+               {ext:'jpeg' ,icon: 'mdi-file-image',        color:'green'},
+               {ext:'png'  ,icon: 'mdi-file-image',        color:'purple'},
+               {ext:'ppt'  ,icon: 'mdi-file-powerpoint',   color:'black'},
+               {ext:'pptx' ,icon: 'mdi-file-powerpoint',   color:'black'},
+               {ext:'zip'  ,icon: 'mdi-folder-zip',        color:'brown'},
+               {ext:'mp3'  ,icon: 'mdi-music-note',        color:'orange'},
+               {ext:'m4a'  ,icon: 'mdi-file-music',        color:'indigo darken-1'},
+               ]
+         const ext = filename.substr(5).split('.').pop().toLowerCase()
+         const index = i.findIndex(p => p.ext == ext)
+         if (index > 0 ) {
+           return i[index].color
+         } else {
+           return "pink"
+         }
+       }
     },
     computed: {
         filterShow() {
@@ -193,6 +318,9 @@ export default {
               if (this.filter == '*')  {
                 return this.contents.filter(a => a.type == 'folder')
               }
+              if (this.filter == 'T')  {
+                return this.contents.filter(a => a.type == 'text')
+              }
               if (this.filter.length > 1)  {
                   return this.contents.filter(a => a.folder == this.filter && a.type != 'folder')
               }
@@ -207,29 +335,47 @@ export default {
                 return result
             }
             return this.contents[0] 
-
-        }
+        },
     },
     methods:{
-        dateDiff(dategiven){
-          let ymd = dategiven.split('-');
-          let o = new Date(ymd[0], ymd[1]-1, ymd[2]);
-          let c = new Date();
-          alert(o-c)
-
+        zmltest(e) {
+          console.log('WE RECEIVEEDEDEDEHDEKUHDIUKEHDKEHDED',e)
+          this.showEdit = false
         },
-        searchExt(filetype){
-            infoSnackbar('search for files on filtype ' + filetype)
+        saveItem(item) {
+            this.hoekomvatdotsolank = true;
+            alert('it is going to be tricky to save this....');
+            console.log(item)
+            zmlFetch({task:'dumpit', api:zmlConfig.apiDKHS, item:item} ,this.doneWithIt)
+            //after successfuill save...
+            item.changed = false
+            item.editing = false
+            
         },
-        editItem() {
-            infoSnackbar('Editing from here - not available yet.')
+        doneWithIt(response) {
+          this.hoekomvatdotsolank = false;
+          console.log(response)
+        },
+        editItem(item) {
+            this.hoekomvatdotsolank = true;
+            if (item.editing) {
+              //Stop Editing (maybe not saved yet)
+              item.editing = false
+              item.changed = false
+            } else {
+              //Start Editing 
+              item.editing = true
+            }
+            item.changed = true
+            this.hoekomvatdotsolank = false;
+            console.log(item)
         },
         col(type) {
             switch (type) {
                 case 'folder': return "purple"
                 case 'link': return "green"
                 case 'text': return "red"
-                case 'file': return "primary"
+                case 'file': return "pink darken-2"
             }
             return "pink lighten-1"
         },

@@ -11,24 +11,13 @@
             >
 
       <v-card-title class="text-h3-md wordbreak" align="center" > 
-        <template v-if="language=='A'">
-         {{ item.nameafr}} 
-        </template>
-        <template v-else>
           {{ item.name}} 
-        </template>
       </v-card-title> 
        <!--h3 color="info" class="pa-2 ma-2 " align="center"> {{ item.name}} </h3-->
        
      <v-card-text align="center"> 
        {{ item.title}} - 
-        <template v-if="language=='A'">
-         {{ item.name}} 
-        </template>
-        <template v-else>
           {{ item.nameafr}} 
-        </template>
-
        </v-card-text>       
 
      <v-card-actions>
