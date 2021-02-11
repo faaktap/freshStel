@@ -6,34 +6,45 @@
     <v-col xs-12 lg-4>
        <v-toolbar flat color="primary" dark class="mb-4">
         <v-toolbar-title>
+
+               <v-btn small :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}">
+               Back </v-btn>
+
+
             Grade {{ getZml.grade }} {{ getZml.subject }} ( {{ filterShow }} ) {{filterByContent.length }}
         </v-toolbar-title>
        
        </v-toolbar>
     </v-col>
     <v-col xs-12 lg-8>
-        <!--v-window flat color="primary"-->
         <v-layout row wrap>
-            <v-flex> 
-             
-             <v-btn small @click="filter=''"> 
+         <v-flex class="pt-3"> 
+           <v-btn small @click="filter=''" :loading="loadStatus"> 
                  All Files
-             </v-btn>
-             <v-btn small @click="filter='*'"> 
+           </v-btn>
+         </v-flex> 
+         <v-flex  class="pt-3"> 
+            <v-btn small 
+                   @click = "filter='*'" :loading="loadStatus"> 
                  Only Folders
-             </v-btn>
-             
-            
-            </v-flex>
-            <v-flex>
-                <v-btn small @click="loadData()"> Refresh </v-btn>
-            </v-flex>
-            <v-flex>
-               <v-btn small :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}">
-               Back </v-btn>
+            </v-btn>
+         </v-flex>
+         <v-flex  class="pt-3">
+            <v-btn small @click="loadData()" :loading="loadStatus"> Refresh </v-btn>
+         </v-flex>            
+         <v-flex>
+            <v-text-field small label="Search" v-model="search" :loading="loadSearchStatus" />
+         </v-flex>
 
-            </v-flex>
-            <!--auto-list :subjects="this.getZml.subjects" language="a" @dataEntered="subjectChanged" /-->
+
+         <v-flex  class="pt-3"> 
+            <v-btn small 
+                   @click = "loadStatus = !loadStatus" > 
+                 Load Status Displa
+            </v-btn>
+         </v-flex>
+
+
         </v-layout>
         <!--/v-window-->
     </v-col>
@@ -83,6 +94,19 @@
                     @click="editItem"> 
                <v-icon>mdi-table-edit</v-icon> edit
             </v-btn>
+            <v-spacer/>
+
+            <v-hover v-slot:default="{ hover }">
+              <v-card class="text-md-caption font-weight-light text-justify pa-2"
+                      :elevation="hover ? 12 : 2"
+                       :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}">
+                {{ item.days }} day ago
+              <div v-if="hover">
+                       {{ item.create_timestamp.substr(2,8) }}c 
+                  <br> {{ item.update_timestamp.substr(2,8) }}u
+              </div>
+            </v-card>
+            </v-hover>
          </v-card-actions>
          </v-card>
          </v-hover>
@@ -145,7 +169,10 @@ export default {
         filter:'',
         feedme:null,
         embedDialog:false,
-        allowEdit: false
+        allowEdit: false,
+        search:'s',
+        loadStatus: false,
+        loadSearchStatus: false,
     }),
     activated: function () {
     },
@@ -158,20 +185,42 @@ export default {
             } 
         },
         filterByContent() {
-            console.log('loading NEW DATA : ' , this.filter)
-            if (this.filter == '')
-               return this.contents 
-            if (this.filter == '*')   {
+            console.log('loading NEW DATA : ' , this.filter, this.search)
+            if (this.search.length < 3 ) {
+              if (this.filter == '')   {
+                return this.contents 
+              }
+              if (this.filter == '*')  {
                 return this.contents.filter(a => a.type == 'folder')
-            }
-            if (this.filter.length > 1)   {
-                return this.contents.filter(a => a.folder == this.filter && a.type != 'folder')
+              }
+              if (this.filter.length > 1)  {
+                  return this.contents.filter(a => a.folder == this.filter && a.type != 'folder')
+              }
+            } else {
+                let result = []
+                this.contents.forEach(ele => {
+                    const str = JSON.stringify(ele).toLowerCase
+                    if ( str.includes(this.search.toLowerCase) ) {
+                      result.push(ele)
+                    }
+                })
+                return result
             }
             return this.contents[0] 
 
         }
     },
     methods:{
+        dateDiff(dategiven){
+          let ymd = dategiven.split('-');
+          let o = new Date(ymd[0], ymd[1]-1, ymd[2]);
+          let c = new Date();
+          alert(o-c)
+
+        },
+        searchExt(filetype){
+            infoSnackbar('search for files on filtype ' + filetype)
+        },
         editItem() {
             infoSnackbar('Editing from here - not available yet.')
         },
@@ -197,6 +246,7 @@ export default {
             this.loadData()
         },
         loadSubjects(response) {
+          this.loadStatus = false
           this.getZml.subjects = response
           this.loadData()
         },
@@ -210,15 +260,18 @@ export default {
            }
            let ts = {};
            this.contents = []
-           ts.sql = 'SELECT * FROM dkhs_lcontent WHERE grade = ' + this.getZml.grade
+           ts.sql = 'SELECT *, DATEDIFF(now(), update_timestamp) days '
+                  + 'FROM dkhs_lcontent WHERE grade = ' + this.getZml.grade
                   + ' and subjectid = ' + this.getZml.subjectid
                   + ' order by sortorder, name';
            ts.task = 'PlainSql';
            ts.api = zmlConfig.apiDKHS
            zmlConfig.cl(ts);
+           this.loadStatus = true
            zmlFetch(ts, this.showData);
         },
         showData(response) {
+            this.loadStatus = false
             if (response.error && response.error.length > 5) {
                 if (response.error.substr(0,7) == 'no rows') {
                    this.showNoInfoDialog = true
@@ -280,6 +333,7 @@ export default {
       if (this.getZml.subjects.length > 2) {
         this.loadData()
       } else {
+         this.loadStatus = true
          zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError)
       }
     }

@@ -202,10 +202,11 @@ export default {
           this.getZml.login.type = ''
           this.getZml.login.username = ''
           this.getZml.login.isAuthenticated = false;
+          localStorage.removeItem('login')
           router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
        },
        submit() {
-          if (this.$refs.loginForm.validate()) {
+          if (this.$refs.loginForm.validate() && this.submitting == false) {
               this.getZml.login.isAuthenticated = 0;
               this.submitting = true;
               /* Do so php and mysql here... */
@@ -214,22 +215,23 @@ export default {
                   api: zmlConfig.apiDKHS,
                   username: this.loginObj.username,
                   password: this.loginObj.password};
-              zmlFetch(login,this.doneWithLogin, this.loginFail);
+              zmlFetch(login, this.doneWithLogin, this.loginFail);
           } else {
               this.loginIcon = 'mdi-emoticon-wink-outline';
               infoSnackbar("Please enter better values!");
           }
        },
        loginFail(error) {
+           console.log(error);
           this.submitting = false;                 
           infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
        },
        doneWithLogin(response) {
           this.submitting = false;
-          if (!response.error) {
-            infoSnackbar('Welcome ' + response.fullname ? response.fullname : response.username)
+          if (response.error == '') {
+            infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
             this.getZml.login.isAuthenticated = true;
-            this.getZml.login.grade = response.grade.substr(1);
+            this.getZml.login.grade = response.grade ? response.grade.substr(1) : 0;
             this.getZml.login.fullname = response.fullname;
             this.getZml.login.email = response.email;
             this.getZml.login.phone = response.phone;

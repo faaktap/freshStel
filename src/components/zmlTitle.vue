@@ -20,49 +20,46 @@
 
 <v-dialog v-model="titleDialog" 
          style="transform: scale(0.875);transform-origin: left;"
-         overlay-color="red"
+         overlay-color="purple"
          :fullscreen="$vuetify.breakpoint.mobile">
- <v-form v-model="validForm">
   <v-card class="white text--black pa-4"> 
+   <v-card-title>
+      <legend> {{titleButtonHeading}}</legend>
+   </v-card-title>
+   
+   <v-card-text> 
    <v-row>
      <v-col cols="12">
-      <legend> {{ZMLContactFormHeading}}</legend>
+    <!--v-card color="deep-purple lighten-3" width="100%" class="pa-2"--> 
+      <toolbar-buttons menuDisplay="shortcutlist" :buttonGroup="toolbars" />
+    <!--/v-card-->
      </v-col>
-     <v-col cols="8" md="4">
-     </v-col>
-     <v-col cols="8" md="4">
-     </v-col>
-     <v-col cols="8" md="4">
-     </v-col>
-     <v-col cols="8" md="4">
-     </v-col>
-     <v-col cols="8">
-        <v-textarea  v-model="message" label="Message" />
-     </v-col>
-     <v-card-actions>
-        <v-btn color=primary @click="sendMail"> {{ SubmityourEmail }} </v-btn>
-        <v-btn color=primary @click="titleDialog=!titleDialog"> {{ CanceltheEmail }} </v-btn>
-     </v-card-actions>
    </v-row>
+   </v-card-text>
+    
+
+     <v-card-actions>
+        <v-btn color=primary @click="titleDialog=!titleDialog"> {{ titleButtonHeadingCloseButton }} </v-btn>
+     </v-card-actions>
+
   </v-card>
- </v-form>
-</v-dialog>
+ </v-dialog>
 
 </div>
 </template>
 
 <script>
-import {zmlMail} from "@/api/zmlMail"
+import ToolbarButtons from '@/components/toolbarButtons'
 export default {
   name:"zmlTitle",
+  components: {ToolbarButtons},
   props:{maintitle:String},
   data: () => ({
     mainIcon: ["mdi-kettle","mdi-kettle-steam-outline","mdi-kettle-steam","mdi-coffee"],
     curIcon: 1,
     hover: 0,
-    message:'',
     titleDialog: 0,
-    validForm:false,
+    toolbars:['login','tool','test'],
   }),
   methods:{
       about() {
@@ -70,32 +67,11 @@ export default {
             this.$router.push('/about') 
         }
       },
-      sendMail() {
-          if (this.valid == false) {
-            alert('Some fields are not filled in properly!');
-          } else {
-            let heading = "<h2> Email Enquiry from " + this.ZMLContactFormHeading + "</h2>";
-            heading += "<div><table><tr><td>Phone:<td>" + this.phone;
-            heading += "<tr><td>Name:<td>" + this.name;
-            heading += "<tr><td>Email:<td>" + this.email;
-            heading += "<tr><td>Enquiry:<td>" + this.radioGroup;
-            heading += "<tr><td>Message:<td>";
-            let signature = '<table border=0><tr><td style="border-bottom: 1px solid blue;border-top: 1px solid blue;font-weight:bold;text-align:left;font-size:20pt;color:blue">Zi-Mari Smit<p style="font-weight:bold;text-align:left;font-size:10pt;color:blue">072 826 0575<td style="border-bottom: 1px solid blue;border-top: 1px solid blue;"><br><Font STYLE="font-size:26pt; color:red; line-height:1.69cm;font-weight:bold">S</font><FONT STYLE="font-weight:bold;text-align:left;font-size:20pt;color:red">ipress</font><font style="font-family:Arial Black,Sans-Serif;font-size=10pt;color:red"><a href=https://sipress.co.za>Wassery </a></font></td></table>';
-            let ts = {method: "zmlsendmail"
-                     ,htmlmessage: heading + this.message + "</table></div><br><br>" + signature
-                     ,email_to: [this.email,'kovsiewas@sipress.co.za','sipresswas@gmail.com']
-                     ,subject:"Navraag aan Sipress wassery website / Enquiry to Sipress.co.za / KovsieWas"
-                     ,email_from: "kovsiewas@sipress.co.za"
-                     ,attachments: []
-                    };
-            zmlMail(ts,this.emailSend);
-         }
-      },
   },
   computed: {
-    ZMLContactFormHeading() { return this.$t('message.ZMLContactFormHeading') },
+    titleButtonHeading() { return this.$t('message.titleButtonHeading') },
     SubmityourEmail() { return this.$t('message.SubmityourEmail') },
-    CanceltheEmail() { return this.$t('message.CanceltheEmail') },
+    titleButtonHeadingCloseButton() { return this.$t('message.titleButtonHeadingCloseButton') },
   }
 }
 </script>

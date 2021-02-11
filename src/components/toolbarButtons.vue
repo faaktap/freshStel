@@ -9,8 +9,8 @@
 -->
 <template>
  <div>
-    <template v-if="vertical">
-      <v-btn v-for="btn in buttons[buttonType]" 
+    <template v-if="menuDisplay == 'horizontal'">
+      <v-btn v-for="btn in buttons[buttonGroup[0]]" 
             :key="btn.btn" 
             class="ma-2"
             :title="btnTip(btn)" 
@@ -25,18 +25,18 @@
       </v-btn>
 
     </template>
-
-    <template v-else>
+    <template v-if="menuDisplay == 'vertical'">
      <v-list color="primary">
 
-      <v-subheader> 
-        {{ buttonType }}
-      </v-subheader>
+      <!--subheader on dropdown, to "group" button -->
+      <!--v-subheader> 
+        {{ buttonGroup }}
+      </v-subheader-->
 
       <v-list-item-group>      
-       <v-list-item v-for="btn in buttons[buttonType]" 
+       <v-list-item v-for="btn in buttons[buttonGroup[0]]" 
                  :key="btn.btn"
-                 v-show="btn.optional == 1">  
+                 v-show="btn.optional == 4">   <!--Should be 1, but we want to hide them -->
         <v-list-item-icon>
          <v-icon>
           {{ btn.icon }}
@@ -53,6 +53,46 @@
 
      </v-list>
     </template>
+
+    <template v-if="menuDisplay == 'shortcutlist'">
+       <!-- {{ menuDisplay }} -->
+    <v-layout>
+      <v-flex>
+
+      <v-card xs12 sm6 class="pa-2"  
+              color="blue-grey lighten-5" 
+              width="99%"
+              v-for="toolGroup in buttonGroup"  :key="toolGroup"> 
+               <!-- {{ buttons[toolGroup] }} -->
+               {{ toolGroup }}
+        <v-layout>
+        <v-flex xs12 sm6 class="pa-1"
+               v-for="btn in buttons[toolGroup]"  :key="btn.btn">   
+
+
+       <v-card max-width="400"  class="ma-2" color="grey lighten-5">   
+        <v-card-title>
+         <v-icon>{{ btn.icon }}</v-icon>
+         {{ btnText(btn.btn) }}
+        </v-card-title>
+         
+        <v-card-text>
+        {{ btnTip(btn) }} 
+        </v-card-text>
+        <v-card-actions>
+         <v-btn @click="doTask(btn.func)"> {{ btnText(btn.btn) }} </v-btn>
+        </v-card-actions>
+       </v-card>
+
+      </v-flex>       
+       </v-layout>
+
+      </v-card>
+      </v-flex>
+    </v-layout>
+    </template>
+
+
  </div>
 </template>
 
@@ -64,8 +104,8 @@ import { doStuff,buttons } from '@/api/buttons'
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 export default {
  name: "toolBarButtons",
- props:{ vertical: {default:false, type:Boolean}, 
-         buttonType: {default:"tool", type:String},
+ props:{ menuDisplay: { type:String, required:true}, 
+         buttonGroup: {type:Array, required:true},
        },
  components: {},
  data: () => ({
@@ -120,8 +160,8 @@ export default {
  mounted: function () {
    console.log('mounting :', this.$options.name
                            , 'c=', this.$children.length
-                           , this.vertical
-                           , this.buttonType
+                           , this.menuDisplay
+                           , this.buttonGroup
               )
  }
 }

@@ -2,8 +2,7 @@
   <div>
    <v-app-bar app color="primary" title="info about AppLayoutLinks">
     <zml-title :maintitle="test" />
-    <toolbar-buttons vertical buttonType="tool"/>
-    <toolbar-buttons vertical buttonType="test" />    
+    <toolbar-buttons menuDisplay="horizontal" buttonGroup="toolbars"/>
     <v-spacer />
     <login-button/>
    </v-app-bar>
@@ -34,7 +33,8 @@ export default {
   components: {LoginButton, zmlTitle, ToolbarButtons},
   data: () => ({
     demo:0,
-    test: "Basic"
+    test: "Basic",
+    toolbars:['tool','test']
   }),
   mounted: function () {
       this.demo = zmlConfig.demo

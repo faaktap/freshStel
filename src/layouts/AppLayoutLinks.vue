@@ -5,8 +5,7 @@
       
     <zml-title :maintitle="programname" />
     
-    <toolbar-buttons vertical buttonType="tool"/>
-    <toolbar-buttons vertical buttonType="test" />    
+    <toolbar-buttons menuDisplay="horizontal" :buttonGroup="toolbars"/>
     <v-spacer />
     <login-button/>
   
@@ -50,6 +49,7 @@ data: () => ({
   getZml: getters.getState({ object: "gZml" }),
   mainIcon: ["mdi-kettle","mdi-kettle-steam-outline","mdi-kettle-steam","mdi-coffee"],
   curIcon: 1,
+  toolbars:['tool'],
 }),
 methods: {},
 computed: {

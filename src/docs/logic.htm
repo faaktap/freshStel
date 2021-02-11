@@ -45,10 +45,60 @@ CREATE TABLE dkhs_lfolder (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-
-<h1>Learner Content </h1>
+<h1> dkhs_lsubject </h1>
+Want to create a subject list that works for virtualschool
 dkhs_subject contain 
   subjectid, subjectname, subjectafrname, subjectengname
+CREATE TABLE dkhs_lsubject (
+  subjectid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sortorder int(4),
+  shortname varchar(10) NOT NULL,
+  description varchar(60),  
+  beskrywing varchar(60),  
+  linksubjectid varchar(20),         -- for other subject table
+  picture varchar(180)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+insert into dkhs_lsubject values (2 ,1,'HL','Home Language',2,null,null);
+insert into dkhs_lsubject values (1 ,1,'HT','Huistaal',1,null,null);
+insert into dkhs_lsubject values (12,1,'BES','Besigheidstudies',12,null,null);
+insert into dkhs_lsubject values (97,1,'CAT','Rekenaartoepassings',97,null,null);
+
+insert into dkhs_lsubject values (100,1,'DK','Dramatiese Kuns',null,null,null);
+insert into dkhs_lsubject values (7 ,1,'EAT','Eerste Additionele Taal',7,null,null);
+insert into dkhs_lsubject values (101,1,'EBW','Ekonomiese bestuurswetenskappe',null,null,null);
+insert into dkhs_lsubject values (3 ,1,'FAL','First additional language ',3,null,null);
+insert into dkhs_lsubject values (10,1,'FWET','Fisiese Wetenskappe ',10,null,null);
+insert into dkhs_lsubject values (11,1,'GEO','Geografie',11,null,null);
+insert into dkhs_lsubject values (16,1,'GESK','Geskiedenis',16,null,null);
+insert into dkhs_lsubject values (14,1,'IGO','Ingenieurs Grafika',14,null,null);
+insert into dkhs_lsubject values (19,1,'IT','Inligtings Tenologie',19,null,null);
+insert into dkhs_lsubject values (6,1,'LO','Lewensoriëntering',6,null,null);
+insert into dkhs_lsubject values (9,1,'LWET','Lewende Wetenskappe',9,null,null);
+insert into dkhs_lsubject values (5,1,'MUS','Musiek',5,null,null);
+
+insert into dkhs_lsubject values (17,1,'REK','Rekeningkunde',17,null,null);
+insert into dkhs_lsubject values (102,1,'TEG','Tegnologie',null,null,null);
+insert into dkhs_lsubject values (20,1,'TOE','Toerisme',20,null,null);
+insert into dkhs_lsubject values (13,1,'VERB','VerbruikersStudie',13,null,null);
+insert into dkhs_lsubject values (18,1,'VK','Visuele Kunste',18,null,null);
+insert into dkhs_lsubject values (8,1,'WIG','Wiskunde Geletterdheid',8,null,null);
+insert into dkhs_lsubject values (4,1,'WISK','Wiskunde',4,null,null);
+
+SELECT s.subjectafrname, s.subjectengname, l.shortname , l.beskrywing, l.description
+FROM `dkhs_lsubject` l, dkhs_subject s
+where s.subjectid = l.subjectid
+and s.subjecttype = 'LRN'
+
+update dkhs_lsubject l, dkhs_subject s
+set l.description = s.subjectengname
+   ,l.beskrywing = s.subjectafrname
+   ,l.path = s.subjectdesc
+where s.subjectid = l.subjectid
+and s.subjecttype = 'LRN'
+
+<h1>Learner Content </h1>
 
   
 CREATE TABLE dkhs_lcontent (

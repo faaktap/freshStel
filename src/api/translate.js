@@ -30,8 +30,8 @@ export const en = {
     },
     message: {
       programname: "DK Online Resources",
-      ZMLContactFormHeading: "DK Online Resources Contact Form",
-      CanceltheEmail: "Cancel the Email",
+      titleButtonHeading: "DK Online Resources Shortcuts",
+      titleButtonHeadingCloseButton: "Close Shortcuts",
       SubmityourEmail: "Submit the Email",
       LoginHeading: "Login",
       hello: 'hello world',
@@ -82,8 +82,8 @@ export const af = {
     },
     message: {
         programname: "DK Aanlyn Hulpbronne",
-        ZMLContactFormHeading: "DK Hulpbron Kontak Vorm",
-        CanceltheEmail: "Kanselleer die briefie",
+        titleButtonHeading: "DK Hulpbron Kortpaaie",
+        titleButtonHeadingCloseButton: "Maak Toe",
         SubmityourEmail: "Stuur die brief",
         LoginHeading: "Meld Aan",
         hello: 'hallo wereld',

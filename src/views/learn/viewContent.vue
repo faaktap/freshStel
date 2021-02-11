@@ -95,8 +95,10 @@
            />                      
        </v-flex>
        <v-flex xs12 sm6 md4>
-          <v-select
+          <v-autocomplete
             v-model="edit.subjectid"
+            ref="mySelect" 
+            :search-input.sync="searchInput"
             :hint="`id=${edit.subjectid}`"
             :items="getZml.subjects"
             item-text="subjectafrname"
@@ -234,6 +236,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         progress:false,
         loadStatus:false,
         search: '',
+        searchInput: '',
         accesstypeitems: [{id:1,text:"student"},{id:2,text:"pers"},{id:3,text:"hidden"}],
         headers: [
           //{ text: 'Id', value: 'contentid' },
@@ -528,6 +531,8 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         } else {
           this.loadData();
         }
+    },
+    watch: {
     }
   }
 </script>

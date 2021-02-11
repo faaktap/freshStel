@@ -5,6 +5,7 @@
 -->
     <v-autocomplete class="mt-7 ml-8" 
         v-model="what"
+        v-on:input="$emit('input', what)"
         v-if="subjects && subjects.length > 0"
         :value="searchText" 
         :search-input.sync="search" 
@@ -12,14 +13,11 @@
         :item-text="itemDisplay" 
         item-value="subjectdesc" 
         return-object 
-        rounded
-        outlined
-        dense
-        autofocus>
+        dense>
 
     </v-autocomplete>
 </template>
-
+  
 
 <script>
 export default {
@@ -33,7 +31,6 @@ export default {
 
   computed: {
     searchText() {
-      //return this.select[0] || ''
       return this.subjects[0] || ''
     },
     itemDisplay() {

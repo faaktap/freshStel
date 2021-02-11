@@ -262,8 +262,20 @@
              v-model="selectedFruitNo" >
    </auto-sel-obj>
   </v-col>   
-
-
+  <v-col>
+    <hr />
+    AutoList: {{ getZml.subjects.length }}
+     <auto-sel-sub id="zyx4" 
+             asLabel="Select your Subject!" 
+            :initialValue="selectedFruitNo" 
+            :itemObj="getZml.subjects" 
+             v-model="selectedFruitNo"/>
+             <hr />
+  </v-col>
+  <!--v-col cols="12" xs12 >onfocus:
+<on-focus v-model="selectedFruit"  :query="selectedFruit" />
+SF= {{ selectedFruit }}
+  </v-col-->
  </v-row>
 </div>
 SF = {{ selectedFruit }}{{ selectedFruit1 }}{{ selectedFruit2 }}{{ selectedFruitNo }}
@@ -277,9 +289,11 @@ SF = {{ selectedFruit }}{{ selectedFruit1 }}{{ selectedFruit2 }}{{ selectedFruit
 import { getters } from "@/api/store"
 import AutoSel from '@/components/AutoSel.vue'
 import AutoSelObj from '@/components/AutoSelObj.vue'
+import AutoSelSub from '@/components/AutoSelSub.vue'
+//import OnFocus from '@/components/OnFocus.vue'
 export default {
   components: {
-    AutoSel, AutoSelObj
+    AutoSel, AutoSelObj, AutoSelSub//, OnFocus
   },  
  data: () => ({
   getZml: getters.getState({ object: "gZml" }),
@@ -290,6 +304,7 @@ export default {
   selectedFruit1: "",
   selectedFruit2: "",
   selectedFruitNo:{id:4,name:'waatlemoen'}, //but 4 would work as well
+  subjectChanged:'',
   clicks: 1,
   hover: 1,
   show: false,
