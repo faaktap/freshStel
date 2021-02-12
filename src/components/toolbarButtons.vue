@@ -10,6 +10,7 @@
 <template>
  <div>
     <template v-if="menuDisplay == 'horizontal'">
+      <div class="d-none d-lg-block">
       <v-btn v-for="btn in buttons[buttonGroup[0]]" 
             :key="btn.btn" 
             class="ma-2"
@@ -23,7 +24,7 @@
         </div>
 
       </v-btn>
-
+      </div>
     </template>
     <template v-if="menuDisplay == 'vertical'">
      <v-list color="primary">
@@ -56,9 +57,8 @@
 
     <template v-if="menuDisplay == 'shortcutlist'">
        <!-- {{ menuDisplay }} -->
-    <v-layout>
+    <v-layout color="blue-grey lighten-5" >
       <v-flex>
-
       <v-card xs12 sm6 class="pa-2"  
               color="blue-grey lighten-5" 
               width="99%"
@@ -68,27 +68,24 @@
         <v-layout>
         <v-flex xs12 sm6 class="pa-1"
                v-for="btn in buttons[toolGroup]"  :key="btn.btn">   
-
-
        <v-card max-width="400"  class="ma-2" color="grey lighten-5">   
         <v-card-title>
-         <v-icon>{{ btn.icon }}</v-icon>
+         <v-icon small>{{ btn.icon }}</v-icon>
          {{ btnText(btn.btn) }}
         </v-card-title>
-         
+
         <v-card-text>
         {{ btnTip(btn) }} 
         </v-card-text>
         <v-card-actions>
-         <v-btn @click="doTask(btn.func)"> {{ btnText(btn.btn) }} </v-btn>
+         <v-btn small @click="doTask(btn.func)"> {{ btnText(btn.btn) }} </v-btn>
         </v-card-actions>
        </v-card>
-
       </v-flex>       
        </v-layout>
-
       </v-card>
       </v-flex>
+
     </v-layout>
     </template>
 

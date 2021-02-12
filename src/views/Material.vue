@@ -7,7 +7,6 @@
             <v-btn  small class="ml-1" v-if="kies" @click="kies='';search=''" color="info"> Clear </v-btn>
             <template v-if="!kies"> Every </template>
             {{ heading }} {{ kies }} 
-            
         </v-toolbar-title>
         <v-spacer />
         <!--v-text-field dense  v-model="search" label="search" max-width="55"/-->
@@ -16,10 +15,10 @@
     </v-col>
     <v-col xs-12 lg-8>
         <!--v-window flat color="primary"-->
-        <v-layout row wrap>
+        <v-layout wrap>
         <v-flex flex-row v-for="grp in groupnames" :key="grp.id" justify-space-around
          xs-6 >
-        <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-2">
+        <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-1">
             {{ grp.name }}
         </v-btn>
         </v-flex>
@@ -61,9 +60,13 @@ export default {
         groupnames:[],
         content:[],
         language:null,
-        kies:9,
-        search:'s'
+        kies:8,
+        search:''
     }),
+    async created() {
+      console.log('kies, passed', this.kies, this.passedGradeNo)
+      this.kies = this.passedGradeNo
+    },
     activated: function () {
     },
     computed: {
@@ -139,6 +142,7 @@ export default {
       },
     },
     mounted: function () {
+        console.log('MAT: Mounted')
         if (this.getZml.subjects.length < 2) {
           infoSnackbar("No Data to display - Have you logged in?");
           return;
@@ -146,6 +150,9 @@ export default {
         if (this.heading == "Grade") {
             this.doLoadGrades()
         } else {
+            this.getZml.login.gradeLastChosen = this.getZml.grade;
+            let loginDetails = JSON.stringify(this.getZml.login)
+            localStorage.setItem('login', loginDetails);
             router.push({name:'Platform' 
                        ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                        ,meta: {layout: "AppLayoutGray" }})

@@ -1,7 +1,8 @@
 {
  "buttongroups": ["tool","login","test"],
+ "wait": [{ "btn":"about"    ,"tip":"2"                  ,"func":"/about"      ,"icon":"mdi-coffee","optional":3,"acc":"none"}],
  "tool": [{ "btn":"home"     ,"tip":"1"                  ,"func":"/"           ,"icon":"mdi-home","optional":0,"acc":"all"}
-         ,{ "btn":"about"    ,"tip":"2"                  ,"func":"/about"      ,"icon":"mdi-coffee","optional":0,"acc":"all"}
+         
          ,{ "btn":"teacher"  ,"tip":"4 teachers"         ,"func":"/viewlearn"  ,"icon":"mdi-teach","optional":0,"acc":"teacher"}
          ,{ "btn":"viewcats" ,"tip":"testitemview"       ,"func":"/material"   ,"icon":"mdi-broom","optional":0,"acc":"all"}
          ,{ "btn":"tHover"   ,"tip":"3"                  ,"func":"/hover"      ,"icon":"mdi-shovel","optional":1,"acc":"all"}

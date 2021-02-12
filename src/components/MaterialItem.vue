@@ -3,7 +3,7 @@
 <v-row justify="center" class="fill-height" align="stretch">
    <v-col>
     <v-hover v-slot:default="{ hover }">
-    <v-card max-width=300
+    <v-card max-width=300 max-height="200"
             :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
             class= "ma-2"
@@ -11,7 +11,7 @@
             >
 
       <v-card-title class="text-h3-md wordbreak" align="center" > 
-          {{ item.name}} 
+          {{ item.name }} 
       </v-card-title> 
        <!--h3 color="info" class="pa-2 ma-2 " align="center"> {{ item.name}} </h3-->
        
@@ -22,7 +22,7 @@
 
      <v-card-actions>
        <v-spacer />
-       <v-btn @click="subject(item)" color="primary"> {{ item.title}} </v-btn>
+       <v-btn small @click="subject(item)" color="primary"> {{ item.title}} </v-btn>
      </v-card-actions>
     </v-card>
     </v-hover>

@@ -10,7 +10,7 @@
       :color="snackbarColor"
       elevation="21"
       v-model="snackbar"
-      timeout="2500">
+      timeout="3500">
       {{ snackbarMessage }}
 
       <template v-slot:action="{ attrs }">

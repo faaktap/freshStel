@@ -18,11 +18,11 @@
     </v-hover>
 
 
-<v-dialog v-model="titleDialog" 
+<v-dialog v-model="titleDialog" max-width="60%"
          style="transform: scale(0.875);transform-origin: left;"
          overlay-color="purple"
-         :fullscreen="$vuetify.breakpoint.mobile">
-  <v-card class="white text--black pa-4"> 
+         xxfullscreen="$vuetify.breakpoint.mobile">
+  <v-card class="white text--black pa-2"> 
    <v-card-title>
       <legend> {{titleButtonHeading}}</legend>
    </v-card-title>
@@ -39,7 +39,7 @@
     
 
      <v-card-actions>
-        <v-btn color=primary @click="titleDialog=!titleDialog"> {{ titleButtonHeadingCloseButton }} </v-btn>
+        <v-btn small color=primary @click="titleDialog=!titleDialog"> {{ titleButtonHeadingCloseButton }} </v-btn>
      </v-card-actions>
 
   </v-card>

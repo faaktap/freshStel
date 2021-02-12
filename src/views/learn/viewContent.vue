@@ -24,7 +24,7 @@
     </v-card-title>
   <v-data-table 
     :headers="headers"
-    :items="content"
+    :items="filterContent"
     :items-per-page="7"
     :search="search"
     class="elevation-1">
@@ -268,6 +268,9 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         return tempT
 
            //return this.getZml.folders.filter(obj => {return obj.subjectid == this.edit.subjectid}).map(obj => obj.id);
+      },
+      filterContent() {
+        return this.content;
       }
     },
     methods: {
@@ -319,7 +322,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
           let GR = this.edit.grade.toString()
           GR = 'GR' + GR.padStart(2, '0')
           const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == this.edit.subjectid)
-          const subjectpath = this.getZml.subjects[idx].subjectdesc
+          const subjectpath = this.getZml.subjects[idx].path
          fileData.extrapath =  "/Subjects/" + GR + "/" + subjectpath + "/" + this.edit.folder
          fileData.name = curItem.name
          fileData.realname = this.files[0].name
@@ -514,7 +517,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         loadData() {
            if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
               let ts = {};
-              ts.sql = 'select * from dkhs_lcontent order by sortorder, name';
+              ts.sql = 'select * from dkhs_lcontent where sortorder != 0 order by sortorder, name';
               ts.task = 'PlainSql';
               ts.api = zmlConfig.apiDKHS
               zmlConfig.cl(ts);

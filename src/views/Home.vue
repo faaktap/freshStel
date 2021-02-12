@@ -2,6 +2,9 @@
   <div class="home">
     <!--img alt="DKHS" src="img/zmlrekenaars.png">
     <v-btn @click="setAuth"> Login </v-btn-->
+
+ 
+
     <div v-for="hero in heroButtons" 
               :key="hero.name">
         <hero-section 

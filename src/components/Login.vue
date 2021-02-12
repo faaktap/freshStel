@@ -267,10 +267,14 @@ export default {
           this.getZml.subjects = response.subjects;
           this.getZml.folders = response.folders;
           console.log('LOADLEARN')
-          if (this.getZml.login.grade > 0) {
-            router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.login.grade},meta: {layout: "AppLayoutGray" }});  
+          if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
+            router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.gradeLastChosen},meta: {layout: "AppLayoutGray" }});  
           } else {
-            router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+            if (this.getZml.grade > 0) {
+              router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.grade},meta: {layout: "AppLayoutGray" }});  
+            } else {
+              router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:8},meta: {layout: "AppLayoutGray" }});
+            }
           }
       },
       loadError(error) {

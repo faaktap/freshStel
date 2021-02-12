@@ -1,21 +1,28 @@
  <template>
 <div>
 <v-sheet color="grey lighten-5" class="ma-2">
-  <v-row>
+  <v-row
+        v-cloak 
+        @drop.prevent="addFile" 
+        @dragover.prevent
+        @dragenter="dragEnter" 
+        @dragend="dragEnd"
+  >
     <v-col xs-12 lg-4>
-       <v-toolbar flat color="primary" dark class="mb-4">
-        <v-toolbar-title>
-
-               <v-btn small :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}">
-               Back </v-btn>
-
-
-            Grade {{ getZml.grade }} {{ getZml.subject }} ( {{ filterShow }} ) {{filterByContent.length }}
+       <v-toolbar flat 
+                  color="primary" dark xclass="mb-2"
+       >
+        <v-toolbar-title class="body-1">
+           <v-btn small :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}">
+              Back
+           </v-btn>
+            Grade {{ getZml.grade }} {{ getZml.subject }}
+             ( {{ filterShow }} ) {{filterByContent.length }}
         </v-toolbar-title>
        
        </v-toolbar>
     </v-col>
-    <v-col xs-12 lg-8>
+    <v-col xs-12 lg-8 >
         <v-layout row wrap>
          <v-flex class="pt-3"> 
            <v-btn small @click="filter=''" :loading="loadStatus"> 
@@ -40,24 +47,36 @@
          <v-flex>
             <v-text-field small label="Search" v-model="search" :loading="loadSearchStatus" />
          </v-flex>
-
-
-         <!--@click = "editing = !editing" --> 
-         <v-flex  class="pt-3"> 
-            <v-btn small 
-            >
-                 Test
-            </v-btn>
+         <v-flex  class="pt-3">
+            <v-btn small @click="canWeDrop()" :loading="loadStatus"> TestDrop </v-btn>
+         </v-flex>
+         <v-flex  class="pt-3" v-if="getZml.login.type=='teacher' && files.length > 0">
+            <v-btn small @click="uploadTheFilesCheck" :loading="loadStatus"> Upload ( {{files.length }})</v-btn>
          </v-flex>
 
+         
+         <v-flex  class="pt-3"> 
+            <v-btn small  @click="zmltest"
+            >
+                 Test 
+            </v-btn>
+            
+         </v-flex>
+         <!--v-flex>
+           <v-text-field small label="href" v-model="someHref" />
+         </v-flex>
+         <v-flex>
+         someHref = {{someHref}}
+         </v-flex-->
+        
 
         </v-layout>
-        <!--/v-window-->
     </v-col>
     </v-row>
 
+
 <!-- LIST OUR CONTENT -->    
-    <v-container fluid>
+    <v-container fluid class="ma-2 mt-3">
        <v-layout row wrap>
         <v-flex 
          v-for="item in filterByContent" :key="item.itemid"
@@ -77,14 +96,21 @@
             class= "ma-2"
             color="deep-purple lighten-5"                  
          >
-{{ item }}
+
 <!--ICON HANDLING FOR TITLE DISPLAY-->
     <v-card-title>   
-      <v-btn v-if="allowEdit==true" icon @click="editItem(item)">
-        <template v-if="item.type=='link'" class="display-1">
+      <!--v-btn v-if="allowEdit==true" icon @click="editItem(item)"-->
+      <v-btn
+      v-if="item.type != 'text'"
+                    small 
+                    icon
+                    :title="item.type"
+                    @click=showItem(item)>
+                    
+        <template v-if="item.type=='link'">
           <v-icon color="amber lighten-2"> mdi-link </v-icon>
         </template>
-        <template v-if="item.type=='file'" class="display-1">
+        <template v-if="item.type=='file'">
            <v-icon :color="item.description|extColor" > {{ item.description | extIcon }} </v-icon> 
         </template>
         <template v-if="item.type=='folder'" class="display-1">
@@ -96,41 +122,39 @@
       </v-btn> 
 <!---TITLE DISPLAY -->
           <div v-if="!item.editing">    {{ item.name }}    
-          <div class="caption">      {{ item.folder }}   </div>
+           <v-icon x-small>     {{ item.folder }} </v-icon>  
           </div>
 
           <div v-if="item.editing" class="px-4 pb-3 pt-3 text-subtitle-2">
               <v-text-field v-model="item.name" label="item name" />
-              <v-text-field v-model="item.folder" label="folder name" />
+              <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
           </div>             
     </v-card-title>
 
 
          <v-card-text>
+
+ <!--{{ item.description }} -->
+
            <v-card v-if="['link','file'].includes(item.type)" color="deep-purple lighten-5" align="center">
-               This is a link or a file, what shall we put here?
+               <!-- add something here for pdf's and links -->
            </v-card>
             <v-card v-else class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
              <div v-if="!item.editing">
                {{ item.description }}
              </div>  
             <div v-if="item.editing">
-              <!--v-window>
-              <v-card class="ma-2 pa-2"><v-card-title> EDIT </v-card-title>
-              <v-card-text-->
                <v-textarea dense outlined v-model="item.description" label="description/name" />
                <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
-               <!--v-btn @click="item.editing = !item.editing"> Cancel </v-btn>
-               <v-btn @click="item.editing = !item.editing"> Save </v-btn-->
-               <!--/v-card-text>
-              </v-card>
-              </v-window-->
              </div>           
            </v-card>
-            <!-- {{ item }} -->
          </v-card-text>
          <v-card-actions>
-             <v-btn small @click=displayItem(item)> Open- <v-icon small> {{item.type}} </v-icon> 
+             <v-btn v-if="item.type != 'text'"
+                    small 
+                    :title="item.type"
+                    @click=displayItem(item)>
+                     Open <v-icon small> mdi-open </v-icon> 
              </v-btn>
             <v-spacer/>
             <v-btn v-if="item.changed && item.changed==true"
@@ -138,10 +162,11 @@
                     title="Important to save your changes here!"
                     color="primary"
                     small>  save </v-btn>
-             <v-btn v-if="allowEdit==true && item.type=='text'"
+             <v-btn v-if="allowEdit==true && ['text','folder','file'].includes(item.type)"
                     @click="editItem(item)"
                     color="primary"
-                    :loading="hoekomvatdotsolank"
+                    icon
+                    :loading="loadingEdit"
                     small> 
                <v-icon x-small>mdi-pen</v-icon></v-btn>
 
@@ -166,17 +191,27 @@
     </v-container>
 </v-sheet>
 
+<v-dialog v-model="showViewerDialog" v-on:keyup.esc="byebye" max-width="350" max-height="350"
+          width="auto" :fullscreen="$vuetify.breakpoint.xsOnly">
+      <v-card>
+        <v-card-actions> 
+          <v-btn small @click="showViewerDialog = !showViewerDialog"> close </v-btn>
+        </v-card-actions>
+       <v-img :src="currentImage" responsive />        
+     </v-card>
+</v-dialog>
+
 
 <v-dialog v-model="showTextDialog">
     <v-card>
         <v-card-title> {{ theItem.name }} </v-card-title>
         <v-card-text> {{ theItem.description }} </v-card-text>
-        <v-card-actions> <v-btn @click="showTextDialog = !showTextDialog"> close </v-btn></v-card-actions>
+        <v-card-actions> <v-btn small @click="showTextDialog = !showTextDialog"> close </v-btn></v-card-actions>
     </v-card>
 </v-dialog>
 
 
-<v-dialog v-model="showNoInfoDialog">
+<v-dialog v-model="showNoInfoDialog" eager>
     <v-card>
         <v-card-title> We did not find any Information! </v-card-title>
         <v-card-text> 
@@ -196,9 +231,7 @@
 import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
-import { infoSnackbar } from '@/api/GlobalActions';
-//import contentEdit from '@/components/learn/contentEdit';
-//import PlatformItem from "@/components/learn/PlatformItem"
+import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 export default {
     name: "Platform",
     components: {},
@@ -215,17 +248,285 @@ export default {
                        ,{itemid:4, heading:'seWWtnwer'}
                        ,{itemid:5, heading:'AS dtnwer'}
                        ],
-        filter:'',
+        filter:'*',
         feedme:null,
         embedDialog:false,
         allowEdit: false,
         showEdit: false,
-        search:'s',
+        search:'',
         loadStatus: false,
         loadSearchStatus: false,
-        hoekomvatdotsolank: false,
+        loadingEdit: false,
+        showViewerDialog:false,
+        currentImage:'',        
+        files:[],
+        dummyObj:{},
     }),
     activated: function () {
+    },
+    methods:{
+      dragEnd(ev) {
+        //ev.target.style.backgroundColor = 'primary'
+        console.log(ev)
+      },
+      dragEnter(ev) {
+        ev.target.style.backgroundColor = 'green'
+        console.log(ev)
+      },
+      addFile(e) {
+        let lfiles = e.dataTransfer.files;
+        lfiles.forEach(file => {
+          if (file.size > 11100100)  {
+            errorSnackbar(file.name + ' is too big - put on memory stick and leave at reception for Werner, please try again')
+          return
+        }
+        })
+        
+        lfiles.forEach(file => {
+            this.files.push(file);
+            console.log(this.files)
+        })
+        infoSnackbar('We have ' + this.files.length + ' files, ready for upload. Press the upload button')
+      },
+      uploadTheFilesCheck() {
+        let edit = this.canWeDrop()
+        if (edit.folder.length < 2) {
+           errorSnackbar('You need to select a folder before we can upload')
+           return
+        }
+        if (edit.grade < 8) {
+           infoSnackbar('You need to select a grade before we can upload')
+           return
+        }
+        if (edit.subject < 1) {
+           infoSnackbar('You need to select a subject before we can upload')
+           return
+        }
+        if (edit.type != 'file') {
+           infoSnackbar('filetype is wrong')
+           return
+        }
+        this.dummyObj = edit;
+        this.$root.$confirm("Loading files to " + edit.folder, "If you press YES, we will start loading", { color: 'red' })
+              .then((confirm) => {
+                if (confirm) { 
+                  let fdet = edit;
+                  this.uploadFiles(this.upload1, fdet)
+                } else {
+                  this.files = []
+                  return
+                }
+            })
+      },
+      uploadFiles(nextProc,fdet) {
+        this.files.forEach(file => {
+         this.loadStatus = true;
+         this.dummyObj.name = file.name
+         let fr = new FileReader()
+         fr.onload = function(response) {
+           console.log('WAT HET ONS HIER?? Progressevent?', file.name,response)
+           fdet.name = file.name
+           nextProc(response,fdet)
+         };
+         fr.onerror = function(response) {
+           console.log('res' ,response);
+         };
+         fr.readAsDataURL(file);
+
+        });
+      },
+      upload1(fileData,fdet) {
+         console.log('LOADER STARTED FOR ' , fileData.name, fdet)
+         fileData.task = 'upload'; 
+          let GR = this.dummyObj.grade.toString()
+          GR = 'GR' + GR.padStart(2, '0')
+          const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == this.dummyObj.subjectid)
+          const subjectpath = this.getZml.subjects[idx].path
+         fileData.extrapath =  "/Subjects/" + GR + "/" + subjectpath + "/" + this.dummyObj.folder
+         console.log('CCCCHHHHHHEEEEKKKKIIINNGGGG',fdet.name)
+         fileData.name = fdet.name
+         fileData.realname = fdet.name
+         //////fileData.drag = this.files[0]
+         fileData.prebase64 = fileData.target.result.split(',')[0];
+         fileData.base64 = fileData.target.result.split(',')[1];
+         fileData.size = fileData.total
+         fileData.api = zmlConfig.apiUpload; 
+         console.log('start upload with ', fileData);
+         zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
+      },    
+      doneWithUpload(response) {
+         //infoSnackbar('Done with upload ' + JSON.stringify(response) )
+         this.loadStatus = false;
+         this.dummyObj.description = 'load:' + response.fileName;
+         this.dummyObj.name = response.filename;
+         let ts = {};
+           ts.data = this.dummyObj;
+           ts.task = 'insertLContent';
+           ts.api = zmlConfig.apiDKHS
+           zmlFetch(ts, this.afterUpdate);   
+      },
+      errorWithUpload(response) {
+         errorSnackbar('Error with upload ' + JSON.stringify(response) )
+         this.loadStatus = false;
+      },
+      canWeDrop() {
+          let edit = {name: ''
+                   , description:''
+                   , type:'file'
+                   , folder:this.filter
+                   , accesstype: 'student'
+                   , grade: this.getZml.grade
+                   , subjectid:this.getZml.subjectid
+                   , persid: this.getZml.login.userid
+                   , icon: 'mdi-file'
+                   , sortorder: 1}
+           return (edit)            
+        }, 
+        zmltest() {
+          if (this.currentImage == '') {
+            this.currentImage="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=20003"
+            this.showViewerDialog = true
+          } else {
+             this.currentImage=''
+             this.showViewerDialog = false
+          }
+          //this.showEdit = false
+        },
+        onLoad(e) {
+            console.log('friendy iframe', e)
+        },
+        saveItem(item) {
+            this.loadingEdit = true;
+            item.persid = this.getZml.login.userid
+            item.days = 0
+            zmlFetch({task:'savelcontent', api:zmlConfig.apiDKHS, data:item} ,this.doneWithIt,this.problemSaving)
+            //after successfuill save...
+            item.changed = false
+            item.editing = false
+            
+        },
+        doneWithIt() {
+          this.loadingEdit = false;
+        },
+        problemSaving() {
+          this.loadingEdit = false;
+        },
+        editItem(item) {
+            if (item.editing) {
+              //Stop Editing (maybe not saved yet)
+              item.editing = false
+              item.changed = false
+              return
+            } else {
+              //Start Editing 
+              item.editing = true
+              item.changed = true
+            }
+
+        },
+        col(type) {
+            switch (type) {
+                case 'folder': return "purple"
+                case 'link': return "green"
+                case 'text': return "red"
+                case 'file': return "pink darken-2"
+            }
+            return "pink lighten-1"
+        },
+        filterChange() {
+           if (this.filter == '') {
+               this.filter = '*'
+           } else {
+               this.filter = ''
+           }
+        },
+        subjectChanged(stuff) {
+            this.getZml.subjectid = stuff.subjectid
+            this.getZml.subject = stuff.subjectafrname
+            this.loadData()
+        },
+        loadSubjects(response) {
+          this.loadStatus = false
+          this.getZml.subjects = response
+          this.loadData()
+        },
+        loadData() {
+           if (this.getZml.subject > 0 || this.getZml.grade > 0) {
+              //infoSnackbar('loading ' + this.getZml.grade + ' ' + this.getZml.subject)
+           } else {
+              infoSnackbar('Grade or Subject is blank - Assume 8, 2')
+              this.getZml.grade = 8
+              this.getZml.subjectid = 2
+           }
+           let ts = {};
+           this.contents = []
+           ts.sql = 'SELECT *, DATEDIFF(now(), update_timestamp) days '
+                  + 'FROM dkhs_lcontent WHERE grade = ' + this.getZml.grade
+                  + ' and subjectid = ' + this.getZml.subjectid
+                  + ' and sortorder != 0'
+                  + ' order by sortorder, name';
+           ts.task = 'PlainSql';
+           ts.api = zmlConfig.apiDKHS
+           zmlConfig.cl(ts);
+           this.loadStatus = true
+           zmlFetch(ts, this.showData);
+        },
+        showData(response) {
+            this.loadStatus = false
+            if (response.error && response.error.length > 5) {
+                if (response.error.substr(0,7) == 'no rows') {
+                   this.showNoInfoDialog = true
+                } else {
+                  infoSnackbar('loading err ' + response.error.substr(0,10))
+                  this.$router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+                }
+            } else {
+                this.contents = response;
+                this.contents.forEach(item =>{
+                     item.img = ''
+                     if (item.type == 'file' && item.description.substr(0,4) == 'load') {
+                         let ext = item.description.substr(5).split('.').pop().toLowerCase()
+                         if ( ['png','jpg'].includes(ext)) {
+                           item.img = 'https://www.kuiliesonline.co.za/' + item.description.substr(5)
+                         }
+                     }
+
+                })
+                 
+            }
+        },
+        showItem(curitem) {
+          this.currentImage = zmlConfig.localPath + curitem.description.substr(5)
+          console.log('item to view : ' , this.currentImage)
+          this.showViewerDialog = true
+        },
+        displayItem(curitem) {
+          if (curitem.type == 'text') {
+              this.theItem = curitem
+              this.showTextDialog = true
+          } else if (curitem.type == 'folder') {
+              //infoSnackbar('View all content inside a folder' + curitem.folder)  
+              this.filter = curitem.folder
+         } else if (curitem.type == 'link') {              
+              let newHref = curitem.description
+              window.open(newHref, "_blank")
+          } else {
+              /*
+              let GR = this.getZml.grade.toString()
+              GR = 'GR' + GR.padStart(2, '0')
+              const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == curitem.subjectid)
+              const subjectpath = this.getZml.subjects[idx].subjectdesc
+              let newHref = "https://www.kuiliesonline.co.za"
+              newHref += "/Subjects/" + GR
+              newHref += "/" + subjectpath
+              newHref += "/" + curitem.folder
+              newHref += "/" + curitem.name
+              */
+              let curFile = curitem.description.substr(5)
+              let newHref = "https://www.kuiliesonline.co.za/" + curFile
+              window.open(newHref, "_blank")
+          }
+        }
     },
     filters: {
        extIcon : function (filename) {
@@ -258,7 +559,7 @@ export default {
                ]
          const ext = filename.substr(5).split('.').pop().toLowerCase()
          const index = i.findIndex(p => p.ext == ext)
-         if (index > 0 ) {
+         if (index >= 0 ) {
            return i[index].icon
          } else {
            return "mdi-hospital-building"
@@ -327,8 +628,8 @@ export default {
             } else {
                 let result = []
                 this.contents.forEach(ele => {
-                    const str = JSON.stringify(ele).toLowerCase
-                    if ( str.includes(this.search.toLowerCase) ) {
+                    const str = JSON.stringify(ele).toLowerCase()
+                    if ( str.includes(this.search.toLowerCase()) ) {
                       result.push(ele)
                     }
                 })
@@ -336,138 +637,6 @@ export default {
             }
             return this.contents[0] 
         },
-    },
-    methods:{
-        zmltest(e) {
-          console.log('WE RECEIVEEDEDEDEHDEKUHDIUKEHDKEHDED',e)
-          this.showEdit = false
-        },
-        saveItem(item) {
-            this.hoekomvatdotsolank = true;
-            alert('it is going to be tricky to save this....');
-            console.log(item)
-            zmlFetch({task:'dumpit', api:zmlConfig.apiDKHS, item:item} ,this.doneWithIt)
-            //after successfuill save...
-            item.changed = false
-            item.editing = false
-            
-        },
-        doneWithIt(response) {
-          this.hoekomvatdotsolank = false;
-          console.log(response)
-        },
-        editItem(item) {
-            this.hoekomvatdotsolank = true;
-            if (item.editing) {
-              //Stop Editing (maybe not saved yet)
-              item.editing = false
-              item.changed = false
-            } else {
-              //Start Editing 
-              item.editing = true
-            }
-            item.changed = true
-            this.hoekomvatdotsolank = false;
-            console.log(item)
-        },
-        col(type) {
-            switch (type) {
-                case 'folder': return "purple"
-                case 'link': return "green"
-                case 'text': return "red"
-                case 'file': return "pink darken-2"
-            }
-            return "pink lighten-1"
-        },
-        filterChange() {
-           if (this.filter == '') {
-               this.filter = '*'
-           } else {
-               this.filter = ''
-           }
-        },
-        subjectChanged(stuff) {
-            this.getZml.subjectid = stuff.subjectid
-            this.getZml.subject = stuff.subjectafrname
-            this.loadData()
-        },
-        loadSubjects(response) {
-          this.loadStatus = false
-          this.getZml.subjects = response
-          this.loadData()
-        },
-        loadData() {
-           if (this.getZml.subject > 0 || this.getZml.grade > 0) {
-              //infoSnackbar('loading ' + this.getZml.grade + ' ' + this.getZml.subject)
-           } else {
-              infoSnackbar('Grade or Subject is blank - Assume 8, 2')
-              this.getZml.grade = 8
-              this.getZml.subjectid = 2
-           }
-           let ts = {};
-           this.contents = []
-           ts.sql = 'SELECT *, DATEDIFF(now(), update_timestamp) days '
-                  + 'FROM dkhs_lcontent WHERE grade = ' + this.getZml.grade
-                  + ' and subjectid = ' + this.getZml.subjectid
-                  + ' order by sortorder, name';
-           ts.task = 'PlainSql';
-           ts.api = zmlConfig.apiDKHS
-           zmlConfig.cl(ts);
-           this.loadStatus = true
-           zmlFetch(ts, this.showData);
-        },
-        showData(response) {
-            this.loadStatus = false
-            if (response.error && response.error.length > 5) {
-                if (response.error.substr(0,7) == 'no rows') {
-                   this.showNoInfoDialog = true
-                } else {
-                  infoSnackbar('loading err ' + response.error.substr(0,10))
-                  this.$router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
-                }
-            } else {
-                this.contents = response;
-                this.contents.forEach(item =>{
-                     item.img = ''
-                     if (item.type == 'file' && item.description.substr(0,4) == 'load') {
-                         let ext = item.description.substr(5).split('.').pop().toLowerCase()
-                         if ( ['png','jpg'].includes(ext)) {
-                           item.img = 'https://www.kuiliesonline.co.za/' + item.description.substr(5)
-                         }
-                     }
-
-                })
-                 
-            }
-        },
-        displayItem(curitem) {
-            console.log('clicked on displayItem')
-          if (curitem.type == 'text') {
-              this.theItem = curitem
-              this.showTextDialog = true
-          } else if (curitem.type == 'folder') {
-              //infoSnackbar('View all content inside a folder' + curitem.folder)  
-              this.filter = curitem.folder
-         } else if (curitem.type == 'link') {              
-              let newHref = curitem.description
-              window.open(newHref, "_blank")
-          } else {
-              /*
-              let GR = this.getZml.grade.toString()
-              GR = 'GR' + GR.padStart(2, '0')
-              const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == curitem.subjectid)
-              const subjectpath = this.getZml.subjects[idx].subjectdesc
-              let newHref = "https://www.kuiliesonline.co.za"
-              newHref += "/Subjects/" + GR
-              newHref += "/" + subjectpath
-              newHref += "/" + curitem.folder
-              newHref += "/" + curitem.name
-              */
-              let curFile = curitem.description.substr(5)
-              let newHref = "https://www.kuiliesonline.co.za/" + curFile
-              window.open(newHref, "_blank")
-          }
-        }
     },
     mounted: function () {
       console.log('We are in MOUNTPLAT',this.getZml.login.type)

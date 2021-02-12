@@ -3,6 +3,9 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import router from './router'
 
+import VueFriendlyIframe from 'vue-friendly-iframe';
+Vue.component('vue-friendly-iframe', VueFriendlyIframe);
+
 import AppLayout from '@/layouts/AppLayout'
 Vue.component('AppLayout', AppLayout)
 
