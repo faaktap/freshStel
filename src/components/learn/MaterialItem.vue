@@ -1,6 +1,6 @@
 <template>
 <div>
-<v-row justify="center" class="fill-height" align="stretch">
+<v-row  justify="center" class="fill-height" align="stretch">
    <v-col>
     <v-hover v-slot:default="{ hover }">
     <v-card max-width=300 max-height="200"
@@ -41,11 +41,17 @@ export default {
     components: {
  //      Material: () => import('@/views/Material.vue')
     },
-    props: {item:Object, heading: {type: String, default: ""}, language:{default:"E"} },
+    props: {
+          item:Object
+          , heading: {type: String, default: ""}
+          , language: {default:"E"} 
+        },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         title:''
     }),
+    computed: { 
+    },
     methods:{
         subject(xx) {
           console.log('selected item :' ,xx)

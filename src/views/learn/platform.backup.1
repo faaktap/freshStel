@@ -1,4 +1,4 @@
-['link','text','folder'].includes(item.type) <template>
+ <template>
 <div>
 <v-sheet color="grey lighten-5" class="ma-2">
   <v-row
@@ -13,10 +13,7 @@
                   color="primary" dark xclass="mb-2"
        >
         <v-toolbar-title class="body-1">
-           <v-btn small 
-                 :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}"
-                 title="Go back to select other subjects"
-           >
+           <v-btn small :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}">
               Back
            </v-btn>
             Grade {{ getZml.grade }} {{ getZml.subject }}
@@ -25,7 +22,7 @@
        
        </v-toolbar>
     </v-col>
-    <v-col xs-12 lg-6 >
+    <v-col xs-12 lg-8 >
      <v-layout row wrap>
       <v-flex class="pt-3"> 
        <v-btn-toggle v-model="toggle_button_state">
@@ -61,19 +58,6 @@
     </v-row>
 
 
-
-
-  <v-row>
-    <v-col xs-12 lg-12 >
-      <v-card v-if="filter.length > 2" class="text-xs-caption font-weight-light text-justify pa-1" > 
-      <v-btn small dense v-if="filter.length > 2" class="pa-2" > Back to folders <v-icon small >F</v-icon>  </v-btn>
-      </v-card>
-    </v-col>
-    </v-row>
-
-
-
-
 <!-- LIST OUR CONTENT -->    
     <v-container fluid class="ma-2 mt-3">
        <v-layout row wrap>
@@ -89,10 +73,9 @@
         <v-col>
          <v-hover v-slot:default="{ hover }">
          <v-card  min-width="300" 
-                  xmin-height="100"
+                  min-height="100"
                   :elevation="hover ? 12 : 2"
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
-            dense
             class= "ma-2"
             color="deep-purple lighten-5"                  
          >
@@ -132,22 +115,23 @@
 
  <!--{{ item.description }} -->
 
-            <!--v-card v-if="['link','text','folder'].includes(item.type)" class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
+            <v-card v-if="['link','text','folder'].includes(item.type)" class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
              <div v-if="!editing">
                {{ item.description }}
-             </div-->  
-            <div v-if="editing && ['link','text','folder'].includes(item.type)">
+             </div>  
+            <div v-if="editing">
                <v-textarea dense outlined v-model="item.description" label="description/name" />
+               <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
              </div>           
-           <!--/v-card-->
+           </v-card>
  <!--/v-card-text-->
- <!--/v-card-title-->
-         <!--v-card-actions-->
+ </v-card-title>
+         <v-card-actions>
              <v-btn v-if="item.type != 'text'"
-                    icon
+                    small 
                     :title="item.type"
                     @click=displayItem(item)>
-                      <v-icon icon> mdi-open-in-app </v-icon> 
+                     Open <v-icon small> mdi-open </v-icon> 
              </v-btn>
             <v-spacer/>
             <v-btn v-if="changed==true"
@@ -162,16 +146,19 @@
                     :loading="loadingEdit"
                     small> 
                <v-icon x-small>mdi-pen</v-icon></v-btn>
-              <v-badge class="text-center" :value="bhover" 
-                      :color="item.days | icn"
-                      :content="item.days + 'day(s) ago'"
-                      left  transition="slide-x-transition"> 
-               <v-hover v-model="bhover">
-                <v-icon :color="item.days | icn"> mdi-timelapse </v-icon> 
-               </v-hover>
-              </v-badge>
-         <!--/v-card-actions-->
-         </v-card-title>
+
+              <v-tooltip right bottom open-on-click open-on-hover> 
+               <template v-slot:activator="{ on }">
+                <v-card class="text-md-caption font-weight-light text-justify pa-1"  v-on="on">
+                {{ item.days }} day(s) ago
+                </v-card>
+               </template>
+               <span >          
+                       cr.{{ item.create_timestamp }} 
+                  <br> up.{{ item.update_timestamp }}
+              </span>
+              </v-tooltip>
+         </v-card-actions>
          </v-card>
          </v-hover>
         </v-col>
@@ -230,7 +217,6 @@ export default {
         toggle_button_state:null,
         getZml: getters.getState({ object: "gZml" }),
         hover:null,
-        bhover:null,
         showTextDialog:false,
         showNoInfoDialog:false,
         theItem:{},
@@ -530,11 +516,6 @@ export default {
         }
     },
     filters: {
-       icn : function (days) {
-         //show color based on amount of days
-         if (days < 8)  return "deep-purple accent-"+days
-         return "green"
-       },
        extIcon : function (filename) {
          if (!filename ) return "mdi-hospital-building"
          if (filename == 'link' || filename == 'file') return "mdi-hospital-building"

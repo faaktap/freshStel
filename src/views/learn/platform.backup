@@ -1,4 +1,4 @@
-['link','text','folder'].includes(item.type) <template>
+ <template>
 <div>
 <v-sheet color="grey lighten-5" class="ma-2">
   <v-row
@@ -13,10 +13,7 @@
                   color="primary" dark xclass="mb-2"
        >
         <v-toolbar-title class="body-1">
-           <v-btn small 
-                 :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}"
-                 title="Go back to select other subjects"
-           >
+           <v-btn small :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}">
               Back
            </v-btn>
             Grade {{ getZml.grade }} {{ getZml.subject }}
@@ -25,53 +22,57 @@
        
        </v-toolbar>
     </v-col>
-    <v-col xs-12 lg-6 >
-     <v-layout row wrap>
-      <v-flex class="pt-3"> 
-       <v-btn-toggle v-model="toggle_button_state">
-         <v-btn small  @click = "filter='*'" :loading="loadStatus" title="Show Folders"> 
-          <v-icon>F</v-icon>
-         </v-btn>
-         <v-btn small @click="filter=''" :loading="loadStatus" title="Show All Items">
-          <v-icon>A</v-icon>
-         </v-btn>
-         <v-btn small  @click = "filter='T'" :loading="loadStatus" title="Notes"> 
-          <v-icon>T</v-icon>
-         </v-btn>
-
-         <v-btn small @click="loadData()" :loading="loadStatus" title="Refresh">
-          <v-icon>R</v-icon>
-         </v-btn>
-         </v-btn-toggle>
-      </v-flex>
-
+    <v-col xs-12 lg-8 >
+        <v-layout row wrap>
+         <v-flex class="pt-3"> 
+           <v-btn small @click="filter=''" :loading="loadStatus"> 
+                 All Files
+           </v-btn>
+         </v-flex> 
+         <v-flex  class="pt-3"> 
+            <v-btn small 
+                   @click = "filter='*'" :loading="loadStatus"> 
+                 Only Folders
+            </v-btn>
+         </v-flex>
+         <v-flex  class="pt-3"> 
+            <v-btn small 
+                   @click = "filter='T'" :loading="loadStatus"> 
+                 Only Notes
+            </v-btn>
+         </v-flex>
+         <v-flex  class="pt-3">
+            <v-btn small @click="loadData()" :loading="loadStatus"> Refresh </v-btn>
+         </v-flex>            
          <v-flex>
             <v-text-field small label="Search" v-model="search" :loading="loadSearchStatus" />
+         </v-flex>
+         <v-flex  class="pt-3">
+            <v-btn small @click="canWeDrop()" :loading="loadStatus"> TestDrop </v-btn>
          </v-flex>
          <v-flex  class="pt-3" v-if="getZml.login.type=='teacher' && files.length > 0">
             <v-btn small @click="uploadTheFilesCheck" :loading="loadStatus"> Upload ( {{files.length }})</v-btn>
          </v-flex>
 
+         
+         <v-flex  class="pt-3"> 
+            <v-btn small  @click="zmltest"
+            >
+                 Test 
+            </v-btn>
+            
+         </v-flex>
          <!--v-flex>
-            <v-btn small  @click="zmltest"> Test   </v-btn>
+           <v-text-field small label="href" v-model="someHref" />
+         </v-flex>
+         <v-flex>
+         someHref = {{someHref}}
          </v-flex-->
+        
 
         </v-layout>
     </v-col>
     </v-row>
-
-
-
-
-  <v-row>
-    <v-col xs-12 lg-12 >
-      <v-card v-if="filter.length > 2" class="text-xs-caption font-weight-light text-justify pa-1" > 
-      <v-btn small dense v-if="filter.length > 2" class="pa-2" > Back to folders <v-icon small >F</v-icon>  </v-btn>
-      </v-card>
-    </v-col>
-    </v-row>
-
-
 
 
 <!-- LIST OUR CONTENT -->    
@@ -88,11 +89,10 @@
      <v-row justify="center" class="fill-height" xalign="stretch">
         <v-col>
          <v-hover v-slot:default="{ hover }">
-         <v-card  min-width="300" 
-                  xmin-height="100"
+         <v-card  min-width="100" 
+                  min-height="150"
                   :elevation="hover ? 12 : 2"
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
-            dense
             class= "ma-2"
             color="deep-purple lighten-5"                  
          >
@@ -100,11 +100,13 @@
 <!--ICON HANDLING FOR TITLE DISPLAY-->
     <v-card-title>   
       <!--v-btn v-if="allowEdit==true" icon @click="editItem(item)"-->
-      <v-btn small 
-             icon
-             :title="item.type"
-             @click=showItem(item)>
-             
+      <v-btn
+      v-if="item.type != 'text'"
+                    small 
+                    icon
+                    :title="item.type"
+                    @click=showItem(item)>
+                    
         <template v-if="item.type=='link'">
           <v-icon color="amber lighten-2"> mdi-link </v-icon>
         </template>
@@ -119,59 +121,67 @@
         </template>
       </v-btn> 
 <!---TITLE DISPLAY -->
-          <div v-if="!editing">    {{ item.name }}    
+          <div v-if="!item.editing">    {{ item.name }}    
            <v-icon x-small>     {{ item.folder }} </v-icon>  
           </div>
 
-          <div v-if="editing" class="px-4 pb-3 pt-3 text-subtitle-2">
+          <div v-if="item.editing" class="px-4 pb-3 pt-3 text-subtitle-2">
               <v-text-field v-model="item.name" label="item name" />
               <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
           </div>             
- <!--/v-card-title>
- <v-card-text-->
+    </v-card-title>
+
+
+         <v-card-text>
 
  <!--{{ item.description }} -->
 
-            <!--v-card v-if="['link','text','folder'].includes(item.type)" class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
-             <div v-if="!editing">
+           <v-card v-if="['link','file'].includes(item.type)" color="deep-purple lighten-5" align="center">
+               <!-- add something here for pdf's and links -->
+           </v-card>
+            <v-card v-else class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
+             <div v-if="!item.editing">
                {{ item.description }}
-             </div-->  
-            <div v-if="editing && ['link','text','folder'].includes(item.type)">
+             </div>  
+            <div v-if="item.editing">
                <v-textarea dense outlined v-model="item.description" label="description/name" />
+               <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
              </div>           
-           <!--/v-card-->
- <!--/v-card-text-->
- <!--/v-card-title-->
-         <!--v-card-actions-->
+           </v-card>
+         </v-card-text>
+         <v-card-actions>
              <v-btn v-if="item.type != 'text'"
-                    icon
+                    small 
                     :title="item.type"
                     @click=displayItem(item)>
-                      <v-icon icon> mdi-open-in-app </v-icon> 
+                     Open <v-icon small> mdi-open </v-icon> 
              </v-btn>
             <v-spacer/>
-            <v-btn v-if="changed==true"
+            <v-btn v-if="item.changed && item.changed==true"
                     @click="saveItem(item)"
                     title="Important to save your changes here!"
                     color="primary"
                     small>  save </v-btn>
-             <v-btn v-if="allowEdit==true"
+             <v-btn v-if="allowEdit==true && ['text','folder','file'].includes(item.type)"
                     @click="editItem(item)"
                     color="primary"
                     icon
                     :loading="loadingEdit"
                     small> 
                <v-icon x-small>mdi-pen</v-icon></v-btn>
-              <v-badge class="text-center" :value="bhover" 
-                      :color="item.days | icn"
-                      :content="item.days + 'day(s) ago'"
-                      left  transition="slide-x-transition"> 
-               <v-hover v-model="bhover">
-                <v-icon :color="item.days | icn"> mdi-timelapse </v-icon> 
-               </v-hover>
-              </v-badge>
-         <!--/v-card-actions-->
-         </v-card-title>
+
+              <v-tooltip right bottom open-on-click open-on-hover> 
+               <template v-slot:activator="{ on }">
+                <v-card class="text-md-caption font-weight-light text-justify pa-1"  v-on="on">
+                {{ item.days }} day(s) ago
+                </v-card>
+               </template>
+               <span >          
+                       cr.{{ item.create_timestamp }} 
+                  <br> up.{{ item.update_timestamp }}
+              </span>
+              </v-tooltip>
+         </v-card-actions>
          </v-card>
          </v-hover>
         </v-col>
@@ -227,10 +237,8 @@ export default {
     components: {},
     props: {  },
     data: () => ({
-        toggle_button_state:null,
         getZml: getters.getState({ object: "gZml" }),
         hover:null,
-        bhover:null,
         showTextDialog:false,
         showNoInfoDialog:false,
         theItem:{},
@@ -253,8 +261,6 @@ export default {
         currentImage:'',        
         files:[],
         dummyObj:{},
-        editing:false,
-        changed:false,
     }),
     activated: function () {
     },
@@ -395,8 +401,8 @@ export default {
             item.days = 0
             zmlFetch({task:'savelcontent', api:zmlConfig.apiDKHS, data:item} ,this.doneWithIt,this.problemSaving)
             //after successfuill save...
-            this.changed = false
-            this.editing = false
+            item.changed = false
+            item.editing = false
             
         },
         doneWithIt() {
@@ -406,16 +412,15 @@ export default {
           this.loadingEdit = false;
         },
         editItem(item) {
-             console.log(item);
-            if (this.editing) {
+            if (item.editing) {
               //Stop Editing (maybe not saved yet)
-              this.editing = false
-              this.changed = false
+              item.editing = false
+              item.changed = false
               return
             } else {
               //Start Editing 
-              this.editing = true
-              this.changed = true
+              item.editing = true
+              item.changed = true
             }
 
         },
@@ -491,15 +496,9 @@ export default {
             }
         },
         showItem(curitem) {
-          if (curitem.type == 'text' || curitem.type == 'folder') {
-             console.log('before change folder  : ',this.filter)
-             this.filter = curitem.folder
-             console.log('after change folder  : ',this.filter)
-          } else {
-            this.currentImage = zmlConfig.localPath + curitem.description.substr(5)
-            console.log('item to view : ' , this.currentImage)
-            this.showViewerDialog = true
-          }
+          this.currentImage = zmlConfig.localPath + curitem.description.substr(5)
+          console.log('item to view : ' , this.currentImage)
+          this.showViewerDialog = true
         },
         displayItem(curitem) {
           if (curitem.type == 'text') {
@@ -530,11 +529,6 @@ export default {
         }
     },
     filters: {
-       icn : function (days) {
-         //show color based on amount of days
-         if (days < 8)  return "deep-purple accent-"+days
-         return "green"
-       },
        extIcon : function (filename) {
          if (!filename ) return "mdi-hospital-building"
          if (filename == 'link' || filename == 'file') return "mdi-hospital-building"

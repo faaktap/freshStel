@@ -25,6 +25,9 @@
         <v-flex>
           <v-text-field v-model="search" label="search" />
         </v-flex>
+        <v-flex>
+            <v-btn @click="bOrs = !bOrs" small icon > .. </v-btn>
+        </v-flex>
         </v-layout>
         <!--/v-window-->
     </v-col>
@@ -37,7 +40,8 @@
          justify-space-around
          xs-12
          >
-         <material-item language="A" :item="item" :heading="heading" />
+         <material-item v-if="bOrs" language="E" :item="item" :heading="heading" />
+         <material-item2 v-else  language="E" :item="item" :heading="heading" />
 
         </v-flex>
        </v-layout>
@@ -47,12 +51,13 @@
 
 <script>
 import { getters } from "@/api/store"
-import MaterialItem from "@/components/MaterialItem"
+import MaterialItem from "@/components/learn/MaterialItem"
+import MaterialItem2 from "@/components/learn/MaterialItem2"
 import router from "@/router"
 import { infoSnackbar } from '@/api/GlobalActions';
 export default {
     name: "Material",
-    components: ( {MaterialItem} ),
+    components: ( {MaterialItem,MaterialItem2} ),
     props: { heading: {default:"Grade"}, passedGradeNo: {default: 12} },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -60,16 +65,19 @@ export default {
         groupnames:[],
         content:[],
         language:null,
+        bOrs:false,
         kies:8,
         search:''
     }),
     async created() {
-      console.log('kies, passed', this.kies, this.passedGradeNo)
       this.kies = this.passedGradeNo
     },
     activated: function () {
     },
     computed: {
+      seegridType() {
+        return this.x
+      },
        filterByGroup() {
          if (this.kies == '') {
            if (this.search.length > 2 ) {
@@ -77,7 +85,6 @@ export default {
                 let result = []
                 this.content.forEach(ele => {
                     const str = JSON.stringify(ele).toLowerCase()
-                    console.log('stringify :', str)
                     if ( str.includes(this.search.toLowerCase()) ) {
                       result.push(ele)
                     }
@@ -91,7 +98,6 @@ export default {
 
          let filterObj = {gid: this.kies}
          let selectedData = [...this.content].filter(o => {
-           //console.log(o.gid, filterObj.gid)
            return o.gid == filterObj.gid;
             });     
          
@@ -102,7 +108,6 @@ export default {
                 let result = []
                 selectedData.forEach(ele => {
                     const str = JSON.stringify(ele).toLowerCase()
-                    console.log('stringify11111 :', str)
                     if ( str.includes(this.search.toLowerCase()) ) {
                       result.push(ele)
                     }
@@ -113,6 +118,7 @@ export default {
     },
     filters: {},
     methods: {
+
       editSubjects() {
           infoSnackbar('not implemented yet')
       },

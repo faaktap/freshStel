@@ -249,7 +249,7 @@ export default {
             } else {
               //router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
               let loginDetails = JSON.stringify(this.getZml.login)
-              localStorage.setItem('login', loginDetails);
+              localStorage.setItem('login', loginDetails)
               console.log('SAVED LOGIN:', loginDetails)
               this.startLearning()
             }
