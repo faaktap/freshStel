@@ -55,10 +55,13 @@ export default {
     methods:{
         subject(xx) {
           console.log('selected item :' ,xx)
-             this.getZml.grade = xx.gid
-             this.getZml.subject = xx.name
-             this.getZml.subjectid = xx.id
-          router.push({ name: 'Material',params:{heading:xx.name} ,meta: {layout: "AppLayoutGray" }})
+          this.getZml.grade = xx.gid
+          this.getZml.subject = xx.name
+          this.getZml.subjectid = xx.id
+          router.push({name:'Platform' 
+                     , params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
+                     , meta: {layout: "AppLayoutGray" }})
+
         }
     }
 

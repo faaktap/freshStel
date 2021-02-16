@@ -1,32 +1,27 @@
-['link','text','folder'].includes(item.type) <template>
+<template>
 <div>
 <v-sheet color="grey lighten-5" class="ma-2">
-  <v-row
-        v-cloak 
-        @drop.prevent="addFile" 
-        @dragover.prevent
-        @dragenter="dragEnter" 
-        @dragend="dragEnd"
-  >
+  <v-row  >
     <v-col xs-12 lg-4>
        <v-toolbar flat 
                   color="primary" dark xclass="mb-2"
        >
         <v-toolbar-title class="body-1">
            <v-btn small 
-                 :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}"
+                 :to="{ name: 'SelectGrade' , params:{heading:'Grade', gradeno: getZml.grade},meta: {layout: 'AppLayoutGray' }}"
                  title="Go back to select other subjects"
            >
               Back
            </v-btn>
             Grade {{ getZml.grade }} {{ getZml.subject }}
-             ( {{ filterShow }} ) {{filterByContent.length }}
+             ( {{ filterShow }} ) {{filterByContent.length }} item(s)
         </v-toolbar-title>
        
        </v-toolbar>
     </v-col>
     <v-col xs-12 lg-6 >
      <v-layout row wrap>
+      
       <v-flex class="pt-3"> 
        <v-btn-toggle v-model="toggle_button_state">
          <v-btn small  @click = "filter='*'" :loading="loadStatus" title="Show Folders"> 
@@ -38,7 +33,6 @@
          <v-btn small  @click = "filter='T'" :loading="loadStatus" title="Notes"> 
           <v-icon>T</v-icon>
          </v-btn>
-
          <v-btn small @click="loadData()" :loading="loadStatus" title="Refresh">
           <v-icon>R</v-icon>
          </v-btn>
@@ -66,7 +60,7 @@
   <v-row>
     <v-col xs-12 lg-12 >
       <v-card v-if="filter.length > 2" class="text-xs-caption font-weight-light text-justify pa-1" > 
-      <v-btn small dense v-if="filter.length > 2" class="pa-2" > Back to folders <v-icon small >F</v-icon>  </v-btn>
+      <v-btn small dense v-if="filter.length > 2" class="pa-2" @click="filter='*'"> Back to folders (<v-icon small >F</v-icon>)  </v-btn>
       </v-card>
     </v-col>
     </v-row>
@@ -75,7 +69,12 @@
 
 
 <!-- LIST OUR CONTENT -->    
-    <v-container fluid class="ma-2 mt-3">
+    <v-container fluid class="ma-2 mt-3" 
+        v-cloak 
+        @drop.prevent="addFile" 
+        @dragover.prevent
+        @dragenter="dragEnter" 
+        @dragend="dragEnd"    >
        <v-layout row wrap>
         <v-flex 
          v-for="item in filterByContent" :key="item.itemid"
@@ -120,35 +119,16 @@
       </v-btn> 
 <!---TITLE DISPLAY -->
           <div v-if="!editing">    {{ item.name }}    
-           <v-icon x-small>     {{ item.folder }} </v-icon>  
+           <v-icon x-small :title="item.description">     {{ item.folder }} </v-icon> 
           </div>
 
           <div v-if="editing" class="px-4 pb-3 pt-3 text-subtitle-2">
               <v-text-field v-model="item.name" label="item name" />
               <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
           </div>             
- <!--/v-card-title>
- <v-card-text-->
-
- <!--{{ item.description }} -->
-
-            <!--v-card v-if="['link','text','folder'].includes(item.type)" class="wordbreak subtitle-2 pa-2" color="purple lighten-4">  
-             <div v-if="!editing">
-               {{ item.description }}
-             </div-->  
-            <div v-if="editing && ['link','text','folder'].includes(item.type)">
+          <div v-if="editing && ['link','text','folder'].includes(item.type)">
                <v-textarea dense outlined v-model="item.description" label="description/name" />
-             </div>           
-           <!--/v-card-->
- <!--/v-card-text-->
- <!--/v-card-title-->
-         <!--v-card-actions-->
-             <v-btn v-if="item.type != 'text'"
-                    icon
-                    :title="item.type"
-                    @click=displayItem(item)>
-                      <v-icon icon> mdi-open-in-app </v-icon> 
-             </v-btn>
+          </div>           
             <v-spacer/>
             <v-btn v-if="changed==true"
                     @click="saveItem(item)"
@@ -156,7 +136,7 @@
                     color="primary"
                     small>  save </v-btn>
              <v-btn v-if="allowEdit==true"
-                    @click="editItem(item)"
+                    @click="editItem()"
                     color="primary"
                     icon
                     :loading="loadingEdit"
@@ -170,6 +150,13 @@
                 <v-icon :color="item.days | icn"> mdi-timelapse </v-icon> 
                </v-hover>
               </v-badge>
+          <v-btn v-if="item.type != 'text'"
+                    icon
+                    :title="item.type"
+                    @click=displayItem(item)>
+                      <v-icon icon color="deep-purple"> mdi-file-download-outline </v-icon> 
+             </v-btn>
+
          <!--/v-card-actions-->
          </v-card-title>
          </v-card>
@@ -209,7 +196,11 @@
          </v-card-text>
         <v-card-actions> 
             <v-btn @click="showNoInfoDialog = !showNoInfoDialog" color="info"> close </v-btn>
-            <v-btn color="primary" :to="{ name: 'Material' , params:{heading:'Grade'},meta: {layout: 'AppLayoutGray' }}"> Select another subject </v-btn>
+            <v-btn color="primary" :to="{ name: 'SelectGrade' 
+                                        , params:{heading:'Grade', gradeno: getZml.grade}
+                                        , meta: {layout: 'AppLayoutGray' }}"> 
+              Select another subject 
+            </v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>
@@ -221,6 +212,7 @@
 import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
+import { zmlLog } from '@/api/zmlLog.js';
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 export default {
     name: "Platform",
@@ -261,24 +253,24 @@ export default {
     methods:{
       dragEnd(ev) {
         //ev.target.style.backgroundColor = 'primary'
-        console.log(ev)
+        console.log('dend',ev)
       },
       dragEnter(ev) {
-        ev.target.style.backgroundColor = 'green'
-        console.log(ev)
+        //ev.target.style.backgroundColor = 'green'
+        console.log('dent',ev)
       },
       addFile(e) {
         let lfiles = e.dataTransfer.files;
         lfiles.forEach(file => {
           if (file.size > 11100100)  {
             errorSnackbar(file.name + ' is too big - put on memory stick and leave at reception for Werner, please try again')
-          return
-        }
+            return
+          }
         })
-        
+        //We are hapy with these files, mark them all as not done.
         lfiles.forEach(file => {
+            file.done = false       
             this.files.push(file);
-            console.log(this.files)
         })
         infoSnackbar('We have ' + this.files.length + ' files, ready for upload. Press the upload button')
       },
@@ -318,26 +310,23 @@ export default {
          this.dummyObj.name = file.name
          let fr = new FileReader()
          fr.onload = function(response) {
-           console.log('WAT HET ONS HIER?? Progressevent?', file.name,response)
            fdet.name = file.name
            nextProc(response,fdet)
          };
          fr.onerror = function(response) {
-           console.log('res' ,response);
+           console.log('res - Some Error!' ,response);
          };
          fr.readAsDataURL(file);
 
         });
       },
       upload1(fileData,fdet) {
-         console.log('LOADER STARTED FOR ' , fileData.name, fdet)
          fileData.task = 'upload'; 
           let GR = this.dummyObj.grade.toString()
           GR = 'GR' + GR.padStart(2, '0')
           const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == this.dummyObj.subjectid)
           const subjectpath = this.getZml.subjects[idx].path
          fileData.extrapath =  "/Subjects/" + GR + "/" + subjectpath + "/" + this.dummyObj.folder
-         console.log('CCCCHHHHHHEEEEKKKKIIINNGGGG',fdet.name)
          fileData.name = fdet.name
          fileData.realname = fdet.name
          //////fileData.drag = this.files[0]
@@ -350,6 +339,11 @@ export default {
       },    
       doneWithUpload(response) {
          //infoSnackbar('Done with upload ' + JSON.stringify(response) )
+         this.files.forEach(file => {
+            if (response.filename == file.name)  {
+              file.done = true
+            }
+         })
          this.loadStatus = false;
          this.dummyObj.description = 'load:' + response.fileName;
          this.dummyObj.name = response.filename;
@@ -358,6 +352,15 @@ export default {
            ts.task = 'insertLContent';
            ts.api = zmlConfig.apiDKHS
            zmlFetch(ts, this.afterUpdate);   
+      },
+      afterUpdate() {
+        //see if we have any left...and clean array if done
+        let cnt = 0;
+        this.files.forEach(file => {
+           if (file.done == true)  cnt += 1
+        })
+        if (cnt == this.files.length) this.files = [];
+
       },
       errorWithUpload(response) {
          errorSnackbar('Error with upload ' + JSON.stringify(response) )
@@ -373,7 +376,7 @@ export default {
                    , subjectid:this.getZml.subjectid
                    , persid: this.getZml.login.userid
                    , icon: 'mdi-file'
-                   , sortorder: 1}
+                   , sortorder: 90}
            return (edit)            
         }, 
         zmltest() {
@@ -405,8 +408,7 @@ export default {
         problemSaving() {
           this.loadingEdit = false;
         },
-        editItem(item) {
-             console.log(item);
+        editItem() {
             if (this.editing) {
               //Stop Editing (maybe not saved yet)
               this.editing = false
@@ -446,8 +448,8 @@ export default {
           this.loadData()
         },
         loadData() {
-           if (this.getZml.subject > 0 || this.getZml.grade > 0) {
-              //infoSnackbar('loading ' + this.getZml.grade + ' ' + this.getZml.subject)
+           if (this.getZml.subjectid > 0 || this.getZml.grade > 0) {
+              zmlLog(this.getZml.login.username , "Platform", this.getZml.grade + ' ' + this.getZml.subjectid)
            } else {
               infoSnackbar('Grade or Subject is blank - Assume 8, 2')
               this.getZml.grade = 8
@@ -455,12 +457,19 @@ export default {
            }
            let ts = {};
            this.contents = []
+           /*
            ts.sql = 'SELECT *, DATEDIFF(now(), update_timestamp) days '
                   + 'FROM dkhs_lcontent WHERE grade = ' + this.getZml.grade
                   + ' and subjectid = ' + this.getZml.subjectid
                   + ' and sortorder != 0'
                   + ' order by sortorder, name';
            ts.task = 'PlainSql';
+           */
+           ts.task = 'getlcontent'
+           ts.data = {}
+           ts.data.subjectid = this.getZml.subjectid
+           ts.data.grade = this.getZml.grade
+           ts.data.login = this.getZml.login
            ts.api = zmlConfig.apiDKHS
            zmlConfig.cl(ts);
            this.loadStatus = true
@@ -473,7 +482,7 @@ export default {
                    this.showNoInfoDialog = true
                 } else {
                   infoSnackbar('loading err ' + response.error.substr(0,10))
-                  this.$router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
+                  this.$router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno: this.getZml.grade},meta: {layout: "AppLayoutGray" }});
                 }
             } else {
                 this.contents = response;
@@ -490,42 +499,51 @@ export default {
                  
             }
         },
+//------------------------------ShowItem and DisplayItem - one in window, one outside
         showItem(curitem) {
-          if (curitem.type == 'text' || curitem.type == 'folder') {
-             console.log('before change folder  : ',this.filter)
-             this.filter = curitem.folder
-             console.log('after change folder  : ',this.filter)
-          } else {
-            this.currentImage = zmlConfig.localPath + curitem.description.substr(5)
-            console.log('item to view : ' , this.currentImage)
-            this.showViewerDialog = true
+          console.log('Show item inside', curitem.type, curitem)
+          switch (curitem.type) {
+            case 'text': 
+              this.theItem = curitem
+              this.showTextDialog = true
+              break
+            case 'folder':             
+              this.filter = curitem.folder
+              break
+            case 'link':
+              console.log('OPENING LINK : ' , curitem.description)
+              window.open(curitem.description, "_blank")              
+              break
+            case 'file':
+              this.currentImage = zmlConfig.localPath + curitem.description.substr(5)
+              console.log('item to view : ' , this.currentImage)
+              this.showViewerDialog = true
+               break
+            default:
+              alert('what?')
           }
         },
         displayItem(curitem) {
-          if (curitem.type == 'text') {
-              this.theItem = curitem
-              this.showTextDialog = true
-          } else if (curitem.type == 'folder') {
+          console.log('Display Item ' , curitem)
+          switch (curitem.type) {
+            case 'text': 
+                this.theItem = curitem
+                this.showTextDialog = true
+                break
+            case 'folder'    :
               //infoSnackbar('View all content inside a folder' + curitem.folder)  
               this.filter = curitem.folder
-         } else if (curitem.type == 'link') {              
-              let newHref = curitem.description
-              window.open(newHref, "_blank")
-          } else {
-              /*
-              let GR = this.getZml.grade.toString()
-              GR = 'GR' + GR.padStart(2, '0')
-              const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == curitem.subjectid)
-              const subjectpath = this.getZml.subjects[idx].subjectdesc
-              let newHref = "https://www.kuiliesonline.co.za"
-              newHref += "/Subjects/" + GR
-              newHref += "/" + subjectpath
-              newHref += "/" + curitem.folder
-              newHref += "/" + curitem.name
-              */
-              let curFile = curitem.description.substr(5)
-              let newHref = "https://www.kuiliesonline.co.za/" + curFile
-              window.open(newHref, "_blank")
+              break
+            case 'link': 
+              console.log('OPENING LINK : ' , curitem.description)
+              window.open(curitem.description, "_blank")
+              break
+            case 'file':
+              window.open("https://www.kuiliesonline.co.za/" + curitem.description.substr(5)
+                        , "_blank")
+              break
+            default:
+              errorSnackbar('We do not understand:', curitem.type)  
           }
         }
     },
@@ -562,6 +580,7 @@ export default {
                {ext:'zip'  ,icon: 'mdi-folder-zip'},
                {ext:'mp3'  ,icon: 'mdi-music-note'},
                {ext:'m4a'  ,icon: 'mdi-file-music'},
+               {ext:'sql'  ,icon: 'mdi-database'},
                ]
          const ext = filename.substr(5).split('.').pop().toLowerCase()
          const index = i.findIndex(p => p.ext == ext)
@@ -598,6 +617,7 @@ export default {
                {ext:'zip'  ,icon: 'mdi-folder-zip',        color:'brown'},
                {ext:'mp3'  ,icon: 'mdi-music-note',        color:'orange'},
                {ext:'m4a'  ,icon: 'mdi-file-music',        color:'indigo darken-1'},
+               {ext:'sql'  ,icon: 'mdi-database',          color:'green darken-3'},
                ]
          const ext = filename.substr(5).split('.').pop().toLowerCase()
          const index = i.findIndex(p => p.ext == ext)

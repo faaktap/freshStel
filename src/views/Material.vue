@@ -1,37 +1,50 @@
 <template>
+
 <v-sheet color="grey lighten-5" class="ma-2">
   <v-row>
-    <v-col xs-12 lg-4>
+    <v-col xs-12 lg-12>
        <v-toolbar flat color="primary" dark class="mb-4">
         <v-toolbar-title>
             <v-btn  small class="ml-1" v-if="kies" @click="kies='';search=''" color="info"> Clear </v-btn>
-            <template v-if="!kies"> Every </template>
-            {{ heading }} {{ kies }} 
+            <template v-if="!kies"> Every </template> 
+            {{ heading }} {{ kies }}
         </v-toolbar-title>
         <v-spacer />
         <!--v-text-field dense  v-model="search" label="search" max-width="55"/-->
         <v-btn @click="editSubjects" v-if="getZml.login.type == 'teacher'"> Edit Subjects </v-btn>
        </v-toolbar>
     </v-col>
-    <v-col xs-12 lg-8>
-        <!--v-window flat color="primary"-->
+  </v-row>
+
+  <v-row>
+    <v-col xs-12 lg-12>
         <v-layout wrap>
-        <v-flex flex-row v-for="grp in groupnames" :key="grp.id" justify-space-around
+        <v-flex v-for="grp in groupnames" :key="grp.id" justify-space-around
          xs-6 >
-        <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-1">
-            {{ grp.name }}
-        </v-btn>
+         <template v-if="grp.id == gradeno">
+            <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-1" disabled color="red">
+            {{ grp.name }} **
+            </v-btn>            
+          </template>
+          <template v-else>
+            <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-1" color="primary">
+            {{ grp.name }} 
+             </v-btn>            
+          </template>
         </v-flex>
         <v-flex>
-          <v-text-field v-model="search" label="search" />
+          <v-text-field 
+              v-model="search" 
+              label="search" 
+              clearable
+              hint="search on subject" />
         </v-flex>
         <v-flex>
             <v-btn @click="bOrs = !bOrs" small icon > .. </v-btn>
         </v-flex>
         </v-layout>
-        <!--/v-window-->
     </v-col>
-    </v-row>
+  </v-row>
     <v-container fluid>
        <v-layout row wrap>
         <v-flex 
@@ -58,7 +71,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
 export default {
     name: "Material",
     components: ( {MaterialItem,MaterialItem2} ),
-    props: { heading: {default:"Grade"}, passedGradeNo: {default: 12} },
+    props: [ 'heading', 'gradeno' ],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         //kies: 8,
@@ -66,11 +79,11 @@ export default {
         content:[],
         language:null,
         bOrs:false,
-        kies:8,
+        kies:null,
         search:''
     }),
     async created() {
-      this.kies = this.passedGradeNo
+      this.kies = this.gradeno
     },
     activated: function () {
     },
@@ -78,7 +91,7 @@ export default {
       seegridType() {
         return this.x
       },
-       filterByGroup() {
+      filterByGroup() {
          if (this.kies == '') {
            if (this.search.length > 2 ) {
              //do the search
@@ -101,7 +114,7 @@ export default {
            return o.gid == filterObj.gid;
             });     
          
-         if (this.search.length < 3 ) {
+         if (this.search.length < 2 ) {
            return(selectedData)           
          } else {
            //do search 
@@ -114,23 +127,25 @@ export default {
                 })
                 return result
          }
-       },
+      },
     },
     filters: {},
     methods: {
-
       editSubjects() {
           infoSnackbar('not implemented yet')
       },
       goTo(where) {
         this.kies = where;
+        router.push({ name: 'SelectGrade'  
+                    , params:{heading:"Grade", gradeno:where }
+                    , meta: {layout: "AppLayoutGray" }});  
       },
       doLoadGrades() {
-        this.groupnames = [{id:8,name: 'G08'}
-                          ,{id:9,name: 'G09'}
-                          ,{id:10,name: 'G10'}
-                          ,{id:11,name: 'G11'}
-                          ,{id:12,name: 'G12'}
+        this.groupnames = [{id:8,name: 'Grade 8'}
+                          ,{id:9,name: 'Grade 9'}
+                          ,{id:10,name: 'Grade 10'}
+                          ,{id:11,name: 'Grade 11'}
+                          ,{id:12,name: 'Grade 12'}
                           ]
         this.groupnames.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
@@ -159,6 +174,7 @@ export default {
             this.getZml.login.gradeLastChosen = this.getZml.grade;
             let loginDetails = JSON.stringify(this.getZml.login)
             localStorage.setItem('login', loginDetails);
+            console.log('PUSH FOR PLATFORM!!!')
             router.push({name:'Platform' 
                        ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                        ,meta: {layout: "AppLayoutGray" }})
@@ -172,9 +188,6 @@ export default {
         }
     },
     watch: { 
-      passedGradeNo(n) {
-        this.kies = n
-      },
       filterByGroup() {
         if (this.filterByGroup.length == 0) {
           //infoSnackbar('no data in the folder')

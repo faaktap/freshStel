@@ -7,11 +7,19 @@
      <v-card max-width="500"
            color=#F5F5F5>
       <v-card-title>
-       <h2> Kuilies Logout  </h2>
+       <h2> Kuilies Session Status  </h2>
       </v-card-title>  
+      
       <v-card-text class="ma-4">
-       Thanks for using the system {{ getZml.login.name }}!
-       <br>You will be logged out once you click the button.
+        <v-card color="gray" class="ma-4 pa-4">
+       You are logged in as {{ getZml.login.username }} since {{ getZml.login.lastdate }}.
+        </v-card>
+       <br>
+       Thanks for using the system {{ getZml.login.fullname }}!
+       <br>You will be logged out once you click the button below.
+       <br>
+       <br>To continue your session, press the continue button.
+       <br>To make changes to your profile, click the appropiate button.
       </v-card-text>
       <v-card-actions>
        <v-btn  @click="showProfile = !showProfile" color="info">
@@ -153,9 +161,11 @@
 // eslint-disable-next-line
 import { infoSnackbar,errorSnackbar } from '@/api/GlobalActions';
 import { zmlConfig } from '@/api/constants';
+import { zmlFetch } from '@/api/zmlFetch';
+import { zmlLog } from '@/api/zmlLog.js';
 import router from '@/router';
 import { getters } from "@/api/store";
-import { zmlFetch } from '@/api/zmlFetch';
+
 export default {
      name: "login"
     ,props: []
@@ -268,12 +278,15 @@ export default {
           this.getZml.folders = response.folders;
           console.log('LOADLEARN')
           if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-            router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.gradeLastChosen},meta: {layout: "AppLayoutGray" }});  
+            //router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.gradeLastChosen},meta: {layout: "AppLayoutGray" }});  
+            router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno:this.getZml.gradeLastChosen},meta: {layout: "AppLayoutGray" }});  
           } else {
             if (this.getZml.grade > 0) {
-              router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.grade},meta: {layout: "AppLayoutGray" }});  
+              //router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.grade},meta: {layout: "AppLayoutGray" }});  
+              router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno:10 } ,meta: {layout: "AppLayoutGray" }});  
             } else {
-              router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:8},meta: {layout: "AppLayoutGray" }});
+              //router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:8},meta: {layout: "AppLayoutGray" }});
+              router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno:11 } ,meta: {layout: "AppLayoutGray" }});  
             }
           }
       },
@@ -284,6 +297,7 @@ export default {
       startLearning() {
         let ts = {api: zmlConfig.apiDKHS ,task: 'loadlearn'}
         zmlFetch(ts, this.loadLearn, this.loadError);
+        zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)
       },
       saveDetails() {
         //we need to send the stuff for an update
@@ -301,7 +315,7 @@ export default {
         }
       },
       dropAnEmail(){
-        let email = {method : "advemail" ,subject  : "User has logged on" + this.getZml.login.name
+        let email = {method : "advemail" ,subject  : "User has logged on" + this.getZml.login.fullname
                  ,email_to :"faaktap@gmail.com"
                  ,htmlmessage : this.getZml.companyTitle + ' logged on ' 
                          + this.getZml.login.name + '<br> ' + this.getZml.login.username

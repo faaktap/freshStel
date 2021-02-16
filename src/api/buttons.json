@@ -4,7 +4,7 @@
  "tool": [{ "btn":"home"     ,"tip":"1"                  ,"func":"/"           ,"icon":"mdi-home","optional":0,"acc":"all"}
          
          ,{ "btn":"teacher"  ,"tip":"4 teachers"         ,"func":"/viewlearn"  ,"icon":"mdi-teach","optional":0,"acc":"teacher"}
-         ,{ "btn":"viewcats" ,"tip":"testitemview"       ,"func":"/material"   ,"icon":"mdi-broom","optional":0,"acc":"all"}
+         ,{ "btn":"viewcats" ,"tip":"testitemview"       ,"func":"/grade/12"   ,"icon":"mdi-broom","optional":0,"acc":"all"}
          ,{ "btn":"tHover"   ,"tip":"3"                  ,"func":"/hover"      ,"icon":"mdi-shovel","optional":1,"acc":"all"}
          ,{ "btn":"translate","tip":"translation testers","func":"/translate"  ,"icon":"mdi-test-tube","optional":1,"acc":"all"}
          ,{ "btn":"help"     ,"tip":"4"                  ,"func":"/help"       ,"icon":"mdi-help","optional":1,"acc":"all"}
@@ -20,17 +20,17 @@
          ],
  "heroes": [{"name": "Hero1", "title" :"Students"
                      , "bgpicture": "https://www.dekuilen.com/img/dekuilen/home-image01.jpg"
-                     , "text": "Click on the button below to log in on this site."
+                     , "text": "Click on `student login` to log in on this site."
                      , "more": "You will need your school number to log on."
                      , "color": "#2E7D32"
-                     , "btn": "log in" ,"tip":"More information"
+                     , "xxbtn": "log in" ,"tip":"More information"
                                        ,"func":"/login","icon":"mdi-nature-people"},
             {"name": "Hero2", "title" :"Teachers"
                      , "bgpicture": "img/teachers.jpg"
-                     , "text": "Click on the button below to log in on this site."
+                     , "text": "Click on `educator login` above to log in on this site."
                      , "more": "Information for educators will be availible here."
                      , "color": "blue"
-                     , "btn": "log in" ,"tip":"More information"
+                     , "xxbtn": "log in" ,"tip":"More information"
                                        ,"func":"/login","icon":"mdi-nature-people"},
             {"name": "Hero3", "title" :"Parents"
                      , "bgpicture": "https://www.dekuilen.com/img/dekuilen/dk-slide-2.jpg"

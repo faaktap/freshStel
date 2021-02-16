@@ -5,7 +5,7 @@
               justify="space-around"
               class="text-center" align="center">
       <v-img
-        :height="$vuetify.breakpoint.mdAndUp ? 250 : 125"
+        :height="$vuetify.breakpoint.mdAndUp ? 100 : 55"
         :gradient="gradient"
         :src="picture"
         :color="color"

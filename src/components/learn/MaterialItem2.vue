@@ -3,7 +3,7 @@
 
    <v-col>
     <v-hover v-slot:default="{ hover }">
-    <v-card max-height="100"
+    <v-card xmax-height="100"
             :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
             class= "ma-2"
@@ -12,8 +12,10 @@
 
       <v-card-title class="wordbreak text-md-caption font-weight-light text-justify " align="center" > 
           {{ item.name }}  <br>     {{ item.nameafr}}  <v-spacer />
-           <v-btn small @click="subject(item)" color="primary"> {{ item.title}} </v-btn>
       </v-card-title> 
+          <v-card-actions v-if="hover"><br>
+           <v-btn small @click="subject(item)" color="primary"> {{ item.title}} </v-btn>
+          </v-card-actions>
     
     </v-card>
     </v-hover>
@@ -40,20 +42,22 @@ export default {
         },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        title:''
+        title:'',
+        hover:null
     }),
     computed: { 
     },
     methods:{
         subject(xx) {
           console.log('selected item :' ,xx)
-             this.getZml.grade = xx.gid
-             this.getZml.subject = xx.name
-             this.getZml.subjectid = xx.id
-          router.push({ name: 'Material',params:{heading:xx.name} ,meta: {layout: "AppLayoutGray" }})
-        }
+          this.getZml.grade = xx.gid
+          this.getZml.subject = xx.name
+          this.getZml.subjectid = xx.id
+          router.push({name:'Platform' 
+                     , params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
+                     , meta: {layout: "AppLayoutGray" }})
+         }
     }
-
 }
 </script>
 

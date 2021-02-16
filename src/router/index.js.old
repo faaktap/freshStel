@@ -74,8 +74,10 @@ const routes = [
     path: '/grade/:gradeno',
     name: 'SelectGrade',
     props: true,
-    params: {heading: 'Grade', gradeno:10},
-    meta: {layout: la[3], authentication: "learner" }
+    params: {heading: 'Grade'
+           , gradeno: 10},
+    meta: {layout: la[3]
+        , authentication: "learner" }
   },  
   {
     component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/platform.vue'),
@@ -86,60 +88,9 @@ const routes = [
     meta: {layout: la[3], authentication: "learner" }
   },
   {
-    path: '/nested',
-    component: EmptyRouterView,
-    children: [{
-        name: 'nested',
-        path: '',
-        component: MyPageView,
-        meta: {layout: la[3]}
-    }, {
-        name: 'nested.dialog',
-        path: 'dialog',
-        meta: {layout: la[3]},
-        components: {
-            default: MyPageView,
-            dialog: zmlDialog
-        }
-    }],
-  },
-  {
-    component: i18nTest,path: '/translate', name: 'Translate',
-    meta: {layout: la[3]}
-  },
-  {
     component: login,path: '/login', name: 'Login',
     meta: {layout: la[3], authentication: "public"}
   },
-  {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/RouteTest.vue')
-    ,name: 'WernerNoParm'
-    ,path: '/werner'
-    ,meta: {layout: la[3], authentication: "public"}
-  },
-  {
-     component: () => import(/* webpackChunkName: "learn" */ '@/views/RouteTest.vue')
-    ,name: 'Werner'
-    ,path: '/werner/:id'
-    ,props: true 
-    ,params:{ id:33, post: "sadfpkpokepoer poker" }
-    ,meta: {layout: la[3], authentication: "public"}
-    ,alias: '/smit/:id' 
-    ,children: [
-      // UserHome will be rendered inside User's <router-view>
-      // when /user/:id is matched
-      { path: 'route1/:rid'
-        , name: 'Route1'
-        , props: true
-        , component: () => import(/* webpackChunkName: "learn" */ '@/views/Route1.vue') 
-        , meta: {layout: la[3], authentication: "public"}
-        , params:{ rid: 120, rpost: "sdfsdfsdfsdfsdf" }
-      },
-
-      // ...other sub routes
-    ]
-  }
-    
 ]
 
 

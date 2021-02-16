@@ -37,19 +37,20 @@
     <template v-slot:footer>
       <v-card class="ma-4"> 
           <v-card-text class="green lighten-4">
-              Kliek op die klein ronde dingetjie om data te verander en die 
-              snaakse + teken onder regs om iets by te voeg.
+              Kliek op die <v-icon>mdi-database-edit</v-icon> om data te verander en die 
+              <v-icon >mdi-table-plus</v-icon> teken onder regs om iets by te voeg.
           </v-card-text>
       </v-card>
     </template>
     <template v-slot:[`footer.page-text`]>
-       <v-btn icon @click="allocate()"> 
+       <v-btn icon @click="allocate"> 
            <v-icon >mdi-table-plus</v-icon>
         </v-btn>
 
     </template>
     <template v-slot:[`item.description`]="{ item }">
-        <div v-if="item.description.length > 40">    {{ item.description.substring(0,40) }} ... </div>
+        <div v-if="item.description.substr(0,4) == 'load'">   ... </div>
+        <div v-else-if="item.description.length > 40">    {{ item.description.substring(0,40) }} ... </div>
         <div v-else>{{ item.description }}</div>
       </template>
     <template v-slot:[`item.subjectid`]="{ item }">
@@ -58,16 +59,16 @@
     <template v-slot:[`item.sortorder`]="{ item }">
         {{ item.sortorder}}
        <v-btn icon @click="editCard( item.contentid )"> 
-           <v-icon small>mdi-database-edit</v-icon>
+           <v-icon>mdi-database-edit</v-icon>
         </v-btn>
        <v-btn x-small icon @click="increaseOrder( item.contentid )"> 
-           <v-icon x-small>mdi-plus</v-icon>
+           <v-icon small>mdi-plus</v-icon>
         </v-btn>        
        <v-btn x-small icon @click="lowerOrder( item.contentid )"> 
-           <v-icon x-small>mdi-minus</v-icon>
+           <v-icon small>mdi-minus</v-icon>
         </v-btn>                        
        <v-btn icon @click="deleteCard( item.contentid )"> 
-           <v-icon x-small>mdi-delete</v-icon>
+           <v-icon small>mdi-delete</v-icon>
         </v-btn>
       </template>
   </v-data-table>
@@ -79,54 +80,71 @@
   <v-card>
     <v-card-title>
       <span class="headline">Edit CONTENT</span>
+          <v-card color="green" class="ma-2 pa-2"> 
+         for {{ getZml.subject }} Grade {{ edit.grade }} 
+         </v-card>
+
     </v-card-title>
     <v-card-text>
      <v-container grid-list-md>
       <v-layout wrap>
-       <v-flex xs12 sm6 md12>
+       <v-flex xs12 sm6 md9>
          <v-text-field v-model="edit.name" label="Name"></v-text-field>
        </v-flex>
        <v-flex xs12 sm6 md3>
-           <v-select
-             v-model="edit.grade"
-             :items="['8','9','10','11','12']"
-             label="Grade"
-             :hint="`Grade ${edit.grade}`"
-           />                      
-       </v-flex>
-       <v-flex xs12 sm6 md4>
-          <v-autocomplete
-            v-model="edit.subjectid"
-            ref="mySelect" 
-            :search-input.sync="searchInput"
-            :hint="`id=${edit.subjectid}`"
-            :items="getZml.subjects"
-            item-text="shortname"
-            item-value="subjectid"
-            label="Subject"
-          />
-        </v-flex>       <v-flex xs12 sm6 md3>
-          <v-select
+          <!--v-select
             v-model="edit.accesstype"
             :items="['student','pers','hidden']"
             item-text="text"
             item-value="id"
             label="Access"
-          />
+          /-->
+       <v-radio-group v-model="edit.accesstype"  row label="Access" >
+       <v-radio        label="student"    value="student"   ></v-radio>
+       <v-radio        label="pers"       value="pers"      ></v-radio>
+       <v-radio        label="hidden"     value="hidden"    ></v-radio>
+       </v-radio-group>
        </v-flex>
+
        <v-flex xs12 sm6 md3>
-          <v-select
+       <v-radio-group v-model="edit.type" 
+                      row label="Content Type"
+                     :disabled="editMode == 'update' && edit.type.length > 0" >
+       <v-radio        label="file"    value="file"  ></v-radio>
+       <v-radio        label="folder"  value="folder"></v-radio>
+       <v-radio        label="link"    value="link"  ></v-radio>
+       <v-radio        label="text"    value="text"  ></v-radio>
+       </v-radio-group>
+
+          <!--v-select
             v-model="edit.type"
             :items="['file','text','link','folder']"
             label="Type"
             :disabled="editMode == 'update' && edit.type.length > 0"
-          />            
+          /-->            
        </v-flex>
        <v-flex xs12 sm6 md3>
-          <v-text-field
-            v-model="edit.sortorder"
-            label="Sortorder"
-          />            
+           <v-slider v-model="edit.sortorder"
+              thumb-color="primary"
+              hint="Where you want the item to appear"
+              min="0"
+              max="200"
+              thumb-label="always">
+            <template v-slot:append>
+              <v-text-field
+                v-model="edit.sortorder"
+                xclass="mt-0 pt-0"
+                xhide-details
+                xsingle-line
+                xlabel="Order"
+                type="number"
+                style="width: 60px"
+              ></v-text-field>
+            </template>              
+           </v-slider>
+          <!--v-text-field
+            v-model="edit.sortorder"/-->
+            
        </v-flex>
 
 <!-- SELECT A FOLDER  -->    <!--v-if="!['link','text','folder'].includes(edit.type)"-->
@@ -142,8 +160,8 @@
            </auto-sel-obj> 
           </v-col>
           <v-col cols=2 class="layout justify-center" v-if="edit.grade && edit.subjectid">
-            g={{ edit.grade }} s={{ edit.subjectid}}
            <v-btn @click="showAddFolder = !showAddFolder" 
+            icon
                    title="Add Folder" 
                    class="mt-0">
                    <!--v-if="folderFilter.length > 0" wil not work when we have no folders yet..-->
@@ -215,14 +233,15 @@
 <script>
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
+import { zmlLog } from '@/api/zmlLog.js';
 import { getters } from "@/api/store";
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 import AutoSelObj from '@/components/AutoSelObj.vue'
 // eslint-disable-next-line
 //import router from '@/router';
-//import { zmlLog } from '@/api/zmlLog.js';
   export default {
     name: "viewContent",
+    props: ['subjectid','grade'],
     components: {AutoSelObj},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -258,11 +277,19 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
       //Display a list of folders on dropdown
       folderFilter() {
         let tempT = []
+        if (this.getZml.folders.length == 0) {
+          console.log('folders are ZERO LENGTH')
+          return ['temp']
+        }
         let ignore = false
         this.getZml.folders.forEach(item => {
           ignore = false;
-          if (item.grade != this.edit.grade) ignore = true;
-          if (item.subjectid != this.edit.subjectid) ignore = true;
+          if (item.grade != this.getZml.grade) {
+             ignore = true
+          }
+          if (item.subjectid != this.getZml.subjectid) {
+             ignore = true
+          }
           if (!ignore) tempT.push( { id: item.folderid, name: item.foldername});
         })
         return tempT
@@ -290,7 +317,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         zmlFetch({task: 'addfolders', data: obj ,api: zmlConfig.apiDKHS}, this.afterAddFolder, this.errorAddFolder);
       },
       afterAddFolder(response){
-        infoSnackbar('On Succecssfull Add Folder Info: ' + JSON.stringify(response.name))
+        zmlConfig.cl(response)
         zmlFetch({task: 'getfolders',api: zmlConfig.apiDKHS}, this.updateFoldersAfterAdd);
         this.showAddFolder = false;
         this.loadingAddFolder = false
@@ -335,7 +362,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
       },    
       doneWithUpload(response) {
-         infoSnackbar('Done with upload ' + JSON.stringify(response) )
+         infoSnackbar('Done with upload ') // + JSON.stringify(response) )
          this.loadStatus = false;
          this.edit.description = 'load:' + response.fileName;
          this.edit.name = response.filename;
@@ -347,7 +374,6 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
          this.edit.description = '';
       },
       addFile(e) {
-        console.log(e)
         let lfiles = e.dataTransfer.files;
         if (lfiles[0].size > 11100100)  {
           errorSnackbar('this file is too big - put on memory stick and leave at reception for Werner')
@@ -386,11 +412,11 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
                        , type:''
                        , folder:''
                        , accesstype: 'student'
-                       , grade: ''
-                       , subjectid:''
-                       , persid: ''
+                       , grade: this.getZml.grade.toString()
+                       , subjectid: this.getZml.subjectid
+                       , persid: this.getZml.userid
                        , icon: 'mdi-text'
-                       , sortorder: 1};
+                       , sortorder: 50};
             this.editDialog = true;
             this.editMode = 'add';
         },
@@ -405,6 +431,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
             zmlConfig.cl('edit',idx, this.edit);
             this.editDialog = true;
             this.folderObj = {name:this.edit.folder}
+            this.grade = this.getZml.grade.toString()
             this.editMode = 'update';
         },
         deleteCard(id) {
@@ -414,7 +441,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
                 return;
             }
             this.delete = this.content[idx];
-            infoSnackbar('to delete change sortorder to 0, and not display it.')
+            //infoSnackbar('to delete change sortorder to 0, to hide it.')
             let ts = {};
             ts.task = 'PlainSql';                  
             ts.sql = 'update dkhs_lcontent set sortorder = 0 where contentid = ' + id;
@@ -457,7 +484,6 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
              //we get an object back from our select.....must still fix
              this.edit.folder = this.folderObj.name
            }
-           console.log('333333',this.edit.folder,this.folderObj)
            if (this.edit.type == 'file' && !this.edit.folder ) {
                infoSnackbar('Please select a folder')
                return
@@ -484,7 +510,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
             zmlConfig.cl('AfterUpdate:',response);
             this.editDialog = false;
             this.loadData();
-            //zmlLog({task:"dolog",user:"None", pagename:"EditPackage", logdata: this.edit});
+            zmlLog(this.getZml.login.username , "EditContent", JSON.stringify(this.edit).substr(0,250))
         },
 
 
@@ -494,6 +520,8 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
             this.progress = false;
             if (response == '') {
               alert('no data received');
+            } else if (response.error) {
+              this.content = []
             } else {
               this.content = response;
             }
@@ -515,13 +543,23 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
           this.loadData();
         },
         loadData() {
+           if (!this.grade || !this.subjectid) {
+             this.content = []
+             return
+           }
            if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
               let ts = {};
-              ts.sql = 'select * from dkhs_lcontent where sortorder != 0 order by sortorder, name';
+              ts.sql = 'select * from dkhs_lcontent '
+                     + ' where sortorder != 0 '
+                     + ' and subjectid = ' + this.subjectid
+                     + ' and grade = ' + this.grade
+                     + ' order by sortorder, name';
               ts.task = 'PlainSql';
               ts.api = zmlConfig.apiDKHS
               zmlConfig.cl(ts);
               zmlFetch(ts, this.showData);
+           } else {
+             alert('you are not allowed!')
            }
         },
 
@@ -543,6 +581,9 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         }
     },
     watch: {
+      subjectid() {
+        this.loadFolders()
+      }
     }
   }
 </script>

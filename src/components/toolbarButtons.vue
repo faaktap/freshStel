@@ -64,22 +64,17 @@
               width="99%"
               v-for="toolGroup in buttonGroup"  :key="toolGroup"> 
                <!-- {{ buttons[toolGroup] }} -->
-               {{ toolGroup }}
+               <i>{{ toolGroup }}</i>
         <v-layout>
         <v-flex xs12 sm6 class="pa-1"
                v-for="btn in buttons[toolGroup]"  :key="btn.btn">   
        <v-card max-width="400"  class="ma-2" color="grey lighten-5">   
         <v-card-title>
-         <v-icon small>{{ btn.icon }}</v-icon>
-         {{ btnText(btn.btn) }}
-        </v-card-title>
-
-        <v-card-text>
-        {{ btnTip(btn) }} 
-        </v-card-text>
-        <v-card-actions>
-         <v-btn small @click="doTask(btn.func)"> {{ btnText(btn.btn) }} </v-btn>
-        </v-card-actions>
+         <v-btn small @click="doTask(btn.func)" :title="btnTip(btn)"> 
+           <v-icon small>{{ btn.icon }}</v-icon>
+           {{ btnText(btn.btn) }} 
+         </v-btn>
+        </v-card-title>         
        </v-card>
       </v-flex>       
        </v-layout>

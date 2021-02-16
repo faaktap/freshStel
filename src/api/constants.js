@@ -1,5 +1,5 @@
-const PROJECT_ID = "onZml03";
-const MEASUREMENT_ID = "Z-ZML03";
+const PROJECT_ID = "onZml17";
+const MEASUREMENT_ID = "Z-ZML17";
 const DEFAULT_LAYOUT = "AppLayoutDefault";
 
 /*

@@ -5,7 +5,11 @@ import Vue from 'vue';
 //getZml: getters.getState({ object: "gZml" }),
 
 const state = Vue.observable({
-    gZml: {login: {isAuthenticated: 0, Firstname:'', Surname: ''},
+    gZml: {login: {isAuthenticated: 0
+                  , grade:8, type:'student'
+                  , fullname:'', phone:'', email:''
+                  , username:''  , userid:'', persid:''
+                  , lastdate:'', login:''},
            store: {totalItems: 0},
            grade: '',
            subject: '',
