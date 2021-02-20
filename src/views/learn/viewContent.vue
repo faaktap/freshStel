@@ -18,10 +18,13 @@
       </v-col>
       <v-col cols=4 align="right">
       <v-btn @click="loadData" > Refresh </v-btn>
+      
       </v-col>
       </v-row>
 
     </v-card-title>
+      
+
   <v-data-table 
     :headers="headers"
     :items="filterContent"

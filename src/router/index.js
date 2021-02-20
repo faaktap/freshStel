@@ -9,14 +9,18 @@ import EmptyRouterView from '@/components/EmptyRouterView'
 
 import login from '@/components/Login'
 
+import { getters } from "@/api/store";
+
 Vue.use(VueRouter)
 
 const la = ["AppLayoutDefault","AppLayoutBasic","AppLayoutBlue","AppLayoutGray"]
 
 const routes = [
+  /*
   { path: '/a', redirect: '/about' },
   { path: '/h', redirect: '/hover' },
   { path: '/1', redirect: { name: 'Werner' }},
+  */
   {
     component: Home, 
     path: '/',  name: 'Home',
@@ -69,6 +73,13 @@ const routes = [
             , props: {default:true}, }
               ]
   },
+  {
+    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/Grade.vue'),
+    path: '/grade',
+    name: 'Grade',
+    props: true,
+    meta: {layout: la[3], authentication: "learner" }
+  },    
   {
     component: () => import(/* webpackChunkName: "learn" */ '../views/Material.vue'),
     path: '/grade/:gradeno',
@@ -159,7 +170,21 @@ router.beforeEach((to, from,next) => {
       next();
     }
   } else {
+    if (to.name == 'Home' ) {
+       if (getters.getState({ object:"gZml" }).login.isAuthenticated == true) {
+          if (getters.getState({ object:"gZml" }).login.type == 'student') {
+            console.log('we need to take him to student home')
+            next({name: 'About'})
+          } else {
+            console.log('we need to take him to TEACHER home')
+            next({name: 'About'})
+          }
+        } else {
+          next();
+        }
+    } else {
     next();
+    }
   }
 });
 

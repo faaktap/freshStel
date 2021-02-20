@@ -47,6 +47,7 @@ export default {
     },
     itemDisplay() {
         //return "this.itemToShow";
+        this.$emit("dataEntered",1)
         return "name"
     }
   },

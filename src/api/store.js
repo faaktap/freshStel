@@ -4,6 +4,9 @@ import Vue from 'vue';
 //import { getters } from "@/api/store";
 //getZml: getters.getState({ object: "gZml" }),
 
+
+//getZml.folders = folderid sortorder foldername realfoldername subjectid grade icon create_timestamp update_timestamp
+//getZml.subjects = id,name, subjectid,sortorder,shortname,path,description,beskrywing,linksubjectid,picture
 const state = Vue.observable({
     gZml: {login: {isAuthenticated: 0
                   , grade:8, type:'student'

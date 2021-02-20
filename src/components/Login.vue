@@ -105,15 +105,12 @@
         <v-card-title> Registration Complete </v-card-title>
         <v-card-subtitle> Please make note of your password, or change it</v-card-subtitle>
         <v-card-text>
-          <v-row>
-            <v-col cols="6">
+
          <v-text-field 
                v-model="getZml.login.username" 
                :disabled="getZml.login.userid==0"
                label="Username" 
                required />
-            </v-col>
-            <v-col cols="6">
          <v-text-field 
             v-model="getZml.login.password" 
             label="Password" 
@@ -122,26 +119,16 @@
             @click:append="showPassword = !showPassword"
             :type="showPassword ? 'text' : 'password'" 
             required />
-            </v-col>
-            <v-col cols="6">
          <v-text-field v-model="getZml.login.fullname" label="Fullname" required />
-            </v-col>
-            <v-col cols="6">
-         <v-text-field v-model="getZml.login.type" label="Type" disabled />
-            </v-col>
-            <v-col cols="6">
          <v-text-field v-model="getZml.login.phone" label="Phone"  />
-            </v-col>
-            <v-col cols="6">
          <v-text-field v-model="getZml.login.email" label="Email"  />
-            </v-col>            
-            <v-col cols="2">
-         <v-text-field v-model="getZml.login.grade" label="Grade" disabled />
-            </v-col>            
-            <v-col cols="3">
-         <v-text-field v-model="getZml.login.studentid" label="StudentID" disabled />
-            </v-col>
-          </v-row>
+
+         <template v-if="getZml.login.grade || getZml.login.userid==1">
+           <v-card class="ma-4 pa-2">
+           Grade:{{ getZml.login.grade }}, Type:{{getZml.login.type}}
+           </v-card>
+         </template>
+
         </v-card-text>
         <v-card-actions>
           <v-btn color="info" @click="startLearning"> Continue </v-btn>
@@ -277,17 +264,22 @@ export default {
           this.getZml.subjects = response.subjects;
           this.getZml.folders = response.folders;
           console.log('LOADLEARN')
-          if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-            //router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.gradeLastChosen},meta: {layout: "AppLayoutGray" }});  
-            router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno:this.getZml.gradeLastChosen},meta: {layout: "AppLayoutGray" }});  
-          } else {
-            if (this.getZml.grade > 0) {
-              //router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:this.getZml.grade},meta: {layout: "AppLayoutGray" }});  
-              router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno:10 } ,meta: {layout: "AppLayoutGray" }});  
+          if (this.getZml.login.type == 'student') {
+            console.log('student route')
+            if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
+              console.log('student busy route')
+              router.push({ name: 'SelectGrade' 
+                          , params:{heading:"Grade"
+                          , gradeno:this.getZml.gradeLastChosen}
+                          , meta: {layout: "AppLayoutGray" }});  
             } else {
-              //router.push({ name: 'Material' , params:{heading:"Grade", passedGradeNo:8},meta: {layout: "AppLayoutGray" }});
-              router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno:11 } ,meta: {layout: "AppLayoutGray" }});  
+              console.log('student fresh route')
+              //router.push({ name: 'SelectGrade' ,meta: {layout: "AppLayoutGray" }});  
+              router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
             }
+          } else {
+              console.log('teacher route')
+              router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
           }
       },
       loadError(error) {

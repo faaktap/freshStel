@@ -33,6 +33,7 @@
            
         </v-card-text>
         <v-card-actions>
+           <v-btn to="/login" align="right" class="white--text font-weight-black"> Profile </v-btn>
           <v-spacer />
            <v-btn to="/login" align="right" class="white--text font-weight-black"> Logout </v-btn>
         </v-card-actions>

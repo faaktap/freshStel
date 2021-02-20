@@ -65,7 +65,7 @@
               v-for="toolGroup in buttonGroup"  :key="toolGroup"> 
                <!-- {{ buttons[toolGroup] }} -->
                <i>{{ toolGroup }}</i>
-        <v-layout>
+        <v-layout row wrap>
         <v-flex xs12 sm6 class="pa-1"
                v-for="btn in buttons[toolGroup]"  :key="btn.btn">   
        <v-card max-width="400"  class="ma-2" color="grey lighten-5">   

@@ -1,5 +1,5 @@
 <template>
-<div>
+<v-layout>
  <v-card>
    <v-row>
      <v-col cols="12">
@@ -33,17 +33,25 @@
 
      </v-col>
    </v-row>
+   <template v-show="getZml.grade > 0 && getZml.subjectid > 0">
+   <google-drive :grade="getZml.grade" :subjectid="getZml.subjectid" />
+
+   <template v-if="getZml.login.userid == 1">
    <view-content :grade="getZml.grade" :subjectid="getZml.subjectid" />
+   </template>
+
+   </template>
  </v-card>
 
-</div>
+</v-layout>
 </template>
 <script>
 import { zmlConfig } from '@/api/constants.js';
 import viewContent from '@/views/learn/viewContent.vue';
+import GoogleDrive from '@/views/learn/GoogleDrive.vue';
 import { getters } from "@/api/store";
   export default {
-      components: {viewContent},
+      components: {viewContent, GoogleDrive},
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),      
       groups:[8,9,10,11,12]

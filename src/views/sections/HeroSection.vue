@@ -5,7 +5,7 @@
               justify="space-around"
               class="text-center" align="center">
       <v-img
-        :height="$vuetify.breakpoint.mdAndUp ? 100 : 55"
+        :height="$vuetify.breakpoint.mdAndUp ? breakup1 : breakup2"
         :gradient="gradient"
         :src="picture"
         :color="color"
@@ -36,7 +36,7 @@
             <div
               class="justify-center pa-0 grey--text"
               divider=">"
-            >  {{ herotext }}
+            ><!--  {{ herotext }} -->
             </div>
           </v-col>
         </v-row>
@@ -76,7 +76,10 @@
            , button:String
            , icon:String
            , func:String
-           , color: String},
+           , color: String
+           , breakup1: {type: String, default: "100"}
+           , breakup2: {type: String, default: "55"}
+           },
     provide: {
       heading: { align: 'center' },
     },

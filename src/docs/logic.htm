@@ -2,6 +2,16 @@
 <body>
 <pre>
 
+<h1> Display SUBJECTS for LEARNERS </h1>
+Get the count and yougest date on all subject matter for the first screen.
+
+SELECT grade, subjectid, max(DATEDIFF(now(), update_timestamp)) days , count(*)
+ FROM dkhs_lcontent 
+WHERE sortorder != 0
+group by grade, subjectid
+order by grade, subjectid
+
+
 <h1>User Login </h1>
  
 CREATE TABLE dkhs_learner (

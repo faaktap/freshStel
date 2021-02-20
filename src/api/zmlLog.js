@@ -1,7 +1,7 @@
 import { zmlConfig } from '@/api/constants';
 // eslint-disable-next-line
 function zmlLog(user, pagename,logobj, callback,errcallback) {
-    console.log('incoming task fro LOG = ' , task)
+    console.log('incoming task for LOG = ' , pagename)
         let task = {}
         task.data =  {}
         task.data.logdata = logobj || 'nodata'
