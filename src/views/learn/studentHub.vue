@@ -22,6 +22,7 @@
     <v-col xs-12 lg-6 >
      <v-layout row wrap>
       
+     
       <v-flex class="pt-3"> 
        <v-btn-toggle v-model="toggle_button_state">
          <v-btn small  @click = "filter='*'" :loading="loadStatus" title="Show Folders"> 
@@ -39,16 +40,15 @@
          </v-btn-toggle>
       </v-flex>
 
+
          <v-flex>
             <v-text-field small label="Search" v-model="search" :loading="loadSearchStatus" />
          </v-flex>
-         <v-flex  class="pt-3" v-if="getZml.login.type=='teacher' && files.length > 0">
-            <v-btn small @click="uploadTheFilesCheck" :loading="loadStatus"> Upload ( {{files.length }})</v-btn>
-         </v-flex>
-
-         <!--v-flex>
-            <v-btn small  @click="zmltest"> Test   </v-btn>
-         </v-flex-->
+        <v-flex>
+         <v-btn small @click="loadData()" :loading="loadStatus" title="Refresh">
+          <v-icon>R</v-icon>efresh
+         </v-btn>
+        </v-flex>
 
         </v-layout>
     </v-col>
@@ -65,16 +65,31 @@
     </v-col>
     </v-row>
 
+<!-- list our NEW content -->
 
+{{ xxxfilterByContent }}
+    <v-container fluid class="ma-2 mt-3" >
+       <v-layout row wrap>
+        <v-flex 
+         v-for="item in filterByContent" :key="item.itemid"
+         flex-row
+         justify-space-around
+         xs-12
+         >
+          <template v-if="item.type=='folder'">
+            <student-folder-display @btn-click="showItem(item)" :item="item" />
+          </template>
 
+          <template v-else>
+           <student-item-display :btnFace="item.name" :icon="item.icon" :item="item" />
+          </template>
+        </v-flex>
+       </v-layout>
+    </v-container>
 
-<!-- LIST OUR CONTENT -->    
-    <v-container fluid class="ma-2 mt-3" 
-        v-cloak 
-        @drop.prevent="addFile" 
-        @dragover.prevent
-        @dragenter="dragEnter" 
-        @dragend="dragEnd"    >
+<!-- LIST OUR CONTENT -->  
+<!--  
+    <v-container fluid class="ma-2 mt-3" >
        <v-layout row wrap>
         <v-flex 
          v-for="item in filterByContent" :key="item.itemid"
@@ -95,10 +110,10 @@
             class= "ma-2"
             color="deep-purple lighten-5"                  
          >
-
+-->
 <!--ICON HANDLING FOR TITLE DISPLAY-->
+<!--
     <v-card-title>   
-      <!--v-btn v-if="allowEdit==true" icon @click="editItem(item)"-->
       <v-btn small 
              icon
              :title="item.type"
@@ -117,31 +132,14 @@
           <v-icon :color="col(item.type)"> {{item.icon}} </v-icon>
         </template>
       </v-btn> 
+-->
 <!---TITLE DISPLAY -->
-          <div v-if="!editing">    {{ item.name }}    
+<!--
+          <div>    {{ item.name }}    
            <v-icon x-small :title="item.description">     {{ item.folder }} </v-icon> 
           </div>
 
-          <div v-if="editing" class="px-4 pb-3 pt-3 text-subtitle-2">
-              <v-text-field v-model="item.name" label="item name" />
-              <v-text-field dense outlined v-model="item.sortorder" label="sortorder" />
-          </div>             
-          <div v-if="editing && ['link','text','folder'].includes(item.type)">
-               <v-textarea dense outlined v-model="item.description" label="description/name" />
-          </div>           
             <v-spacer/>
-            <v-btn v-if="changed==true"
-                    @click="saveItem(item)"
-                    title="Important to save your changes here!"
-                    color="primary"
-                    small>  save </v-btn>
-             <v-btn v-if="allowEdit==true"
-                    @click="editItem()"
-                    color="primary"
-                    icon
-                    :loading="loadingEdit"
-                    small> 
-               <v-icon x-small>mdi-pen</v-icon></v-btn>
               <v-badge class="text-center" :value="bhover" 
                       :color="item.days | icn"
                       :content="item.days + 'day(s) ago'"
@@ -157,7 +155,6 @@
                       <v-icon icon color="deep-purple"> mdi-file-download-outline </v-icon> 
              </v-btn>
 
-         <!--/v-card-actions-->
          </v-card-title>
          </v-card>
          </v-hover>
@@ -166,26 +163,8 @@
         </v-flex>
        </v-layout>
     </v-container>
+    -->
 </v-sheet>
-
-<v-dialog v-model="showViewerDialog" v-on:keyup.esc="byebye" max-width="350" max-height="350"
-          width="auto" :fullscreen="$vuetify.breakpoint.xsOnly">
-      <v-card>
-        <v-card-actions> 
-          <v-btn small @click="showViewerDialog = !showViewerDialog"> close </v-btn>
-        </v-card-actions>
-       <v-img :src="currentImage" responsive />        
-     </v-card>
-</v-dialog>
-
-
-<v-dialog v-model="showTextDialog">
-    <v-card>
-        <v-card-title> {{ theItem.name }} </v-card-title>
-        <v-card-text> {{ theItem.description }} </v-card-text>
-        <v-card-actions> <v-btn small @click="showTextDialog = !showTextDialog"> close </v-btn></v-card-actions>
-    </v-card>
-</v-dialog>
 
 
 <v-dialog v-model="showNoInfoDialog" eager>
@@ -214,13 +193,16 @@ import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { zmlLog } from '@/api/zmlLog.js';
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
+import StudentItemDisplay from '@/components/learn/StudentItemDisplay'
+import StudentFolderDisplay from '@/components/learn/StudentFolderDisplay'
 export default {
-    name: "Platform",
-    components: {},
+    name: "StudentHub",
+    components: {StudentItemDisplay, StudentFolderDisplay},
     props: {  },
     data: () => ({
-        toggle_button_state:null,
+        flexToolbar: false,
         getZml: getters.getState({ object: "gZml" }),
+        toggle_button_state:null,
         hover:null,
         bhover:null,
         showTextDialog:false,
@@ -233,152 +215,15 @@ export default {
                        ,{itemid:5, heading:'AS dtnwer'}
                        ],
         filter:'*',
-        feedme:null,
         embedDialog:false,
-        allowEdit: false,
-        showEdit: false,
         search:'',
         loadStatus: false,
         loadSearchStatus: false,
-        loadingEdit: false,
-        showViewerDialog:false,
         currentImage:'',        
-        files:[],
-        dummyObj:{},
-        editing:false,
-        changed:false,
     }),
     activated: function () {
     },
     methods:{
-      dragEnd(ev) {
-        //ev.target.style.backgroundColor = 'primary'
-        console.log('dend',ev)
-      },
-      dragEnter(ev) {
-        //ev.target.style.backgroundColor = 'green'
-        console.log('dent',ev)
-      },
-      addFile(e) {
-        let lfiles = e.dataTransfer.files;
-        lfiles.forEach(file => {
-          if (file.size > 11100100)  {
-            errorSnackbar(file.name + ' is too big - put on memory stick and leave at reception for Werner, please try again')
-            return
-          }
-        })
-        //We are hapy with these files, mark them all as not done.
-        lfiles.forEach(file => {
-            file.done = false       
-            this.files.push(file);
-        })
-        infoSnackbar('We have ' + this.files.length + ' files, ready for upload. Press the upload button')
-      },
-      uploadTheFilesCheck() {
-        let edit = this.canWeDrop()
-        if (edit.folder.length < 2) {
-           errorSnackbar('You need to select a folder before we can upload')
-           return
-        }
-        if (edit.grade < 8) {
-           infoSnackbar('You need to select a grade before we can upload')
-           return
-        }
-        if (edit.subject < 1) {
-           infoSnackbar('You need to select a subject before we can upload')
-           return
-        }
-        if (edit.type != 'file') {
-           infoSnackbar('filetype is wrong')
-           return
-        }
-        this.dummyObj = edit;
-        this.$root.$confirm("Loading files to " + edit.folder, "If you press YES, we will start loading", { color: 'red' })
-              .then((confirm) => {
-                if (confirm) { 
-                  let fdet = edit;
-                  this.uploadFiles(this.upload1, fdet)
-                } else {
-                  this.files = []
-                  return
-                }
-            })
-      },
-      uploadFiles(nextProc,fdet) {
-        this.files.forEach(file => {
-         this.loadStatus = true;
-         this.dummyObj.name = file.name
-         let fr = new FileReader()
-         fr.onload = function(response) {
-           fdet.name = file.name
-           nextProc(response,fdet)
-         };
-         fr.onerror = function(response) {
-           console.log('res - Some Error!' ,response);
-         };
-         fr.readAsDataURL(file);
-
-        });
-      },
-      upload1(fileData,fdet) {
-         fileData.task = 'upload'; 
-          let GR = this.dummyObj.grade.toString()
-          GR = 'GR' + GR.padStart(2, '0')
-          const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == this.dummyObj.subjectid)
-          const subjectpath = this.getZml.subjects[idx].path
-         fileData.extrapath =  "/Subjects/" + GR + "/" + subjectpath + "/" + this.dummyObj.folder
-         fileData.name = fdet.name
-         fileData.realname = fdet.name
-         //////fileData.drag = this.files[0]
-         fileData.prebase64 = fileData.target.result.split(',')[0];
-         fileData.base64 = fileData.target.result.split(',')[1];
-         fileData.size = fileData.total
-         fileData.api = zmlConfig.apiUpload; 
-         console.log('start upload with ', fileData);
-         zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
-      },    
-      doneWithUpload(response) {
-         //infoSnackbar('Done with upload ' + JSON.stringify(response) )
-         this.files.forEach(file => {
-            if (response.filename == file.name)  {
-              file.done = true
-            }
-         })
-         this.loadStatus = false;
-         this.dummyObj.description = 'load:' + response.fileName;
-         this.dummyObj.name = response.filename;
-         let ts = {};
-           ts.data = this.dummyObj;
-           ts.task = 'insertLContent';
-           ts.api = zmlConfig.apiDKHS
-           zmlFetch(ts, this.afterUpdate);   
-      },
-      afterUpdate() {
-        //see if we have any left...and clean array if done
-        let cnt = 0;
-        this.files.forEach(file => {
-           if (file.done == true)  cnt += 1
-        })
-        if (cnt == this.files.length) this.files = [];
-
-      },
-      errorWithUpload(response) {
-         errorSnackbar('Error with upload ' + JSON.stringify(response) )
-         this.loadStatus = false;
-      },
-      canWeDrop() {
-          let edit = {name: ''
-                   , description:''
-                   , type:'file'
-                   , folder:this.filter
-                   , accesstype: 'student'
-                   , grade: this.getZml.grade
-                   , subjectid:this.getZml.subjectid
-                   , persid: this.getZml.login.userid
-                   , icon: 'mdi-file'
-                   , sortorder: 90}
-           return (edit)            
-        }, 
         zmltest() {
           if (this.currentImage == '') {
             this.currentImage="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=20003"
@@ -391,35 +236,6 @@ export default {
         },
         onLoad(e) {
             console.log('friendy iframe', e)
-        },
-        saveItem(item) {
-            this.loadingEdit = true;
-            item.persid = this.getZml.login.userid
-            item.days = 0
-            zmlFetch({task:'savelcontent', api:zmlConfig.apiDKHS, data:item} ,this.doneWithIt,this.problemSaving)
-            //after successfuill save...
-            this.changed = false
-            this.editing = false
-            
-        },
-        doneWithIt() {
-          this.loadingEdit = false;
-        },
-        problemSaving() {
-          this.loadingEdit = false;
-        },
-        editItem() {
-            if (this.editing) {
-              //Stop Editing (maybe not saved yet)
-              this.editing = false
-              this.changed = false
-              return
-            } else {
-              //Start Editing 
-              this.editing = true
-              this.changed = true
-            }
-
         },
         col(type) {
             switch (type) {
@@ -487,14 +303,14 @@ export default {
             } else {
                 this.contents = response;
                 this.contents.forEach(item =>{
-                     item.img = ''
-                     if (item.type == 'file' && item.description.substr(0,4) == 'load') {
-                         let ext = item.description.substr(5).split('.').pop().toLowerCase()
-                         if ( ['png','jpg'].includes(ext)) {
-                           item.img = 'https://www.kuiliesonline.co.za/' + item.description.substr(5)
-                         }
-                     }
-
+                    item.img = ''
+                    item.expand = false
+                    if (item.type == 'file' && item.description.substr(0,4) == 'load') {
+                       // let ext = item.description.substr(5).split('.').pop().toLowerCase()
+                       // if ( ['gif','jpeg','png','jpg'].includes(ext)) {
+                          item.img = 'https://www.kuiliesonline.co.za/' + item.description.substr(5)
+                       // }
+                    }                     
                 })
                  
             }

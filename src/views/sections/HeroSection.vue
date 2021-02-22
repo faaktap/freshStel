@@ -1,5 +1,5 @@
 <template>
-   <section id="hero-alt">
+   <section id="hero-alt" v-if="!$vuetify.breakpoint.smAndDown">
      <v-sheet max-width="100%" 
               :color="color"
               justify="space-around"
@@ -43,6 +43,7 @@
       </v-img>
       <v-row
           align="center"
+          v-if="herotext"
           class="ma-8 fill-height text-justify white--text">
           <v-col cols=12> 
             <h2> {{ herotext }}</h2>
@@ -102,7 +103,7 @@
        return this.title ? this.title   : "heroTitle for section" 
       },
       herotext () {
-       return this.text ? this.text : "heroText for this section"
+       return this.text ? this.text : ""
       },
       herobutton () {
        return this.button

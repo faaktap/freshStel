@@ -5,7 +5,15 @@
      <v-col cols="12">
   <div class="text-center">
      <v-toolbar dark color="primary" dense flat>
-        <v-toolbar-title class="white--text"> Content for Grade {{ getZml.grade }} - {{ getZml.subject }} </v-toolbar-title>
+        <v-toolbar-title class="white--text">
+           Content for Grade {{ getZml.grade }} - {{ getZml.subject }} .
+           <router-link :to="{name: 'StudentHub', 
+                             params:{currentSubjectID: getZml.subjectid 
+                                    ,gradeno: this.getZml.grade },
+                              meta: {layout: 'AppLayoutGray' }}" title="quick test"
+            > test
+           </router-link>.
+        </v-toolbar-title>
       </v-toolbar>    
    </div>
      </v-col>

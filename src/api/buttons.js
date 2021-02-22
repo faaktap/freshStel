@@ -20,9 +20,9 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, '/login')            
         case "/nested/dialog": 
             return zmlReRoute(tr, task)
-        case "/material":    //student start
+        case "/selectgrade":    //student start
             return zmlReRoute(tr, task + "/Grade")
-        case "/grade/12":    //new student start
+        case "/grade":    //new student start
             return zmlReRoute(tr, task)
 
         default:

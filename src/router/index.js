@@ -81,7 +81,7 @@ const routes = [
     meta: {layout: la[3], authentication: "learner" }
   },    
   {
-    component: () => import(/* webpackChunkName: "learn" */ '../views/Material.vue'),
+    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/SelectGrade.vue'),
     path: '/grade/:gradeno',
     name: 'SelectGrade',
     props: true,
@@ -89,13 +89,25 @@ const routes = [
     meta: {layout: la[3], authentication: "learner" }
   },  
   {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/platform.vue'),
-    path: '/platform',
-    name: 'Platform',
+    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/StudentHub.vue'),
+    path: '/studenthub',
+    name: 'StudentHub',
     props: true,
     params: {currentSubjectID:'2', grade:'12'},
     meta: {layout: la[3], authentication: "learner" }
   },
+  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/views/student/StudentInfo.vue'),
+    path: '/student',
+    name: 'StudentInfo',
+    meta: {layout: la[3], authentication: "admin" }
+  },  
+  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/views/student/PersonelInfo.vue'),
+    path: '/personel',
+    name: 'PersonelInfo',
+    meta: {layout: la[3], authentication: "admin" }
+  },    
   {
     path: '/nested',
     component: EmptyRouterView,

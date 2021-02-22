@@ -1,0 +1,157 @@
+<html>
+
+<pre>
+
+update dkhs_lperstemp t, dkhs_personel p
+set p.menemonic = t.user_name
+where p.public_preferredname like concat('%',t.surname,'%')  
+
+
+select  p.menemonic, t.user_name , p.surname, t.surname
+from  dkhs_lperstemp t, dkhs_personel p
+where p.public_preferredname like concat('%',t.surname,'%')  
+
+SELECT username, substr(public_email,1,instr(public_email,'@')) FROM `dkhs_personel`
+update dkhs_personel 
+set username = substr(public_email,1,instr(public_email,'@')-1) 
+where username is null
+
+SELECT userid, user_fullname, user_name FROM dkhs_learner WHERE user_type = 'teacher'
+
+select staffid, concat(name, ' ', surname), room from dkhs_staff
+select staffid, concat(name, ' ', surname), room from dkhs_staff1
+
+select staffid, RekeningHouerNaam, id from b_rekeninghouer
+
+insert into dkhs_personel
+select staffid
+      ,'username'
+      ,'menemonic'
+      ,staffid
+      ,staffid
+      ,gradeid
+      ,classid
+      ,subjectid
+      ,gender
+      ,surname
+      ,name
+      ,'title'
+      ,contactnumber
+      ,lower(workarea)
+      ,room
+      ,photo
+      ,workemail
+      ,email
+      ,wcgschoolsid
+      ,description
+      ,preferredname
+      ,'vakke'
+      ,'sport, extra kurrikuler, ens..'
+      ,'jou paadjie tot hier'
+      ,lower(workemail)
+      ,address
+      ,idnumber
+      ,changedate
+from dkhs_staff;      
+      
+
+drop table dkhs_personel;
+CREATE TABLE dkhs_personel (
+ persid int(11) NOT NULL AUTO_INCREMENT,
+ username varchar(20),
+ menemonic varchar(20), 
+ staffid int(11) ,
+ heidiid int(11) ,
+ registergrade int(11) ,
+ registerclass int(11) ,
+ subjectid int(11) ,
+ gender varchar(6) NOT NULL, 
+ surname varchar(45) NOT NULL,
+ name varchar(45) ,
+ title varchar(10),
+ contactnumber varchar(25) ,
+ workarea varchar(25) ,
+ room varchar(25) ,
+ photo varchar(80) ,
+ workemail varchar(45) NOT NULL,
+ email varchar(60),
+ wcgschoolsid varchar(20) ,
+ description varchar(200) ,
+ public_preferredname varchar(80) NOT NULL, 
+ public_vakke varchar(200),
+ public_ander varchar(200),
+ public_history varchar(256),
+ public_email varchar(60),
+ address varchar(256),
+ IDNumber varchar(13) NOT NULL,
+ changedate datetime  ON UPDATE current_timestamp(),
+ PRIMARY KEY (persid)
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4
+
+
+
+CREATE TABLE dkhs_learner (
+ userid int(11) NOT NULL AUTO_INCREMENT,
+ user_name varchar(16) NOT NULL,
+ user_password varchar(16) ,
+ user_email varchar(180) ,
+ user_cell varchar(16) ,
+ user_token varchar(255) ,
+ user_grade varchar(8) ,
+ user_fullname varchar(60) ,
+ user_type varchar(30) ,
+ studentid int(11) ,
+ lastlogindate timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+ firstlogindate timestamp NOT NULL DEFAULT current_timestamp(),
+ logins int(11) ,
+ PRIMARY KEY (userid)
+) ENGINE=InnoDB AUTO_INCREMENT=1022 DEFAULT CHARSET=latin1
+
+CREATE TABLE dkhs_lperstemp (
+ surname varchar(19) ,
+ user_name varchar(5) ,
+ initials varchar(4) ,
+ title varchar(3) ,
+ NO int(2) ,
+ persid int(2) ,
+ room varchar(6) ,
+ gradenote varchar(18) ,
+ workarea varchar(7) 
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
+select * from dkhs_lperstemp t, dkhs_staff s, dkhs_learner l
+where s.surname like '%albert%' 
+   or t.surname = '%albert%'
+   or l.user_fullname = '%albert%';
+
+
+select * from (
+select 'learner' tab,userid,  studentid, user_name,  user_fullname name    ,0 wgiNo, user_type from dkhs_learner
+union  all
+select 'staff' tab  ,staffid, room     , name,       concat(name,' ',surname) ,wcgschoolsid,workarea from dkhs_staff
+union all 
+select 'temp' tab   ,persid , room     , user_name,  concat(title,' ',surname), NO, workarea from dkhs_lperstemp) alles
+where name like '%alberty%' or name like '%wiegan%'
+order by 4
+
+
+NO = 41
+persid = 8
+room 35 
+
+select l.persid
+    , l.surname
+    , s.surname
+    , s.preferredname
+    , s.idnumber
+    , s.staffid
+ from dkhs_lperstemp l, dkhs_staff s
+where s.surname like '%albert%' and l.surname = '%albert%'
+
+
+
+
+SELECT l.user_name, l.user_fullname, p.surname, p.username  
+FROM dkhs_learner l, dkhs_personel p
+WHERE INSTR( upper(p.surname),upper(l.user_fullname))
+WHERE INSTR( upper(l.user_fullname) , upper(p.surname))

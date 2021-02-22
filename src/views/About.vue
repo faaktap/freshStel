@@ -14,7 +14,8 @@
 
   </v-layout>
 
-  <v-layout v-show="getZml.login.type=='teacher'">
+  <v-container v-show="getZml.login.type=='teacher'">
+  <v-layout>
   <hero-section name="forDB" 
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
                title="Teacher's Home" 
@@ -23,15 +24,17 @@
                color="indigo darken-2"
                text="Here you can..."/>
   <hr />
-  <hero-section />
-
   </v-layout>
-
+<v-row><v-col xs12>
 <v-card color="brown lighten-2" class="ma-3 pa-2" @click.self="showMovie = !showMovie">
   Stuff inside the card <v-btn @click="showAudio = !showAudio"> Audio </v-btn>
 </v-card>
 <br /><br /><br /><br />
 
+  <student-lookup @dataEntered="studentFound" @idsEntered="IDs" />
+    SL = {{ studentList }} <br>     SI = {{ studentIDs }}
+
+</v-col></v-row>
 <!--basic-player /-->
 <v-btn @click="showMovie = !showMovie"> Toggle Video </v-btn>
 <v-btn @click="showAudio = !showAudio"> Toggle Audio </v-btn>
@@ -85,7 +88,7 @@
   
 
  </v-row>
- 
+ </v-container>
 
  
 </div>
@@ -99,15 +102,25 @@ import ContactForm from "@/components/ContactForm";
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection.vue"
 import {halloWorld,test} from "./About.js"
-//import basicPlayer from '@/video/basicPlayer.vue'
 import zmlPreview from '@/components/zmlPreview.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
 import zmlContentButton from '@/components/zmlContentButton.vue'
+
+import StudentLookup from '@/components/student/StudentLookup.vue'
 export default {
 name: "about",
 props:{},
-components: {snackBarTest,ContactForm, HeroSection,zmlPreview, zmlCloseButton,zmlContentButton},
+components: {snackBarTest
+           , ContactForm
+           , HeroSection
+           , zmlPreview
+           , zmlCloseButton
+           , zmlContentButton
+           , StudentLookup
+           },
 data: () => ({
+  studentList:null,
+  studentIDs:null,
   getZml: getters.getState({ object:"gZml" }),
   atester : false,
   tryme : zmlConfig.extra,
@@ -128,6 +141,16 @@ data: () => ({
                    ],  
 }),
 methods: {
+  IDs(value) {
+    if (value.data == 'undefined') return;
+    console.log('ID = ' , value);
+    this.studentIDs = value;
+  },
+  studentFound(value) {
+    if (value.data == 'undefined') return;
+    console.log(value.data);
+    this.studentList = value;
+  },
   ss() {
      infoSnackbar('Hello from snackbar in About.vue!','cyan');
      alert( halloWorld)

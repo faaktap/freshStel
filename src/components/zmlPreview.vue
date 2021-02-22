@@ -1,24 +1,19 @@
 <template>
-<div>
- <v-card max-width="400" color="grey lighten-3" class="text-center">
-  
+ <v-card xmax-width="400" color="grey lighten-3" class="text-center">
   <v-card-title>
-       <v-btn icon @click="launchOutside" title="Open in Browser/Download"> <v-icon> {{ icon }} </v-icon></v-btn>
-      <span>
-      {{ title }} - Preview 
+       <v-btn  @click="launchOutside" title="Open in Browser/Download">
+        <v-icon> mdi-window-open </v-icon> Open
+      </v-btn>
+      <span class="mx-2">
+      Preview {{ type }}
       </span>
       <slot />
   </v-card-title>
 
-  <v-card-actions color="deep-purple lighten-3">
-      <v-spacer />
-      
-  </v-card-actions>
-
   <v-card-text>
   <template v-if="type=='movie'">
     <video controls
-           width="350" 
+           width="unset" 
            ref="video"
            :src="src"
       >
@@ -38,24 +33,23 @@
 
   <template v-if="type=='picture'">
     <img ref="picture" 
-         width="350"
+         width="unset"
         :src="src"
     />
   </template>
 
   <template v-if="!['movie','picture','audio'].includes(type)">
-        <iframe class="ma-0 pa-0" id="iframe"
+        <iframe class="ma-0 pa-0" id="iframe" width="100%"
                 ref="iframe" 
                 :src="src" />
   </template>
 
   </v-card-text>
  </v-card>
-</div>
 </template>
 
 <script>
-import {getIcon, getFilename} from '@/api/fileUtils.js'
+//import {getIcon, getFilename} from '@/api/fileUtils.js'
 //import { zmlFetch } from '@/api/zmlFetch';
 export default {
  name: "about",
@@ -65,9 +59,7 @@ export default {
  components: {},
  data: () => ({
     icon: null,
-    title: 'title',
-    menuItems:[ {title:'New File', icon:'mdi-file'},
-                   {title:'Empty Folder',icon:'mdi-delete'}],
+    title: '',
  }),
  methods: {
      launchOutside() {
@@ -88,12 +80,14 @@ export default {
      }
  },
  mounted() {
-        console.log('mounted')
+        console.log('PRE Mounted')
+    /*    
         this.icon = getIcon(this.src)
         this.title = getFilename(this.src)
         if (this.title.length > 40) {
             this.title = this.title.substr(50)
         }
+      */  
  },
  watch: {
      src() {

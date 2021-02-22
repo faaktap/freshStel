@@ -11,17 +11,16 @@
          <template v-if="hover"> HS </template> <!--{{ mainIcon[curIcon + hover] }}-->
          <template v-else> DK </template>
       </v-icon>
-      <div v-if="!$vuetify.breakpoint.smAndDown">
+      <div v-show="!$vuetify.breakpoint.smAndDown">
         {{ maintitle }} 
       </div>
     </v-btn>
     </v-hover>
 
-
 <v-dialog v-model="titleDialog" max-width="60%"
          style="transform: scale(0.875);transform-origin: left;"
          overlay-color="purple"
-         xxfullscreen="$vuetify.breakpoint.mobile">
+         :fullscreen="$vuetify.breakpoint.mobile">
   <v-card class="white text--black pa-2"> 
    <v-card-title>
       <legend> {{titleButtonHeading}}</legend>
@@ -30,9 +29,7 @@
    <v-card-text> 
    <v-row>
      <v-col cols="12">
-    <!--v-card color="deep-purple lighten-3" width="100%" class="pa-2"--> 
       <toolbar-buttons menuDisplay="shortcutlist" :buttonGroup="toolbars" />
-    <!--/v-card-->
      </v-col>
    </v-row>
    </v-card-text>

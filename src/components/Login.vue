@@ -98,11 +98,14 @@
       </v-col>
     </v-row>
     <v-container>
-    <v-dialog v-model="showProfile" :scrollable="false" persistent width="50%" dark>
+    <v-dialog v-model="showProfile" :scrollable="false" 
+              persistent width="50%" dark
+              fullscreen="$vuetify.breakpoint.smAndDown"
+              >
       <v-row>
         <v-col cols="12">
       <v-card>
-        <v-card-title> Registration Complete </v-card-title>
+        <v-card-title> Registration Complete  {{ getZml.login.type }}</v-card-title>
         <v-card-subtitle> Please make note of your password, or change it</v-card-subtitle>
         <v-card-text>
 
@@ -264,22 +267,41 @@ export default {
           this.getZml.subjects = response.subjects;
           this.getZml.folders = response.folders;
           console.log('LOADLEARN')
-          if (this.getZml.login.type == 'student') {
-            console.log('student route')
-            if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-              console.log('student busy route')
-              router.push({ name: 'SelectGrade' 
-                          , params:{heading:"Grade"
-                          , gradeno:this.getZml.gradeLastChosen}
-                          , meta: {layout: "AppLayoutGray" }});  
-            } else {
-              console.log('student fresh route')
-              //router.push({ name: 'SelectGrade' ,meta: {layout: "AppLayoutGray" }});  
-              router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+          switch (this.getZml.login.type) {
+            case 'student' :
+            {
+               console.log('student route')
+               if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
+                 console.log('student busy route')
+                 router.push({ name: 'SelectGrade' 
+                             , params:{heading:"Grade"
+                             , gradeno:this.getZml.gradeLastChosen}
+                             , meta: {layout: "AppLayoutGray" }});  
+               } else {
+                 console.log('student fresh route')
+                 //router.push({ name: 'SelectGrade' ,meta: {layout: "AppLayoutGray" }});  
+                 router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+               }
+               break;
             }
-          } else {
+            case 'teacher':
+            {
               console.log('teacher route')
               router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
+              break;
+            }
+            case 'admin' :
+            {
+              console.log('admin route')
+              router.push({ name: 'StudentInfo' , meta: {layout: "AppLayoutDefault" }});  
+              break;
+            }
+            default:
+            {
+              console.log('default route')
+              router.push({ name: 'StudentInfo' , meta: {layout: "AppLayoutBasic" }});  
+              break;
+            }
           }
       },
       loadError(error) {

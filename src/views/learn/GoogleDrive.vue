@@ -8,9 +8,8 @@
 >
 
 
-
 <!-- MAIN MENU -->    
-  <v-card class="ma-1 px-4">
+  <v-card class="ma-1 px-2">
    <v-row>
     <v-col cols=4>
       <base-drop-down  
@@ -92,9 +91,9 @@
 
 <!-- SHOW FOLDER NAME ON CHIP -->
 <v-container fluid v-show="!!folderObj.foldername">
-  <v-layout class="ma-3" row wrap>
+  <v-layout class="ma-1" row wrap>
     <v-flex>
-    <v-card class="ma-1 pa-2" 
+    <v-card class="ma- pa-1" 
             color="light-blue darken-3" 
            :loading="loadStatus" >
     <v-chip color="light-blue" 
@@ -116,11 +115,11 @@
   </v-layout>
 
 <!--folder = {{ folderObj }} <br> cursel: {{ mainMenuItemselected }} -->
-<v-card color="blue lighten-5" class="ma-4 pa-2" v-show="filterContent.length > 0">
+<v-card color="blue lighten-5" class="ma-2 pa-1" v-show="filterContent.length > 0">
   <v-layout xfluid 
         v-show="folderObj.foldername" 
         row 
-        class="ma-2" 
+        class="ma-1" 
         align-content-start 
         align-baseline 
         justify-space-between
@@ -129,16 +128,21 @@
      
     <v-flex v-for="c in filterContent" :key="c.contentid" class="ma-1" align-self-start>
 
-      <v-card color="grey lighten-3" min-width="150">
+      <v-card color="grey lighten-3" min-width="150" class="pa-2">
         
         <v-icon :color="chipColor(c.type)" 
+                v-if="c.type != 'folder'"
+                class ="mx-2"
+                title="Click to Preview"
                @click="poepies(c);" >
                 {{ c.icon }} 
         </v-icon>
-      <v-btn class="no-uppercase " right
+      <v-btn class="no-uppercase" 
+             right
              @click="contentProperties(c)"
              :title="'('+c.sortorder + ') ' + c.update_timestamp"
              min-width="150"
+             text
              draggable="btndrag"
              >
          {{ c.name }} 
@@ -210,6 +214,11 @@
              @click="doMenuStuff('New File')"> 
              Add more Files to the folder 
       </v-btn>
+      <v-btn small class="ma-2 no-uppercase" 
+             @click="doMenuStuff('Add Folder to Folder')"> 
+             Experimental - Add a folder to the folder 
+      </v-btn>
+
     </v-card-text>
        </v-card>
      </v-flex>
@@ -220,7 +229,7 @@
  <v-dialog v-model="showFileProperties" max-width="500" >
   <v-card>
     <v-card-title>
-       <v-icon> {{ curContent.icon }} </v-icon> {{ curContent.type }} Properties
+       <v-icon> {{ curContent.icon }} </v-icon>  Properties ( {{ curContent.type }} )
     </v-card-title>
     <v-card-text>
         <template v-if="curContent && curContent.type == 'file'">      
@@ -238,7 +247,6 @@
           <v-textarea dense v-model="curContent.description" label="Text" />
         </template>
         <!--v-text-field dense v-model="curContent.type" label="Type" disabled /-->
-        takeout:{{curContent.type }}<br>
         <div class="caption">folder:{{curContent.folder}}</div>
         <div class="caption">access:{{curContent.accesstype}}</div>
         <div class="caption">created:{{curContent.create_timestamp}}
@@ -246,16 +254,22 @@
         </div>
     </v-card-text>
       <v-card-actions>
+        <v-btn @click="deleteContent" 
+               color="red lighten-4" 
+               small>
+          <v-icon small > mdi-delete </v-icon>
+          Delete
+        </v-btn>      
         <v-btn @click="poepies" 
-               
+               color="blue-grey lighten-5"
+               icon
                small>
           <v-icon small > mdi-view-compact </v-icon>
-          View
         </v-btn>      
 
       <v-spacer />
         <v-btn @click="showFileProperties = false" 
-               color="red" 
+               color="red darken-2" 
                small>
           <v-icon small > mdi-cancel </v-icon>
           Cancel
@@ -266,35 +280,65 @@
                small
                :disabled="loadStatus" >
           <v-icon small > mdi-content-save </v-icon> 
-          Save
+          Rename
         </v-btn>
 
       </v-card-actions>
   </v-card>
  </v-dialog>
-<v-dialog v-model="showMovie" max-width="400"  :fullscreen="$vuetify.breakpoint.mobile">
+<v-dialog v-model="showMovie" xmax-width="400"  :fullscreen="$vuetify.breakpoint.mobile">
   <zml-preview :src="src" type="movie">
     <zml-close-button @btn-click="showMovie = !showMovie" />
   </zml-preview>
 </v-dialog>
-<v-dialog v-model="showAudio" max-width="400">
+<v-dialog v-model="showAudio" xmax-width="400">
   <zml-preview :src="src" type="audio">
     <zml-close-button @btn-click="showAudio = !showAudio" />
   </zml-preview>
 </v-dialog>
 
-<v-dialog v-model="showPicture" max-width="400" :fullscreen="$vuetify.breakpoint.mobile">
+<v-dialog v-model="showPicture" xmax-width="400" :fullscreen="$vuetify.breakpoint.mobile">
   <zml-preview   :src="src" type="picture"  >
     <zml-close-button @btn-click="showPicture = !showPicture" />
   </zml-preview>  
 </v-dialog>
 
-<v-dialog v-model="showOther" max-width="400" :fullscreen="$vuetify.breakpoint.mobile">
-<zml-preview   :src="src" type="xxx"  >
+<v-dialog v-model="showOther" xmax-width="400" :fullscreen="$vuetify.breakpoint.mobile">
+<zml-preview   :src="src" type="Other"  >
   <zml-close-button @btn-click="showOther = !showOther" />
 </zml-preview>
 </v-dialog>
 
+<v-dialog v-model="showFolderInFolderProperties" xmax-width="500" >
+  {{ folderFilter }}
+  <v-card color="blue lighten-5" class="ma-2">
+    <v-card-title>
+      Folder Properties
+    </v-card-title>
+    <v-card-text>
+        <v-text-field v-model="curContent.foldername" label="Name"></v-text-field>
+        <v-textarea v-model="curContent.description" label="Description"></v-textarea>
+    </v-card-text>
+      <v-card-actions>
+      <v-spacer />
+              <v-spacer />
+        <v-btn @click="showFolderInFolderProperties = false" 
+               color="red" 
+               small>
+          <v-icon small > mdi-cancel </v-icon>
+          Cancel
+        </v-btn>      
+
+        <v-btn @click="createFolderName" 
+               color="primary"
+               small
+               :disabled="loadStatus" >
+          <v-icon small > mdi-content-save </v-icon> 
+          Create
+        </v-btn>
+      </v-card-actions>
+  </v-card>
+</v-dialog>
 </div>
 </template>
 <script>
@@ -317,6 +361,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
     data: () => ({
         showFolderProperties:false,
         showFileProperties:false,
+        showFolderInFolderProperties:false,
         mainMenuItems:[ 
                    {title:'Select Folder',icon:'mdi-folder'},
                    {title:'New Folder', icon:'mdi-folder-plus-outline'},
@@ -343,6 +388,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
         newFolder:'',
         oldFolderName:'',        
         folderObj:{},
+        newFolderObj:{},
         edit: {},
         dummyObj:{},
         editMode: null,
@@ -443,10 +489,39 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
               this.showFolderProperties = false
               this.showFileProperties = true
            }
+           if (this.mainMenuItemselected == 'Add Folder to Folder') {
+              this.mainMenuItemselected = null                  
+              alert('experimental')
+              this.showFolderInFolderProperties = true
+              this.fixUpForAddFolder()
+           }
+
+        },
+        fixUpForAddFolder() {
+          this.curContent = {name: ''
+                   , description:''
+                   , type:'folder'
+                   , folder:'new folder name'
+                   , realfolder:''
+                   , accesstype: 'student'
+                   , grade: this.getZml.grade.toString()
+                   , subjectid:this.getZml.subjectid
+                   , subject:this.getZml.subject
+                   , persid: this.getZml.login.userid
+                   , icon: 'mdi-folder'
+                   , sortorder: 90}
+          this.curContent.mode = 'add'
 
         },
         folderProperties() {
            this.showFolderProperties = true;
+        },
+        createFolderName() {
+          alert('now we fix realfoldername and name, and call addlcontent?')
+          this.curContent.realfolder = this.curContent.folder
+          this.curContent.name = this.curContent.folder
+          this.showFolderInFolderProperties = false
+          this.updateContent()
         },
         updateFolderName() {
            console.log('Start rename folder ' + this.folderObj.folderid + ' to ' + this.folderObj.foldername)
@@ -490,6 +565,14 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
             if (ctype == 'text') return "grey lighten-5"
             return "deep-orange accent-4"
         },
+        deleteContent() {
+            alert('delete' + this.curContent.contentid)
+            this.curContent.mode == 'update'
+            this.showFileProperties = false
+            this.curContent.sortorder = 0
+            this.updateContent()
+
+        },
         updateContent() {
           if (this.curContent.mode == 'add') {
              console.log('HERE We ADDD STUFF') 
@@ -511,7 +594,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
           this.showFileProperties = false
           this.curContent = {}
           zmlFetch(ts, this.afterSaveData);   
-          
+ 
         },
 //adding a new folder
       selectFolder(folder) {
@@ -603,8 +686,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
       //Handle single file for upload...
       addInputFile(e) {
         if (!e.size) return   
-        console.log(e)       
-        if (e.size > 12100100 || e.size == 0)  {
+        if (e.size > zmlConfig.maxUploadSize || e.size == 0)  {
            errorSnackbar('Your file is too big - put on memory stick and leave at reception for Werner, please try again')                
            return
         }
@@ -724,7 +806,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
       },    
       doneWithUpload(response) {
-         console.log('Done with upload ' + JSON.stringify(response) )
+         console.log('Done with upload ' , response.filename  )
          this.files.forEach(file => {
             if (response.filename == file.name)  {
               file.done = true
@@ -944,5 +1026,8 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
 <style scoped>
 .no-uppercase {
      text-transform: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;     
 }
 </style>

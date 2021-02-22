@@ -53,7 +53,7 @@ export default {
           this.getZml.grade = xx.gid
           this.getZml.subject = xx.name
           this.getZml.subjectid = xx.id
-          router.push({name:'Platform' 
+          router.push({name:'StudentHub' 
                      , params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                      , meta: {layout: "AppLayoutGray" }})
          }

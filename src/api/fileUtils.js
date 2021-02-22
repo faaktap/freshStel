@@ -22,22 +22,39 @@ const i= [
     {ext:'pptx' ,icon: 'mdi-file-powerpoint',   color:'black'},
     {ext:'zip'  ,icon: 'mdi-folder-zip',        color:'brown'},
     {ext:'mp3'  ,icon: 'mdi-music-note',        color:'orange'},
+    {ext:'wav'  ,icon: 'mdi-music-note',        color:'orange'},
     {ext:'m4a'  ,icon: 'mdi-file-music',        color:'indigo darken-1'},
     {ext:'sql'  ,icon: 'mdi-database',          color:'green darken-3'},
+    {ext:'com'  ,icon: 'mdi-link-box',          color:'green darken-3'},
     ]
 
   
  export const getIcon = ( fileName) => {
+   console.log('geticon', fileName)
      const ext = fileName.split('.').pop().toLowerCase()
+     console.log('geticon', ext)  
      const index = i.findIndex(p => p.ext == ext)
+      
      if (index > 0 ) {
+       console.log('geticon', i[index].icon) 
        return i[index].icon
      } else {
+      console.log('geticon', 'hospital') 
        return "mdi-hospital-building"
      }
  }  
+ export const getFileType = ( iconName) => {
+  console.log('getFT')
+  switch (iconName) {
+    case 'mdi-image': return 'picture'
+    case 'mdi-movie': return 'video'
+    case 'mdi-file-music' : return 'sound'
+    default :  return 'unknown'
+  }
+}  
 
  export const getFilenameNoExtension = ( fileName ) => {
+  console.log('getFilename')
   const pieces =   fileName.split('.') 
   const l = pieces.length - 2
   if (l >= 0) {

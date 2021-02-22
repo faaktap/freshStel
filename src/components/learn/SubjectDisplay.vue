@@ -33,13 +33,11 @@
 </template>
 
 <script>
-//import Material from "@/views/Material"
 import { getters } from "@/api/store"
 import router from '@/router';
 export default {
     name: "MaterialItem",    
     components: {
- //      Material: () => import('@/views/Material.vue')
     },
     props: {
           item:Object
@@ -58,7 +56,7 @@ export default {
           this.getZml.grade = xx.gid
           this.getZml.subject = xx.name
           this.getZml.subjectid = xx.id
-          router.push({name:'Platform' 
+          router.push({name:'StudentHub' 
                      , params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                      , meta: {layout: "AppLayoutGray" }})
 
