@@ -131,10 +131,10 @@
       <v-card color="grey lighten-3" min-width="150" class="pa-2">
         
         <v-icon :color="chipColor(c.type)" 
-                v-if="c.type != 'folder'"
+                xxxxv-if="c.type != 'folder'"
                 class ="mx-2"
                 title="Click to Preview"
-               @click="poepies(c);" >
+               @click="iconClick(c);" >
                 {{ c.icon }} 
         </v-icon>
       <v-btn class="no-uppercase" 
@@ -260,7 +260,7 @@
           <v-icon small > mdi-delete </v-icon>
           Delete
         </v-btn>      
-        <v-btn @click="poepies" 
+        <v-btn @click="iconClick" 
                color="blue-grey lighten-5"
                icon
                small>
@@ -280,7 +280,7 @@
                small
                :disabled="loadStatus" >
           <v-icon small > mdi-content-save </v-icon> 
-          Rename
+          Save / Rename
         </v-btn>
 
       </v-card-actions>
@@ -409,8 +409,14 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
     filters:{
     },
     methods: {
-        poepies(c) {
+        iconClick(c) {
+          //iconClick is for showing a review of the current content
+          //We do nothing if we have text or folder type.
           this.curContent = c
+          if (c.type == 'folder' || c.type == 'text') {
+            infoSnackbar('we cannot preview folders and text')
+            return
+          }
           if (this.curContent.description.substr(0,4) == 'load'){          
             this.src = "https://kuiliesonline.co.za/" + this.curContent.description.substr(5)
             switch (getIcon(this.src)) {

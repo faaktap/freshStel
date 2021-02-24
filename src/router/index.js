@@ -161,8 +161,32 @@ const routes = [
 
       // ...other sub routes
     ]
-  }
-    
+  },
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/FlexGridStuff.vue')
+    ,name: 'flex'
+    ,path: '/flex'
+    ,meta: {layout: la[0], authentication: "public"}
+  },  
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/awards/AKandidate.vue')
+    ,name: 'AKandidate'
+    ,path: '/a'
+    ,meta: {layout: la[0], authentication: "public"}
+  },      
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/TestExpand.vue')
+    ,name: 'TextExpand'
+    ,path: '/expand'
+    ,meta: {layout: la[0], authentication: "public"}
+  },      
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/ViewLog.vue')
+    ,name: 'ViewLog'
+    ,path: '/log'
+    ,meta: {layout: la[0], authentication: "public"}
+  },      
+
 ]
 
 

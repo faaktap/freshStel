@@ -16,29 +16,31 @@
     , "days": "1"
     , "img": "https://www.kuiliesonline.co.za//Subjects/GR08/Physical Sciences_Fisiese Wetenskappe/DATA FOR FWET/ChristelleWiegandEnMan.jpg" } 
     -->
-   <v-expansion-panels min-width="150" rounded class="ma-2 pa-2 long-line">
+   <v-expansion-panels min-width="150" 
+                       rounded 
+                       class="ma-2 pa-2 long-line"
+                       v-model="expandStatus"
+                       >
     <v-expansion-panel>
-        <!-- item.expand --- we might use this later to close all exapned folders -->
      <v-expansion-panel-header disable-icon-rotate 
                                class="no-uppercase "
                                color="deep-purple lighten-5" 
-                               v-model="item.expand"  
-                               @:blur="expansionPanelOpen = false"
-                               :title="item.days + 'day(s) ago'"
+                               :title="item.days + ' day(s) ago'"
                                >
-         {{ btnFace }} <span class="caption mx-1"> .. </span>
+         {{ btnFace }}
          <template v-slot:actions>
-           <v-icon color="teal">
-              {{ icon | repl}}
-           </v-icon>
+           <v-btn icon @click.stop="test" >
+             <v-icon color="teal">
+              {{ item.icon | repl}}
+             </v-icon>
+           </v-btn>
          </template>
-         
      </v-expansion-panel-header>
 
     <v-expansion-panel-content>
      <v-hover v-slot:default="{ hover }">
       <v-card  min-width="300" 
-               xmin-height="100"
+               min-height="100"
                :elevation="hover ? 12 : 2"
                :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
          dense
@@ -46,6 +48,7 @@
          color="deep-purple lighten-3"                  
       >
       <v-card-title> 
+<!-- SHOW AMOUNT OF DAYS SINCE YOU EDIT -->        
         <v-badge 
                :value="bhover" 
                :content="item.days + 'day(s) ago'"
@@ -54,11 +57,12 @@
             <v-icon :color="item.days | icn"> mdi-timelapse </v-icon> 
           </v-hover>
         </v-badge>
+
        <template v-if="['text','link'].includes(item.type)">
            {{ item.description }}
        </template>
-       <template>
-           {{ btnFace }}
+       <template v-else>
+           {{ item.name }} 
        </template>
 
       </v-card-title>        
@@ -68,24 +72,27 @@
            <!-- do not think we need to show something for text -->
         </template>
 
-       <template v-else>
+       <template v-if="!['text'].includes(item.type)">
         <v-btn small 
               :title="actionlink(item.type)"
               @click="doAttachment">
           <v-icon> mdi-attachment </v-icon>
           View 
         </v-btn>
-
-        {{ attachment }} <br> {{ item.img}}
-        <v-dialog v-model="showAttachment" xmax-width="400" width="unset">
+        <v-dialog v-model="showAttachment"  
+                  xmax-width="400" 
+                  :fullscreen="$vuetify.breakpoint.mobile"
+                  height="unset"
+                  width="unset">
          <zml-preview :src="item.img"   
-                      :type="attachment" 
+                      :type="attachment"  
                       >
            <zml-close-button @btn-click="showAttachment = !showAttachment"/>
          </zml-preview>
         </v-dialog>
-       </template>                 
-            <template v-if="['link'].includes(item.type)">
+       </template>
+
+            <!--template v-if="['link'].includes(item.type)"-->
             <br />  Last Edit : {{ item.days }}  days(s) ago
             <br />  Name : {{ item.name }}
             <br />  Description : {{ item.description }}
@@ -94,7 +101,7 @@
             <br />  icon : {{ item.img | icon }}
             <br />  filetype : {{ item.img | fileType }}
             {{ item }}
-            </template>
+            <!--/template-->
       </v-card-text>
      </v-card>
      </v-hover>
@@ -117,7 +124,7 @@ export default {
       showAttachment : false,
       attachment: null,
       bhover: false,
-      expansionPanelOpen: false,
+      expandStatus:[]
     }),    
     computed:{
     },
@@ -130,7 +137,7 @@ export default {
         },
         icon(value) {
             if (value) return getIcon(value)
-            return "bollie"
+            return "mdi-link"
 
         },
         fileType(value) {
@@ -153,23 +160,28 @@ export default {
         },
         doAttachment() {
             console.log('doAttachment',1)
-            let whatever = this.actionlink(this.item.type)
-            this.attachment = getFileType(getIcon(whatever)) 
+            let whatever = this.actionlink(this.item.type)    //fullname
+            this.attachment = getFileType(getIcon(whatever))  //ie. picture
             this.ext = getIcon(whatever)
-            console.log('doAttachment',4, this.ext)
+            console.log('doAttachment','4a', this.attachment)
             console.log('doAttachment',5, this.src)
+            console.log('doAttachment',6, whatever)
             this.src = whatever
             if (this.src.length){
               this.showAttachment = !this.showAttachment
             } else {
                 alert('res is null')
             }
+            alert( this.showAttachment )
+            this.expandStatus = []
         },
-        doFixAtt() {
-           //find out what type of attachment we have, and execute correctly
-           //Check if there is an img, and a load in description, and all other shit.
-           //Maybe change the icon to whatever...and load src with correct value
-           //could maybe show photo if there is one
+        test() {
+          console.log('clicked on TEST : ', this.item.type,this.actionlink(this.item.type))
+          if (this.item.type == 'text' || this.item.type=='folder') {
+            this.expandstatus = []
+            return;
+            }
+          this.doAttachment()
 
         },
         btnClick() {

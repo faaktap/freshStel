@@ -13,6 +13,8 @@
                               meta: {layout: 'AppLayoutGray' }}" title="quick test"
             > test
            </router-link>.
+           
+           <v-btn small color="grey"> Subjects </v-btn>
         </v-toolbar-title>
       </v-toolbar>    
    </div>

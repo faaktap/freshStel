@@ -36,15 +36,21 @@
       </v-layout>
 -->
 
+<!--
    <v-row><v-col col="12">
     <v-card max-width="500" class="mx-auto">
        <v-container>
          <v-row dense>
-           <v-col cols="12">
-             <v-card color="purple" dark>
+           <v-col xs12 md6 lg3>
+             <v-card color="teal lighten-5">
                <div class="d-flex flex-no-wrap justify-space-between">
                  <div>
+                   
                    <v-card-title class="headline" v-text="personelList.data.surname"></v-card-title>
+                 <v-avatar v-if="personelList.data.photo" class="ma-3"  max-width="225">
+                   <v-img :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelList.data.photo"></v-img>
+                 </v-avatar>
+                   
                    <v-card-subtitle >
                        {{ personelList.data.name }} , {{ personelList.data.contactnumber }} 
                    </v-card-subtitle>
@@ -55,9 +61,6 @@
                        {{ personelList.data.changedate }}
                    </v-card-text>
                  </div>
-                 <v-avatar v-if="personelList.data.photo" class="ma-3" size="125" tile>
-                   <v-img :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelList.data.photo"></v-img>
-                 </v-avatar>
                </div>
              </v-card>
              <v-btn v-if="allowEdit" @click="updatePersonel"> Edit Current Card </v-btn>
@@ -66,6 +69,33 @@
        </v-container>
     </v-card>
    </v-col></v-row>
+-->
+ <v-container>
+            <v-row>
+                <v-col lg="3" md="4" sm="6">
+                    <v-card class="mb-2" tile="">
+                        <v-row align="start">
+                            <v-col class="shrink">
+                                <v-img :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelList.data.photo" max-width="100" class="ml-3"></v-img>
+                            </v-col>
+                            <v-col>
+                                <v-card-title class="headline pa-3" v-text="personelList.data.surname"></v-card-title>
+                                <v-card-subtitle>{{ personelList.data.name }}   </v-card-subtitle>
+                                <v-card-text>
+                                       Cell : {{ personelList.data.contactnumber }}
+                                       Room : {{ personelList.data.room }}<br>
+                                       Area : {{ personelList.data.workarea }}<br>
+                                       Email : {{ personelList.data.workemail }}<br>
+                                      <div class="caption">{{ personelList.data.changedate }}</div>
+
+                                </v-card-text>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                    <v-btn small v-if="allowEdit" @click="updatePersonel"> Edit Card </v-btn>
+                </v-col>
+            </v-row>
+  </v-container>   
 <!--
 { "desc": "menemonic 151 Albertyn, undefined", 
 "data": { "persid": "151", "username": "username", "menemonic": "menemonic"

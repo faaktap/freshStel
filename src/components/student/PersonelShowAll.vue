@@ -1,0 +1,51 @@
+<template>
+ <v-container>
+            <v-row>
+                <v-col lg="3" md="4" sm="6" xs="12">
+                    <v-card class="mb-2" v-for="c in 9" :key="c">
+                        <v-row align="start">
+                            <v-col class="shrink">
+                                <v-img :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelList.data.photo" max-width="100" class="ml-3"></v-img>
+                            </v-col>
+                            <v-col>
+                                <v-card-title class="headline pa-3" v-text="personelList.data.surname"></v-card-title>
+                                <v-card-subtitle>{{ personelList.data.name }}   </v-card-subtitle>
+                                <v-card-text>
+                                       Cell : {{c}} {{ personelList.data.contactnumber }}
+                                       Room : {{c}} {{ personelList.data.room }}<br>
+                                       Area : {{c}} {{ personelList.data.workarea }}<br>
+                                       Email : {{c}} {{ personelList.data.workemail }}<br>
+                                      <div class="caption">{{c}} {{ personelList.data.changedate }}</div>
+
+                                </v-card-text>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </v-col>
+            </v-row>
+  </v-container>   
+</template>
+
+<script>
+import { zmlConfig } from '@/api/constants';
+import { zmlFetch } from '@/api/zmlFetch.js';
+//import PersonelNameCard from '@/components/student/PersonelNameCard.vue'
+export default {
+name: "PersonelShowAll",
+props:{},
+components: {// PersonelNameCard          
+           },
+data: () => ({
+  personelList:null,
+  getZml: getters.getState({ object:"gZml" }),
+
+}),
+methods: {
+
+},
+mounted: function () {
+    console.log('PSA MOUNTED Max=', zmlConfig.maxUploadSize)
+}
+
+}
+</script>

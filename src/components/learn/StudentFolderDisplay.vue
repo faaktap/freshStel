@@ -9,11 +9,8 @@
             class= "ma-2"
             color="deep-purple lighten-5">
      <v-card-title>   
-        <v-icon> {{item.icon}} </v-icon>
-        <div> 
-           {{ item.name }}    
-           <v-icon x-small :title="item.description">     {{ item.folder }} </v-icon> 
-        </div>
+        <v-icon :title="item.description"> {{item.icon}} </v-icon>
+          {{ item.name }} 
          <!--/v-card-actions-->
      </v-card-title>
     </v-card>

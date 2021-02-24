@@ -19,20 +19,23 @@
           
       </v-card-title>
       <v-card-text>
-        <personel-lookup @dataEntered="personelFound"  />
-        <v-layout row v-show="personelList">
-          <v-flex>
+        <v-layout row >
+          <v-flex xs12 md6>
+          <personel-lookup @dataEntered="personelFound"  />
+          </v-flex>
+
+          <v-flex v-show="personelList" xs12 md6>
           <personel-name-card :personelList="personelList" allowEdit="true" /> 
-          
           </v-flex>
           
-          <v-flex v-if="showAddPhoto">
+          <v-flex v-if="showAddPhoto" xs6>
             <zml-file-load @file-saved="uploadedFilename" />
           </v-flex>
+
        </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="showAddPhoto = true"> ChangePhoto </v-btn>
+        <v-btn small @click="showAddPhoto = true"> ChangePhoto </v-btn>
       </v-card-actions>
   </v-card>
 

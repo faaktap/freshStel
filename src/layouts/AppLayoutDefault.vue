@@ -1,10 +1,9 @@
 <template>
   <div>
-    <small class="info1">Default Layout</small>
+    <v-card class="ma-2" color="green darken-4" dark align="center">DKHS - Virtual Schooling</v-card>
     <transition name="fade" mode="out-in">
     <slot />
     </transition>
-    <small class="info1">Default Layout</small>
   </div>
 </template>
 

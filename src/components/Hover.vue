@@ -150,32 +150,6 @@
     </v-col>
    </v-row>
 
-<v-container>
-    <v-row>
-      <v-col col="12">
-        <v-card max-width="400" class="mx-auto">
-          <v-container>
-            <v-row dense>
-              <v-col v-for="(item, i) in items" :key="i" cols="12">
-                <v-card :color="item.color" dark>
-                  <div class="d-flex flex-no-wrap justify-space-between">
-                    <div>
-                      <v-card-title class="headline" v-text="item.title"></v-card-title>
-                      <v-card-subtitle v-text="item.artist"></v-card-subtitle>
-                    </div>
-                    <v-avatar class="ma-3" size="125" tile>
-                      <v-img :src="item.src"></v-img>
-                    </v-avatar>
-                  </div>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
-
   <v-container>
     <v-row>
       <v-col col="12">
@@ -202,38 +176,6 @@
     </v-row>
   </v-container>
 
-  <v-container>
-    <v-row>
-      <v-col col="12">
-        <v-card class="mx-auto" color="#26c6da" dark max-width="400">
-          <v-card-title>
-            <v-icon large left>mdi-twitter</v-icon>
-            <span class="title font-weight-light">Twitter</span>
-          </v-card-title>
-<v-card-text class="headline font-weight-bold">"hello world."</v-card-text>
-          <v-card-actions>
-            <v-list-item class="grow">
-              <v-list-item-avatar color="grey darken-3">
-                <v-img
-                  class="elevation-6"
-                  src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                ></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>James Smith</v-list-item-title>
-              </v-list-item-content>
-              <v-row align="center" justify="end">
-                <v-icon class="mr-1">mdi-heart</v-icon>
-                <span class="subheading mr-2">100</span>
-                <span class="mr-1">·</span>
-                <v-icon class="mr-1">mdi-share-variant</v-icon>
-                <span class="subheading">100</span>
-              </v-row>
-            </v-list-item>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
 
 <div class="filter">
  <v-row> 
@@ -279,7 +221,7 @@ SF= {{ selectedFruit }}
  </v-row>
 </div>
 SF = {{ selectedFruit }}{{ selectedFruit1 }}{{ selectedFruit2 }}{{ selectedFruitNo }}
-  </v-container>
+  
 
   
   </div>
@@ -297,6 +239,7 @@ export default {
   },  
  data: () => ({
   getZml: getters.getState({ object: "gZml" }),
+  classtest:'col-4 col-sm-6 col-md-8',
   fruitOptions: ['appels','pere','tamaties','waatlemoen'],
   fruitObject: [{id:1,name:'appels'},{id:2,name:'pere'},
                 {id:3,name:'tamaties'},{id:4,name:'waatlemoen'}],

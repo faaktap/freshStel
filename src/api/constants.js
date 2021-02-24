@@ -1,7 +1,7 @@
 const PROJECT_ID = "onZml29"
 const MEASUREMENT_ID = "Z-ZML29"
 const DEFAULT_LAYOUT = "AppLayoutDefault"
-const MAX_UPLOAD_SIZE = 20 * 1024 * 1024
+const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 
 /*
   apiPath:    "https://kuiliesonline.co.za/api/candid/candidates.php",

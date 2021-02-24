@@ -323,9 +323,9 @@ export default {
       },
       doneWithUpdate(response) {
         if (response.error) {
-           infoSnackbar('Your detals has been updated ' + response.error)
+           infoSnackbar('Your details has been updated ' + response.error)
         } else {
-           infoSnackbar('Your detals has been updated ' + this.getZml.login.fullname)
+           infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
         }
       },
       dropAnEmail(){

@@ -14,7 +14,7 @@
       <v-btn v-for="btn in buttons[buttonGroup[0]]" 
             :key="btn.btn" 
             class="ma-2"
-            small="$vuetify.breakpoint.smAndDown"
+            :small="$vuetify.breakpoint.smAndDown == true"
             :title="btnTip(btn)" 
             @click="doTask(btn.func)" 
             v-show="!btn.optional == 1"> 
@@ -71,7 +71,7 @@
                v-for="btn in buttons[toolGroup]"  :key="btn.btn">   
        <v-card max-width="400"  class="ma-2" 
                color="grey lighten-5"
-               x-small="$vuetify.breakpoint.smAndDown">   
+               :x-small="$vuetify.breakpoint.smAndDown == true">   
         <v-card-title>
          <v-btn small @click="doTask(btn.func)" :title="btnTip(btn)"> 
            <v-icon small>{{ btn.icon }}</v-icon>
