@@ -12,6 +12,7 @@
   <hr />
   </v-layout>
 
+<v-container v-if="['admin','teacher'].includes(getZml.login.type)">
   <v-card >
       <v-card-title>
           Please enter a few characters of the staff member's surname
@@ -38,10 +39,10 @@
         <v-btn small @click="showAddPhoto = true"> ChangePhoto </v-btn>
       </v-card-actions>
   </v-card>
+</v-container>
 
 
 
-<router-link :to="{ name: 'StudentInfo'}" > <v-icon> mdi-school </v-icon> </router-link>
 
 <!--
 { "desc": "menemonic 151 Albertyn, undefined", 

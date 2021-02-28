@@ -82,7 +82,7 @@
         <v-dialog v-model="showAttachment"  
                   xmax-width="400" 
                   :fullscreen="$vuetify.breakpoint.mobile"
-                  height="unset"
+                  height="90%"
                   width="unset">
          <zml-preview :src="item.img"   
                       :type="attachment"  
@@ -93,6 +93,7 @@
        </template>
 
             <!--template v-if="['link'].includes(item.type)"-->
+            <!--template>
             <br />  Last Edit : {{ item.days }}  days(s) ago
             <br />  Name : {{ item.name }}
             <br />  Description : {{ item.description }}
@@ -101,7 +102,7 @@
             <br />  icon : {{ item.img | icon }}
             <br />  filetype : {{ item.img | fileType }}
             {{ item }}
-            <!--/template-->
+            </template-->
       </v-card-text>
      </v-card>
      </v-hover>
@@ -172,7 +173,6 @@ export default {
             } else {
                 alert('res is null')
             }
-            alert( this.showAttachment )
             this.expandStatus = []
         },
         test() {

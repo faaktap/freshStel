@@ -33,9 +33,22 @@
            
         </v-card-text>
         <v-card-actions>
-           <v-btn to="/login" align="right" class="white--text font-weight-black"> Profile </v-btn>
+           <v-btn to="/login" 
+                  small
+                  class="white--text font-weight-black"> 
+            Profile 
+           </v-btn>
+           <v-btn v-if="getZml.login.type != 'student'" 
+                  to="/log"
+                  small
+                  class="white--text font-weight-black"
+                  > 
+             Reset Passwords 
+            </v-btn>
           <v-spacer />
-           <v-btn to="/login" align="right" class="white--text font-weight-black"> Logout </v-btn>
+           <v-btn to="/login" 
+                 small
+                 class="white--text font-weight-black"> Logout </v-btn>
         </v-card-actions>
         <div class="ma-2 caption"> <v-icon small>mdi-brain</v-icon>{{programname}} vers:0.112</div>
       </v-card>
@@ -64,9 +77,9 @@ import { getters } from "@/api/store";
     },
     mounted:function() {
         if (this.getZml.login.isAuthenticated == true) {
-          console.log('auth')
+          console.log('MNT LOGIN - Auth True')
         } else {
-          console.log('no auth')  
+          console.log('MNT LOGIN - Auth False')  
         }
     }
   }

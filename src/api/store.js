@@ -9,7 +9,7 @@ import Vue from 'vue';
 //getZml.subjects = id,name, subjectid,sortorder,shortname,path,description,beskrywing,linksubjectid,picture
 const state = Vue.observable({
     gZml: {login: {isAuthenticated: 0
-                  , grade:8, type:'student'
+                  , grade:8, type:'guest'
                   , fullname:'', phone:'', email:''
                   , username:''  , userid:'', persid:''
                   , lastdate:'', login:''},
@@ -19,6 +19,7 @@ const state = Vue.observable({
            subjectid: '',
            subjects: [],
            folders: [],
+           functions: [],           
            locale: 'af',
            atester: false,
           }

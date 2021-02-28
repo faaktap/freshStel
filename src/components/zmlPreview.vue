@@ -1,11 +1,11 @@
 <template>
- <v-card xmax-width="400" color="grey lighten-3" class="text-center">
+ <v-card height="640" xmax-width="400"  color="grey lighten-3" class="text-center">
   <v-card-title>
        <v-btn  @click="launchOutside" title="Open in Browser/Download">
         <v-icon> mdi-window-open </v-icon> Open
       </v-btn>
       <span class="mx-2">
-      Preview {{ type }}
+      Preview {{ type }} 
       </span>
       <slot />
   </v-card-title>
@@ -13,7 +13,7 @@
   <v-card-text>
   <template v-if="type=='movie'">
     <video controls
-           width="unset" 
+           height="80%" width="70%"
            ref="video"
            :src="src"
       >
@@ -33,13 +33,14 @@
 
   <template v-if="type=='picture'">
     <img ref="picture" 
-         width="unset"
+         :height="imageHeight"
         :src="src"
     />
   </template>
 
   <template v-if="!['movie','picture','audio'].includes(type)">
-        <iframe class="ma-0 pa-0" id="iframe" width="100%"
+    
+        <iframe class="ma-1 pa-1" id="iframe" width="900" height="480" title="title"
                 ref="iframe" 
                 :src="src" />
   </template>
@@ -61,6 +62,18 @@ export default {
     icon: null,
     title: '',
  }),
+ computed:{
+      imageHeight () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return '100%'
+          case 'sm': return '100%'
+          case 'md': return '90%'
+          case 'lg': return '80%'
+          case 'xl': return '80%'
+        }
+        return "50%"
+      },
+ },
  methods: {
      launchOutside() {
         window.open(this.src,'_' + this.type)

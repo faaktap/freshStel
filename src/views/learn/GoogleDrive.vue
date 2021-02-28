@@ -42,13 +42,15 @@
          </v-btn>
         </i> 
         <div v-else v-for="(f,index) in files" :key="index">
-        {{ f.name }} - {{ f.size }} kb
+          <v-card class="ma-2" :loading="loadStatus">
+           {{ f.name }} - {{ f.size / 1024 | decimal }} kb - {{ f.done }}
+          </v-card>
         </div>
         <v-btn v-if="files.length > 0" small @click="uploadTheFilesCheck" :loading="loadStatus">
             <v-icon> mdi-upload </v-icon>
              Upload ( {{files.length }})
         </v-btn>
-        <v-btn v-if="files.length > 0" small @click="files = []" >
+        <v-btn v-if="files.length > 0" small @click="uploadCancel">
             <v-icon> mdi-cancel </v-icon>
             Cancel Upload 
         </v-btn>
@@ -89,7 +91,7 @@
    </v-row>
   </v-card>
 
-<!-- SHOW FOLDER NAME ON CHIP -->
+<!-- ----------------- SHOW FOLDER NAME ON CHIP ----------------------- -->
 <v-container fluid v-show="!!folderObj.foldername">
   <v-layout class="ma-1" row wrap>
     <v-flex>
@@ -105,63 +107,22 @@
     <v-btn icon dark @click="sortName = !sortName"> 
         <template v-if="sortName">
         <v-icon> mdi-sort</v-icon>
-        </template>
-        <template v-if="sortName">
         <v-icon> mdi-sort-numeric-ascending</v-icon>
         </template>
     </v-btn>
     </v-card>
     </v-flex>
   </v-layout>
-
-<!--folder = {{ folderObj }} <br> cursel: {{ mainMenuItemselected }} -->
-<v-card color="blue lighten-5" class="ma-2 pa-1" v-show="filterContent.length > 0">
-  <v-layout xfluid 
-        v-show="folderObj.foldername" 
-        row 
-        class="ma-1" 
-        align-content-start 
-        align-baseline 
-        justify-space-between
-      
-  >  
-     
-    <v-flex v-for="c in filterContent" :key="c.contentid" class="ma-1" align-self-start>
-
-      <v-card color="grey lighten-3" min-width="150" class="pa-2">
-        
-        <v-icon :color="chipColor(c.type)" 
-                xxxxv-if="c.type != 'folder'"
-                class ="mx-2"
-                title="Click to Preview"
-               @click="iconClick(c);" >
-                {{ c.icon }} 
-        </v-icon>
-      <v-btn class="no-uppercase" 
-             right
-             @click="contentProperties(c)"
-             :title="'('+c.sortorder + ') ' + c.update_timestamp"
-             min-width="150"
-             text
-             draggable="btndrag"
-             >
-         {{ c.name }} 
-     </v-btn>
-      </v-card>
-     
-    </v-flex>
-   </v-layout>    
-   
-</v-card>
 </v-container>
-  
-<br /> <br /> 
-<br /> <br />
-<br /> <br /> 
-<br /> <br /> 
-<br /> <br />
-<br /> <br />
-<br /> <br />
+
+
+<!-- MAIN CANVAS --------------->
+<google-drive-items :itemList="filterContent" 
+                    :folderObj="folderObj" 
+                   @iconClick="iconClick"
+                   @contentProperties="contentProperties" />
+
+
 <br /> <br /> 
 
 
@@ -176,6 +137,7 @@
     </v-card-title>
     <v-card-text>
         <v-text-field v-model="folderObj.foldername" label="Name"></v-text-field>
+        {{ folderObj }}
     </v-card-text>
       <v-card-actions>
       <v-spacer />
@@ -226,10 +188,11 @@
  </v-dialog>
 
 <!-- SHOWING FILE PROPERTIES -->
- <v-dialog v-model="showFileProperties" max-width="500" >
+ <v-dialog v-if="curContent" v-model="showFileProperties" max-width="500" >
   <v-card>
     <v-card-title>
-       <v-icon> {{ curContent.icon }} </v-icon>  Properties ( {{ curContent.type }} )
+       <v-icon> {{ curContent.icon }} </v-icon>  Properties for: 
+            <v-card color="blue lighten-5" class="caption ma-2 pa-2"> {{ curContent.name | shorten }} ( {{ curContent.type }} )</v-card>
     </v-card-title>
     <v-card-text>
         <template v-if="curContent && curContent.type == 'file'">      
@@ -246,16 +209,37 @@
           <v-text-field v-show="curContent.mode != 'add'" dense v-model="curContent.sortorder" label="Sort" />
           <v-textarea dense v-model="curContent.description" label="Text" />
         </template>
-        <!--v-text-field dense v-model="curContent.type" label="Type" disabled /-->
+  
+           <v-select
+             v-model="curContent.folder"
+             :items="folderFilter"
+             item-text="foldername"
+             item-value="foldername"
+             label="Folder"
+             title="Move the file to a different folder"
+           />            
+           <v-select
+             v-model="curContent.accesstype"
+             :items="['student','pers','hidden']"
+             item-text="text"
+             item-value="id"
+             title="Change who can see the file."
+             label="Access"
+           /> 
+
+        <!--
         <div class="caption">folder:{{curContent.folder}}</div>
         <div class="caption">access:{{curContent.accesstype}}</div>
         <div class="caption">created:{{curContent.create_timestamp}}
-                          , updated:{{curContent.update_timestamp}}
-        </div>
+                          , updated:{{curContent.update_timestamp}}</div>
+        -->
+        <v-card class="ma-2 pa-2" v-if="curContent.showDescription">
+        Original Filename : {{ curContent.showDescription | file }}
+        </v-card>
     </v-card-text>
       <v-card-actions>
         <v-btn @click="deleteContent" 
-               color="red lighten-4" 
+               color="red lighten-4"  
                small>
           <v-icon small > mdi-delete </v-icon>
           Delete
@@ -280,34 +264,12 @@
                small
                :disabled="loadStatus" >
           <v-icon small > mdi-content-save </v-icon> 
-          Save / Rename
+          Update
         </v-btn>
 
       </v-card-actions>
   </v-card>
  </v-dialog>
-<v-dialog v-model="showMovie" xmax-width="400"  :fullscreen="$vuetify.breakpoint.mobile">
-  <zml-preview :src="src" type="movie">
-    <zml-close-button @btn-click="showMovie = !showMovie" />
-  </zml-preview>
-</v-dialog>
-<v-dialog v-model="showAudio" xmax-width="400">
-  <zml-preview :src="src" type="audio">
-    <zml-close-button @btn-click="showAudio = !showAudio" />
-  </zml-preview>
-</v-dialog>
-
-<v-dialog v-model="showPicture" xmax-width="400" :fullscreen="$vuetify.breakpoint.mobile">
-  <zml-preview   :src="src" type="picture"  >
-    <zml-close-button @btn-click="showPicture = !showPicture" />
-  </zml-preview>  
-</v-dialog>
-
-<v-dialog v-model="showOther" xmax-width="400" :fullscreen="$vuetify.breakpoint.mobile">
-<zml-preview   :src="src" type="Other"  >
-  <zml-close-button @btn-click="showOther = !showOther" />
-</zml-preview>
-</v-dialog>
 
 <v-dialog v-model="showFolderInFolderProperties" xmax-width="500" >
   {{ folderFilter }}
@@ -316,8 +278,17 @@
       Folder Properties
     </v-card-title>
     <v-card-text>
-        <v-text-field v-model="curContent.foldername" label="Name"></v-text-field>
-        <v-textarea v-model="curContent.description" label="Description"></v-textarea>
+        <v-text-field v-model="curContent.name" label="Name"></v-text-field>
+        <v-select
+             v-model="curContent.folder"
+             :items="folderFilter"
+             item-text="foldername"
+             item-value="realfoldername"
+             label="Folder"
+             title="Folder where this one can live."
+        />            
+        <!--v-textarea v-model="curContent.description" label="Description"></v-textarea-->
+        
     </v-card-text>
       <v-card-actions>
       <v-spacer />
@@ -339,6 +310,41 @@
       </v-card-actions>
   </v-card>
 </v-dialog>
+
+
+<!-- -----------------  PREVIEW DIALOGS ---------------------- -->
+<v-dialog v-model="showMovie" xmax-width="400"  :fullscreen="$vuetify.breakpoint.mobile">
+  <zml-preview :src="src" type="movie">
+    <zml-close-button @btn-click="showMovie = !showMovie" />
+  </zml-preview>
+</v-dialog>
+<v-dialog v-model="showAudio" xmax-width="400">
+  <zml-preview :src="src" type="audio">
+    <zml-close-button @btn-click="showAudio = !showAudio" />
+  </zml-preview>
+</v-dialog>
+
+<v-dialog v-model="showTestDialog" :fullscreen="$vuetify.breakpoint.mobile">
+  folder OBJ = {{ folderObj}} <br>
+  curContent = {{ curContent }}
+</v-dialog>
+
+<v-dialog v-model="showPicture" xmax-width="400" :fullscreen="$vuetify.breakpoint.mobile">
+  <zml-preview   :src="src" type="picture"  >
+    <zml-close-button @btn-click="showPicture = !showPicture" />
+  </zml-preview>  
+</v-dialog>
+
+<v-dialog v-model="showOther" xmax-width="400" :fullscreen="$vuetify.breakpoint.mobile">
+<zml-preview   :src="src" type="Other"  >
+  <zml-close-button @btn-click="showOther = !showOther" />
+</zml-preview>
+</v-dialog>
+a 12 --  {{ 12 | plural('day') }}  <br>
+b{{ 0 | plural('day') }} <br>
+c{{ 1 | plural('day') }}  <br/>
+
+{{ folderObj}}
 </div>
 </template>
 <script>
@@ -354,18 +360,22 @@ import baseDropDown from '@/components/base/baseDropDown.vue'
 import getIcon from '@/api/fileUtils.js'
 import zmlPreview from '@/components/zmlPreview.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
+
+import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
   export default {
     name: "viewContent",
     props: ['subjectid','grade'],
-    components: {baseDropDown, zmlPreview, zmlCloseButton},
+    components: {baseDropDown, zmlPreview, zmlCloseButton,GoogleDriveItems},
     data: () => ({
         showFolderProperties:false,
         showFileProperties:false,
         showFolderInFolderProperties:false,
+        showTestDialog: false,
         mainMenuItems:[ 
                    {title:'Select Folder',icon:'mdi-folder'},
                    {title:'New Folder', icon:'mdi-folder-plus-outline'},
                    {title:'New File', icon:'mdi-file'},
+                   {title:'Move Folder',icon:'mdi-folder-move'},
                    {title:'Empty Folder',icon:'mdi-delete'},
                    {title:'Delete Folder',icon:'mdi-delete-empty'},
                    {title:'Refresh Folder',icon:'mdi-database-refresh'},
@@ -406,16 +416,47 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
         showOther:false,
         src:'',
     }),
-    filters:{
+    filters:{ 
+       file : function (filename) {
+         if (!filename) return ""
+         const pieces =   filename.split('/') 
+         if (pieces) {
+            return pieces[pieces.length-1] //filename.split('/').pop()
+         }
+       },
+       shorten: function(val) {
+         if (!val) return ""
+         const valStr = val.toString
+         if (valStr.length > 20) {
+           return valStr.substr(0,20)
+         }
+         return val
+       },
+       uppercase: function(val) {
+          if (!val) return "";
+          val = val.toString();
+          return val.toUpperCase();
+       },
+       lowercase: function(val) {
+          if (!val) return "";
+          val = val.toString();
+          return val.toLowerCase();
+       },
+       // We have sat here {{ x.days | plural(x.days,'day')}
+       plural: function(val, singular) {
+           let s = 's'
+           if (val == 1) s = ''
+           return val + ' ' + singular + s
+       }
     },
     methods: {
         iconClick(c) {
           //iconClick is for showing a review of the current content
-          //We do nothing if we have text or folder type.
+          if (c.type == 'text') return
           this.curContent = c
-          if (c.type == 'folder' || c.type == 'text') {
-            infoSnackbar('we cannot preview folders and text')
-            return
+          if (c.type == 'folder') {
+             this.getReadyToSelectFolder(c)
+             return
           }
           if (this.curContent.description.substr(0,4) == 'load'){          
             this.src = "https://kuiliesonline.co.za/" + this.curContent.description.substr(5)
@@ -432,6 +473,32 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
             this.showOther = true;
           }
         },
+        contentProperties(c) {
+            console.log('content Properties:', c)
+            this.curContent = c
+            this.curContent.showDescription = ''
+            /*
+            if (c.type == 'folder') {
+              this.getReadyToSelectFolder(c)
+              return
+            }
+            */
+            if (c.description.substr(0,5) == 'load:') {
+                this.curContent.showDescription = c.description.substr(6)
+            } else if (c.description.substr(0,7) == 'folder:') {
+                this.curContent.showDescription = c.description.substr(8)
+            }
+            this.showFileProperties = true;
+                 
+        },
+        getReadyToSelectFolder(c) {
+            //get the folder from folderObj and pass it to selectFolder
+            let fIdx = this.folderFilter.findIndex(p => p.foldername == c.name);
+            if (fIdx) {
+               this.selectFolder(this.folderFilter[fIdx])
+            }
+            return
+        },
         doMenuStuff(e) {
           console.log('menu Item = ', e)
           this.showFolderProperties = false
@@ -439,6 +506,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
 
            if (this.mainMenuItemselected == "Delete Folder" 
             || this.mainMenuItemselected == "New File" 
+            || this.mainMenuItemselected == "Move Folder" 
             || this.mainMenuItemselected == "Empty Folder") {
                if (!this.folderObj.foldername) {
                   infoSnackbar('You need to select a folder before you use "' + this.mainMenuItemselected + '"')
@@ -469,27 +537,37 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
                this.confirmDeleteFolder(this.folderObj)
            }
            if (this.mainMenuItemselected == "Refresh Folder") {
-               console.log('refresh - loaddate')
-               this.loadData()
+               console.log('refresh - loadfolders and the data')
+               this.loadFolders()
            }
-           //-------------------------------------------------- FOLDER STUFF===========
+           if (this.mainMenuItemselected == "Move Folder") {
+               console.log('Move folders under other folders')
+
+              this.mainMenuItemselected = null                  
+             
+              alert('new dialog - or can we use old one? - we do not have lcontent of current folder...')              
+              this.showTestDialog = true
+              //this.fixUpForAddFolder()               
+           }
+           //-------------------------------------------------- INSIDE FOLDER STUFF===========
            if (this.mainMenuItemselected == "New Link") {
-              this.curContent = this.canWeDrop()
+              this.curContent = this.fillContentDefaultFile()
               this.curContent.mode ='add'
               this.curContent.sortorder = 50
               this.curContent.type ='link'
-              this.curContent.description ='Provide information about the link over this text'
+              this.curContent.description =''
+              this.curContent.name ='https://'
 
               this.mainMenuItemselected = null                  
               this.showFolderProperties = false
               this.showFileProperties = true
            }
            if (this.mainMenuItemselected == "New Text") {
-              this.curContent = this.canWeDrop()
+              this.curContent = this.fillContentDefaultFile()
               this.curContent.mode ='add'
               this.curContent.sortorder = 50
               this.curContent.type ='text'
-              this.curContent.description ='Type your information message over this text'
+              this.curContent.description =''
 
               this.mainMenuItemselected = null                  
               this.showFolderProperties = false
@@ -524,8 +602,10 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
         },
         createFolderName() {
           alert('now we fix realfoldername and name, and call addlcontent?')
+          if (this.curContent.name == '') return;
+          if (this.curContent.folder == '') return;
           this.curContent.realfolder = this.curContent.folder
-          this.curContent.name = this.curContent.folder
+          this.curContent.description = 'folder:' + this.curContent.realfolder
           this.showFolderInFolderProperties = false
           this.updateContent()
         },
@@ -558,13 +638,6 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
             console.log('after rename :' , response)
             this.loadFolders();
         },
-        contentProperties(c) {
-            //infoSnackbar('content prop : ' + c)
-            this.showFileProperties = true;
-            console.log(c);
-            this.curContent = c
-                 
-        },
         chipColor(ctype) {
             if (ctype == 'file') return "green lighten-2"
             if (ctype == 'link') return "orange darken-4"
@@ -572,33 +645,53 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
             return "deep-orange accent-4"
         },
         deleteContent() {
-            alert('delete' + this.curContent.contentid)
-            this.curContent.mode == 'update'
-            this.showFileProperties = false
-            this.curContent.sortorder = 0
-            this.updateContent()
-
+          console.log('asking permission to delete : ' , this.curContent)
+            this.myConfirm('Are you sure about deleteing this file ?'
+                         , this.curContent
+                         , this.deleteContentConfirmed
+            )
+        },
+        deleteContentConfirmed() {
+          this.curContent.mode == 'update'
+          this.showFileProperties = false
+          this.curContent.sortorder = 0
+          this.updateContent()
         },
         updateContent() {
+          console.log('Update Content:', this.curContent) 
           if (this.curContent.mode == 'add') {
              console.log('HERE We ADDD STUFF') 
+             //Check if data is good.
+             if (this.curContent.type == 'link') {
+               if (this.curContent.name.length < 5) {
+                   infoSnackbar('A link should be longer than 5 characters.')
+                   return
+               }
+               if (this.curContent.name.substr(0,4) != 'http') {
+                   infoSnackbar('A link should start with https://, please try again')
+                   return
+               }
+               if (this.curContent.description == '') {
+                 this.curContent.description = this.curContent.name
+               }
+
+             }
              let ts = {}
              ts.data = this.curContent
              ts.task = 'insertlcontent'
              ts.api = zmlConfig.apiDKHS
              this.progress = true;
              this.showFileProperties = false
-             this.curContent = {}
              zmlFetch(ts, this.afterSaveData);   
              return
           }
+          console.log('HERE WE UPDATE CONTENT', this.curContent) 
           let ts = {}
           ts.task = 'updatelcontent'
           ts.data = this.curContent
           ts.api = zmlConfig.apiDKHS
           this.progress = true;
           this.showFileProperties = false
-          this.curContent = {}
           zmlFetch(ts, this.afterSaveData);   
  
         },
@@ -693,7 +786,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
       addInputFile(e) {
         if (!e.size) return   
         if (e.size > zmlConfig.maxUploadSize || e.size == 0)  {
-           errorSnackbar('Your file is too big - put on memory stick and leave at reception for Werner, please try again')                
+           errorSnackbar('Your file is too big - put on memory stick and leave at reception for Werner, please try again.' + e.size)                
            return
         }
         //We are hapy with these files, mark them all as not done.
@@ -708,7 +801,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
         let lfiles = e.dataTransfer.files
         let toobig = false
         lfiles.forEach(file => {
-          if (file.size > 12100100)  {
+          if (file.size > zmlConfig.maxUploadSize)  {
              toobig = true
           }
         })
@@ -736,8 +829,17 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
         })
         infoSnackbar('We have ' + this.files.length + ' files, ready for upload. Press the upload button')
       },
+      uploadCancel() {
+            this.myConfirm('Are you sure about cancelling the file upload process ?'
+                         , null
+                         , function () {
+                             this.files = []
+                             this.loadStatus=false
+                             infoSnackbar('If this was a big file, it would be best to refresh your browser.')
+                         })
+        },
       uploadTheFilesCheck() {
-        let edit = this.canWeDrop()
+        let edit = this.fillContentDefaultFile()
         if (!edit.folder) {
            errorSnackbar('You need to select a folder before we can upload')
            return
@@ -759,12 +861,6 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
            return
         }
         this.dummyObj = edit;
-        if (this.myConfirm('Are you sure you want to load ?')) {
-            //yes - just continue
-        } else {
-            alert('we abort')
-            return
-        }
             
         this.$root.$confirm("Loading files to " + edit.folder, "If you press YES, we will start loading", { color: 'red' })
               .then((confirm) => {
@@ -851,7 +947,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
          errorSnackbar('Error with upload ' + JSON.stringify(response) )
          this.loadStatus = false;
       },
-      canWeDrop() {
+      fillContentDefaultFile() {
           console.log(this.folderObj)
           let edit = {name: ''
                    , description:''
@@ -870,6 +966,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
         afterSaveData(response) {
             if (this.loadStatus == true) return
             zmlConfig.cl('AfterSaveData:',response);
+            this.curContent = {}
             this.loadData();
             zmlLog(this.getZml.login.username , "EditContent", JSON.stringify(this.edit).substr(0,250))
         },
@@ -927,10 +1024,10 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
              alert('you are not allowed!')
            }
         },
-       async myConfirm(message,folder, nextProc) {
+       async myConfirm(message,passedParameter, nextProc) {
         if (await this.$root.$confirm(message,message ,{ color: 'red' })) {
             console.log('launch payload')
-            nextProc(folder)
+            nextProc(passedParameter)
           } else {
             return
           }

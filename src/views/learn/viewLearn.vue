@@ -1,28 +1,42 @@
 <template>
 <v-layout>
- <v-card>
-   <v-row>
-     <v-col cols="12">
-  <div class="text-center">
+
+ <v-card><v-row><v-col cols="12">
+   <div class="text-center">
      <v-toolbar dark color="primary" dense flat>
         <v-toolbar-title class="white--text">
-           Content for Grade {{ getZml.grade }} - {{ getZml.subject }} .
-           <router-link :to="{name: 'StudentHub', 
+         <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
+          <div>
+             Content for Grade {{ getZml.grade }} - {{ getZml.subject }} 
+          </div>
+          <div>
+           <v-btn :to="{name: 'StudentHub', 
                              params:{currentSubjectID: getZml.subjectid 
                                     ,gradeno: this.getZml.grade },
-                              meta: {layout: 'AppLayoutGray' }}" title="quick test"
+                              meta: {layout: 'AppLayoutGray' }}" 
+                  title="quick test"
+                  color="grey lighten-2"
+                  class="ml-8 pl-4"
+                  x-small
             > test
-           </router-link>.
-           
-           <v-btn small color="grey"> Subjects </v-btn>
+           </v-btn>
+           <v-btn x-small 
+                  color="grey lighten-1"
+                  to="/subjects"
+                  class="ml-8 px-4"
+            > Subjects </v-btn>
+          </div>
+
+         </div>
         </v-toolbar-title>
       </v-toolbar>    
    </div>
      </v-col>
    </v-row>
+
+   <!-- START GRADE AND SUBJECt SELECTION -->
    <v-row>
      <v-col xs-12>
-
        <v-btn v-for="g in groups" :key="g" 
               @click="getZml.grade = g" 
               :color="gradeColor(g)" 
@@ -40,9 +54,10 @@
               small>
           {{ s.name }} 
        </v-btn>
-
      </v-col>
    </v-row>
+
+   <!--   SHOW THE CONTENT -->
    <template v-show="getZml.grade > 0 && getZml.subjectid > 0">
    <google-drive :grade="getZml.grade" :subjectid="getZml.subjectid" />
 

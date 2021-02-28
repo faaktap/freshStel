@@ -24,6 +24,10 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task + "/Grade")
         case "/grade":    //new student start
             return zmlReRoute(tr, task)
+        case "/student": 
+            return zmlReRoute(tr, task)
+        case "/personel": 
+            return zmlReRoute(tr, task)
 
         default:
              //silently go back..

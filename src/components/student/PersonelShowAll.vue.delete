@@ -27,24 +27,22 @@
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
-import { zmlFetch } from '@/api/zmlFetch.js';
+//import { zmlConfig } from '@/api/constants';
+//import { zmlFetch } from '@/api/zmlFetch.js';
 //import PersonelNameCard from '@/components/student/PersonelNameCard.vue'
 export default {
 name: "PersonelShowAll",
 props:{},
-components: {// PersonelNameCard          
+components: {
            },
 data: () => ({
   personelList:null,
-  getZml: getters.getState({ object:"gZml" }),
-
 }),
 methods: {
 
 },
 mounted: function () {
-    console.log('PSA MOUNTED Max=', zmlConfig.maxUploadSize)
+    console.log('PSA MOUNTED Max=')
 }
 
 }

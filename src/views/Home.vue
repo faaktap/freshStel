@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
+<div class="home">
+ <v-container v-if="getZml.login.isAuthenticated==false">
+
     <!--img alt="DKHS" src="img/zmlrekenaars.png">
     <v-btn @click="setAuth"> Login </v-btn-->
 
- 
-
-    <div v-for="hero in heroButtons" 
+     <div v-for="hero in heroButtons" 
               :key="hero.name">
         <hero-section 
             :bgpicture="hero.bgpicture" 
@@ -25,17 +25,64 @@
           </v-card-text>
         </v-card-->
     </div>
+ </v-container>
+
+
+  <v-container v-if="getZml.login.type=='student'">
+  <hero-section name="forDB" 
+               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg" 
+               title="Student's Home" 
+               text="Here you can..."
+               color="deep-purple lighten-2"               
+               />
+  <hr />
+  <student-home />
+
+  </v-container>
+
+
+  <v-container v-show="getZml.login.type=='teacher'">
+  <hero-section name="forDB" 
+               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
+               title="Teacher's Home" 
+               color="indigo darken-2"
+               text="Here you can..."/>
+  <hr />
+  <teacher-home />
+  </v-container>
+
+
+
+
+  <v-container v-show="getZml.login.type=='admin'">
+  <hero-section name="forDB" 
+               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
+               title="Admin's Home" 
+               color="indigo darken-2"
+               text="Here you can..."/>
+  <hr />
+  <admin-home />
+  </v-container>
+
+
+
   </div>
 </template>
 
 <script>
 import { getters } from "@/api/store"
-import HeroSection from "@/views/sections/HeroSection.vue"
 import { doStuff,buttons } from '@/api/buttons'
+import HeroSection from "@/views/sections/HeroSection.vue"
+import TeacherHome from "@/views/home/TeacherHome"
+import StudentHome from "@/views/home/StudentHome"
+import AdminHome from "@/views/home/AdminHome"
 export default {
   name: 'Home',
   components: {
-    HeroSection
+             HeroSection
+           , AdminHome
+           , TeacherHome
+           , StudentHome    
   },
   data: () => ({
     buttons: buttons,
@@ -57,7 +104,6 @@ export default {
       console.log('Auth:',this.getZml.login.isAuthenticated)
        this.getZml.login.isAuthenticated = !this.getZml.login.isAuthenticated 
        console.log('Auth:',this.getZml.login.isAuthenticated)
-       //this.isLoggedOn = true
     },
     doTask(task) {
       /* Boring tasks about router, done in buttons.js */

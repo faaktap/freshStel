@@ -25,8 +25,9 @@ function zmlFetch(task,callback,errcallback) {
             return response.json()
         })  
         .then(responseAsJson => { 
+           //console.log('here we can decompress if return is gzipped, or we can do local callback to save globals?')
            if (callback) callback(responseAsJson,task)
-           console.log('ZF: after fetch callback for ',task.task)
+           //console.log('ZF: after fetch callback for ',task.task)
         })
         .catch(err => {
             if ( typeof errcallback === 'undefined') {

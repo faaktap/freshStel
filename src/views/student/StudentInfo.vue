@@ -12,7 +12,7 @@
   <hr />
   </v-layout>
 
-  <v-container v-show="getZml.login.type=='admin'">
+  <v-container v-if="['admin','teacher'].includes(getZml.login.type)">
 
   <v-card >
       <v-card-title>

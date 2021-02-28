@@ -2,6 +2,74 @@
 <body>
 <pre>
 
+
+<h1> lfunctions </h1>
+A list of functions accessible from our program. Could contain shortcuts/links to other places.
+
+DROP TABLE dkhs_lfunction;
+CREATE TABLE dkhs_lfunction (
+  functionid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  sortorder int(4),
+  functionname varchar(66) NOT NULL,
+  payload varchar(80) NOT NULL,
+  functiontype varchar(10),  
+  functionaccess ENUM('admin','all','other','special','student','teacher'),  
+  tip varchar(180),
+  grade int(11),               
+  icon varchar(32),
+  description text,
+  create_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+insert into dkhs_lfunction 
+ values (null, 100,'Load Student Content'
+                 ,'/viewlearn'
+                 ,'local'
+                 ,'teacher'
+                 ,'Select a grade and subject, and load content for students'                                  
+                 ,null,'mdi-teach',null,null,null)
+insert into dkhs_lfunction 
+ values (null, 101,'Display Student Content'
+                 ,'/grade'
+                 ,'local'
+                 ,'student'
+                 ,'Select a grade and subject, and display content for students'
+                 ,null,'mdi-school',null,null,null)
+insert into dkhs_lfunction 
+ values (null, 102,'Student Lookup'
+                 ,'/student'
+                 ,'local'
+                 ,'admin'
+                 ,'Find details about a student using their surname'
+                 ,null,'mdi-chair-school',null,null,null)
+                 
+insert into dkhs_lfunction 
+ values (null, 103,'Staff Lookup'
+                 ,'/personel'
+                 ,'local'
+                 ,'admin'
+                 ,'Find details about a staff member'
+                 ,null,'mdi-head-outline',null,null,null)
+
+
+
+
+
+
+
+<hr>
+SELECT user, function, min(log_dte), max(log_dte), count(*)
+FROM dkhs_log 
+WHERE referer like '%lear%'
+group by user,function
+
+SELECT l.user, u.user_fullname, user_type, user_grade, min(log_dte), max(log_dte), count(*)
+FROM dkhs_log l, dkhs_learner u
+WHERE referer like '%lear%'
+and l.user = u.user_name
+group by l.user, u.user_fullname, user_type, user_grade
+
 <h1> Display SUBJECTS for LEARNERS </h1>
 Get the count and yougest date on all subject matter for the first screen.
 

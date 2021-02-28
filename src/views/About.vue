@@ -1,30 +1,11 @@
 <template>
 <div>
-  <v-layout v-show="getZml.login.type=='student'">
-  <hero-section name="forDB" 
-               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg" 
-               title="Student's Home" 
-               text="Here you can..."
-               breakup1="255"
-               breakup2="150"
-               color="deep-purple lighten-2"               
-               />
-  <hr />
-  <hero-section />
+  
+<h1>ABOUT</h1>
 
-  </v-layout>
+<hero-section />
 
-  <v-container v-show="getZml.login.type=='teacher'">
-  <v-layout>
-  <hero-section name="forDB" 
-               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
-               title="Teacher's Home" 
-               breakup1="255"
-               breakup2="150"
-               color="indigo darken-2"
-               text="Here you can..."/>
-  <hr />
-  </v-layout>
+<v-container v-show="getZml.login.userid=='1'">
 <v-row><v-col xs12>
 <v-card color="brown lighten-2" class="ma-3 pa-2" @click.self="showMovie = !showMovie">
   Stuff inside the card <v-btn @click="showAudio = !showAudio"> Audio </v-btn>
@@ -88,8 +69,7 @@
   
 
  </v-row>
- </v-container>
-
+  </v-container>
  
 </div>
 </template>

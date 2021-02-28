@@ -93,7 +93,7 @@
       gradient () {
         const color = `${this.$vuetify.theme.themes.light.secondary}CC`
         const overlay = RGBAtoCSS(HexToRGBA(color))
-        console.log('gradien:' , `to top, ${overlay}, ${overlay}`)
+        //console.log('gradien:' , `to top, ${overlay}, ${overlay}`)
         return `to top, ${overlay}, ${overlay}`
       },
       picture () {

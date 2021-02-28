@@ -98,9 +98,12 @@
       </v-col>
     </v-row>
     <v-container>
+
+
+<!-- PROFILE --------------------->      
     <v-dialog v-model="showProfile" :scrollable="false" 
               persistent width="50%" dark
-              fullscreen="$vuetify.breakpoint.smAndDown"
+              :fullscreen="$vuetify.breakpoint.smAndDown"
               >
       <v-row>
         <v-col cols="12">
@@ -111,9 +114,8 @@
 
          <v-text-field 
                v-model="getZml.login.username" 
-               :disabled="getZml.login.userid==0"
-               label="Username" 
-               required />
+               :disabled="getZml.login.userid > 0"
+               label="Username" />
          <v-text-field 
             v-model="getZml.login.password" 
             label="Password" 
@@ -243,8 +245,8 @@ export default {
             this.getZml.login.logins = response.logins;
             this.getZml.login.lastdate = response.lastdate;
             console.log('WHAT IS IN RESPOSE?????', response)
-            if (response.added == 1) {
-              infoSnackbar('Welcome ' + this.getZml.login.name + ', please update your details');
+            if (response.added == 1  || response.password == 'password') {
+              infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
               this.showProfile = 1; 
             } else {
               //router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
@@ -266,6 +268,7 @@ export default {
           }
           this.getZml.subjects = response.subjects;
           this.getZml.folders = response.folders;
+          this.getZml.functions = response.functions;
           console.log('LOADLEARN')
           switch (this.getZml.login.type) {
             case 'student' :
@@ -293,13 +296,14 @@ export default {
             case 'admin' :
             {
               console.log('admin route')
-              router.push({ name: 'StudentInfo' , meta: {layout: "AppLayoutDefault" }});  
+              //router.push({ name: 'StudentInfo' , meta: {layout: "AppLayoutDefault" }});  
+              router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
               break;
             }
             default:
             {
               console.log('default route')
-              router.push({ name: 'StudentInfo' , meta: {layout: "AppLayoutBasic" }});  
+              router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
               break;
             }
           }
@@ -309,6 +313,10 @@ export default {
           alert('Nothing loaded yet (possibly) - error : ' + error);
       },
       startLearning() {
+        if (this.getZml.login.password == 'password' || this.getZml.login.password.length < 3) {
+          errorSnackbar("Your password's to easy! Click on the eye to view and change it")
+          return
+        }
         let ts = {api: zmlConfig.apiDKHS ,task: 'loadlearn'}
         zmlFetch(ts, this.loadLearn, this.loadError);
         zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)
@@ -322,10 +330,10 @@ export default {
         zmlFetch(login,this.doneWithUpdate);
       },
       doneWithUpdate(response) {
-        if (response.error) {
-           infoSnackbar('Your details has been updated ' + response.error)
-        } else {
+        if (response.errorcode == 0 ) {
            infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
+        } else {
+           errorSnackbar('We have a problem to update your details ' + response.error)
         }
       },
       dropAnEmail(){
@@ -348,16 +356,15 @@ export default {
   },
   mounted: function () {
     //Check localstorage...
-    console.log('LOGIN _ MNT')
+    console.log('LOGIN _ MNT - Chk LocalStore')
     if (localStorage.getItem('login')) {
       try { 
-         console.log('FETCH LOGIN _ MNT')
          this.getZml.login = JSON.parse(localStorage.getItem('login'));
       } catch(e) {
         localStorage.removeItem('login')
       }
     }
-    console.log('DONE FETCH LOGIN _ MNT', this.getZml.login.isAuthenticated)
+    console.log('DONE FETCH LOGIN _ MNT Auth=', this.getZml.login.isAuthenticated)
   }
 }
 

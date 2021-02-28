@@ -49,7 +49,7 @@ export default {
 
   computed: {
     searchText() {
-      console.log('method:searchText');
+      //console.log('method:searchText');
       return this.list[0] || ''
     },
     itemDisplay() {
