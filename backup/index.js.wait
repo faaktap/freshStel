@@ -9,28 +9,19 @@ import EmptyRouterView from '@/components/EmptyRouterView'
 
 import login from '@/components/Login'
 
-//import { getters } from "@/api/store"; //not needed, we do not redirect at the moment...
-
 Vue.use(VueRouter)
 
 const la = ["AppLayoutDefault","AppLayoutBasic","AppLayoutBlue","AppLayoutGray"]
 
 const routes = [
-  /*
   { path: '/a', redirect: '/about' },
   { path: '/h', redirect: '/hover' },
   { path: '/1', redirect: { name: 'Werner' }},
-  */
   {
     component: Home, 
     path: '/',  name: 'Home',
     meta: {layout: la[3], authentication: "public"}
   },
-  {
-    component: Home, 
-    path: '/home',  name: 'RealHome',
-    meta: {layout: la[3], authentication: "public"}
-  },  
   {
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     path: '/about', name: 'About',
@@ -79,14 +70,7 @@ const routes = [
               ]
   },
   {
-    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/Grade.vue'),
-    path: '/grade',
-    name: 'Grade',
-    props: true,
-    meta: {layout: la[3], authentication: "learner" }
-  },    
-  {
-    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/SelectGrade.vue'),
+    component: () => import(/* webpackChunkName: "learn" */ '../views/Material.vue'),
     path: '/grade/:gradeno',
     name: 'SelectGrade',
     props: true,
@@ -94,37 +78,13 @@ const routes = [
     meta: {layout: la[3], authentication: "learner" }
   },  
   {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/StudentHub.vue'),
-    path: '/studenthub',
-    name: 'StudentHub',
+    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/platform.vue'),
+    path: '/platform',
+    name: 'Platform',
     props: true,
     params: {currentSubjectID:'2', grade:'12'},
     meta: {layout: la[3], authentication: "learner" }
   },
-  {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/ViewSubjects.vue')
-    ,name: 'ViewSubjects'
-    ,path: '/subjects'
-    ,meta: {layout: la[0], authentication: "public"}
-  },    
-  {
-    component: () => import(/* webpackChunkName: "admin" */ '@/views/student/StudentInfo.vue'),
-    path: '/student',
-    name: 'StudentInfo',
-    meta: {layout: la[3], authentication: "admin" }
-  },  
-  {
-    component: () => import(/* webpackChunkName: "admin" */ '@/views/student/PersonelInfo.vue'),
-    path: '/personel',
-    name: 'PersonelInfo',
-    meta: {layout: la[3], authentication: "admin" }
-  },    
-  {
-    component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewFunctions.vue'),
-    path: '/viewfunctions',
-    name: 'ViewFunctions',
-    meta: {layout: la[3], authentication: "admin" }
-  },      
   {
     path: '/nested',
     component: EmptyRouterView,
@@ -152,13 +112,13 @@ const routes = [
     meta: {layout: la[3], authentication: "public"}
   },
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/RouteTest.vue')
+    component: () => import(/* webpackChunkName: "learn" */ '@/views/RouteTest.vue')
     ,name: 'WernerNoParm'
     ,path: '/werner'
     ,meta: {layout: la[3], authentication: "public"}
   },
   {
-     component: () => import(/* webpackChunkName: "test" */ '@/views/RouteTest.vue')
+     component: () => import(/* webpackChunkName: "learn" */ '@/views/RouteTest.vue')
     ,name: 'Werner'
     ,path: '/werner/:id'
     ,props: true 
@@ -171,64 +131,15 @@ const routes = [
       { path: 'route1/:rid'
         , name: 'Route1'
         , props: true
-        , component: () => import(/* webpackChunkName: "test" */ '@/views/Route1.vue') 
+        , component: () => import(/* webpackChunkName: "learn" */ '@/views/Route1.vue') 
         , meta: {layout: la[3], authentication: "public"}
         , params:{ rid: 120, rpost: "sdfsdfsdfsdfsdf" }
       },
 
       // ...other sub routes
     ]
-  },
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/components/FlexGridStuff.vue')
-    ,name: 'flex'
-    ,path: '/flex'
-    ,meta: {layout: la[0], authentication: "public"}
-  },  
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/awards/AKandidate.vue')
-    ,name: 'AKandidate'
-    ,path: '/a'
-    ,meta: {layout: la[0], authentication: "public"}
-  },      
-  {
-    component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
-    ,name: 'ViewCampaigns'
-    ,path: '/campaigns'
-    ,meta: {layout: la[3], authentication: "public"}
-  },        
-  {
-    component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewVote.vue')
-    ,name: 'ViewVote'
-    ,path: '/candidates/:campaignid'
-    ,props: true
-    ,meta: {layout: la[3], authentication: "public"}
-  },        
-  {
-    component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ApplicantRegister.vue')
-    ,name: 'ApplicantRegister'
-    ,path: '/applicant/:campaignid'
-    ,props: true
-    ,meta: {layout: la[3], authentication: "public"}
-  },        
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/TestExpand.vue')
-    ,name: 'TextExpand'
-    ,path: '/expand'
-    ,meta: {layout: la[0], authentication: "public"}
-  },      
-  {
-    component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewLog.vue')
-    ,name: 'ViewLog'
-    ,path: '/userlist'
-    ,meta: {layout: la[0], authentication: "public"}
-  },
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
-    ,name: 'ErrorPage'
-    ,path: '*'
-    ,meta: {layout: la[3], authentication: "public"}
-  },
+  }
+    
 ]
 
 
@@ -248,16 +159,6 @@ router.beforeEach((to, from,next) => {
       next();
     }
   } else {
-    /*
-    if (to.name == 'Home' ) {
-       if (getters.getState({ object:"gZml" }).login.isAuthenticated == true) {
-            console.log('Logged in : take hime to other home')
-            next({name: 'About'})
-        } else {
-          next();
-        }
-    } else {
-      */
     next();
   }
 });

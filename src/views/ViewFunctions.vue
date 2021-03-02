@@ -197,8 +197,9 @@ export default {
     activated:function() {
         console.log('ACTVI ADMINHME')
     },
-    mount: function() {
+    mounted: function() {
         console.log('MOUNT ADMINHME ITEMS=')
+        this.loadFunctions()
     }
 }
 </script>

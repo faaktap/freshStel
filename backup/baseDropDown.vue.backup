@@ -1,0 +1,77 @@
+<template>
+ <div class="text-left">
+    <v-menu offset-x>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn fab 
+               v-bind="attrs"
+               v-on="on"
+               
+        > 
+        <v-icon large color="green"> mdi-plus   </v-icon> 
+        </v-btn>
+      </template>
+      <v-list>
+        <v-subheader>Add Content</v-subheader>
+        <v-list-item-group
+           color="primary"
+           v-model="selectedItem"
+        >
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+        >
+         <v-list-item-icon> <v-icon> {{ item.icon }} </v-icon></v-list-item-icon>
+           <v-list-item-title> {{ item.title }} </v-list-item-title>
+        </v-list-item>
+       </v-list-item-group>
+      </v-list>
+    </v-menu>
+     Current Folder:  {{ selectedItem}}     
+  </div>
+</template>
+
+<script>
+  export default {
+      name: 'baseDropDown',
+      props: ['items'],
+      data: () => ({
+        selectedItem:'',
+      }),      
+      methods:{
+          //Note, it is IMPORTANT to know what is emitted by your dropdown.
+          //In this case, "change" worked - but it might be different for other components.
+          doClick(e) {
+              console.log('do click',e)
+              this.$emit('input', e)
+          },
+          doFocus(e) {
+              console.log('do focus',e)
+              this.$emit('input', e)
+          },
+          doInput(e) {
+              console.log('do input',e)
+              this.$emit('input', e)
+          },
+          doChange(e) {
+              console.log('on change event = ', e)
+              /*
+              if (e < 0 || e > this.items.length-1 || !e )  {
+                  console.log('A click was not right in the middle of last one? Else you clicked on same one!',e)
+                  return
+              }
+              console.log('do Change: evt=', e, 'itemlen=',this.items.length, 'curitem=',this.items[e].title)
+              this.$emit('input', this.items[e].title)
+              */
+          }
+      },
+      watch:{
+          selectedItem(n,o){
+              console.log('wath: new=', o, 'old=',n)
+              if (o != n && this.items[n].title) {
+                  this.$emit('input', this.items[n].title)
+              }
+              //this.selectedItem = null
+          }
+      }
+  }
+</script>

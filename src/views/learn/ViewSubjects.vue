@@ -1,8 +1,10 @@
 <template>
   <v-container>
    <v-row><v-col cols="12">
+     <v-card class="ma-2 text-center" >
      <h1> School Subjects </h1>
-        
+     </v-card>
+
     <v-card class="mx-auto">
        <v-container>
          <v-layout>
@@ -80,8 +82,6 @@
     </v-card-actions>
   </v-card>
 </v-dialog>   
-
-{{ getZml.subjects }}
   </v-container>   
 </template>
 

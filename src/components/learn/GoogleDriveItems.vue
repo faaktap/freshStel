@@ -47,11 +47,11 @@ export default {
     props:['folderObj', 'itemList'],
     methods:{
         contentProperties(c) {
-            console.log('emitting contentP')
+            //console.log('emitting contentP',c)
             this.$emit('contentProperties',c)
         },
         iconClick(c) {
-            console.log('emitting iconClic')
+            //console.log('emitting iconClic',c)
             this.$emit('iconClick',c)
         },
         chipColor(ctype) {
@@ -60,7 +60,6 @@ export default {
             if (ctype == 'text') return "grey lighten-5"
             return "deep-orange accent-4"
         },
-
     }
 }
 </script>

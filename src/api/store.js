@@ -19,7 +19,8 @@ const state = Vue.observable({
            subjectid: '',
            subjects: [],
            folders: [],
-           functions: [],           
+           functions: [], 
+           voteList:[],          
            locale: 'af',
            atester: false,
           }

@@ -21,6 +21,8 @@
     </v-col>
     <v-col xs-12 lg-6 >
      <v-layout row wrap>
+      
+     
       <v-flex class="pt-3"> 
        <v-btn-toggle v-model="toggle_button_state">
          <v-btn small  @click = "filter='*'" :loading="loadStatus" title="Show Folders"> 
@@ -38,11 +40,17 @@
          </v-btn-toggle>
       </v-flex>
 
-      <v-flex>
-            <v-text-field small label="Search" v-model="search" :loading="loadSearchStatus" />
-      </v-flex>
 
-    </v-layout>
+         <v-flex>
+            <v-text-field small label="Search" v-model="search" :loading="loadSearchStatus" />
+         </v-flex>
+        <v-flex>
+         <v-btn small @click="loadData()" :loading="loadStatus" title="Refresh">
+          <v-icon>R</v-icon>efresh
+         </v-btn>
+        </v-flex>
+
+        </v-layout>
     </v-col>
     </v-row>
 
@@ -57,8 +65,11 @@
     </v-col>
     </v-row>
 
+<!-- list our NEW content -->
+
+{{ xxxfilterByContent }}
     <v-container fluid class="ma-2 mt-3" >
-      <v-layout row wrap>
+       <v-layout row wrap>
         <v-flex 
          v-for="item in filterByContent" :key="item.itemid"
          flex-row
@@ -68,13 +79,91 @@
           <template v-if="item.type=='folder'">
             <student-folder-display @btn-click="showItem(item)" :item="item" />
           </template>
- 
+
           <template v-else>
            <student-item-display :btnFace="item.name" :icon="item.icon" :item="item" />
           </template>
         </v-flex>
-      </v-layout>
+       </v-layout>
     </v-container>
+
+<!-- LIST OUR CONTENT -->  
+<!--  
+    <v-container fluid class="ma-2 mt-3" >
+       <v-layout row wrap>
+        <v-flex 
+         v-for="item in filterByContent" :key="item.itemid"
+         flex-row
+         justify-space-around
+         xs-12
+         >
+         
+         
+     <v-row justify="center" class="fill-height" xalign="stretch">
+        <v-col>
+         <v-hover v-slot:default="{ hover }">
+         <v-card  min-width="300" 
+                  xmin-height="100"
+                  :elevation="hover ? 12 : 2"
+                  :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+            dense
+            class= "ma-2"
+            color="deep-purple lighten-5"                  
+         >
+-->
+<!--ICON HANDLING FOR TITLE DISPLAY-->
+<!--
+    <v-card-title>   
+      <v-btn small 
+             icon
+             :title="item.type"
+             @click=showItem(item)>
+             
+        <template v-if="item.type=='link'">
+          <v-icon color="amber lighten-2"> mdi-link </v-icon>
+        </template>
+        <template v-if="item.type=='file'">
+           <v-icon :color="item.description|extColor" > {{ item.description | extIcon }} </v-icon> 
+        </template>
+        <template v-if="item.type=='folder'" class="display-1">
+          <v-icon :color="col(item.type)"> {{item.icon}} </v-icon>
+        </template>
+        <template v-if="item.type=='text'" class="display-1">
+          <v-icon :color="col(item.type)"> {{item.icon}} </v-icon>
+        </template>
+      </v-btn> 
+-->
+<!---TITLE DISPLAY -->
+<!--
+          <div>    {{ item.name }}    
+           <v-icon x-small :title="item.description">     {{ item.folder }} </v-icon> 
+          </div>
+
+            <v-spacer/>
+              <v-badge class="text-center" :value="bhover" 
+                      :color="item.days | icn"
+                      :content="item.days + 'day(s) ago'"
+                      left  transition="slide-x-transition"> 
+               <v-hover v-model="bhover">
+                <v-icon :color="item.days | icn"> mdi-timelapse </v-icon> 
+               </v-hover>
+              </v-badge>
+          <v-btn v-if="item.type != 'text'"
+                    icon
+                    :title="item.type"
+                    @click=displayItem(item)>
+                      <v-icon icon color="deep-purple"> mdi-file-download-outline </v-icon> 
+             </v-btn>
+
+         </v-card-title>
+         </v-card>
+         </v-hover>
+        </v-col>
+     </v-row>
+        </v-flex>
+       </v-layout>
+    </v-container>
+    -->
 </v-sheet>
 
 
@@ -111,8 +200,11 @@ export default {
     components: {StudentItemDisplay, StudentFolderDisplay},
     props: {  },
     data: () => ({
+        flexToolbar: false,
         getZml: getters.getState({ object: "gZml" }),
         toggle_button_state:null,
+        hover:null,
+        bhover:null,
         showTextDialog:false,
         showNoInfoDialog:false,
         theItem:{},
@@ -132,6 +224,40 @@ export default {
     activated: function () {
     },
     methods:{
+        zmltest() {
+          if (this.currentImage == '') {
+            this.currentImage="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=20003"
+            this.showViewerDialog = true
+          } else {
+             this.currentImage=''
+             this.showViewerDialog = false
+          }
+          //this.showEdit = false
+        },
+        onLoad(e) {
+            console.log('friendy iframe', e)
+        },
+        col(type) {
+            switch (type) {
+                case 'folder': return "purple"
+                case 'link': return "green"
+                case 'text': return "red"
+                case 'file': return "pink darken-2"
+            }
+            return "pink lighten-1"
+        },
+        filterChange() {
+           if (this.filter == '') {
+               this.filter = '*'
+           } else {
+               this.filter = ''
+           }
+        },
+        subjectChanged(stuff) {
+            this.getZml.subjectid = stuff.subjectid
+            this.getZml.subject = stuff.subjectafrname
+            this.loadData()
+        },
         loadSubjects(response) {
           this.loadStatus = false
           this.getZml.subjects = response
@@ -191,15 +317,14 @@ export default {
         },
 //------------------------------ShowItem and DisplayItem - one in window, one outside
         showItem(curitem) {
+          console.log('Show item inside', curitem.type, curitem)
           switch (curitem.type) {
             case 'text': 
               this.theItem = curitem
               this.showTextDialog = true
               break
-            case 'folder':      
-              console.log('clicked on folder : ', this.filter)       
-              //this.filter = curitem.folder
-              this.filter = curitem.name
+            case 'folder':             
+              this.filter = curitem.folder
               break
             case 'link':
               console.log('OPENING LINK : ' , curitem.description)
@@ -340,18 +465,7 @@ export default {
                 return this.contents.filter(a => a.type == 'text')
               }
               if (this.filter.length > 1)  {
-                  console.log('start with ', this.filter)
-                  let arr = []
-                  this.contents.forEach((a, index) => {
-                    console.log(a.folder, '==', this.filter, '&&', a.type, '!= folder', index)
-                    if (a.folder == this.filter ) {
-                       if (a.name != this.filter ) arr.push(this.contents[index])
-                    } else {
-                       //skip
-                    }
-                  })
-                  console.log('we have :', arr.length, ' for ', this.filter)
-                  return arr;
+                  return this.contents.filter(a => a.folder == this.filter && a.type != 'folder')
               }
             } else {
                 let result = []

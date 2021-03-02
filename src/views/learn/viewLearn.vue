@@ -60,13 +60,16 @@
    <!--   SHOW THE CONTENT -->
    <template v-show="getZml.grade > 0 && getZml.subjectid > 0">
    <google-drive :grade="getZml.grade" :subjectid="getZml.subjectid" />
-
-   <template v-if="getZml.login.userid == 1">
-   <view-content :grade="getZml.grade" :subjectid="getZml.subjectid" />
    </template>
+   
 
-   </template>
  </v-card>
+
+ xxxxxxxxxxxxxx
+<template v-if="getZml.login.user == 'werner'">
+  yyyyyyyyyyyyyyy
+<view-content :grade="getZml.grade" :subjectid="getZml.subjectid" />
+</template>
 
 </v-layout>
 </template>

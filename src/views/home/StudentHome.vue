@@ -115,8 +115,9 @@ export default {
            this.getZml.functions = response
         }
     },
-    mount: function() {
+    mounted: function() {
         console.log('MOUNT ADMINHME ITEMS=')
+        this.loadFunctions();
     }
 }
 </script>
