@@ -18,6 +18,9 @@
     </v-toolbar-title>
 </v-toolbar>
  
+      <menu-list :list="menuFilterList" 
+     /> 
+
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
        <v-container v-if="getZml.login.isAuthenticated">
         <v-row>
@@ -31,7 +34,9 @@
                     {{ menu.functionname }}
                 </v-card-title>
                 <v-card-text>
+                  <div v-if="!$vuetify.breakpoint.smAndDown">
                     {{ menu.tip }}
+                  </div>
                 </v-card-text>
              <v-card-actions>
               <zml-button-tool 
@@ -62,24 +67,27 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import zmlButtonTool from '@/components/zmlButtonTool'
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList.vue';
-
+import MenuList from '@/components/MenuList.vue';
 export default {
     name:"StudentHome",
-    components:{zmlButtonTool, EmailList},
+    components:{zmlButtonTool, EmailList, MenuList},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          cards: ['Today', 'Yesterday'],
     }),
     computed:{
-       functionFilter() {
-        let res = []         
-        this.getZml.functions.forEach(ele => {
-          if (ele.functionaccess == 'student') {
-               res.push(ele);
-          }
-        })
-        return res
-       }
+       menuFilterList() {
+            if (!this.getZml) return 0;
+            return this.getZml.functions.filter(a => function()
+            {
+                if (a.accesstype == this.getZml.login.type)
+                    return 1
+                else
+                    return 0
+
+                }
+            )
+        }
     },
     methods:{
        cardColor(type) {

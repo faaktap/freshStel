@@ -59,7 +59,7 @@
 
 <!-- ALLOW INSERT IF STATUS IS OPEN -->      
       <v-col xs12 v-if="curCam.status=='open'">
-        <v-btn @click="insertCandidate" class="mb-6 pa-5">
+        <v-btn @click="insertCandidate" class="mb-5 pa-1">
             <v-icon large color="grey lighten-1">mdi-badge-account-outline</v-icon> Add Yourself as Candidate
         </v-btn>
       </v-col>
@@ -186,6 +186,7 @@ export default {
         this.getZml.voteList = [];
         this.getZml.seniorList = [];
       }
+      console.log('fetching candidates')
       zmlFetch({task: 'getCandidates', data: {campaignid: this.campaignid} }
                , this.loadItems
                , this.loadItemError);
@@ -205,7 +206,9 @@ export default {
         });
         //this.gradeItems = response.grades;
         response.grades.forEach(item => { 
-          this.gradeItems.push(item.gradename);
+          //if (item.gradename != 'G07') {
+           this.gradeItems.push(item.gradename);
+          //}
         });
         //this.gradeItems = [...new Set(this.gradeItems.sort())];
         this.theGrades = this.gradeItems;

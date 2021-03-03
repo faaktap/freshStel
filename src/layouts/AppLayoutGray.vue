@@ -10,18 +10,7 @@
    <div class="d-none d-lg-block">
    <v-footer app>
     <v-row v-if="showFooter">
-     <!--v-col cols="6">
-      <v-card color="grey lighten-3" align="center" class="ml-0 mr-0 pt-0 mb-0 fill-height" max-height="45">
-      <v-img src="img/logo.png" width="20" height="20" /> 
-           <h4 class="pt-2 pb-4 green--text">
-             De Kuilen High School Social Links
-           </h4> 
-        
-      </v-card>
-     </v-col>
-
-     <v-col cols="6"-->
-       <v-col cols="12">
+      <v-col cols="12">
       <v-card color="grey lighten-3" align="center" class="pt-1 pb-1 ml-0">         
 
         <v-btn x-small class="mx-3" dark icon bottom color="green darken-7" small href="https://www.dekuilen.com" target="_blank">

@@ -18,38 +18,17 @@
     </v-toolbar-title>
 </v-toolbar>
  
- 
-
-      <v-container v-if="getZml.login.isAuthenticated">
-        <v-row>
-          <v-col
-            v-for="menu in getZml.functions"
-            :key="menu.functionid"
-            cols="4"
-          >
-            <v-card height="200" :color="cardColor(menu.functionaccess)" >
-                <v-card-title>
-                    {{ menu.functionname }}
-                </v-card-title>
-                <v-card-text>
-                    {{ menu.tip }}
-                </v-card-text>
-             <v-card-actions>
-              <zml-button-tool 
-                 bottom 
-                :btnFace="menu.shortname" 
-                color="primary" 
-                :toolTip="menu.tip"
-                :icon="menu.icon"
-              @clicked="click(menu)" /> <small> ( {{menu.functionaccess}}) </small>
-             </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+     <menu-list :list="menuFilterList" 
+     /> 
 
       <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
         <v-btn to="/viewfunctions"> only for werner </v-btn>
+        <br>
+        xs={{$vuetify.breakpoint.xs}} <br>
+        sm={{$vuetify.breakpoint.sm}}<br>
+        md={{$vuetify.breakpoint.md}}<br>
+        lg={{$vuetify.breakpoint.lg}}<br>
+        xl={{$vuetify.breakpoint.xl}}<br>
         <email-list />
       </div>
 </div>
@@ -60,18 +39,29 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
-import zmlButtonTool from '@/components/zmlButtonTool'
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList.vue';
+import MenuList from '@/components/MenuList.vue';
 export default {
     name:"AdminHome",
-    components:{zmlButtonTool, EmailList},
+    components:{EmailList, MenuList},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          cards: ['Today', 'Yesterday'],
     }),
     computed:{
+        menuFilterList() {
+            if (!this.getZml) return 0;
+            return this.getZml.functions.filter(a => function()
+            {
+                if (a.accesstype == this.getZml.login.type)
+                    return 1
+                else
+                    return 0
 
+                }
+            )
+        }
     },
     methods:{
        cardColor(type) {

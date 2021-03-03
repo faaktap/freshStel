@@ -1,12 +1,49 @@
 <template>
 <div>
-<v-container v-if="getZml.login.isAuthenticated">
+   <!-- {{ campaigns }} {{ getZml.login}}  -->
+<v-container>
+  <v-card class="ma-2">
+    <v-card-title>
+     <h1> Current and Historic Campaigns </h1>
+    </v-card-title>
+    <v-card-text>
+      <p>Hi <strong>{{ getZml.login.fullname }}</strong>, you can view candidates and add yourself as a candidate
+      if one of the buttons below is enabled. </p>
+      <p> If you add yourself as candidate, make sure your name and surname is correct. You are allowed to change it.
+        Upload your foto, and if video uploading is not working, you can 
+        <ul>
+          <li>Leave a flashdisk at reception with your video.</li>
+          <li>Whatsapp the video to Werner @ 082 563 9790</li>
+          <li>Email the video to werner@zmlrekenaars.co.za</li>
+          <li>Ask someone to help you</li>
+        </ul>
+        <v-spacer /><br />
+        ps. If you are not happy with your photo, you can re-upload it anytime.
+</p>
+    </v-card-text>
+    <v-card-actions>
+  <v-btn v-for="c in campaigns" 
+        :key="c.campaignid" 
+        class="ma-2" 
+        :disabled="c.status=='closed'"
+        :tip="c.campaignname + ' is ' + c.status"
+        @click.stop=" onButtonClick('Show Campaign',c) "
+        >
+        <v-icon> {{ c.icon }} </v-icon>
+    {{ c.campaignname }} 
+  </v-btn>
+  </v-card-actions>
+  </v-card>
+
+</v-container>
+
+<v-container v-if="getZml.login.isAuthenticated && getZml.login.type!='student'">
  
  <v-toolbar color="primary">
     <v-toolbar-title> 
       <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
        <div>
-         View Campaigns 
+         View Campaigns (only teachers and admin see this)
        </div>
        <div>
         <v-btn   small 
@@ -201,7 +238,7 @@ export default {
       loadCampaigns() {
            this.showCampaignUpdate = false
            let ts = {}; 
-           ts.task = 'GetCandidates'
+           ts.task = 'LoadCampaigns'
            ts.data = this.curCam
            zmlFetch(ts, this.showData, this.loadError)
       },

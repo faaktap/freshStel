@@ -224,6 +224,12 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/test/test.vue')
+    ,name: 'testUpload'
+    ,path: '/test'
+    ,meta: {layout: la[0], authentication: "public"}
+  },  
+  {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
     ,path: '*'

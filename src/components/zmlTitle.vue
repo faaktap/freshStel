@@ -3,7 +3,7 @@
     <v-hover v-slot:default="{ hover }" open-delay="200">
     <v-btn :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
-            @click="titleDialog = !titleDialog"
+            @click="goHome()"
             class="ma-2"
     > 
     <v-spacer />
@@ -59,6 +59,13 @@ export default {
     toolbars:['login','tool','test'],
   }),
   methods:{
+    goHome() {
+      //titleDialog = !titleDialog
+      if (this.$router.currentRoute.path !== "/") {
+            this.$router.push('/') 
+      }
+
+    },
       about() {
         if (this.$router.currentRoute.path !== "/about") {
             this.$router.push('/about') 

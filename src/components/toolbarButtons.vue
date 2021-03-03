@@ -9,23 +9,27 @@
 -->
 <template>
  <div>
+<!--  m= {{ $vuetify.breakpoint.mobile }} sm={{ $vuetify.breakpoint.smAndDown }} xs={{ $vuetify.breakpoint.xsAndDown }} -->
     <template v-if="menuDisplay == 'horizontal'">
-      <div class="d-none d-lg-block">
-      <v-btn v-for="btn in buttons[buttonGroup[0]]" 
+      <!--div class="d-none d-lg-block"-->
+      
+      <v-btn v-for="btn in buttons[ buttonGroup[0] ]" 
             :key="btn.btn" 
             class="ma-2"
-            :small="$vuetify.breakpoint.smAndDown == true"
+            :x-small="$vuetify.breakpoint.xsAndDown == true"
             :title="btnTip(btn)" 
             @click="doTask(btn.func)" 
             v-show="!btn.optional == 1"> 
 
-        <v-icon>{{ btn.icon }}</v-icon>
-        <div v-if="!$vuetify.breakpoint.smAndDown">
+        <v-icon :x-small="$vuetify.breakpoint.xsAndDown == true">
+          {{ btn.icon }}
+        </v-icon>
+        <div v-if="$vuetify.breakpoint.xsAndDown">
           {{ btnText(btn.btn) }}
         </div>
 
       </v-btn>
-      </div>
+      <!--/div-->
     </template>
     <template v-if="menuDisplay == 'vertical'">
      <v-list color="primary">

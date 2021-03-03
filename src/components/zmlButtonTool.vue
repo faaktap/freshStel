@@ -6,8 +6,8 @@
            small
            class="ma-2 pa-2"
           @click="$emit('clicked')">
-          <v-icon v-if="icon"> {{ icon }} </v-icon>  {{ btnFace }}
-    </v-btn>
+          <v-icon small v-if="icon && $vuetify.breakpoint.xs == false"> {{ icon }} </v-icon>  {{ btnFace }}
+    </v-btn> {{ $vuetify.breakpoint.xs }}
   </template>
   <span>{{ toolTip }}</span>
   </v-tooltip>

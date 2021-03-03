@@ -4,7 +4,7 @@
  "tool": [{ "btn":"home"     ,"tip":"1"                  ,"func":"/"           ,"icon":"mdi-home","optional":0,"acc":"all"}
          
          ,{ "btn":"teacher"  ,"tip":"4 teachers"         ,"func":"/viewlearn"  ,"icon":"mdi-teach","optional":0,"acc":"teacher"}
-         ,{ "btn":"viewcats" ,"tip":"testitemview"       ,"func":"/grade"   ,"icon":"mdi-broom","optional":0,"acc":"all"}
+         ,{ "btn":"viewcats" ,"tip":"testitemview"       ,"func":"/grade"   ,"icon":"mdi-school","optional":0,"acc":"all"}
          ,{ "btn":"tHover"   ,"tip":"3"                  ,"func":"/hover"      ,"icon":"mdi-shovel","optional":1,"acc":"all"}
          ,{ "btn":"translate","tip":"translation testers","func":"/translate"  ,"icon":"mdi-test-tube","optional":1,"acc":"all"}
          ,{ "btn":"help"     ,"tip":"4"                  ,"func":"/help"       ,"icon":"mdi-help","optional":1,"acc":"all"}
