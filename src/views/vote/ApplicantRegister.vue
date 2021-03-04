@@ -18,7 +18,7 @@
     <v-text-field
       v-model="IDNo"
       label="IDNo"
-      disabled
+      :disabled="!(getZml.login.username=='werner')"
     ></v-text-field>
 
     <v-text-field
@@ -37,13 +37,14 @@
       label="E-mail"
       required
     ></v-text-field>
-       <v-img :src=oldPhoto
-          max-height=100
+       <v-img :src="oldPhoto + '?k-'+Math.random()"
+          max-height=200
           contain> </v-img> 
   </v-form>
  </v-col>
  <v-col>
 {{ studdata.studentid }} - {{ studdata.grade }}{{ studdata.gclass }} <br>
+<v-card color="grey lighten-1" class="ma-2">
   <image-uploader :debug="1" 
         :preview="true"
         :className="['fileinput', { 'fileinput--loaded': hasImage }]"
@@ -68,6 +69,14 @@
           <span class="upload-caption">{{ hasImage ? "OR Replace" : "OR Click to select a photo"}}</span>
         </v-label>
    </image-uploader>
+</v-card>
+   <v-card v-if="campaignid" color="grey lighten-2" class="ma-2">
+     <video-uploader @fileUploaded="receiveResponse" 
+                     titleMessage="Select Video" 
+                     :extraPath="'/Test/werner/' + campaignid"
+                     :triggerUpload="startVideoUpload"
+     />
+   </v-card>
 
  </v-col>
 </v-row>
@@ -89,10 +98,11 @@
 import ImageUploader from 'vue-image-upload-resize';
 import { getters } from "@/api/store";   
 import { zmlFetch } from '@/api/zmlFetch';
+import VideoUploader from '@/test/VideoUploader';
 
 export default {
   name: "Home",
-  components: {ImageUploader},
+  components: {ImageUploader, VideoUploader},
   props:['campaignid'],
   data() {
     return {
@@ -104,7 +114,9 @@ export default {
       hasImage: false,
       image: null,
       oldPhoto: "https://kuiliesonline.co.za/dkhs.jpg",
+      currentPhoto: '',
       studdata:{},
+      startVideoUpload:false,
     };
   },
   methods: {
@@ -116,9 +128,38 @@ export default {
       console.log('All', output)
     },
     doit() {
-        if (this.IDNo.length !== 13) {alert('ID Must be 13 Characters / ID moet 13 wees');return;}
-        if (this.hasImage == false) {alert('waar is foto?'); return;}
-        let task = {method: "savecandidatedata",
+      if (!this.currentPhoto) {
+         if (this.hasImage == false) {alert('waar is foto?'); return;}
+      }
+      if (this.IDNo.length !== 13) {alert('ID Must be 13 Characters / ID moet 13 wees');return;}
+      if (!this.EMail) {alert('we need a email as well please!') ; return; }
+      this.startVideoUpload += 1
+    },
+    receiveResponse(response) {
+      console.log('RESPONSE FROM videoUploader:' , response)
+      if (response.fileName.length > 0) {
+        this.doUpdate(response.fileName)
+      } else {
+        // no video - proceed silently to save 
+        this.doUpdate('')
+      }
+    },
+    doUpdate(video) {
+      let task = {}
+        if (this.currentPhoto && !this.image.dataUrl) {
+           task = {method: "savecandidatedata",
+                    foto: this.currentPhoto, 
+                    deliveryid: this.campaignid ,
+                    campaignid: this.campaignid ,
+                    idno: this.IDNo ,                    
+                    realName: this.IDNo,
+                    firstname: this.Firstname,
+                    surname: this.Surname,
+                    email: this.EMail,
+                    video: video 
+                    };
+        } else {
+          task = {method: "savecandidatedata",
                     base64: this.image.dataUrl, 
                     deliveryid: this.campaignid ,
                     campaignid: this.campaignid ,
@@ -127,7 +168,11 @@ export default {
                     firstname: this.Firstname,
                     surname: this.Surname,
                     email: this.EMail,
+                    video: video,
                     ext: "jpg"};
+
+        }
+        console.log('ApplicantRegister:stuff we pass to update or add',task)
         zmlFetch(task,this.resultFunc);
     },
     resultFunc(result) {
@@ -139,8 +184,13 @@ export default {
         }
     },
     fetchID() {
+      if (this.IDNo) {
         let task = {method: "getid", idno: this.IDNo} //9912025105088
-        zmlFetch(task,this.displayData);
+        zmlFetch(task,this.displayData, this.errorLoad);
+      }
+    },
+    errorLoad(response) {
+         console.log('error on getid:', response) 
     },
     displayData(result) {
         this.studdata = result[0]
@@ -149,8 +199,10 @@ export default {
             this.Surname = result[0].surname;
             this.EMail = result[0].email;
             this.IDNo = result[0].idno;
-            //if (result[0].foto)  this.oldPhoto = 'https://kuiliesonline.co.za/dkhs/data/'+ this.campaignid + '/' + result[0].foto;
-            if (result[0].foto)  this.oldPhoto = 'https://kuiliesonline.co.za/' + result[0].foto;
+            if (result[0].foto) {
+               this.oldPhoto = 'https://kuiliesonline.co.za/' + result[0].foto;
+               this.currentPhoto = result[0].foto;
+            }
         } else {
             alert('error on getting data:' + result.error);
             this.IDNo = '';
@@ -158,15 +210,20 @@ export default {
     },
     loadApplicantDetails() {
       //We have the studentno, so we first feth the id...
-      let ts = {}
-      ts.task = 'PlainSql'
-      ts.sql = "select * from dkhs_student "
+      if (this.getZml.login.studentid) {
+         let ts = {}
+         ts.task = 'PlainSql'
+         ts.sql = "select * from dkhs_student "
              + " where studentid = " + this.getZml.login.studentid
-      zmlFetch(ts, this.loadID);      
-            
+         zmlFetch(ts, this.loadID, this.errorLoad);      
+      }
     },
     loadID(result) {
       //then we read from rvlselect...
+      console.log('result on LoadID = ', result)
+      if (!Array.isArray(result)) {
+          this.$router.go(-1)
+      } 
       this.IDNo = result[0].idno
       this.fetchID()
     }
@@ -174,7 +231,7 @@ export default {
   mounted: function () {
     //here we need to get the details of the student and fill it in here.
     //if we cannot find it, we check if it is ANOTHER student and then do not allow to save.
-      this.loadApplicantDetails()
+      if (this.campaignid) this.loadApplicantDetails()
   },
     watch:{
     }

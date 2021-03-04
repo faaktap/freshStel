@@ -17,9 +17,14 @@
           <v-spacer></v-spacer>
 
           <br>
-          <v-img :src="theItem.foto + '?x-1'" max-height=240px contain class="ma-1">
+          <v-img :src="theItem.foto + '?x-'+Math.random()" max-height=240px contain class="ma-1">
             <div v-if="hover">
-              <v-btn v-if="theItem.video" :href="'data/' + theItem.video" target="video" fab left absolute title="video">
+              <v-btn v-if="theItem.video" 
+                    :href="theItem.video"
+                     target="video" fab 
+                     left 
+                     absolute 
+                     :title="theItem.video">
                <v-icon large color="green lighten-1"> mdi-video</v-icon>
               </v-btn>          
 

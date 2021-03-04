@@ -16,7 +16,7 @@ function addToQueue(receivedFiles,fileList) {
   console.log('resolve 1 was launched')
   let problemFiles = 0
   receivedFiles.forEach(file => {
-    if (file.size > 1024*1024*1024)  {
+    if (file.size > 92*1024*1024)  {
       file.ignore = true
       problemFiles += 1
     } else {
@@ -37,6 +37,8 @@ function addToQueue(receivedFiles,fileList) {
     }
 
     if (file.ignore == false) {
+       file.ext = file.name.split('.').pop().toLowerCase()
+       file.realname = file.name
        fileList.push(file);
     }
   })

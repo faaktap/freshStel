@@ -29,12 +29,12 @@
       color="grey darken-2"
     ></v-progress-linear>
     <v-layout>
-        <v-flex>
+  <!--v-flex>
     <div v-if="files.length"> 
         <v-btn @click="initiateUpload" :disabled="busy"> start upload </v-btn>
         Click Start upload, to process these files
     </div>
-    </v-flex>    
+    </v-flex-->    
     <v-flex>    
     <table border=1 v-for="f in files" :key="f.name" color="blue lighten-1">
         <tr><td width=70%>{{ f.name }}</td><td> {{ f.size | kb }} </td> <td> {{f.ext}} </td></tr>
@@ -55,16 +55,26 @@
 </template>
 
 <script>
+/*
+<video-uploader @fileUploaded="receiveResponse" 
+                titleMessage="select video" 
+                extraPath="/Test/werner"
+                >
+*/
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
 import { makeAWait, uploadFiles, addToQueue } from './fileUploadHelper.js'
 import { infoSnackbar } from '@/api/GlobalActions';
   export default {
-    name: "test",
-    props: [],
+    name: "VideoUploader",
+    props: ['titleMessage','extraPath','triggerUpload'],
+    /*
+    props: [{ titleMessage: { type: String, default: "Drop your file here" }},
+            { extraPath:    { type: String, default: "/Test/werner"}},
+           ],
+           */
     components: {},
     data: () => ({
-        titleMessage: "Drop your file(s) here",
         files:[],
         inputFiles:null,
         busy:false,
@@ -80,9 +90,14 @@ import { infoSnackbar } from '@/api/GlobalActions';
     },
     methods:{
       async addSingleFile(e) {
-        console.log('addFile', e)
+          //only allowed to upload one file
+        this.files = []
         if (!e) {
             infoSnackbar('First select a file')
+            return
+        }
+        if (!this.extraPath){
+            infoSnackbar('We need a place to put it!')
             return
         }
         let cheatArray = []
@@ -91,13 +106,14 @@ import { infoSnackbar } from '@/api/GlobalActions';
         this.inputFiles = null
       },
       async addFile(e) {
-          console.log('addFile', e)
+          //only allowed to upload one file
+        this.files = []
         await makeAWait(1000,addToQueue,e.dataTransfer.files, this.files)
       },
 
       async initiateUpload() {
         if (this.files.length == 0){
-            infoSnackbar('Please drag some files to blue box before doing this.')
+            this.$emit('fileUploaded', {fileName:''})
             return
         }
         this.busy = true
@@ -121,7 +137,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
       },
       startUpload(fileData, fdet) {
          let trans = {}
-         trans.extrapath =  "/Test/werner"
+         trans.extrapath =  this.extraPath
          trans.name = fdet.name
          trans.realname = fdet.name
          trans.prebase64 = fileData.target.result.split(',')[0];
@@ -137,6 +153,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
            console.log('Done with upload - but filename is missing?' , response  )
            return
         }
+        this.$emit('fileUploaded', response)
         //
         //do whatever you want to do after the upload.... and then delete file from list
         //
@@ -157,7 +174,11 @@ import { infoSnackbar } from '@/api/GlobalActions';
       }
     },
     watch:{
-        
+        triggerUpload(n) {
+            if (n != false) {
+                this.initiateUpload() 
+            }
+        },
         inputFiles(n) {
             if (n) {
                 this.addSingleFile(n)

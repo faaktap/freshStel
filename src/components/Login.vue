@@ -1,7 +1,8 @@
 <template>
  <v-container>
+   xxx =  {{ $route.to }}
   <v-row class="justify-center"  align="center" justify-center>
-   
+  
     <v-col v-if="getZml.login.isAuthenticated" 
            class="mx-auto my-12">
      <v-card max-width="500"
@@ -356,7 +357,7 @@ export default {
   },
   mounted: function () {
     //Check localstorage...
-    console.log('LOGIN _ MNT - Chk LocalStore')
+    console.log('LOGIN _ MNT - Chk LocalStore', this.$route)
     if (localStorage.getItem('login')) {
       try { 
          this.getZml.login = JSON.parse(localStorage.getItem('login'));

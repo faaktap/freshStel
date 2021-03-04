@@ -88,6 +88,7 @@
 
     </v-flex>
    </v-layout>  
+   <v-btn @click="refreshCandidates"> Refresh </v-btn>
   </v-container>   
  </div>
 </template>
@@ -177,9 +178,14 @@ export default {
     toTop () {
       this.$vuetify.goTo(0)
     },
+    refreshCandidates() {
+      this.forceReload == true
+      this.loadOurCandidates()
+    },
     loadOurCandidates() {
       if (this.forceReload == true) {
         this.candidateList = [];
+        this.gradeItems = [];
       }
       if (!this.candidateList.length) {
         this.candidateList = [];        
@@ -205,6 +211,7 @@ export default {
           if (item.video) item.video = zmlConfig.videoPath + item.video;
         });
         //this.gradeItems = response.grades;
+        this.theGrades = []
         response.grades.forEach(item => { 
           //if (item.gradename != 'G07') {
            this.gradeItems.push(item.gradename);

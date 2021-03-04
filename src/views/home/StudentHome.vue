@@ -22,36 +22,7 @@
      /> 
 
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
-       <v-container v-if="getZml.login.isAuthenticated">
-        <v-row>
-          <v-col
-            v-for="menu in functionFilter"
-            :key="menu.functionid"
-            cols="4"
-          >
-            <v-card height="200" :color="cardColor(menu.functionaccess)" >
-                <v-card-title>
-                    {{ menu.functionname }}
-                </v-card-title>
-                <v-card-text>
-                  <div v-if="!$vuetify.breakpoint.smAndDown">
-                    {{ menu.tip }}
-                  </div>
-                </v-card-text>
-             <v-card-actions>
-              <zml-button-tool 
-                 bottom 
-                :btnFace="menu.shortname" 
-                color="primary" 
-                :toolTip="menu.tip"
-                :icon="menu.icon"
-              @clicked="click(menu)" /> <small> ( {{menu.functionaccess}}) </small>
-             </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-
+ 
       <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
         <v-btn to="/viewfunctions"> only for werner </v-btn>
         <email-list />
@@ -64,13 +35,12 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
-import zmlButtonTool from '@/components/zmlButtonTool'
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList.vue';
 import MenuList from '@/components/MenuList.vue';
 export default {
     name:"StudentHome",
-    components:{zmlButtonTool, EmailList, MenuList},
+    components:{EmailList, MenuList},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          cards: ['Today', 'Yesterday'],

@@ -1,5 +1,5 @@
-const PROJECT_ID = "onZml33"
-const MEASUREMENT_ID = "Z-ZML33"
+const PROJECT_ID = "onZml36"
+const MEASUREMENT_ID = "Z-ZML36"
 const DEFAULT_LAYOUT = "AppLayoutDefault"
 const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 
@@ -21,7 +21,7 @@ export const zmlConfig = {
   apiUpload:  "https://kuiliesonline.co.za/api/fileUpload/fileUpload.php",
   apiDKHS:    "https://kuiliesonline.co.za/api/dkhs/dkhs.php",
   localPath:  "https://kuiliesonline.co.za/",
-  videoPath: "https://kuiliesonline.co.za/dkhs/",
+  videoPath: "https://kuiliesonline.co.za/",
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectId: PROJECT_ID,
   measurementId: MEASUREMENT_ID,
