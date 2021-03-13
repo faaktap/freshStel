@@ -14,6 +14,8 @@ Vue.config.productionTip = false
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
 
+Vue.prototype.$history = window.history;
+
 import { af,en } from '@/api/translate'
 const messages = {
   en,

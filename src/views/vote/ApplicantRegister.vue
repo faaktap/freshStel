@@ -98,7 +98,7 @@
 import ImageUploader from 'vue-image-upload-resize';
 import { getters } from "@/api/store";   
 import { zmlFetch } from '@/api/zmlFetch';
-import VideoUploader from '@/test/VideoUploader';
+import VideoUploader from '@/components/VideoUploader';
 
 export default {
   name: "Home",
@@ -123,9 +123,9 @@ export default {
     setImage(output) {
       this.hasImage = true;
       this.image = output;
-      console.log('Info', output.info)
-      console.log('Exif', output.exif)
-      console.log('All', output)
+      //console.log('Info', output.info)
+      //console.log('Exif', output.exif)
+      //console.log('All', output)
     },
     doit() {
       if (!this.currentPhoto) {
@@ -146,7 +146,7 @@ export default {
     },
     doUpdate(video) {
       let task = {}
-        if (this.currentPhoto && !this.image.dataUrl) {
+        if (this.image == undefined || this.image.dataUrl == undefined) {
            task = {method: "savecandidatedata",
                     foto: this.currentPhoto, 
                     deliveryid: this.campaignid ,

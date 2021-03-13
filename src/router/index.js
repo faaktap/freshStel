@@ -230,6 +230,30 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },  
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/student/ViewStudentTestGrid.vue')
+    ,name: 'sview'
+    ,path: '/sview'
+    ,meta: {layout: la[3], authentication: "public"}
+  },  
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/TestCalendar.vue')
+    ,name: 'tcal'
+    ,path: '/tcal'
+    ,meta: {layout: la[3], authentication: "public"}
+  },  
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/ExampleCalendar.vue')
+    ,name: 'ecal'
+    ,path: '/ecal'
+    ,meta: {layout: la[3], authentication: "public"}
+  },    
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/TextColorPicker.vue')
+    ,name: 'color'
+    ,path: '/color'
+    ,meta: {layout: la[3], authentication: "public"}
+  },      
+    {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
     ,path: '*'
@@ -241,6 +265,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: "/virtual-school/",    //This works : /zmltest/  but ./ does not work for layouts
+  werner: 'werner',      //see if I can add my own stuff.
   routes
 })
 

@@ -1,5 +1,5 @@
-const PROJECT_ID = "onZml36"
-const MEASUREMENT_ID = "Z-ZML36"
+const PROJECT_ID = "onZml40"
+const MEASUREMENT_ID = "Z-ZML40"
 const DEFAULT_LAYOUT = "AppLayoutDefault"
 const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 
@@ -29,6 +29,9 @@ export const zmlConfig = {
   // eslint-disable-next-line
   cl: function (...args) {  
     //console.log(...args); 
+  },
+  randomColor: function() {
+    return Math.floor(Math.random()*16777215).toString(16)
   }
 }
 

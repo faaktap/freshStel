@@ -1,7 +1,6 @@
 <template>
 <div>
-  <v-container class="grey lighten-5 pa-4" 
-              v-if="startSlideShow==false">
+  <v-container class="grey lighten-5 pa-4" v-if="startSlideShow==false">
     <v-row>
       <v-col cols="12" class="xs12">
     <v-card class="mx-auto" max-height="600">
@@ -71,8 +70,7 @@ Amen ”<br></div>
 
 <!-- ------------------------------------------------------------------------------------ -->
   </v-container>
-   <v-parallax 
-    v-if="startSlideShow"
+   <v-parallax v-if="startSlideShow"
     src="/img/vlaghys6842.jpg"
     height="1300px"
   >
@@ -114,7 +112,7 @@ Amen ”<br></div>
          <smart-photo v-if="page.type == 4" 
                     :title="page.detail1"
                     :caption="page.detail2"
-                    photoPath="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=trophy&studentno="
+                    photoPath="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=sportaward&studentno="
                     :photoNo="page.otherid" />
               
 
@@ -168,9 +166,9 @@ Amen ”<br></div>
 <script>
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
-import SmartDisplay from '@/components/awards/SmartDisplay';
-import SmartText from '@/components/awards/SmartText';
-import SmartPhoto from '@/components/awards/SmartPhoto';
+import SmartDisplay from '@/components/SmartDisplay';
+import SmartText from '@/components/SmartText';
+import SmartPhoto from '@/components/SmartPhoto';
 export default {
     components: {SmartDisplay, SmartText, SmartPhoto},
     data () {
@@ -204,7 +202,7 @@ export default {
          return arr;
      },
      loadData() {
-        let ts = {chapterid: 1, task:'getFullStory'};
+        let ts = {chapterid: 4, task:'getFullStory'};
         this.progress = true;
         zmlFetch(ts, this.processData, this.loadError);
      },

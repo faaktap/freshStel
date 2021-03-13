@@ -7,6 +7,7 @@
        :key="item.functionid"
         cols="4"
       >
+      <template v-if="!$vuetify.breakpoint.smAndDown">
         <v-card height="200" :color="item.functionaccess | cc" >
             <v-card-title>
                 {{ item.functionname }}
@@ -24,6 +25,16 @@
           @clicked="click(item)" /> 
          </v-card-actions>
         </v-card>
+      </template>
+      <template v-else>      
+          <zml-button-tool 
+             bottom 
+            :btnFace="item.shortname" 
+            color="primary" 
+            :toolTip="item.tip"
+            :icon="item.icon"
+          @clicked="click(item)" /> 
+      </template>
       </v-col>
     </v-row>
     

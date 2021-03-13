@@ -65,8 +65,7 @@
 
  </v-card>
 
- xxxxxxxxxxxxxx
-<template v-if="getZml.login.user == 'werner'">
+ <template v-if="getZml.login.user == 'werner'">
   yyyyyyyyyyyyyyy
 <view-content :grade="getZml.grade" :subjectid="getZml.subjectid" />
 </template>

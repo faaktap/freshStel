@@ -1,15 +1,28 @@
 <template>
- <div v-if="getZml.login.isAuthenticated">    
 
-    <h2 class="text-center">
-      {{ curCam.campaignname }}</h2>
-     <!--{{ curCam.campaignshortname }} {{ curCam }}<br> {{ getZml.login }}-->
-    <input-box v-model="showRegisterModal"
+
+ <div>    
+<v-row>
+    <v-col xs-12 lg-12>
+       <v-toolbar flat color="primary" dark class="mb-4">
+        <v-toolbar-title>
+            {{ curCam.campaignname }}
+        </v-toolbar-title>
+        <v-spacer />
+ <v-btn small @click="refreshCandidates"> <v-icon> mdi-refresh </v-icon> refresh </v-btn>
+       </v-toolbar>
+    </v-col>
+  </v-row>
+  
+     
+    <input-box v-if="getZml.login.isAuthenticated"
+               v-model="showRegisterModal"
                @dataEntered="doSomething" 
     ></input-box>
 
 <!-- show the voting list -->
-    <view-box v-model="showVoteList" 
+    <view-box v-if="getZml.login.isAuthenticated"
+              v-model="showVoteList" 
              @reset="clearVoteList"
              @submit="submitVoteList" 
              :candidateList="candidateList">
@@ -22,7 +35,7 @@
       <v-col xs12 md6>
           <v-select
             label="Grades"
-            v-model="theGrades"
+            v-model="gradesSelected"
             :items="gradeItems"
             chips
             deletable-chips
@@ -38,9 +51,11 @@
             label="Search" placeholder="Search on Surname"
             v-model="searchInfo" solo clearable
             @click:clear="searchInfo = ''"></v-text-field>
+           
       </v-col>
 
-<!--          LIST OF VOTES? -->
+<!--          LIST OF VOTES? 
+xxxxx {{ campaignid }}  {{ curCam.status }} {{getZml.voteList}} && {{ getZml.voteList.length}} -->
       <v-col xs12 v-if="curCam.status=='vote' && getZml.voteList && getZml.voteList.length > 0">
         <v-badge overlap
                 :visibility="getZml.voteList.length" 
@@ -88,7 +103,7 @@
 
     </v-flex>
    </v-layout>  
-   <v-btn @click="refreshCandidates"> Refresh </v-btn>
+   
   </v-container>   
  </div>
 </template>
@@ -115,7 +130,7 @@ export default {
       showVoteList: false,
       candidateList:[],
       filterItems: [],
-      theGrades: [],
+     gradesSelected: [],
       gradeItems: [],
       forceReload: true,
       scrollFab: false,
@@ -168,7 +183,7 @@ export default {
       return candidates.filter(candy => !candy.surname.toUpperCase().indexOf(this.searchInfo.toUpperCase()));
     },
     filterCandidatesByRange: function(candidates){
-      return candidates.filter(item => this.theGrades.includes(item.gradename));
+      return candidates.filter(item => this.gradesSelected.includes(item.gradename));
     },            
     onScroll (e) {
       if (typeof window === 'undefined') return;
@@ -211,14 +226,15 @@ export default {
           if (item.video) item.video = zmlConfig.videoPath + item.video;
         });
         //this.gradeItems = response.grades;
-        this.theGrades = []
+        this.gradesSelected = []
+        this.gradeItems = []
         response.grades.forEach(item => { 
           //if (item.gradename != 'G07') {
            this.gradeItems.push(item.gradename);
           //}
         });
         //this.gradeItems = [...new Set(this.gradeItems.sort())];
-        this.theGrades = this.gradeItems;
+        this.gradesSelected = ["G08", "G12"];
 
         this.campaigns = response.campaigns
         let index = this.campaigns.findIndex(c => c.campaignid == this.campaignid)
@@ -279,6 +295,7 @@ export default {
   },
   mounted: function () {
     console.log('RC:mounted - zml:', zmlConfig);
+    localStorage.setItem('lastpath', this.$route.path)
     this.loadOurCandidates();
   },
   created: function () {

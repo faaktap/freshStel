@@ -396,9 +396,14 @@
   <zml-close-button @btn-click="showOther = !showOther" />
 </zml-preview>
 </v-dialog>
-<!--
+
+<template v-if="getZml.login.user == 'werner'">
 {{ folderObj}}
--->
+<hr>
+{{ folderFilter}}
+<hr>
+</template>
+
 </div>
 </template>
 <script>
@@ -768,10 +773,11 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         },
 //adding a new folder
       selectFolder(folder) {
+         console.log('selectFolder ', folder.foldername )
          this.folderObj = folder
          this.oldFolderName = folder.foldername
          this.mainMenuItemselected = null
-         //console.log('folder selected:', this.folderObj)
+         console.log('folder selected:', this.folderObj)
       },
       saveNewFolder() {
         if (this.newFolder == '') return

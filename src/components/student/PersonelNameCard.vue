@@ -1,101 +1,78 @@
 <template>
-  <v-container  v-if="personelList">
+<v-container  v-if="personelRecord">
+ <!-- See https://grid.layoutit.com/ for gridlayouts -->
 
-<!--
-<br/>
-<br/>
-<br/>
-<br/>
+ <v-card v-if="allowEdit=='true'">
+  <v-layout row wrap align-content-start justify-space-between>
+    <v-flex>
+      <v-card color="blue accent-1" class="ma-2 pa-5"> 
+        Actions
+        <v-btn small class="float-right" @click="updatePersonel">
+         Edit 
+        </v-btn>
+      </v-card>
+    </v-flex>
+  </v-layout>
+ </v-card>
 
-<v-layout row wrap justify-center>
+ <v-card max-height="400" class="ma-2">
+  <v-card-text class="staff-container">
+   <div class="Photo"
+       @click="$emit('pictureUpload', personelRecord)"
+   >
+   <v-img v-if="personelRecord.data.photo"
+          :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelRecord.data.photo + '?'+Math.random()" 
+           max-width="220" 
+           position="left left"
+           class="ma-2">
+   </v-img>
+   </div>
+  <div class="Surname headline">
+    {{ personelRecord.data.surname }}
+  </div>
+  <div class="Firstname headline">
+    {{ personelRecord.data.name }} 
+  </div>
+  <div class="Phone subtitle-1">
+       {{ personelRecord.data.contactnumber }}
+       <v-divider  />
+  </div>
+  
+  <div class="i1"><v-icon small>mdi-phone</v-icon></div>
+  <div class="i2"><v-icon small>mdi-office-building</v-icon></div>
+  <div class="i3"><v-icon small>mdi-function</v-icon></div>
+  <div class="i4"><v-icon small>mdi-email</v-icon></div>
+  <div class="i5"><v-icon small>mdi-update</v-icon></div>
+  
+  <div class="detail1">  021 903 5121</div>
+  <div class="detail2"> {{ personelRecord.data.room }}</div>
+  <div class="detail3"> {{ personelRecord.data.workarea }}</div>
+  <div class="detail4"> {{ personelRecord.data.email }}</div>
+  <div class="detail5"> {{ personelRecord.data.changedate }}</div>
+  
+  <div class="line"><v-divider
+                       class="mx-4"
+                       vertical
+                      ></v-divider>
+  </div>
+  <div class="logo text-center"> 
+      <!--small>DE KUILEN HS</small-->
+    <v-img class="text-center" src="/img/logo.png" 
+           max-width="100"
+           contain
+    /> 
+  </div>
+  
+  </v-card-text>
+ </v-card>
 
-    <v-flex md6><v-btn block dark>1</v-btn></v-flex>
-    <v-flex md6><v-btn block dark>2</v-btn></v-flex>
-    <v-flex xs12 md6 order-md2><v-btn block dark>3</v-btn></v-flex>
-    <v-flex xs10 md6 order-md1><v-btn block dark>4</v-btn></v-flex>
 
-</v-layout>
+ <v-dialog v-model="showPersUpdate" 
+          v-if="showPersUpdate && pers" 
+          xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown" >
+  <personel-edit @savePers="savePers" :pers="pers.data">   </personel-edit>
+ </v-dialog>
 
-
-      <v-layout row wrap>
-        <v-flex xs12 md6>
-          <v-card color="red"> card smAndDown = {{ $vuetify.breakpoint.smAndDown }} </v-card>
-        </v-flex>
-        <v-flex xs12 md6>
-<v-card color="red"> card xsOnly = {{$vuetify.breakpoint.xsOnly}} </v-card>
-        </v-flex>
-        <v-flex xs12 md>
-<v-card color="red"> card mobile = {{$vuetify.breakpoint.mobile}} </v-card>
-        </v-flex>
-  <v-flex xs12 md6>
-<v-card color="red"> card 1 </v-card>
-  </v-flex>
-  <v-flex xs12 md12>
-<v-card color="red"> card 100 </v-card>
-  </v-flex>
-      </v-layout>
--->
-
-<!--
-   <v-row><v-col col="12">
-    <v-card max-width="500" class="mx-auto">
-       <v-container>
-         <v-row dense>
-           <v-col xs12 md6 lg3>
-             <v-card color="teal lighten-5">
-               <div class="d-flex flex-no-wrap justify-space-between">
-                 <div>
-                   
-                   <v-card-title class="headline" v-text="personelList.data.surname"></v-card-title>
-                 <v-avatar v-if="personelList.data.photo" class="ma-3"  max-width="225">
-                   <v-img :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelList.data.photo"></v-img>
-                 </v-avatar>
-                   
-                   <v-card-subtitle >
-                       {{ personelList.data.name }} , {{ personelList.data.contactnumber }} 
-                   </v-card-subtitle>
-                   <v-card-text>
-                       Room : {{ personelList.data.room }}<br>
-                       Area : {{ personelList.data.workarea }}<br>
-                       Email : {{ personelList.data.workemail }}<br>
-                       {{ personelList.data.changedate }}
-                   </v-card-text>
-                 </div>
-               </div>
-             </v-card>
-             <v-btn v-if="allowEdit" @click="updatePersonel"> Edit Current Card </v-btn>
-           </v-col>
-         </v-row>
-       </v-container>
-    </v-card>
-   </v-col></v-row>
--->
- <v-container>
-            <v-row>
-                <v-col lg="3" md="4" sm="6">
-                    <v-card class="mb-2" tile="">
-                        <v-row align="start">
-                            <v-col class="shrink">
-                                <v-img :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelList.data.photo" max-width="100" class="ml-3"></v-img>
-                            </v-col>
-                            <v-col>
-                                <v-card-title class="headline pa-3" v-text="personelList.data.surname"></v-card-title>
-                                <v-card-subtitle>{{ personelList.data.name }}   </v-card-subtitle>
-                                <v-card-text>
-                                       Cell : {{ personelList.data.contactnumber }}
-                                       Room : {{ personelList.data.room }}<br>
-                                       Area : {{ personelList.data.workarea }}<br>
-                                       Email : {{ personelList.data.workemail }}<br>
-                                      <div class="caption">{{ personelList.data.changedate }}</div>
-
-                                </v-card-text>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                    <v-btn small v-if="allowEdit" @click="updatePersonel"> Edit Card </v-btn>
-                </v-col>
-            </v-row>
-  </v-container>   
 <!--
 { "desc": "menemonic 151 Albertyn, undefined", 
 "data": { "persid": "151", "username": "username", "menemonic": "menemonic"
@@ -115,185 +92,18 @@
 , "address": "14 Sonnemeisie Street, Kuilsriver, 7580"
 , "IDNumber": "7306165079082", "changedate": "2020-07-22 17:44:16" } }
 -->  
-<v-dialog v-model="showPersUpdate" 
-          v-if="pers" 
-          xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown" >
-  <v-card>
-    <v-card-title> EDIT PERSONEL {{ pers.surname }} </v-card-title>
-    <v-card-text>
 
-
-      <v-layout row wrap align-content-start justify-space-between>
-        <v-flex>
-        <v-card color="light-blue" class="ma-4 pa-4">
-          Personal Details
-        </v-card>
-        <v-layout row wrap align-content-start justify-space-between class="ma-4">
-
-        <v-flex xs10 md6>
-          <v-text-field v-model="pers.name" 
-                        dense
-                        label="Name"  />
-        </v-flex>
-        <v-flex xs10 md6>
-          <v-text-field v-model="pers.surname" 
-                        dense
-                        label="Surname" />
-        </v-flex>
-        <v-flex xs8 md6>
-         <v-radio-group v-model="pers.title" 
-                        label="Title"  
-                        dense
-                        row>
-           <v-radio v-for="t in titles" :key="t"  :label="t"   :value="t"  >
-           </v-radio>
-         </v-radio-group>          
-        </v-flex>
-        <v-flex xs4>
-         <v-radio-group dense v-model="pers.gender" label="Gender" row>
-          <v-radio  label="Male"   value="male"  ></v-radio>
-          <v-radio  label="Female"   value="female"></v-radio>
-         </v-radio-group>          
-        </v-flex>        
-        <v-flex xs6 md6>
-               <v-text-field v-model="pers.email" 
-                             label="Private Email" />
-        </v-flex>
-        <v-flex xs6 md6>
-               <v-text-field v-model="pers.contactnumber" 
-                             label="Private Phone/Cell Number" />
-        </v-flex>
-
-       </v-layout>
-
-      </v-flex>
-
-
-
-
-
-        <v-flex>
-        <v-card color="light-blue darken-1" class="ma-4 pa-4">
-          School Details
-        </v-card>
-        <v-layout row wrap align-content-start justify-space-between class="ma-4">
-
-        <v-flex xs3>
-          <v-text-field v-model="pers.menemonic" 
-                        label="School Short Name / Afkorting" 
-                        title="Shortname you use on papers at school" />
-        </v-flex>
-        <v-flex xs3>
-          <v-text-field v-model="pers.username" label="Preferred Username" 
-                        title="Which username do you prefer for logon?" />
-        </v-flex>
-        <v-flex xs3>
-          <v-text-field v-model="pers.heidiid" label="School Number" 
-                        title="Do you have a staff number?" />
-        </v-flex>
-        <v-flex xs3>
-          <v-text-field v-model="pers.room" label="Classroom/Place of work" 
-                        title="Where are you situated?" />
-        </v-flex>
-
-        <v-flex xs12>
-          <v-radio-group dense v-model="pers.registerclass" row label="Register Class" title="Do you have a class you look after?">
-            <v-radio v-for="n in 5" :key="n" :label="`${n + 5}`" :value="`${n + 5}`" />
-            <v-radio label="None" value="0" />
-          </v-radio-group>
-        </v-flex>
-        <v-flex xs12 v-if="pers.registerclass && pers.registerclass > 5">
-          <v-radio-group dense v-model="pers.registergrade" row label="Register Grade" title="Do you have a class you look after?">
-            <v-radio v-for="n in 3" :key="'A'+n" 
-                     :label="`A${n}`" :value="`A${n}`" />
-            <v-radio v-for="n in 7" :key="'E'+n" 
-                     :label="`E${n}`" :value="`E${n}`" />
-          </v-radio-group>
-        </v-flex>
-        <v-flex xs12>
-          <v-layout row wrap align-content-start justify-start class="ma-1">
-            <v-flex xs10>
-            <v-radio-group v-model="pers.workarea" 
-                        label="Work Area"  
-                        dense
-                        row>
-             <v-radio v-for="w in workarea" :key="w"  :label="w"   :value="w"  > </v-radio>
-             </v-radio-group>          
-             </v-flex>
-             <v-flex xs2>
-             <v-text-field v-model="pers.workarea" 
-                          dense
-                             label="Other" />
-             </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex xs6 md6>
-               <v-text-field v-model="pers.workemail" 
-                             label="School Email" />
-        </v-flex>  
-        <v-flex xs6 md6>
-               <v-text-field v-model="pers.wcgschoolsid" 
-                             label="WCGSCHOOLS username for wifi" />
-        </v-flex>                
-        </v-layout>
-        </v-flex>
-
-
-
-        <v-flex>
-        <v-card color="light-blue darken-3" class="ma-4 pa-4">
-          PUBLIC School Details
-        </v-card>
-        <v-layout row wrap align-content-start justify-space-between class="ma-4">
-
-        <v-flex xs6 md3>
-               <v-text-field v-model="pers.public_preferredname" 
-                             label="Name on Internet"
-                             title="What should your name look like on public space?" />
-        </v-flex>
-        <v-flex xs6 md4>
-         <v-text-field v-model="pers.public_email" 
-                       label="Email on Internet" 
-                       title="Which email to share on internet?" />
-        </v-flex>  
-
-        <v-flex xs12 lg6>
-        <v-textarea v-model="pers.public_vakke" 
-                    label="Subject and grade info we can share on the internet (optional)" 
-                    dense
-                    title="What do you do at school?" />
-        </v-flex>
-
-        <v-flex xs12 lg6>
-         <v-textarea v-model="pers.public_ander" 
-                     dense
-                     label="Other (sport etc) we can use on internet" 
-                     title="Do you do sport, culture, something else at school? {optional)" />
-        </v-flex>
-        <v-flex  xs12 lg6>
-         <v-textarea v-model="pers.public_history" 
-                     label="History we can display on Internet - optional" 
-                     title="Something short - where you where born and where you studied."/>
-        </v-flex>
-        </v-layout>
-        </v-flex>
-      </v-layout>
-    </v-card-text>
-    <v-card-actions>
-       <v-btn @click="savePers"> Save </v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
-  </v-container>   
-
-
+ </v-container>   
 </template>
+
 <script>
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
+import PersonelEdit from '@/components/student/PersonelEdit';
 export default {
     name:"PersonelNameCard",
-    props: ['personelList','allowEdit'],
+    components:{PersonelEdit},
+    props: ['personelRecord','allowEdit'],
     data: () => ({
       showPersUpdate:false,
       pers:null,
@@ -301,16 +111,16 @@ export default {
       workarea:['Finance','Admin','Teacher','Support','Graadhoof','Ontvangs','Sport'],
    }),
     mounted: function() {
-        console.log('PNC : Mounted')
-        if (this.personelList) {   
-           console.log('PNC : ', this.personelList)
+    //    console.log('PNC : Mounted')
+        if (this.personelRecord) {   
+    //       console.log('PNC : ', this.personelRecord)
         } else {
-           console.log('PNC : NoName')
+    //       console.log('PNC : NoName')
         }
     },
     methods:{
       updatePersonel() {
-        this.pers = this.personelList.data
+        this.pers = this.personelRecord
         this.showPersUpdate = true
       },
       savePers() {
@@ -322,9 +132,40 @@ export default {
         this.showPersUpdate = false
       },
       afterUpload(response) {
-        console.log('Finished with staff Update, doing a refresh?',response)
+        console.log('Finished with staff Update, you could do a refresh?',response)
       },
     },
 }
 </script>
 
+<style scoped>
+#fileInput {
+  display: none;
+}
+.staff-container {
+display: grid;
+  grid-template-columns: 0.8fr 0.7fr 0.6fr 0.5fr 2.4fr 1fr 1fr 1fr 2fr;
+  grid-template-rows: 0.3fr 0.3fr 0.4fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.1fr;
+  gap: 1px 1px;
+}
+.Photo { grid-area: 1 / 1 / 4 / 4; }
+.i1 { grid-area: 4 / 3 / 5 / 4; }
+.i2 { grid-area: 5 / 3 / 6 / 4; }
+.i3 { grid-area: 6 / 3 / 7 / 4; }
+.i4 { grid-area: 7 / 3 / 8 / 4; }
+.i5 { grid-area: 8 / 3 / 9 / 4; }
+.i6 { grid-area: 9 / 3 / 10 / 4; }
+.Firstname { grid-area: 2 / 5 / 3 / 9; }
+.Phone { grid-area: 3 / 5 / 4 / 9; }
+.detail1 { grid-area: 4 / 5 / 5 / 9; }
+.detail2 { grid-area: 5 / 5 / 6 / 9; }
+.detail3 { grid-area: 6 / 5 / 7 / 9; }
+.detail4 { grid-area: 7 / 5 / 8 / 9; }
+.detail5 { grid-area: 8 / 5 / 9 / 9; }
+.bottom { grid-area: 9 / 1 / 10 / 10; }
+.line { grid-area: 1 / 4 / 4 / 5; }
+.underlogo { grid-area: 4 / 9 / 9 / 10; }
+.underpic { grid-area: 4 / 1 / 9 / 3; }
+.logo { grid-area: 2 / 9 / 4 / 10; }
+.Surname { grid-area: 1 / 5 / 2 / 10; }
+</style>

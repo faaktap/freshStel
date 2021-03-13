@@ -1,6 +1,7 @@
 <template>
-  <v-container>
-   <v-row><v-col cols="12">
+  <v-container v-if="logList">
+   <v-row>
+     <v-col cols="12">
      <h1> Registered Users  {{ logList.length}} </h1>
         
     <v-card class="mx-auto">

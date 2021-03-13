@@ -3,23 +3,52 @@
   
 <h1>ABOUT</h1>
 
-<hero-section />
 
-<v-container v-show="getZml.login.userid=='1'">
-<v-row><v-col xs12>
-<v-card color="brown lighten-2" class="ma-3 pa-2" @click.self="showMovie = !showMovie">
-  Stuff inside the card <v-btn @click="showAudio = !showAudio"> Audio </v-btn>
-</v-card>
-<br /><br /><br /><br />
+        <hero-section 
+            title="About the Virtual School System" 
+            text="About this" 
+            moretext="It is an example" 
+            color="purple"
+            button=""
+            icon=""
+            func=""
+        />
+
+only werner:
+<v-container v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+<v-row>
+  <v-col xs12>
+   <v-card color="brown lighten-2" class="ma-3 pa-2" @click.self="showMovie = !showMovie">
+    Stuff inside the v-card (v-col is xs12) <v-btn @click="showAudio = !showAudio"> Audio </v-btn>
+   </v-card>
+  </v-col>
+</v-row>
+
+len = {{ randomColors.length}}
+
+<v-row xv-if="randomColors.length > 0">
+  <h2> All the routes currently (March 2021) in here..</h2>
+  <v-col  xs12 cols=2 v-for="(p,i) in paths" :key="i">
+    <v-card :color="randomColors[i]" min-width="100" class="ma-2 pa-2">
+    <router-link :to="p" :title="randomColors[i]">{{p}}</router-link>
+    </v-card>
+  </v-col>
+</v-row>
+
+
+
+
 
   <student-lookup @dataEntered="studentFound" @idsEntered="IDs" />
     SL = {{ studentList }} <br>     SI = {{ studentIDs }}
 
-</v-col></v-row>
+<v-card class="ma-2"> <v-card-title> Basic Players </v-card-title>
 <!--basic-player /-->
 <v-btn @click="showMovie = !showMovie"> Toggle Video </v-btn>
 <v-btn @click="showAudio = !showAudio"> Toggle Audio </v-btn>
 <v-btn @click="showPicture = !showPicture"> Toggle Picture </v-btn>
+</v-card>
+
 
 <v-layout row>
   <v-flex v-for="m in menuItems" :key="m.title">
@@ -119,8 +148,30 @@ data: () => ({
                    {title:'Delete Folder',icon:'mdi-delete-empty'},
                    {title:'Refresh Folder',icon:'mdi-database-refresh'},
                    ],  
+  paths:['/a', '/h','/1','/','/home','/about','/hover',
+   '/virtualawards','/studentawards', '/learntree', '/viewlearn',
+   '/grade',   '/grade/8',   '/studenthub',   '/subjects',   '/student',
+   '/personel',   '/viewfunctions',   '/nested',    'dialog',    '/werner'
+    ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
+    ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/test'    ,'/sview'
+    ,'/tcal'    ,'/ecal'    ,'/color'],        
+    randomColors:[],           
 }),
+computed: {
+
+},
 methods: {
+  anyColor(){
+    let baseColors = ['red','green','blue','yellow','pink','purple','indigo','teal','lime','orange','brown','amber']
+    let tint = ['darken','lighten','accent']
+    let variant = [1,2,3,4]
+    let b = Math.floor(Math.random() * baseColors.length) 
+    let t = Math.floor(Math.random() * tint.length) 
+    let v = Math.floor(Math.random() * variant.length) 
+
+    return baseColors[b] + ' ' + tint[t] + '-' + variant[v]
+  },
+
   IDs(value) {
     if (value.data == 'undefined') return;
     console.log('ID = ' , value);
@@ -142,6 +193,12 @@ methods: {
                       , { color: 'deep-purple accent-4' })
   }
 },
+mounted: function() {
+  for (let i=0 ; i<40 ; i++) {
+     this.randomColors[i] = this.anyColor()
+  }
+  console.log(this.randomColors)
+}
 
 }
 </script>

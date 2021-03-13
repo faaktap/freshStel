@@ -1,6 +1,5 @@
 <template>
  <v-container>
-   xxx =  {{ $route.to }}
   <v-row class="justify-center"  align="center" justify-center>
   
     <v-col v-if="getZml.login.isAuthenticated" 
@@ -11,21 +10,23 @@
        <h2> Kuilies Session Status  </h2>
       </v-card-title>  
       
-      <v-card-text class="ma-4">
-        <v-card color="gray" class="ma-4 pa-4">
+      <v-card-text class="ma-2">
+        <v-card color="gray" class="ma-2 pa-4">
        You are logged in as {{ getZml.login.username }} since {{ getZml.login.lastdate }}.
         </v-card>
        <br>
        Thanks for using the system {{ getZml.login.fullname }}!
        <br>You will be logged out once you click the button below.
        <br>
-       <br>To continue your session, press the continue button.
+       <br>To continue your session, press the back button.
+       <br>To go to your default place of business, press the continue button.
        <br>To make changes to your profile, click the appropiate button.
       </v-card-text>
       <v-card-actions>
        <v-btn  @click="showProfile = !showProfile" color="info">
         Profile
        </v-btn>          
+       <v-btn @click="$router.go(-1)" color="primary"> Back </v-btn>
        <v-btn color="info" @click="startLearning"> Continue </v-btn>
         <v-spacer />
        <v-btn  @click="logout" color="info">
@@ -156,7 +157,7 @@ import { infoSnackbar,errorSnackbar } from '@/api/GlobalActions';
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlLog } from '@/api/zmlLog.js';
-import router from '@/router';
+//import router from '@/router';
 import { getters } from "@/api/store";
 
 export default {
@@ -206,7 +207,7 @@ export default {
           this.getZml.login.username = ''
           this.getZml.login.isAuthenticated = false;
           localStorage.removeItem('login')
-          router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
+          this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
        },
        submit() {
           if (this.$refs.loginForm.validate() && this.submitting == false) {
@@ -225,7 +226,7 @@ export default {
           }
        },
        loginFail(error) {
-           console.log(error);
+          console.log('Login FAIL:',error);
           this.submitting = false;                 
           infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
        },
@@ -250,7 +251,6 @@ export default {
               infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
               this.showProfile = 1; 
             } else {
-              //router.push({ name: 'Material' , params:{heading:"Grade"},meta: {layout: "AppLayoutGray" }});
               let loginDetails = JSON.stringify(this.getZml.login)
               localStorage.setItem('login', loginDetails)
               console.log('SAVED LOGIN:', loginDetails)
@@ -277,34 +277,32 @@ export default {
                console.log('student route')
                if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
                  console.log('student busy route')
-                 router.push({ name: 'SelectGrade' 
+                 this.$router.push({ name: 'SelectGrade' 
                              , params:{heading:"Grade"
                              , gradeno:this.getZml.gradeLastChosen}
                              , meta: {layout: "AppLayoutGray" }});  
                } else {
                  console.log('student fresh route')
-                 //router.push({ name: 'SelectGrade' ,meta: {layout: "AppLayoutGray" }});  
-                 router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+                 this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
                }
                break;
             }
             case 'teacher':
             {
               console.log('teacher route')
-              router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
+              this.$router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
               break;
             }
             case 'admin' :
             {
               console.log('admin route')
-              //router.push({ name: 'StudentInfo' , meta: {layout: "AppLayoutDefault" }});  
-              router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
+              this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
               break;
             }
             default:
             {
               console.log('default route')
-              router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+              this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
               break;
             }
           }
@@ -360,7 +358,7 @@ export default {
     console.log('LOGIN _ MNT - Chk LocalStore', this.$route)
     if (localStorage.getItem('login')) {
       try { 
-         this.getZml.login = JSON.parse(localStorage.getItem('login'));
+        this.getZml.login = JSON.parse(localStorage.getItem('login'));
       } catch(e) {
         localStorage.removeItem('login')
       }

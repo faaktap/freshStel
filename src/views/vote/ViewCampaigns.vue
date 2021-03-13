@@ -22,16 +22,22 @@
 </p>
     </v-card-text>
     <v-card-actions>
-  <v-btn v-for="c in campaigns" 
-        :key="c.campaignid" 
-        class="ma-2" 
-        :disabled="c.status=='closed'"
-        :tip="c.campaignname + ' is ' + c.status"
-        @click.stop=" onButtonClick('Show Campaign',c) "
+      <v-row>
+        <v-col 
+           cols=4 
+           v-for="c in campaigns" 
+          :key="c.campaignid" >
+        <v-btn 
+           class="ma-2" 
+           :disabled="c.status=='closed'"
+           :tip="c.campaignname + ' is ' + c.status"
+           @click.stop=" onButtonClick('Show Campaign',c) "
         >
         <v-icon> {{ c.icon }} </v-icon>
     {{ c.campaignname }} 
   </v-btn>
+  </v-col>
+      </v-row>
   </v-card-actions>
   </v-card>
 
@@ -163,6 +169,7 @@ import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
+import { saveRoute } from '@/api/zmlRoute.js';
 export default {
     name:"ViewCampaigns",
     components:{},
@@ -263,6 +270,7 @@ export default {
     mounted: function() {
         console.log('MOUNT CAMPAIGN')
         this.loadCampaigns()
+        saveRoute(this.getZml.login.isAuthenticated, this.$route.path)
     }
 }
 </script>
