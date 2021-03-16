@@ -23,10 +23,11 @@
 
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
  
-      <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-        <v-btn to="/viewfunctions"> only for werner </v-btn>
+    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+        <v-btn to="/viewfunctions"> functions </v-btn>
+        <v-btn to="/dkhsawards"> awards </v-btn>
         <email-list />
-      </div>
+    </div>
 </div>
 </template>
 

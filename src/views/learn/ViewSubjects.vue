@@ -33,13 +33,19 @@
     loading="tableLoading"
     loading-text="Loading... Please wait"
     multi-sort
+    @click:row="onButtonClick"
   >
       <template v-slot:[`item.action`]="{ item }">
         <v-btn class="mx-2" 
                icon
-               title="Click here to reset password"
-               @click="onButtonClick('Show Subject',item)">
+               :title="item.color"
+               @click="onButtonClick(item)">
+          <template v-if="item.color.length==0">
           <v-icon dark>mdi-coffee</v-icon>
+          </template>
+          <template v-else>
+            <v-icon dark :color="item.color">mdi-heart-box</v-icon> 
+          </template>
         </v-btn>
       </template>
       <template v-slot:top>
@@ -51,6 +57,9 @@
          <v-btn @click="getSubjects"
                 title="Click here to refresh subjects"
          ><v-icon>mdi-table-refresh</v-icon></v-btn> 
+       <v-btn icon @click="insertSubject"> 
+           <v-icon >mdi-table-plus</v-icon>
+        </v-btn>
       </template>
   </v-data-table>       
 
@@ -62,36 +71,25 @@
        </v-container>
     </v-card>
    </v-col></v-row>
-<v-dialog v-model="showSubjectsChange" :scrollable="false" persistent width="50%">
-  <v-card v-if="curItem">
-    <v-card-title>
-      PASSWORD RESET
-    </v-card-title>
-    {{ curItem }}
-    <v-card-text>
-   {{ curItem }}
-    </v-card-text>
-    <v-card-actions>
-      <v-btn title="Click here to save the subject"
-             @click="saveSubject"  
-      > Save </v-btn>
-      <v-spacer />
-      <v-btn title="Close"
-             @click="showSubjectsChange = false"  
-      > Close </v-btn>
-    </v-card-actions>
-  </v-card>
+<v-dialog v-model="showSubjectsChange" width="50%">
+  <subject-edit
+      :sub="curItem"
+      @saveSubject="saveSubject"
+      />
 </v-dialog>   
   </v-container>   
 </template>
 
 
 <script>
-import { zmlFetch } from "@/api/zmlFetch";
-import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
-import { getters } from "@/api/store";
+import { getters } from "@/api/store"
+import { zmlConfig } from '@/api/constants'
+import { zmlFetch } from "@/api/zmlFetch"
+import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions'
+import SubjectEdit from '@/components/learn/SubjectEdit'
 export default {
     name:"ViewSubjects",
+    components:{SubjectEdit},
     props: [],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -110,13 +108,25 @@ export default {
         ]     
     }),
     methods:{
-      onButtonClick(todo,data) {
+      onButtonClick(data) {
         this.showSubjectsChange = true
         this.curItem = data
-        console.log(todo,data)
+        console.log(data)
       },
-      saveSubject() {
-          alert('save')
+      insertSubject() {
+        for (const [key, value] of Object.entries(this.curItem)) {
+          this.curItem[key] = ''
+          console.log(value)
+        }        
+        this.showSubjectsChange = true
+      },
+      saveSubject(data) {
+        let ts = {}
+        ts.data = data
+        ts.task = 'saveSubject' 
+        ts.api = zmlConfig.apiDKHS
+        zmlFetch(ts, this.getSubjects, this.processError)
+        this.showSubjectsChange = false
       },
       getSubjects() {
         this.tableLoading = true

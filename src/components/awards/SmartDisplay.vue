@@ -1,15 +1,15 @@
 <template>
-<div>
-  <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3)">
-   <v-card-title primary-title class="justify-center">
+
+ <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3)">
+  <v-card-title primary-title class="justify-center">
     <v-card color="rgb(5, 101, 18, 0.4)" class="rounded pa-3">
       <h1 class="wordbreak text-justify"> {{ studentName }}</h1>
     </v-card>
-   </v-card-title>
-   <v-card-text> 
+  </v-card-title>
+  <v-card-text> 
      <v-row justify-lg="center">
-         <v-col align="center" cols="4" lg="4" md="12" xs="12">
-          <v-sheet align-content-center  width="262">
+       <v-col align="center" cols="12" lg="6" md="6">
+         <v-sheet align-content-center  width="262">
            <v-img class="rounded"
             :src="'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=aw&studentno='+studentid"
             lazy-src="img/lazyload.png"
@@ -25,10 +25,9 @@
            </v-img>
            
          </v-sheet>
-       </v-col>
-       <v-divider v-if="!$vuetify.breakpoint.smAndDown" class="mx-4" vertical />
-       <!--v-col cols="6" class="xs12"-->
-         <v-col align="center" cols="5" lg="4" md="12" xs="12">
+         <!--v-divider v-if="$vuetify.breakpoint.mdAndUp" class="mx-4" vertical /-->
+        </v-col>
+        <v-col align="center" cols="12" lg="6" md="6">
            <v-card v-if="extraNote.length > 0" color="rgb(15, 1, 18, 0.8)"> 
             <div class="rounded koek1 yellow--text text--accent-2">
               <v-icon color="yellow"> mdi-star </v-icon>
@@ -37,35 +36,32 @@
             </div>
             
             </v-card>
-       <v-list color="rgb(15, 1, 18, 0.8)" class="rounded">
-       <v-list-item-group>
-        <div v-for="awa in diplomaList" :key="awa.awardid">
-        <v-list-item >
-         <v-list-item-icon v-if="!$vuetify.breakpoint.smAndDown">
-          <v-icon v-if="awa.dip.length > 0"> mdi-star </v-icon>
-          <!--v-icon v-else>mdi-star-three-points-outline</v-icon-->
-         </v-list-item-icon>
-         <v-list-item-content>
-           <div v-if="awa.dip.length > 0" class="mb-1 koek1">
-             {{ awa.dip }}
-             <v-divider  /> 
-           </div>
-           <v-list-item-title align="center" class="mt-2 koek">
-               <h2 v-if="awa.sub.length < 30">{{ awa.sub }} </h2>
-               <div class="text-caption" v-else>{{ awa.sub }} </div>
-           </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        </div>
-      </v-list-item-group>
-    </v-list>
-<!-- {{ alles }} -->
-       </v-col>
-       <!--v-col cols="1"></v-col-->
-      </v-row>
-    </v-card-text>
-  </v-card>
-</div>          
+            <v-list color="rgb(15, 1, 18, 0.8)" class="rounded">
+             <v-list-item-group>
+              <div v-for="awa in diplomaList" :key="awa.awardid">
+               <v-list-item >
+               <v-list-item-icon v-if="!$vuetify.breakpoint.smAndDown">
+               <v-icon v-if="awa.dip.length > 0"> mdi-star </v-icon>
+               <!--v-icon v-else>mdi-star-three-points-outline</v-icon-->
+               </v-list-item-icon>
+               <v-list-item-content>
+                <div v-if="awa.dip.length > 0" class="mb-1 koek1">
+                  {{ awa.dip }}
+                  <v-divider  /> 
+                </div>
+                <v-list-item-title align="center" class="mt-2 koek">
+                    <h2 v-if="awa.sub.length < 30">{{ awa.sub }} </h2>
+                    <div class="text-caption" v-else>{{ awa.sub }} </div>
+                </v-list-item-title>
+               </v-list-item-content>
+               </v-list-item>
+              </div>
+             </v-list-item-group>
+            </v-list>
+      </v-col>
+    </v-row>
+  </v-card-text>
+ </v-card>
 </template>
 
 

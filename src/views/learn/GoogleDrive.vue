@@ -1200,7 +1200,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         zmlConfig.cl('Mount:Edit-2-package');
         //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
         console.log('MOUNT GDRV : ', this.getZml.login)
-        if (this.getZml.login.type == 'teacher' && this.getZml.login.isAuthenticated) {
+        if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
           if (this.getZml.subjects.length == 0) {
              zmlFetch({task: 'getsubjects'}, this.loadSubjects);
           } else if (this.getZml.folders.length == 0) {

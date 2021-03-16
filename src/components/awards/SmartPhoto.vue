@@ -1,5 +1,4 @@
 <template>
-<div>
   <v-card class="mt-9 rounded" color="rgba(115, 250, 1, 0.1)">
    <v-card-title primary-title class="justify-center">
      <v-card color="rgb(15, 101, 8, 0.4)" class="rounded pa-3">
@@ -7,7 +6,9 @@
      </v-card>
    </v-card-title>
    <v-card-text class="pa-2 d-flex justify-center"> 
-     <v-sheet class="pa-8 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
+    <v-row>
+     <v-col cols="12" md="6">
+      <v-sheet class="pa-8 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
            <v-img class="rcorners1"
             :src="photoPath + photoNo"
             lazy-src="img/lazyload.png" max-width="340px" contain>
@@ -19,19 +20,23 @@
               </v-row>
              </template>             
            </v-img>
-     </v-sheet>      
-     <v-divider vertical class="mx-3" />
-     <v-sheet class="pa-8 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
-           <v-container fill-height fluid>
-             <v-row align="center" justify="center">
-               <v-col>
-          <p v-html="caption" class="text-h5 font-italic"></p>
-               </v-col>
-             </v-row></v-container>
-     </v-sheet>      
-    </v-card-text>
+      </v-sheet>      
+      <!--v-divider v-if="$vuetify.breakpoint.mdAndUp" class="mx-4" vertical /-->
+     </v-col>
+     <v-col cols="12" md="6">
+      <v-sheet class="pa-8 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
+        <v-container fill-height fluid>
+         <v-row align="center" justify="center">
+          <v-col>
+           <p v-html="caption" class="text-h5 font-italic"></p>
+          </v-col>
+         </v-row>
+        </v-container>
+      </v-sheet>      
+     </v-col>
+    </v-row>
+   </v-card-text>
   </v-card>
-</div>          
 </template>
 
 
@@ -56,6 +61,12 @@ export default {
         },
     },
     watch: {
+    },
+    mounted: function() {
+      if (this.photoPath === undefined) this.photoPath = null
+
+      console.log('SmartPhoto : ', this.photoPath + this.photoNo)
+
     }
 }
 </script>

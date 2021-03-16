@@ -35,12 +35,23 @@ export default {
       loading:false,
       baseColors:['red','green','blue','yellow','pink','purple','indigo','teal','lime','orange','brown','amber'],
       tint:['darken','lighten','accent'],
-      variant:[1,2,3,4]
+      variant:[1,2,3,4],
+      col:null
    }),
-   methods:{
+   computed: {
+        interface: {
+          get() {
+              return this.value
+            },
+            set(val) {
+              this.$emit('input', val)
+            }
+        }
+    },
+    methods:{
        colorSelected(color) {
-          alert(color)
-          this.$emit('colorSelected', color)
+          this.col = color
+          //this.$emit('input', color)
        }
    },
 }

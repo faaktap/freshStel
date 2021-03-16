@@ -1,26 +1,28 @@
 <template>
-  <div>
+<v-container fluid>
+    <v-row>
+      <v-col cols=3>
    login:{{ getZml.login }}
-   <hr />
+      </v-col><v-col cols=3>
    grade:{{ getZml.grade }}
-   <hr />
+   </v-col><v-col cols=3>
    subject:{{ getZml.subject }} id : {{ getZml.subjectid }}
-   <hr />
-   subjects:{{ getZml.subjects }}
-   <hr />
+   </v-col><v-col cols=3>
    local:{{ getZml.locale }}   
-
+   </v-col><v-col cols=3>
     <div
       @mouseover="hover = true"
       @mouseleave="hover = false"
       :class="{ active: hover }"    >
       Hover me to change the background! (active becomes true on hover <br> see style below)
     </div>
+    </v-col>
+    </v-row>
 
     <h1> Other (better) hover option - see style </h1>
 
    <v-row justify="center" class="fill-height" align="stretch"  color="green">
-    <v-col color="red">
+    <v-col color="red" cols=4>
      <p class="subheading grey--text"> This is heading for v-hover </p>
      <div>
         <v-icon color="blue"> mdi-silverware </v-icon>
@@ -48,11 +50,7 @@
 
      </div>
    </v-col>
-  </v-row>
-
-
-<v-row  justify="center" class="fill-height" align="stretch">
-    <v-col>
+    <v-col cols=6>
      <v-hover v-slot:default="{ hover }" open-delay="200">
       <v-card color="green"
              min-width=50
@@ -77,7 +75,7 @@
      </v-hover>
     </v-col>
 
-    <v-col>
+    <v-col cols=4>
      <v-hover  
          v-slot:default="{ hover }"
          open-delay="200">
@@ -90,10 +88,8 @@
       </v-card>
      </v-hover>
     </v-col>
-  </v-row>
-  
-  <v-row justify="center" class="fill-height" align="stretch">
-    <v-col>
+
+    <v-col cols=4>
       <div> start </div>
        <v-hover v-slot:default="{ hover }">
          <v-card
@@ -148,11 +144,7 @@
           </v-card>
          </v-hover>
     </v-col>
-   </v-row>
-
-  <v-container>
-    <v-row>
-      <v-col col="12">
+      <v-col col2="12">
         <v-card class="mx-auto" max-width="344">
           <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"></v-img>
           <v-card-title>Sunshine</v-card-title>
@@ -173,13 +165,8 @@
           </v-expand-transition>
         </v-card>
       </v-col>
-    </v-row>
-  </v-container>
-
-
-<div class="filter">
- <v-row> 
-  <v-col cols="6">
+  
+  <v-col cols="6" class="filter">
    <auto-sel id="zyx2" 
             :asLabel="'Some Label for User (' + selectedFruit + ')'" 
             :initialValue="selectedFruit" 
@@ -187,7 +174,7 @@
              v-model="selectedFruit1">
    </auto-sel>
   </v-col>
-  <v-col>
+  <v-col cols=5>
    <auto-sel id="zyx1" 
              asLabel="Select your Fruit!" 
             :initialValue="selectedFruit" 
@@ -196,7 +183,7 @@
    </auto-sel>
   </v-col>   
 
-  <v-col>
+  <v-col cols=4>
    <auto-sel-obj id="zyx1" 
              asLabel="Select your Fruit!" 
             :initialValue="selectedFruitNo" 
@@ -204,27 +191,92 @@
              v-model="selectedFruitNo" >
    </auto-sel-obj>
   </v-col>   
-  <v-col>
-    <hr />
-    AutoList: {{ getZml.subjects.length }}
+  <v-col cols=5>
+    <v-card color="light-blue">
+      <v-card-title> AutoList: (auto-sel-sub) len={{ getZml.subjects.length }} </v-card-title>
+      <v-card-actions>
+        <v-btn @click="selectedSubject=17" > reset to 17 </v-btn>
+        <v-btn @click="testzData"> textzData </v-btn>
+      </v-card-actions>
+      <v-card-text>
+    
      <auto-sel-sub id="zyx4" 
-             asLabel="Select your Subject!" 
-            :initialValue="selectedFruitNo" 
+             asLabel="Subject" 
+            :initialValue="selectedSubject" 
             :itemObj="getZml.subjects" 
-             v-model="selectedFruitNo"/>
-             <hr />
-  </v-col>
-  <!--v-col cols="12" xs12 >onfocus:
-<on-focus v-model="selectedFruit"  :query="selectedFruit" />
-SF= {{ selectedFruit }}
-  </v-col-->
- </v-row>
-</div>
-SF = {{ selectedFruit }}{{ selectedFruit1 }}{{ selectedFruit2 }}{{ selectedFruitNo }}
-  
+             v-model="selectedSubject"/>
 
+             selectedSubject = {{ selectedSubject }}
+      </v-card-text>
+    </v-card>
+  </v-col>
+  <v-col cols=12>
+<br>mobile     {{ $vuetify.breakpoint.mobile   }}
+<br>mobileBreakpoint     {{ $vuetify.mobileBreakpoint   }}
+<br>xsOnly     {{ $vuetify.breakpoint.xsOnly   }}
+<br>smOnly     {{ $vuetify.breakpoint.smOnly   }}
+<br>smAndDown  {{ $vuetify.breakpoint.smAndDown}}
+<br>smAndUp    {{ $vuetify.breakpoint.smAndUp  }}
+<br>mdOnly     {{ $vuetify.breakpoint.mdOnly   }}
+<br>mdAndDown  {{ $vuetify.breakpoint.mdAndDown}}
+<br>mdAndUp    {{ $vuetify.breakpoint.mdAndUp  }}
+<br>lgOnly     {{ $vuetify.breakpoint.lgOnly   }}
+<br>lgAndDown  {{ $vuetify.breakpoint.lgAndDown}}
+<br>lgAndUp    {{ $vuetify.breakpoint.lgAndUp  }}
+<br>xlOnly     {{ $vuetify.breakpoint.xlOnly   }}
+<br>width      {{ $vuetify.breakpoint.width    }}
+<br>height     {{ $vuetify.breakpoint.height  }}
+<br>name       {{ $vuetify.breakpoint.name  }}
+
+  </v-col>
+  <v-col cols="12">
+    <h3>SMART DISPLAY </h3>
+    <smart-display
+        studentid="12000"
+        studentName="Student Name"
+        :diplomaList="[{awardid:12,sub:'sub12', dip: 'LANF DIPLOMA'}
+                      ,{awardid:13,sub:'sub13', dip: 'NogeENE'}
+                      ,{awardid:14,sub:'longer sub 14', dip: 'longer diploma 14'}
+        ]"
+        extraNote="an extra note"
+        :alles="{a: 'hier is niks'}"
+        :panelIndex="selectedSubject"> 
+    </smart-display>        
+    <smart-display
+        studentid="12000"
+        studentName="Student Name"
+        :diplomaList="[{awardid:12,sub:'Kreatiewe KUNSTE', dip: 'HALF COLORS'}
+                      ,{awardid:13,sub:'DINGES TAAL', dip: ''}
+                      ,{awardid:14,sub:'MATEMATOES', dip: ''}
+                      ,{awardid:14,sub:'Visuels sfess', dip: 'BOEKPRYS'}
+        ]"
+        extraNote="an extra note"
+        :alles="{a: 'hier is niks'}"
+        :panelIndex="selectedSubject"> 
+    </smart-display>        
+ </v-col>       
+  <v-col cols="12">  
+    <h3>SMART PHOTO </h3>
+    <smart-photo
+        title="this is a title and more"
+        photoPath="https://www.ft.com/assets/product/dynamic-barriers/comment.jpg"
+        photoNo=''
+        caption="this is a caption thing"
+    >
+    </smart-photo>
+  </v-col>
+  <v-col cols="12">  
+    <h3>SMART TEXT </h3>
+    <smart-text
+        title="this is a title"
+        atext="this is a text this is a text this is a text this is a text this is a text this is a text this is a text"
+        maintitle="this is the main title" >
+    </smart-text>
+  </v-col>
   
-  </div>
+ </v-row>
+  
+</v-container>
 </template>
 
 <script>
@@ -233,9 +285,15 @@ import AutoSel from '@/components/AutoSel.vue'
 import AutoSelObj from '@/components/AutoSelObj.vue'
 import AutoSelSub from '@/components/AutoSelSub.vue'
 //import OnFocus from '@/components/OnFocus.vue'
+
+
+import { zData } from "@/api/zGetBackgroundData.js"
+import SmartDisplay from '@/components/awards/SmartDisplay';
+import SmartPhoto from '@/components/awards/SmartPhoto';
+import SmartText from '@/components/awards/SmartText';
 export default {
   components: {
-    AutoSel, AutoSelObj, AutoSelSub//, OnFocus
+    SmartText,SmartPhoto,SmartDisplay,AutoSel, AutoSelObj, AutoSelSub//, OnFocus
   },  
  data: () => ({
   getZml: getters.getState({ object: "gZml" }),
@@ -247,6 +305,7 @@ export default {
   selectedFruit1: "",
   selectedFruit2: "",
   selectedFruitNo:{id:4,name:'waatlemoen'}, //but 4 would work as well
+  selectedSubject:7,
   subjectChanged:'',
   clicks: 1,
   hover: 1,
@@ -266,6 +325,11 @@ export default {
       },
     ],  
  }),
+ methods:{
+   testzData() {
+     zData.initialData('hallo')
+   },
+ },
 }
 </script>
 

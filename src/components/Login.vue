@@ -26,7 +26,7 @@
        <v-btn  @click="showProfile = !showProfile" color="info">
         Profile
        </v-btn>          
-       <v-btn @click="$router.go(-1)" color="primary"> Back </v-btn>
+       <v-btn @click="doBack" color="primary"> Back </v-btn>
        <v-btn color="info" @click="startLearning"> Continue </v-btn>
         <v-spacer />
        <v-btn  @click="logout" color="info">
@@ -159,6 +159,7 @@ import { zmlFetch } from '@/api/zmlFetch';
 import { zmlLog } from '@/api/zmlLog.js';
 //import router from '@/router';
 import { getters } from "@/api/store";
+import { zData } from "@/api/zGetBackgroundData.js"
 
 export default {
      name: "login"
@@ -185,16 +186,68 @@ export default {
       }
   }
   ,methods: {
-       onEnter: function() {
-          if (this.getZml.login.isAuthenticated) {
-            this.logout();
-          } else {
-            this.submit();
-          }
-       },
-       registrationMessage() {
-           infoSnackbar("Sorry! No registration from Login Form. You are already registered.")
-       },
+    doBack() {
+      zData.initialData('Load Important Data')
+      zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)      
+      if (this.getZml.login.password == 'password' || this.getZml.login.password.length < 3) {
+        errorSnackbar("Your password's to easy! Click on the eye to view and change it")
+        return
+      }
+      this.$router.go(-1)
+    },
+    startLearning() {
+      zData.initialData('Load Important Data')            
+      this.loadLearn()
+    },
+    loadLearn() {
+      console.log('LOADLEARN')
+      switch (this.getZml.login.type) {
+        case 'student' :
+        {
+           console.log('student route')
+           if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
+             console.log('student busy route')
+             this.$router.push({ name: 'SelectGrade' 
+                         , params:{heading:"Grade"
+                         , gradeno:this.getZml.gradeLastChosen}
+                         , meta: {layout: "AppLayoutGray" }});  
+           } else {
+             console.log('student fresh route')
+             this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+           }
+           break;
+        }
+        case 'teacher':
+        {
+          console.log('teacher route')
+          this.$router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
+          break;
+        }
+        case 'admin' :
+        {
+          console.log('admin route')
+          this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
+          break;
+        }
+        default:
+        {
+          console.log('default route')
+          this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+          break;
+        }
+      }
+    },
+
+    onEnter: function() {
+       if (this.getZml.login.isAuthenticated) {
+         this.logout();
+       } else {
+         this.submit();
+       }
+    },
+    registrationMessage() {
+        infoSnackbar("Sorry! No registration from Login Form. You are already registered.")
+    },
        logout() {
           const bye = 'Thanks for using the system ' + this.getZml.login.name + '!'
           infoSnackbar(bye);         
@@ -260,65 +313,6 @@ export default {
             console.log('failed:',response)
             errorSnackbar('Auth Failed:' + response.error)
           }
-      },
-      loadLearn(response) {
-          //Wait for subjects to load and then push the route for showing learning matter.
-          if (!response.error === undefined) {
-            errorSnackbar(response.error + ' happened')
-            return
-          }
-          this.getZml.subjects = response.subjects;
-          this.getZml.folders = response.folders;
-          this.getZml.functions = response.functions;
-          console.log('LOADLEARN')
-          switch (this.getZml.login.type) {
-            case 'student' :
-            {
-               console.log('student route')
-               if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-                 console.log('student busy route')
-                 this.$router.push({ name: 'SelectGrade' 
-                             , params:{heading:"Grade"
-                             , gradeno:this.getZml.gradeLastChosen}
-                             , meta: {layout: "AppLayoutGray" }});  
-               } else {
-                 console.log('student fresh route')
-                 this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
-               }
-               break;
-            }
-            case 'teacher':
-            {
-              console.log('teacher route')
-              this.$router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
-              break;
-            }
-            case 'admin' :
-            {
-              console.log('admin route')
-              this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
-              break;
-            }
-            default:
-            {
-              console.log('default route')
-              this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
-              break;
-            }
-          }
-      },
-      loadError(error) {
-          console.log(error);
-          alert('Nothing loaded yet (possibly) - error : ' + error);
-      },
-      startLearning() {
-        if (this.getZml.login.password == 'password' || this.getZml.login.password.length < 3) {
-          errorSnackbar("Your password's to easy! Click on the eye to view and change it")
-          return
-        }
-        let ts = {api: zmlConfig.apiDKHS ,task: 'loadlearn'}
-        zmlFetch(ts, this.loadLearn, this.loadError);
-        zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)
       },
       saveDetails() {
         //we need to send the stuff for an update

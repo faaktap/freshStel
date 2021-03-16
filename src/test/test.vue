@@ -57,7 +57,7 @@
 <script>
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
-import { makeAWait, uploadFiles, addToQueue } from './fileUploadHelper.js'
+import { makeAWait, uploadFiles, addToQueue } from '@/api/fileUploadHelper.js'
 import { infoSnackbar } from '@/api/GlobalActions';
   export default {
     name: "test",

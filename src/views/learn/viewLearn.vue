@@ -86,8 +86,9 @@ import { getters } from "@/api/store";
     }),
     methods: {
       subjectColor(sid){
-        if (sid == this.getZml.subjectid) return "red"
-        return ""
+        const idx = this.getZml.subjects.findIndex(item => item.subjectid == sid)
+        if (idx && this.getZml.subjects[idx].color) return this.getZml.subjects[idx].color
+        return "red"
       },
       setSubject(subject) {
         this.getZml.subjectid = subject.subjectid

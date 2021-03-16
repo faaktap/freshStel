@@ -16,7 +16,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col xs-12 lg-12>
+    <v-col cols="12" lg="12">
         <v-layout wrap>
         <v-flex v-for="grp in groupnames" :key="grp.id" justify-space-around
          xs-6 >
@@ -150,7 +150,7 @@ export default {
                           ]
         this.groupnames.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
-             if (sub.subjectid > 0 && sub.subjectid < 98) {
+             if (sub.subjectid > 0 && sub.subjectid < 400) {
                  let obj = {gid: grp.id
                            ,id: sub.subjectid
                            ,name: sub.description

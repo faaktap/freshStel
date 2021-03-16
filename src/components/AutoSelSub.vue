@@ -9,9 +9,25 @@
             :itemObj="fruitObject"    array of objects
              v-model="selectedFruitNo" >
          </auto-sel-obj>
-   -->
 
+How does this work?
+1. We receive a number in initial value.
+2. We lookup the id for that number in watch or mount
+3. We load "what" with that object value
+4. This get's display in the v-slot:selection
+5. (in 4 we used itemDisplay function to display correct info)     
+6. When user click on one, we return the id.
+A. The search function, use the itemdisplay to get data to display in dropdown
+   -->
+ <div>
+<!--   what = {{ what }}
+   <br>initialValue = {{ initialValue }}-->
+   <!-- filled, outlined,solo, solo-inverted, flat-->
     <v-autocomplete 
+        cache-items
+        clearable
+        open-on-clear
+        message
         v-model="what"
         v-on:input="$emit('input', what)"
         v-if="itemObj && itemObj.length > 0"
@@ -19,11 +35,31 @@
         :search-input.sync="search"
         :items="itemObj"
         :item-text="itemDisplay"
-        item-value="subjectafrname"
-        return-object
+        item-value="subjectid"
+        xxreturn-object
         :label="asLabel">
-    </v-autocomplete> <!--//return-object -->
+<!-- 
+    ItemDisplay is beter as om slots te gbuik agv auto-focus. 
+    as jy return-object gee, word die hele object return
+    as jy item-value = subjectid gee, word net subjectid return
+    dan is display effens van 'n probleem...
 
+-->
+<!-- HTML that describe how select should render selected items
+  <template v-slot:selection="data">
+    sel item {{ data.itemObj }}
+  </template> -->
+<!-- HTML that describe how select should render items when the select is open 
+  <template v-slot:item="data">
+    
+    open {{ data.itemObj.shortname }}
+  </template>-->  
+    </v-autocomplete> <!--//return-object -->
+   <div v-else>
+     (No Subject Data Available)
+   </div>
+
+</div>
 </template>
 
 
@@ -39,7 +75,9 @@ export default {
     what: null,
   }),
   mounted() { 
-     this.what = this.initialValue
+    this.what = this.itemObj.find(item => item.id == this.initialValue)
+    console.log('found: ', this.what)
+     //this.what = this.initialValue
    },
   computed: {
     searchText() {
@@ -47,10 +85,15 @@ export default {
     },
     itemDisplay() {
         //return "this.itemToShow";
-        return "subjectname"
+        return item => item.shortname + ' — ' + item.description
     }
   },
   methods: {      },
-  watch: {  }
+  watch: { 
+    initialValue() {
+       this.what = this.itemObj.find(item => item.id == this.initialValue)
+       console.log('found in watch : ', this.what)
+    }
+   }
 }
 </script>

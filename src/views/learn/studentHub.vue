@@ -334,7 +334,10 @@ export default {
                 return this.contents 
               }
               if (this.filter == '*')  {
-                return this.contents.filter(a => a.type == 'folder')
+                return this.contents.filter(a => 
+                  a.type == 'folder' && a.name == a.folder
+                  
+                  )
               }
               if (this.filter == 'T')  {
                 return this.contents.filter(a => a.type == 'text')

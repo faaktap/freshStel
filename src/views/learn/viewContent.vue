@@ -240,6 +240,7 @@ import { zmlLog } from '@/api/zmlLog.js';
 import { getters } from "@/api/store";
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 import AutoSelObj from '@/components/AutoSelObj.vue'
+import { zData } from "@/api/zGetBackgroundData.js"
 // eslint-disable-next-line
 //import router from '@/router';
   export default {
@@ -532,6 +533,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         loadFolders() {
           zmlFetch({task: 'getfolders',api: zmlConfig.apiDKHS}, this.afterFolders);
         },
+        /*
         loadSubjects(response) {
             this.getZml.subjects = response;
             if (this.getZml.folders.length == 0) {
@@ -541,6 +543,7 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
                this.loadData();
             }
         },
+        */
         afterFolders(response) {
           this.getZml.folders = response;
           this.loadData();
@@ -571,16 +574,16 @@ import AutoSelObj from '@/components/AutoSelObj.vue'
         zmlConfig.cl('Mount:Edit-2-package');
         //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
         console.log('MOUNT VL : ', this.getZml.login)
-        if (this.getZml.login.type == 'teacher' && this.getZml.login.isAuthenticated) {
+        if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
           if (this.getZml.subjects.length == 0) {
-             zmlFetch({task: 'getsubjects'}, this.loadSubjects);
+             zData.initialData('hallo')
           } else if (this.getZml.folders.length == 0) {
              zmlFetch({task: 'getfolders',api:zmlConfig.apiDKHS}, this.afterFolders);
           } else {
             this.loadData();
           }
         } else {
-          infoSnackbar('You need to login to access this information')
+          infoSnackbar('You need to login as teacher to access this information')
         }
     },
     watch: {

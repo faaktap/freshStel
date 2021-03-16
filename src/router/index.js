@@ -47,11 +47,19 @@ const routes = [
     }]
   },
   { 
+    path: '/dkhsawards',
+    name: 'dkhsawards',
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),
+    meta: {layout: la[0], authentication: "public" }
+  },  
+  { 
     //Actual award!
-    path: '/virtualawards',
-    name: 'prizes',
-    component: () => import(/* webpackChunkName: "about" */ '../views/awards/Prizes.vue'),
-    meta: {layout: la[1], authentication: "public" }
+    path: '/virtualawards/:chapterid',
+    name: 'virtualawards',
+    component: () => import(/* webpackChunkName: "awards" */ '../views/awards/AwardCarousel.vue'),
+    props: true,
+    params: {chapterid: 4, editmode: false},
+    meta: {layout: la[0], authentication: "public" }
   },  
   {
     path: '/studentawards',

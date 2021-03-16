@@ -65,6 +65,58 @@ export const zDate = {
     { title : "School Holiday", date:new Date(2021,9,9)} ,
     { title : "School Holiday", date:new Date(2021,9,10)} ,    
   ],     
+  dayType: [
+   {id:10, dayNo:'1', type:'Admin'   , start:'07:45', duration:22}
+  ,{id:11 ,dayNo:'1', type:'Per1'    , start:'08:07', duration:52}
+  ,{id:12 ,dayNo:'1', type:'Per2'    , start:'08:55', duration:0}
+  ,{id:13 ,dayNo:'1', type:'Per3'    , start:'09:43', duration:0}
+  ,{id:14 ,dayNo:'1', type:'Pouse 1' , start:'10:31', duration:0}
+  ,{id:15 ,dayNo:'1', type:'Per4'    , start:'10:56', duration:0}
+  ,{id:16 ,dayNo:'1', type:'Per5'    , start:'11:45', duration:0}
+  ,{id:17 ,dayNo:'1', type:'Pouse 2' , start:'12:33', duration:0}
+  ,{id:18 ,dayNo:'1', type:'Per6'    , start:'12:53', duration:0}
+  ,{id:19 ,dayNo:'1', type:'Per7'    , start:'13:42', duration:0}
+  ,{id:10, dayNo:'2', type:'Admin'   , start:'07:45', duration:22}
+  ,{id:11 ,dayNo:'2', type:'Per1'    , start:'08:07', duration:52}
+  ,{id:12 ,dayNo:'2', type:'Per2'    , start:'08:55', duration:0}
+  ,{id:13 ,dayNo:'2', type:'Per3'    , start:'09:43', duration:0}
+  ,{id:14 ,dayNo:'2', type:'Pouse 1' , start:'10:31', duration:0}
+  ,{id:15 ,dayNo:'2', type:'Per4'    , start:'10:56', duration:0}
+  ,{id:16 ,dayNo:'2', type:'Per5'    , start:'11:45', duration:0}
+  ,{id:17 ,dayNo:'2', type:'Pouse 2' , start:'12:33', duration:0}
+  ,{id:18 ,dayNo:'2', type:'Per6'    , start:'12:53', duration:0}
+  ,{id:19 ,dayNo:'2', type:'Per7'    , start:'13:42', duration:0}
+  ,{id:10, dayNo:'3', type:'Admin'   , start:'07:45', duration:22}
+  ,{id:11 ,dayNo:'3', type:'Per1'    , start:'08:00', duration:52}
+  ,{id:12 ,dayNo:'3', type:'Per2'    , start:'08:45', duration:0}
+  ,{id:13 ,dayNo:'3', type:'Per3'    , start:'09:30', duration:0}
+  ,{id:14 ,dayNo:'3', type:'Pouse 1' , start:'10:15', duration:0}
+  ,{id:15 ,dayNo:'3', type:'Per4'    , start:'10:40', duration:0}
+  ,{id:16 ,dayNo:'3', type:'Per5'    , start:'11:25', duration:0}
+  ,{id:17 ,dayNo:'3', type:'Pouse 2' , start:'12:10', duration:0}
+  ,{id:18 ,dayNo:'3', type:'Per6'    , start:'12:30', duration:0}
+  ,{id:19 ,dayNo:'3', type:'Per7'    , start:'13:15', duration:0}
+  ,{id:10, dayNo:'4', type:'Admin'   , start:'07:45', duration:22}
+  ,{id:11 ,dayNo:'4', type:'Per1'    , start:'08:07', duration:52}
+  ,{id:12 ,dayNo:'4', type:'Per2'    , start:'08:55', duration:0}
+  ,{id:13 ,dayNo:'4', type:'Per3'    , start:'09:43', duration:0}
+  ,{id:14 ,dayNo:'4', type:'Pouse 1' , start:'10:31', duration:0}
+  ,{id:15 ,dayNo:'4', type:'Per4'    , start:'10:56', duration:0}
+  ,{id:16 ,dayNo:'4', type:'Per5'    , start:'11:45', duration:0}
+  ,{id:17 ,dayNo:'4', type:'Pouse 2' , start:'12:33', duration:0}
+  ,{id:18 ,dayNo:'4', type:'Per6'    , start:'12:53', duration:0}
+  ,{id:19 ,dayNo:'4', type:'Per7'    , start:'13:42', duration:0}
+  ,{id:10, dayNo:'5', type:'Admin'   , start:'07:45', duration:22}
+  ,{id:11 ,dayNo:'5', type:'Per1'    , start:'08:30', duration:52}
+  ,{id:12 ,dayNo:'5', type:'Per2'    , start:'09:11', duration:0}
+  ,{id:13 ,dayNo:'5', type:'Per3'    , start:'09:52', duration:0}
+  ,{id:14 ,dayNo:'5', type:'Pouse 1' , start:'10:33', duration:0}
+  ,{id:15 ,dayNo:'5', type:'Per4'    , start:'10:58', duration:0}
+  ,{id:16 ,dayNo:'5', type:'Per5'    , start:'11:39', duration:0}
+  ,{id:17 ,dayNo:'5', type:'Pouse 2' , start:'12:20', duration:0}
+  ,{id:18 ,dayNo:'5', type:'Per6'    , start:'12:38', duration:0}
+  ,{id:19 ,dayNo:'5', type:'Per7'    , start:'13:19', duration:0}             
+  ],  
   format: function (...args) {  
     return format(...args)
   },
@@ -115,7 +167,9 @@ export const zDate = {
       alert('we only work in march')
       return 1
     }
-
-
   }
 };
+
+
+//Kan jy my sê watter skooldag is vandag? (11/03/2021) - Dag 10 sir.      
+

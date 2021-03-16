@@ -1,75 +1,5 @@
 <template>
 <div>
-  <v-container class="grey lighten-5 pa-4" v-if="startSlideShow==false">
-    <v-row>
-      <v-col cols="12" class="xs12">
-    <v-card class="mx-auto" max-height="600">
-    <v-img height="100%" src="/img/prysUitdelingHerman.jpg" xgradient="to top, #3a45394d, #FFFFFF4d">
-      <v-row        align="end"        class="fill-height"      >
-        <v-col          align-self="start"          class="pa-0"          cols="12"        >
-         <v-responsive
-           class="elevation-40 rounded-circle d-inline-flex align-center justify-center ma-3"
-         
-           height="164"
-           width="164"
-        >
-        <v-img src="/img/HermanMellet1.jpg"> </v-img>
-        
-         </v-responsive>
-        </v-col>
-        <v-col class="py-0">
-          <v-list-item
-            color="rgba(0, 0, 0, .4)"
-            dark
-          >
-            <v-list-item-content>
-              <v-list-item-title class="title">Herman Mellet</v-list-item-title>
-              <v-list-item-subtitle>Principal</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-col>
-      </v-row>
-    </v-img>
-  </v-card>
-      </v-col>
-  </v-row>
-  <hr>
-  <v-row>
-    <v-col>
-  <v-card xcolor="rgba(0, 90, 0, .9)" class="rounded">
-    <v-card-text class="ma-4 black--text">
-        2020 was the year of Covid 19. We faced so many challenges and now we can look back on a very successful academic year, 
-<blockquote class="blockquote grey--text ma-4"><cite>John Maxwell said:</cite>
-  “ Leaders can be evaluated by the size of the problem they are willing to tackle. The best leaders push beyond their comfort zones……….
-  Making it happen requires risk; there is no escaping the possibility of failure”</blockquote>
-The 2020 Matrics will not only be remembered for rewriting NSC Mathematics and Physical Sciences papers, 
-beautiful face masks and wearing civvies to school. They will be remembered as the class with the most 
-academic prize winners in the history of the school. In that sense they tackled the sizeable problem of 
-teaching and learning during Covid 19. This class will produce many leaders in all spheres of society. 
-Congratulations to every prize winner, you made us proud in 2020.  
-<blockquote class="blockquote grey--text ma-4"> 
-  <cite>‘n Woestynvader het eenmaal gesê: </cite>“Iemand wat ‘n vuur aan die gang wil kry, word eers deur rook gepla en die rook dryf hom tot trane, maar uiteindelik , as hy aanhou , kry hy sy vuur! “
-</blockquote>
-Elke pryswenner kry nou sy spreekwoordelike vuur in die vorm van ‘n pryswennerssertifikaat.
-Mag die prys elkeen aanspoor om nog groter hoogtes te bereik na skool. 
-Baie geluk aan elke pryswenner en onthou die volgende mooi woorde:
-<blockquote class="blockquote"><div class="koek grey--text mb-2 text-center text-sm-h6 text-lg-h5">
-“ Hoe sterk pyn ook is, U is altyd sterker;<br>
-Hoe diep ‘n mens ook val, U is altyd dieper;<br>
-Hoe donker die nag ook is,<br>
-U is altyd die middagson daarin.<br>
-U is ons Vader, ons Moeder, ons Broer en ons Vriend.<br>
-Amen ”<br></div>
-		<cite>Gebed van ‘n vrou uit Afrika</cite> </blockquote>
-  </v-card-text>
-  </v-card>
-  <v-spacer />
-  <v-btn v-if="startSlideShow==false" @click="startSlideShow=true" color="green"> START 2020 VIRTUAL AWARDS </v-btn>
-    </v-col>
-  </v-row>
-
-<!-- ------------------------------------------------------------------------------------ -->
-  </v-container>
    <v-parallax v-if="startSlideShow"
     src="/img/vlaghys6842.jpg"
     height="1300px"
@@ -97,11 +27,22 @@ Amen ”<br></div>
             v-for="page in awardList"
             color="rgba(255, 1, 7, 0.2)"
             contain
-            :key="page.storyid">         
+            :key="page.storyid">   
+
+
          <smart-text v-if="page.type == 1" 
                     :title="page.detail1"
-                    :atext="page.detail2" />
+                    :atext="page.detail2" 
+                    maintitle="Prysuitdeling 2020 / Prizegiving 2020"
+                    />
                     <!-- Type 2 is a group, and change to type 3 -->
+
+         <smart-photo v-if="page.type == 4" 
+                    :title="page.detail1"
+                    :caption="page.detail2"
+                    photoPath="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=sportaward&studentno="
+                    :photoNo="page.otherid" />
+
          <smart-display v-if="page.type == 3"    
                         :studentid="page.studentid"
                         :studentName="page.detail1"
@@ -109,12 +50,14 @@ Amen ”<br></div>
                         :extraNote="page.extraNote"
                         :alles=page
                         :panelIndex=panelIndex />
-         <smart-photo v-if="page.type == 4" 
-                    :title="page.detail1"
-                    :caption="page.detail2"
-                    photoPath="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=sportaward&studentno="
-                    :photoNo="page.otherid" />
-              
+
+
+
+<v-container v-if="currentEditMode">
+   {{page}}
+   <v-btn @click="addNewOneAfter"> Add New One After </v-btn>
+   <v-btn @click="editThisOne"> Edit This One </v-btn>
+</v-container>  
 
   </v-carousel-item>
  </v-carousel> 
@@ -164,15 +107,19 @@ Amen ”<br></div>
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
-import { zmlFetch } from '@/api/zmlFetch';
-import SmartDisplay from '@/components/SmartDisplay';
-import SmartText from '@/components/SmartText';
-import SmartPhoto from '@/components/SmartPhoto';
+import { getters } from "@/api/store"
+//import { zmlConfig } from '@/api/constants'
+import { zmlFetch } from '@/api/zmlFetch'
+import SmartDisplay from '@/components/awards/SmartDisplay'
+import SmartText from '@/components/awards/SmartText'
+import SmartPhoto from '@/components/awards/SmartPhoto'
 export default {
     components: {SmartDisplay, SmartText, SmartPhoto},
+    props: [ 'chapterid','editmode' ],
     data () {
       return {
+        getZml: getters.getState({ object:"gZml" }),
+        currentEditMode: false,
         showChapters: false,
         startSlideShow: false,
         search:'',
@@ -202,11 +149,13 @@ export default {
          return arr;
      },
      loadData() {
-        let ts = {chapterid: 4, task:'getFullStory'};
+        let ts = {chapterid: this.chapterid, task:'getFullStory'};
         this.progress = true;
+        console.log('fetching.. ' , ts)
         zmlFetch(ts, this.processData, this.loadError);
      },
      processData(response) {
+       console.log(response)
         let incoming = response;
         incoming.sort((a, b) => a.sortid - b.sortid);
         let diplomaSubjectArr = [];
@@ -274,19 +223,19 @@ export default {
            }
         }
         this.progress = false;
+        this.startSlideShow = true
      },
      loadError(error) {
-        console.log(error);
-        alert('Nothing loaded yet (possibly) - error : ' + error);
+        console.log(error)
         this.progress = false;
      },   
      backgroundSound() {
-        zmlConfig.cl('start backgroundsound', this.carouselSound);
+        console.info('start backgroundsound', this.carouselSound);
         this.carouselSound.volume = 0.2;
         this.carouselSound.play;
      }, 
      backgroundSoundMute() {
-        zmlConfig.cl('mute backgroundsound', this.schoolSongSound, this.schoolSongSound.volume);
+        console.info('mute backgroundsound', this.schoolSongSound, this.schoolSongSound.volume);
         this.schoolSongSound.volume = 0.1;
         this.carouselSound.volume = 0.1;
         this.carouselSound.mutes = true;
@@ -318,8 +267,10 @@ export default {
      window.removeEventListener('keypress', this.doCommand);
    },
    mounted: function () {
-      zmlConfig.cl('Mount:StoryEdit');
-      this.loadData();
+     this.currentEditMode = (this.editmode === undefined) ? false : this.editmode;
+     console.log('Mount:Story', this.chapterid, this.currentEditMode, this.getZml.login.isAuthenticated);
+     //if (this.editmode == undefined) this.editmode = false
+     this.loadData();
    },
    watch: {
      storyIndex: function() {

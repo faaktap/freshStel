@@ -149,12 +149,12 @@ data: () => ({
                    {title:'Refresh Folder',icon:'mdi-database-refresh'},
                    ],  
   paths:['/a', '/h','/1','/','/home','/about','/hover',
-   '/virtualawards','/studentawards', '/learntree', '/viewlearn',
+   '/virtualawards/1','/studentawards', '/learntree', '/viewlearn',
    '/grade',   '/grade/8',   '/studenthub',   '/subjects',   '/student',
    '/personel',   '/viewfunctions',   '/nested',    'dialog',    '/werner'
     ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
     ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/test'    ,'/sview'
-    ,'/tcal'    ,'/ecal'    ,'/color'],        
+    ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards'],        
     randomColors:[],           
 }),
 computed: {

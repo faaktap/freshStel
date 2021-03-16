@@ -22,6 +22,7 @@ const state = Vue.observable({
            functions: [], 
            voteList:[],          
            locale: 'af',
+           calendar:[],  
            atester: false,
           }
     });

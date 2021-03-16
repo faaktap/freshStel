@@ -1,5 +1,5 @@
-const PROJECT_ID = "onZml40"
-const MEASUREMENT_ID = "Z-ZML40"
+const PROJECT_ID = "onZml41"
+const MEASUREMENT_ID = "Z-ZML41"
 const DEFAULT_LAYOUT = "AppLayoutDefault"
 const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 

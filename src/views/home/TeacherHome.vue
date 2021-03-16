@@ -17,7 +17,8 @@
        <v-btn href="http://kuiliesonline.co.za/cw-mail/"> Online Mass Mail </v-btn>
     </div>
     <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-        <v-btn to="/viewfunctions"> only for werner </v-btn>
+        <v-btn to="/viewfunctions"> functions </v-btn>
+        <v-btn to="/dkhsawards"> awards </v-btn>
         <email-list />
     </div>
 </div>

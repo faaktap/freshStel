@@ -10,6 +10,7 @@
        flat
        :loading="loading"
     >
+   
         <v-btn
         icon
         class="ma-2"
@@ -137,17 +138,48 @@
       -->
       
     </v-col>
-    
+    <v-col cols=12>
+<ul>
+<li class="red lighten-1">red</li>
+<li class="pink">pink</li>
+<li class="purple">purple</li>
+<li class="deep-purple">deep-purple</li>
+<li class="blue">blue</li>
+<li class="indigo">indigo</li>
+<li class="light-blue">light-blue</li>
+<li class="teal">teal</li>
+<li class="cyan">cyan</li>
+<li class="green">green</li>
+<li class="light-green">light-green</li>
+<li class="lime">lime</li>
+<li class="yellow">yellow</li>
+<li class="amber">amber</li>
+<li class="orange">orange</li>
+<li class="deep-orange">deep-orange</li>
+<li class="brown">brown</li>
+<li class="grey">grey</li>
+<li class="blue-grey">blue-grey</li>
+<li class="black">black</li>
+<li class="white">white</li>
+<li class="transparent">transparent</li>
+</ul>        
+    </v-col>
+    {{getZml.subjects }}
+    <hr>
+    {{ events }}
   </v-row>
 </template>
 
 <script>
 //import { format         ,lastDayOfMonth        , addYears } from 'date-fns'
+import { getters } from "@/api/store"
 import { zDate } from '@/api/zDate.js'
+import { zData } from '@/api/zGetBackgroundData.js'
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 export default {
     data: () => ({
+      getZml: getters.getState({ object: "gZml" }),
       loading:false,
       today: null,
       calToday: null,
@@ -176,13 +208,26 @@ export default {
             timed: true,
           })
       },
+      loadCalendar() {
+        this.getZml.calendar.forEach(ele => {
+          if (ele.start) {
+             const evt= {name: ele.name
+                  , start: ele.start
+                  , end: ele.start
+                  , color: ele.color
+                  , type: ele.type
+                  , timed: ele.timed
+                    }
+             this.events.push(evt)
+          } else {
+            console.error('One of our event does not have a startdate!',ele);
+          }
+        })
+      },
       loadData(){
-
-
         console.log('ShowLoadData:',this.selectedEvent.name, this.selectedElement, this.selectedOpen, this.personeelMenemonic)
         this.selectedOpen = false
-        alert('fetch for:' +  this.selectedEvent.name + ' ' + this.personeelMenemonic 
-        + ' for date:' + this.selectedEvent.start)
+        console.log('fetch for:', this.selectedEvent.name, this.personeelMenemonic, ' for date:',this.selectedEvent.start)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = 'select * from rooster where user_name = "' + this.personeelMenemonic + '"';
@@ -190,8 +235,16 @@ export default {
         this.loading = true;
         zmlFetch(ts, this.afterUpdate);   
       },
+      getPeriodStartTime(hhmm,element, dateLooking) {
+         let perStart = zDate.dayType.find(dt =>  dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )  
+         hhmm.hh = parseInt(perStart.start.substr(0,2))
+         hhmm.mm = parseInt(perStart.start.substr(3,2))
+      },
+      subjectColor(subjectShortName) {
+        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName )  
+        return colorObj.color
+      },
       afterUpdate(response) {
-        console.log(response)
         let template = this.selectedEvent.start //new Date();
         template.setHours(0,0,0,0)
         response.forEach(ele => {
@@ -210,16 +263,22 @@ export default {
           }
           //console.log(this.selectedEvent.name ,parseInt(ele.periodno) +  7, n,s ,e )
           if (n) {
-            this.events.push(
-              {name: n.substr(0,3) + ' ' + ele.periodno + ' ' + n.substr(4,4)
-                  , start: template.setHours(parseInt(ele.periodno) +  7,0,0,0)
-                  , end: template.setHours(parseInt(ele.periodno) +  8,0,0,0)
-                  , color: 'brown'
+            //what day it is?
+            console.log('what Day and period?', template.getDay(), ele.periodno)
+            // Search where zDate.dayType.dayNo = template.getDay
+            // and zDate.type = ele.periodno
+            let hhmm = {}
+            this.getPeriodStartTime(hhmm,ele, template)
+            const evt = {
+                    name: n.substr(0,3) + ' ' + ele.periodno + ' ' + n.substr(4,4)
+                  , start: template.setHours(hhmm.hh, hhmm.mm, 0, 0) 
+                  , end:   template.setHours(hhmm.hh, hhmm.mm + 45, 0, 0) 
+                  , color: this.subjectColor( n.substr(0,3) )
                   , timed: true
                   , details: n
-              })
+              }
+            this.events.push( evt )
           }
-
         })
         //Brilliant funcking timeout stukkie!!
         setTimeout(() => {
@@ -275,76 +334,33 @@ export default {
       },
     },    
     mounted () {
-      console.log('MOUNTMOUNTMOUNTMOUNTMOUNTMOUNTMOUNT')
+      console.log('MOUNT Test Cal')
       this.events = []
       this.today = new Date()
-      console.log('This.today',this.today)
       this.today.setHours(0,0,0,0)
-      console.log('This.today',this.today)
-
-      zDate.publicHolidays.forEach(xx => {
-         const evt= {name: xx.title
-                  , start: zDate.format(xx.date,'yyyy-MM-dd')
-                    }
-         this.events.push(evt)
-      })
-
-
       this.calToday = zDate.format(this.today,'yyyy-MM-dd') 
-      console.log('This.Caltoday',this.calToday)
+      zData.calendarData('Load Holiday and Birthday Data')
+      zData.initialData('Load Subject Data')
 
-      let startOfMonth = zDate.startOfMonth(this.today)
-      console.log('startOfMonth',startOfMonth)
-
-      let dayCnt = zDate.curDay(startOfMonth)
-      let Group = 'A'
-      console.log('dayCnt',dayCnt)
-      //Kan jy my sê watter skooldag is vandag? (11/03/2021) - Dag 10 sir.      
-      for (let i=0; i< 32; i++) {
-         const dayX = zDate.add( startOfMonth, {days:i} )
-         console.log('dayX',dayX)
-         if (zDate.isWeekend(dayX)) {
-             continue
-         } 
-         if (zDate.isPublicHoliday(dayX)) {
-             continue
-         } 
-         const evt= {name: 'day' + dayCnt + ' ' + Group
-                  , start: dayX //zDate.format(dayX,'yyyy-MM-dd')
-                  , end: dayX //zDate.format(dayX,'yyyy-MM-dd')
-                  , color: 'light-blue'
-                  , timed: false
-                    }
-         this.events.push(evt)
-         console.log(evt)
-         if (dayCnt == 10 && Group == 'B')  {Group = 'A'; dayCnt = 1; continue;}
-         if (Group == 'A') { Group = 'B'; continue;}
-         if (Group == 'B') { Group = 'A'; dayCnt += 1; continue;}
-      }
-
-
-       let s = new Date()
-       let e = new Date()
-       e.setHours(e.getHours() ) + 2
-       let evt= {name: "hallo"
-                  , start: s
-                  , end: e
-                  , color: 'green'
-                    }
-         this.events.push(evt)        
-
-       
-         
-      console.log('events was loaded')
-      if (this.$refs.calendar !== undefined) {
-         console.log('Defined: ' , this.$refs.calendar)
-         this.$refs.calendar.checkChange()
-         this.calReady = true
-         this.scrollToTime()
-         this.updateTime()
-      } else {
-        console.log('UN UNUNDefined: ' , this.$refs.calendar)
-      }
+      
+      setTimeout(() => {
+         this.loadCalendar()
+         if (this.$refs.calendar !== undefined) {
+            console.log('Defined: ' , this.$refs.calendar)
+            this.$refs.calendar.checkChange()
+            this.calReady = true
+            this.scrollToTime()
+            this.updateTime()
+         } else {
+           console.log('UN UNUNDefined: ' , this.$refs.calendar)
+         }
+      }, 2000)
+      console.log('end of mounted')
+      alert('wait....')
+            this.$refs.calendar.checkChange()
+            this.calReady = true
+            this.scrollToTime()
+            this.updateTime()
 
     },
   }
