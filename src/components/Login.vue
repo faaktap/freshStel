@@ -186,8 +186,13 @@ export default {
       }
   }
   ,methods: {
-    doBack() {
+    getData() {
       zData.initialData('Load Important Data')
+      zData.calendarData('Load Holiday and Birthday Data') 
+      zData.functionData('Load functions') 
+    },
+    doBack() {
+      this.getData();
       zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)      
       if (this.getZml.login.password == 'password' || this.getZml.login.password.length < 3) {
         errorSnackbar("Your password's to easy! Click on the eye to view and change it")
@@ -196,42 +201,42 @@ export default {
       this.$router.go(-1)
     },
     startLearning() {
-      zData.initialData('Load Important Data')            
+      this.getData();
       this.loadLearn()
     },
     loadLearn() {
-      console.log('LOADLEARN')
+      zData.l('LOADLEARN')
       switch (this.getZml.login.type) {
         case 'student' :
         {
-           console.log('student route')
+           zData.l('student route')
            if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-             console.log('student busy route')
+             zData.l('student busy route')
              this.$router.push({ name: 'SelectGrade' 
                          , params:{heading:"Grade"
                          , gradeno:this.getZml.gradeLastChosen}
                          , meta: {layout: "AppLayoutGray" }});  
            } else {
-             console.log('student fresh route')
+             zData.l('student fresh route')
              this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
            }
            break;
         }
         case 'teacher':
         {
-          console.log('teacher route')
+          zData.l('teacher route')
           this.$router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
           break;
         }
         case 'admin' :
         {
-          console.log('admin route')
+          zData.l('admin route')
           this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
           break;
         }
         default:
         {
-          console.log('default route')
+          zData.l('default route')
           this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
           break;
         }
@@ -279,7 +284,7 @@ export default {
           }
        },
        loginFail(error) {
-          console.log('Login FAIL:',error);
+          zData.l('Login FAIL:',error);
           this.submitting = false;                 
           infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
        },
@@ -299,18 +304,18 @@ export default {
             this.getZml.login.userid = response.userid ? response.userid : 0;
             this.getZml.login.logins = response.logins;
             this.getZml.login.lastdate = response.lastdate;
-            console.log('WHAT IS IN RESPOSE?????', response)
+            console.info('fullResp', response)
             if (response.added == 1  || response.password == 'password') {
               infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
               this.showProfile = 1; 
             } else {
               let loginDetails = JSON.stringify(this.getZml.login)
               localStorage.setItem('login', loginDetails)
-              console.log('SAVED LOGIN:', loginDetails)
+              zData.l('SAVED LOGIN:', loginDetails)
               this.startLearning()
             }
           } else {
-            console.log('failed:',response)
+            zData.l('failed:',response)
             errorSnackbar('Auth Failed:' + response.error)
           }
       },
@@ -345,11 +350,11 @@ export default {
       },
   },
   created: function() {  
-     //console.log('created - login');
+     //zData.l('created - login');
   },
   mounted: function () {
     //Check localstorage...
-    console.log('LOGIN _ MNT - Chk LocalStore', this.$route)
+    zData.l('LOGIN _ MNT - Chk LocalStore', this.$route)
     if (localStorage.getItem('login')) {
       try { 
         this.getZml.login = JSON.parse(localStorage.getItem('login'));
@@ -357,7 +362,7 @@ export default {
         localStorage.removeItem('login')
       }
     }
-    console.log('DONE FETCH LOGIN _ MNT Auth=', this.getZml.login.isAuthenticated)
+    zData.l('DONE FETCH LOGIN _ MNT Auth=', this.getZml.login.isAuthenticated)
   }
 }
 

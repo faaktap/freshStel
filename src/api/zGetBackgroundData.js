@@ -7,19 +7,23 @@ import { zDate } from '@/api/zDate.js'
 
 export const zData = {
     someGlobals :  'hallo',
-    initialData: function (whatever) {  
-      if (whatever !== undefined) console.log(whatever)
-
-      if (!getters.getState({ object: "gZml" }).subjects.length 
-          || !getters.getState({ object: "gZml" }).folders.length
-          || !getters.getState({ object: "gZml" }).functions.length) {
-          let ts = {api: zmlConfig.apiDKHS ,task: 'loadlearn'}
-          zmlFetch(ts, finishedLoadingBasic, errorLoading);
-      }
-      return "something"
+    l: (...args) => {   
+       console.log(...args);   
     },
-    calendarData: function (whatever) {  
-        if (whatever !== undefined) console.log(whatever)
+    initialData:  (whatever) => {
+        if (whatever !== undefined)
+            zData.l(whatever);
+
+        if (!getters.getState({ object: "gZml" }).subjects.length
+            || !getters.getState({ object: "gZml" }).folders.length
+            || !getters.getState({ object: "gZml" }).functions.length) {
+            let ts = { api: zmlConfig.apiDKHS, task: 'loadlearn' };
+            zmlFetch(ts, finishedLoadingBasic, errorLoading);
+        }
+        return "something";
+    },
+    calendarData: (whatever) => {  
+        if (whatever !== undefined) zData.l(whatever)
         if (!getters.getState({ object: "gZml" }).calendar.length) {
             let ts = {}
             ts.task = 'PlainSql'
@@ -31,10 +35,26 @@ export const zData = {
         }
         return "something"
       },
+      functionData: (whatever) => {  
+        if (whatever !== undefined) zData.l(whatever)
+        if (!getters.getState({ object: "gZml" }).functions.length) {
+            let ts = {}
+            ts.task = 'PlainSql'
+            ts.sql = 'select * from dkhs_lfunction order by sortorder'
+            ts.api = zmlConfig.apiDKHS
+            zmlFetch(ts, finishedLoadingFunctions, errorLoading);
+        }
+        return "something"
+      },
+    randomChuckNorris: async () => {
+        let response = await fetch('https://api.chucknorris.io/jokes/random')
+        let data = await response.json()
+        return data
+    }
   
 }
 function finishedLoadingCalendar(response) {
-    console.log('Start Load Calendar Birthdays')
+    zData.l('Start Load Calendar Birthdays')
     response.forEach(ele => {
         const evt= {name: ele.public_preferredname
                  , start: ele.StartDate
@@ -42,17 +62,18 @@ function finishedLoadingCalendar(response) {
                  , color: 'indigo'
                  , type: 'Birthday'
                  , timed: false
+                 , detail: ele.menemonic
                    }
         getters.getState({ object: "gZml" }).calendar.push(evt)
        })    
-    console.log('Loaded Birthdays:', getters.getState({ object: "gZml" }).calendar.length)
+    zData.l('Loaded Birthdays:', getters.getState({ object: "gZml" }).calendar.length)
     loadSchoolsDays()
 }
 
 //----------------------------------------------------------------
 function finishedLoadingBasic (response) {
     //getZml = getters.getState({ object: "gZml" })
-    console.log(getters.getState({ object: "gZml" }).subjects.length 
+    zData.l(getters.getState({ object: "gZml" }).subjects.length 
                ,getters.getState({ object: "gZml" }).folders.length
                ,getters.getState({ object: "gZml" }).functions.length)
     getters.getState({ object: "gZml" }).subjects = response.subjects;
@@ -62,7 +83,7 @@ function finishedLoadingBasic (response) {
 
 //----------------------------------------------------------------
 function loadSchoolsDays() {
-   console.log('Start Load Calendar')
+   zData.l('Start Load Calendar')
    zDate.publicHolidays.forEach(xx => {
         const evt= {name: xx.title
                  , start: zDate.format(xx.date,'yyyy-MM-dd')
@@ -71,9 +92,9 @@ function loadSchoolsDays() {
                    }
         getters.getState({ object: "gZml" }).calendar.push(evt)
    })
-   console.log('Loaded Holidays:', getters.getState({ object: "gZml" }).calendar.length)
+   zData.l('Loaded Holidays:', getters.getState({ object: "gZml" }).calendar.length)
    let startDate = new Date(2021,2,1)
-   console.log('Create Start Date:',startDate)
+   zData.l('Create Start Date:',startDate)
    startDate.setHours(0,0,0,0)
    const startOfMonth = zDate.startOfMonth(startDate)
    let dayCnt = zDate.curDay(startOfMonth)
@@ -85,8 +106,8 @@ function loadSchoolsDays() {
       if (zDate.isWeekend(dayX))       {       continue   } 
       if (zDate.isPublicHoliday(dayX)) {       continue   } 
       const evt= {name: 'day' + dayCnt + ' ' + Group
-               , start: dayX  
-               , end: dayX   
+               , start: zDate.format(dayX,'yyyy-MM-dd') //dayX
+               , end: zDate.format(dayX,'yyyy-MM-dd') //dayX   
                , color: 'light-blue'
                , type: 'School'
                , timed: false
@@ -96,11 +117,14 @@ function loadSchoolsDays() {
       if (Group == 'A') { Group = 'B'; continue;}
       if (Group == 'B') { Group = 'A'; dayCnt += 1; continue;}
    }
-   console.log('Loaded SchoolDays:', getters.getState({ object: "gZml" }).calendar.length)
+   zData.l('Loaded SchoolDays:', getters.getState({ object: "gZml" }).calendar.length)
 }
 
-
+//----------------------------------------------------------------
+function finishedLoadingFunctions (response) {
+    getters.getState({ object: "gZml" }).functions = response
+}
 function errorLoading (response) {
     alert('We had an error loading your data!' + response)
-    console.log('We had an error loading your data!',response)
+    zData.l('We had an error loading your data!',response)
 }

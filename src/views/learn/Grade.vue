@@ -1,5 +1,4 @@
 <template>
-
 <v-sheet color="grey lighten-5" class="ma-2">
   <v-row>
     <v-col xs-12 lg-12>
@@ -14,15 +13,13 @@
 
   <v-row>
     <v-col xs-12 lg-12>
-        <v-layout wrap>
+      <v-layout wrap>
         <v-flex v-for="grp in doLoadGrades" :key="grp.id" justify-space-around xs-6 >
-
-            <v-btn @click="goTo(grp.id)" class="mt-4 ma-4" color="primary">
+          <v-btn @click="goTo(grp.id)" class="mt-4 ma-4" color="primary">
             {{ grp.name }} 
-             </v-btn>            
-
+          </v-btn>            
         </v-flex>
-        </v-layout>
+      </v-layout>
     </v-col>
   </v-row>
 </v-sheet>

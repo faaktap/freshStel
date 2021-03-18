@@ -19,7 +19,7 @@
        
        </v-toolbar>
     </v-col>
-    <v-col xs-12 lg-6 >
+    <v-col xs="12" lg="6" >
      <v-layout row wrap>
       <v-flex class="pt-3"> 
        <v-btn-toggle v-model="toggle_button_state">
@@ -106,6 +106,7 @@ import { zmlLog } from '@/api/zmlLog.js';
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 import StudentItemDisplay from '@/components/learn/StudentItemDisplay'
 import StudentFolderDisplay from '@/components/learn/StudentFolderDisplay'
+
 export default {
     name: "StudentHub",
     components: {StudentItemDisplay, StudentFolderDisplay},
@@ -197,17 +198,17 @@ export default {
               this.showTextDialog = true
               break
             case 'folder':      
-              console.log('clicked on folder : ', this.filter)       
+              this.$cs.l('clicked on folder : ', this.filter)       
               //this.filter = curitem.folder
               this.filter = curitem.name
               break
             case 'link':
-              console.log('OPENING LINK : ' , curitem.description)
+              this.$cs.l('OPENING LINK : ' , curitem.description)
               window.open(curitem.description, "_blank")              
               break
             case 'file':
               this.currentImage = zmlConfig.localPath + curitem.description.substr(5)
-              console.log('item to view : ' , this.currentImage)
+              this.$cs.l('item to view : ' , this.currentImage)
               this.showViewerDialog = true
                break
             default:
@@ -215,7 +216,7 @@ export default {
           }
         },
         displayItem(curitem) {
-          console.log('Display Item ' , curitem)
+          this.$cs.l('Display Item ' , curitem)
           switch (curitem.type) {
             case 'text': 
                 this.theItem = curitem
@@ -226,7 +227,7 @@ export default {
               this.filter = curitem.folder
               break
             case 'link': 
-              console.log('OPENING LINK : ' , curitem.description)
+              this.$cs.l('OPENING LINK : ' , curitem.description)
               window.open(curitem.description, "_blank")
               break
             case 'file':
@@ -328,7 +329,7 @@ export default {
             } 
         },
         filterByContent() {
-            console.log('loading NEW DATA : ' , this.filter, this.search)
+            this.$cs.l('loading NEW DATA : ' , this.filter, this.search)
             if (this.search.length < 3 ) {
               if (this.filter == '')   {
                 return this.contents 
@@ -336,24 +337,23 @@ export default {
               if (this.filter == '*')  {
                 return this.contents.filter(a => 
                   a.type == 'folder' && a.name == a.folder
-                  
                   )
               }
               if (this.filter == 'T')  {
                 return this.contents.filter(a => a.type == 'text')
               }
               if (this.filter.length > 1)  {
-                  console.log('start with ', this.filter)
+                  this.$cs.l('start with ', this.filter)
                   let arr = []
                   this.contents.forEach((a, index) => {
-                    console.log(a.folder, '==', this.filter, '&&', a.type, '!= folder', index)
+                    this.$cs.l(a.folder, '==', this.filter, '&&', a.type, '!= folder', index)
                     if (a.folder == this.filter ) {
                        if (a.name != this.filter ) arr.push(this.contents[index])
                     } else {
                        //skip
                     }
                   })
-                  console.log('we have :', arr.length, ' for ', this.filter)
+                  this.$cs.l('we have :', arr.length, ' for ', this.filter)
                   return arr;
               }
             } else {
@@ -370,7 +370,7 @@ export default {
         },
     },
     mounted: function () {
-      console.log('We are in MOUNTPLAT',this.getZml.login.type)
+      this.$cs.l('We are in MOUNTPLAT',this.getZml.login.type)
       if (this.getZml.login.type == 'student') {
           this.allowEdit = false
       } else {

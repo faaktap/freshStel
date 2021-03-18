@@ -138,6 +138,7 @@ export default {
           {text: 'Type',             value: 'functiontype' },
           {text: 'Access',             value: 'functionaccess' },
           {text: 'Tip',             value: 'tip' },
+          {text: 'Sort',             value: 'sortorder' },
           {text: 'icon',             value: 'icon' },
         ],     
     }),
@@ -182,7 +183,7 @@ export default {
            this.showFunctionUpdate = false
            let ts = {};
            ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction'
+           ts.sql = 'select * from dkhs_lfunction order by sortorder'
            ts.api = zmlConfig.apiDKHS
            zmlFetch(ts, this.showData, this.loadError)
       },

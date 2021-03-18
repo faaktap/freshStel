@@ -1,7 +1,9 @@
 <template>
 <v-layout>
 
- <v-card><v-row><v-col cols="12">
+ <v-card>
+ <v-row>
+  <v-col cols="12">
    <div class="text-center">
      <v-toolbar dark color="primary" dense flat>
         <v-toolbar-title class="white--text">
@@ -14,17 +16,19 @@
                              params:{currentSubjectID: getZml.subjectid 
                                     ,gradeno: this.getZml.grade },
                               meta: {layout: 'AppLayoutGray' }}" 
-                  title="quick test"
+                  title="Quick test to see what students see"
                   color="grey lighten-2"
-                  class="ml-8 pl-4"
+                  class="ml-8 pl-4 float-right"
                   x-small
             > test
            </v-btn>
            <v-btn x-small 
                   color="grey lighten-1"
                   to="/subjects"
-                  class="ml-8 px-4"
+                  class="ml-8 px-4 float-right" 
+                  title="Change the color, order or name of the subject"
             > Subjects </v-btn>
+            <!--v-btn @click="help" x-small align="right" color="grey lighten-1"  class="ml-8 px-4 float-right" > Help </v-btn-->
           </div>
 
          </div>
@@ -34,9 +38,9 @@
      </v-col>
    </v-row>
 
-   <!-- START GRADE AND SUBJECt SELECTION -->
+   <!-- START GRADE AND SUBJECT SELECTION -->
    <v-row>
-     <v-col xs-12>
+     <v-col xs="12" lg="6">
        <v-btn v-for="g in groups" :key="g" 
               @click="getZml.grade = g" 
               :color="gradeColor(g)" 
@@ -45,29 +49,21 @@
        </v-btn>          
 
      </v-col>
-     <v-col xs-12>
-       <v-btn v-for="s in getZml.subjects" :key="s.subjectid" 
-              @click="setSubject(s)" 
-              :title="s.description + '/' + s.beskrywing"
-              :color="subjectColor(s.subjectid)"
-              class="ma-2"
-              small>
-          {{ s.name }} 
-       </v-btn>
+     <v-col xs="12" lg="6">
+       <SubjectDisplayShort />
      </v-col>
    </v-row>
 
    <!--   SHOW THE CONTENT -->
    <template v-show="getZml.grade > 0 && getZml.subjectid > 0">
-   <google-drive :grade="getZml.grade" :subjectid="getZml.subjectid" />
+     <google-drive :grade="getZml.grade" :subjectid="getZml.subjectid" />
    </template>
    
 
  </v-card>
 
- <template v-if="getZml.login.user == 'werner'">
-  yyyyyyyyyyyyyyy
-<view-content :grade="getZml.grade" :subjectid="getZml.subjectid" />
+<template v-if="getZml.login.user == 'werner'">
+  <view-content :grade="getZml.grade" :subjectid="getZml.subjectid" />
 </template>
 
 </v-layout>
@@ -77,8 +73,9 @@ import { zmlConfig } from '@/api/constants.js';
 import viewContent from '@/views/learn/viewContent.vue';
 import GoogleDrive from '@/views/learn/GoogleDrive.vue';
 import { getters } from "@/api/store";
+import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
   export default {
-      components: {viewContent, GoogleDrive},
+      components: {viewContent, GoogleDrive,SubjectDisplayShort},
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),      
       groups:[8,9,10,11,12]
@@ -89,10 +86,6 @@ import { getters } from "@/api/store";
         const idx = this.getZml.subjects.findIndex(item => item.subjectid == sid)
         if (idx && this.getZml.subjects[idx].color) return this.getZml.subjects[idx].color
         return "red"
-      },
-      setSubject(subject) {
-        this.getZml.subjectid = subject.subjectid
-        this.getZml.subject = subject.description
       },
       gradeColor(gid){
         if (gid == this.getZml.grade) return "red"

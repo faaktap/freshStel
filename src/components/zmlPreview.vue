@@ -35,6 +35,7 @@
     <img ref="picture" 
          :height="imageHeight"
         :src="src"
+        contain
     />
   </template>
 

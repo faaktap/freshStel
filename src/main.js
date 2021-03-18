@@ -3,8 +3,8 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import router from './router'
 
-import VueFriendlyIframe from 'vue-friendly-iframe';
-Vue.component('vue-friendly-iframe', VueFriendlyIframe);
+//import VueFriendlyIframe from 'vue-friendly-iframe';
+//Vue.component('vue-friendly-iframe', VueFriendlyIframe);
 
 import AppLayout from '@/layouts/AppLayout'
 Vue.component('AppLayout', AppLayout)
@@ -14,7 +14,18 @@ Vue.config.productionTip = false
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
 
+// eslint-disable-next-line
+export const cs = {
+  // eslint-disable-next-line
+  l: (...args) => {   
+    // console.log(...args);   
+    }
+}
+
+
+
 Vue.prototype.$history = window.history;
+Vue.prototype.$cs = cs;
 
 import { af,en } from '@/api/translate'
 const messages = {

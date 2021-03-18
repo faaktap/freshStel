@@ -148,6 +148,21 @@ export const zDate = {
   isSameDay: function(...args) {
     return isSameDay(...args)
   },
+  gotoMonday: function(date){
+    while (date.getDay() > 1) {
+      date.setDate(date.getDate() - 1);
+    }
+    return date
+  },
+  addOneDay: function(date) {
+    date.setDate(date.getDate() + 1);
+    return date
+  },
+  todayNoHours: function() {
+    let d = new Date()
+    d.setHours(0,0,0,0)
+    return d
+  },
   isPublicHoliday: function(chkdate) {
     let isSame = false
     zDate.publicHolidays.findIndex(p => {

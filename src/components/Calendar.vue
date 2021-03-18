@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row v-if="menemonic">
     <v-col>
     <v-sheet
       tile
@@ -10,14 +10,6 @@
        flat
        :loading="loading"
     >
-      {{ calValue }}
-        <v-btn
-        icon
-        class="ma-2"
-        @click="addEvent"
-        >
-        add
-        </v-btn>
         <v-btn icon @click="checkChange"> R </v-btn>
         <v-btn
         icon
@@ -39,7 +31,8 @@
           <v-toolbar-title v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
-
+          <v-spacer />
+   {{ menemonic }}
         <v-spacer />
         <v-btn icon
                class="ma-2"
@@ -59,14 +52,15 @@
           :events="events"
           event-color="secondary"
           color="primary"
-          type="week"
+          :type="weekOrDay"
           intervalMinutes="60"
-          first-interval="7" 
+          first-time="07:30"
+          interval-count="8"
           interval-height="35"
-          
+          short-intervals
           @change="updateRange"
           @click:event="showEvent"
-        > 
+        > <!-- weekdays=[1,2,3,4,5,6,0] -->
          <template v-slot:day-body="{ date, week }">
             <div
                class="v-current-time"
@@ -99,13 +93,6 @@
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-toolbar-title v-if="selectedEvent" v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
             </v-toolbar>
             <v-card-text>
               <span v-if="selectedEvent" v-html="selectedEvent.details"></span>
@@ -133,41 +120,8 @@
 
         
       </v-sheet>
-      <!--v-model(calValue) = {{ calValue }} <br>
-      calToday = {{ calToday }} <br>{{ events }}
-
-      -->
-      
+    
     </v-col>
-    <v-col cols=12>
-<ul>
-<li class="red lighten-1">red</li>
-<li class="pink">pink</li>
-<li class="purple">purple</li>
-<li class="deep-purple">deep-purple</li>
-<li class="blue">blue</li>
-<li class="indigo">indigo</li>
-<li class="light-blue">light-blue</li>
-<li class="teal">teal</li>
-<li class="cyan">cyan</li>
-<li class="green">green</li>
-<li class="light-green">light-green</li>
-<li class="lime">lime</li>
-<li class="yellow">yellow</li>
-<li class="amber">amber</li>
-<li class="orange">orange</li>
-<li class="deep-orange">deep-orange</li>
-<li class="brown">brown</li>
-<li class="grey">grey</li>
-<li class="blue-grey">blue-grey</li>
-<li class="black">black</li>
-<li class="white">white</li>
-<li class="transparent">transparent</li>
-</ul>        
-    </v-col>
-    {{getZml.subjects }}
-    <hr>
-    {{ events }}
   </v-row>
 </template>
 
@@ -179,7 +133,9 @@ import { zData } from '@/api/zGetBackgroundData.js'
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 export default {
-    data: () => ({
+  name: 'Calendar',
+  props: ['menemonic','weekOrDay'],
+  data: () => ({
       getZml: getters.getState({ object: "gZml" }),
       loading:false,
       today: null,
@@ -191,27 +147,17 @@ export default {
       selectedElement: null,
       selectedOpen: null,
       personeelMenemonic: ''
-    }),
-    methods:{
-      checkChange() {this.$refs.calendar.checkChange()},
+  }),
+  methods:{
+      checkChange() {
+        if (this.$refs.calendar)  this.$refs.calendar.checkChange()
+      },
       updateRange(whatweget) {
          console.info('Range Check', whatweget)
          
       },
-      addEvent() {
-        let s = new Date();
-        let e = new Date();
-        s.setHours(s.getHours() - 1);
-        this.events.push({
-            name: "quickOne",
-            end: e,            
-            start: s,
-            color: 'green',
-            timed: true,
-          })
-      },
-      async loadCalendar() {
-        console.log('Load getZml.calendar to our event array')
+      loadCalendar() {
+        //console.log('Load getZml.calendar to our event array')
         this.getZml.calendar.forEach(ele => {
           if (ele.start) {
              const evt= {name: ele.name
@@ -229,9 +175,11 @@ export default {
         return "done"
       },
       loadRooster(){
-        console.log('ShowLoadRooster')
+        //console.log('ShowLoadRooster')
         this.selectedOpen = false
+        this.personeelMenemonic = this.menemonic
         if (!this.personeelMenemonic) this.personeelMenemonic = 'WIE'
+
         console.log('fetch for:', this.personeelMenemonic)
         let ts = {}
         ts.task = 'PlainSql'
@@ -251,9 +199,6 @@ export default {
            return colorObj.color
         } else {
           console.log('we have a problem with : ', subjectShortName)
-          this.getZml.subjects.forEach(s => {
-            console.log('len = ', s.name,s.shortname,s.shortname.length, subjectShortName,  subjectShortName.lenght)
-          })
           return "amber"
         }
       },
@@ -262,18 +207,18 @@ export default {
         //Get this week's first "day", monday is 1.
         let template = zDate.todayNoHours()
         template = zDate.gotoMonday(template)
-        console.log('monday is : ' , template)
+        //console.log('monday is : ' , template)
         //Go back one more day (to Sunday)
         template.setDate(template.getDate() - 1);
-        console.log('sunday is : ' , template)
+        //console.log('sunday is : ' , template)
         for (let t=0; t < 5; t++) {
            template = zDate.addOneDay(template)
-           console.log('day to work with is : ' , template)
+           //console.log('day to work with is : ' , template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal => 
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
            )
-           console.log('Found calendar entry ', sday.name)
+           //console.log('Found calendar entry ', sday.name)
            response.forEach(ele => {
              let n = ''
              switch (sday.name.substr(0,4)) {
@@ -309,12 +254,12 @@ export default {
         //Brilliant funcking timeout stukkie!!
         setTimeout(() => {
            this.loading = false;
-           this.$refs.calendar.checkChange()
+           if (this.$refs.calendar)  this.$refs.calendar.checkChange()
         }, 200)
 
       },
       showEvent ({ nativeEvent, event }) {
-        console.log('start show event')
+        //console.log('start show event')
         const open = () => {
           this.selectedEvent = event
           this.selectedElement = nativeEvent.target
@@ -323,7 +268,7 @@ export default {
             this.selectedOpen = true
           }, 10)
         }
-        console.log('ShowEvent:',this.selectedEvent, this.selectedElement, this.selectedOpen)
+        //console.log('ShowEvent:',this.selectedEvent, this.selectedElement, this.selectedOpen)
         if (this.selectedOpen) {
           this.selectedOpen = false
           setTimeout(open, 10)
@@ -351,7 +296,7 @@ export default {
           //if (this.$refs.calendar !== undefined) {
           if (this.calReady == false) {  
             console.info('Calendar is Ready!!: ' , this.$refs.calendar)
-            this.$refs.calendar.checkChange()
+            if (this.$refs.calendar)  this.$refs.calendar.checkChange()
             this.calReady = true
             this.scrollToTime()
             this.updateTime()
@@ -368,7 +313,7 @@ export default {
          }
       }       
     },
-    computed: {
+  computed: {
       cal () {
         return this.calReady ? this.$refs.calendar : null
       },
@@ -376,18 +321,40 @@ export default {
         return this.cal ? this.cal.timeToY(this.cal.times.now) + 'px' : '-10px'
       },
     },    
-    mounted () {
+  mounted () {
       console.log('MOUNT Test Cal')
       zData.initialData('Load Subject Data')
       this.events = []
       this.today = new Date()
       this.today.setHours(0,0,0,0)
       this.calToday = zDate.format(this.today,'yyyy-MM-dd') 
-      zData.calendarData('Load Holiday and Birthday Data')
-      .then(this.loadCalendar)
-      .then(this.activateCalendar)
-      
+      this.loadCalendar()
+      this.loadRooster()
+
+      this.activateCalendar()
       this.rinseRepeat()
       }
   }
 </script>
+
+<style lang="scss">
+.v-current-time {
+  height: 2px;
+  background-color: #ea4335;
+  position: absolute;
+  left: -1px;
+  right: 0;
+  pointer-events: none;
+
+  &.first::before {
+    content: '';
+    position: absolute;
+    background-color: #ea4335;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: -5px;
+    margin-left: -6.5px;
+  }
+}
+</style>

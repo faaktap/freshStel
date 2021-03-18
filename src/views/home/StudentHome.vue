@@ -82,7 +82,7 @@ export default {
         loadFunctions() {
            let ts = {};
            ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction where functionaccess = "student"'
+           ts.sql = 'select * from dkhs_lfunction where functionaccess = "student" order by sortorder'
            ts.api = zmlConfig.apiDKHS
            zmlFetch(ts, this.showData, this.loadError)
         },

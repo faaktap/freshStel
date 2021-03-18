@@ -1,14 +1,51 @@
 <template>
 <v-container fluid>
     <v-row>
-      <v-col cols=3>
-   login:{{ getZml.login }}
+      <v-col cols=3 >
+   <v-card color="primary"> primary:login:{{ getZml.login }} </v-card>
       </v-col><v-col cols=3>
-   grade:{{ getZml.grade }}
+   <v-card color="secondary"> secondary: grade:{{ getZml.grade }} </v-card>
    </v-col><v-col cols=3>
-   subject:{{ getZml.subject }} id : {{ getZml.subjectid }}
+   <v-card color="warning">warning:subject:{{ getZml.subject }} id : {{ getZml.subjectid }} </v-card>
    </v-col><v-col cols=3>
-   local:{{ getZml.locale }}   
+   <v-card color="error">error:local:{{ getZml.locale }}   </v-card>
+          <v-btn class="ma-2" color="primary">   primary </v-btn>
+          <v-btn class="ma-2" color="secondary"> secondary </v-btn>
+          <v-btn class="ma-2" color="accent">    accent </v-btn>
+          <v-btn class="ma-2" color="error">     error </v-btn>
+          <v-btn class="ma-2" color="info">      info  </v-btn>
+          <v-btn class="ma-2" color="success">   success </v-btn>
+          <v-btn class="ma-2" color="warning">   warning </v-btn>
+<v-btn color="lightblue"> lb btn </v-btn>
+<v-btn color="yellow"> y btn </v-btn>
+<v-btn color="pink"> p btn </v-btn>
+<v-btn color="orange"> o btn </v-btn>
+<v-btn color="magenta"> m btn </v-btn>
+<v-btn color="darkblue"> db btn </v-btn>
+<v-btn color="gray"> g btn </v-btn>
+<v-btn color="neutralgray"> ng btn </v-btn>
+<v-btn color="green"> g btn </v-btn>
+<v-btn color="red"> red btn </v-btn>
+<v-btn color="darkblueshade"> dbs btn </v-btn>
+<v-btn color="lightgray"> lg btn </v-btn>
+<v-btn color="lightpink"> lp btn </v-btn>
+<v-btn color="white"> w btn </v-btn>          
+
+<v-btn color="lightblue--text"> lb text </v-btn>
+<v-btn color="yellow--text"> yellow  </v-btn>
+<v-btn color="pink--text"> pink </v-btn>
+<v-btn color="orange--text"> ornage </v-btn>
+<v-btn color="magenta--text"> magenta </v-btn>
+<v-btn color="darkblue--text"> darkblue </v-btn>
+<v-btn color="gray--text"> gray </v-btn>
+<v-btn color="neutralgray--text"> btn </v-btn>
+<v-btn color="green--text"> green txt </v-btn>
+<v-btn color="red--text"> red </v-btn>
+<v-btn color="darkblueshade--text"> dbshade </v-btn>
+<v-btn color="lightgray--text"> lgray </v-btn>
+<v-btn color="lightpink--text"> lpink </v-btn>
+<v-btn color="white--text"> white </v-btn>  
+
    </v-col><v-col cols=3>
     <div
       @mouseover="hover = true"
@@ -230,25 +267,18 @@
 
   </v-col>
   <v-col cols="12">
-    <h3>SMART DISPLAY </h3>
-    <smart-display
-        studentid="12000"
-        studentName="Student Name"
-        :diplomaList="[{awardid:12,sub:'sub12', dip: 'LANF DIPLOMA'}
-                      ,{awardid:13,sub:'sub13', dip: 'NogeENE'}
-                      ,{awardid:14,sub:'longer sub 14', dip: 'longer diploma 14'}
-        ]"
-        extraNote="an extra note"
-        :alles="{a: 'hier is niks'}"
+    <h3>SMART MARQUEE </h3>
+    <smart-marquee
         :panelIndex="selectedSubject"> 
-    </smart-display>        
+    </smart-marquee>       
+    <h3>SMART DSPLAY </h3> 
     <smart-display
         studentid="12000"
         studentName="Student Name"
         :diplomaList="[{awardid:12,sub:'Kreatiewe KUNSTE', dip: 'HALF COLORS'}
                       ,{awardid:13,sub:'DINGES TAAL', dip: ''}
                       ,{awardid:14,sub:'MATEMATOES', dip: ''}
-                      ,{awardid:14,sub:'Visuels sfess', dip: 'BOEKPRYS'}
+                      ,{awardid:15,sub:'Visuels sfess', dip: 'BOEKPRYS'}
         ]"
         extraNote="an extra note"
         :alles="{a: 'hier is niks'}"
@@ -291,9 +321,10 @@ import { zData } from "@/api/zGetBackgroundData.js"
 import SmartDisplay from '@/components/awards/SmartDisplay';
 import SmartPhoto from '@/components/awards/SmartPhoto';
 import SmartText from '@/components/awards/SmartText';
+import SmartMarquee from '@/components/awards/SmartMarquee';
 export default {
   components: {
-    SmartText,SmartPhoto,SmartDisplay,AutoSel, AutoSelObj, AutoSelSub//, OnFocus
+    SmartMarquee,SmartText,SmartPhoto,SmartDisplay,AutoSel, AutoSelObj, AutoSelSub//, OnFocus
   },  
  data: () => ({
   getZml: getters.getState({ object: "gZml" }),

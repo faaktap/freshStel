@@ -164,6 +164,42 @@ CREATE TABLE dkhs_lfolder (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
+<h1> Select lflder and lcontent together </h1>
+
+SELECT folderid, subjectid, grade, foldername, realfoldername
+ FROM dkhs_lfolder
+where subjectid = 10 and grade= 8  and sortorder != 0
+
+SELECT contentid, subjectid, grade, name, description
+ FROM dkhs_lcontent 
+  where type = 'folder'
+  and grade = 8
+  and subjectid = 10
+  and sortorder != 0
+
+..link
+SELECT f.folderid
+, f.subjectid
+, f.grade
+, f.foldername
+, f.realfoldername
+, c.contentid
+, c.name
+, c.description
+, f.icon
+, f.create_timestamp
+, f.update_timestamp
+ FROM dkhs_lfolder f, dkhs_lcontent c
+where f.realfoldername = c.description
+and c.grade = f.grade 
+and c.subjectid = f.subjectid 
+and f.sortorder != 0
+and c.sortorder != 0
+and c.subjectid = 10 
+and c.grade= 8  
+
+
+
 <h1> dkhs_lsubject </h1>
 Want to create a subject list that works for virtualschool
 dkhs_subject contain 

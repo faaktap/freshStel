@@ -12,6 +12,7 @@ const state = Vue.observable({
                   , grade:8, type:'guest'
                   , fullname:'', phone:'', email:''
                   , username:''  , userid:'', persid:''
+                  , menemonic:''
                   , lastdate:'', login:''},
            store: {totalItems: 0},
            grade: '',

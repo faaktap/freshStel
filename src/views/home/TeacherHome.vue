@@ -11,8 +11,23 @@
     </v-toolbar-title>
 </v-toolbar>
  
-    <menu-list :list="menuFilterList" 
-     /> 
+ <v-row> <v-col cols="12">
+  <v-expansion-panels v-if="getZml.login.isAuthenticated">
+    <v-expansion-panel>
+     <v-expansion-panel-header>
+        Calendar (Click here to view your day!)
+     </v-expansion-panel-header>
+    <v-expansion-panel-content>
+      <calendar weekOrDay="week" :menemonic="getZml.login.username" />
+    </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
+</v-col>
+<v-col cols="12">
+  <menu-list :list="menuFilterList" /> 
+</v-col>
+|</v-row>
+
     <div v-if="getZml.login.isAuthenticated && getZml.login.username=='wie'">
        <v-btn href="http://kuiliesonline.co.za/cw-mail/"> Online Mass Mail </v-btn>
     </div>
@@ -28,9 +43,10 @@
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList.vue';
 import MenuList from '@/components/MenuList.vue';
+import Calendar from '@/components/Calendar.vue';
 export default {
     name:"AdminHome",
-    components:{EmailList, MenuList},
+    components:{EmailList, MenuList, Calendar},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          cards: ['Today', 'Yesterday'],

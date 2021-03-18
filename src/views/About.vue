@@ -15,6 +15,8 @@
         />
 
 only werner:
+<subject-display-short 
+/> {{ getZml.subjectid}}
 <v-container v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
 <v-row>
   <v-col xs12>
@@ -116,6 +118,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
 import zmlContentButton from '@/components/zmlContentButton.vue'
 
 import StudentLookup from '@/components/student/StudentLookup.vue'
+import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort.vue'
 export default {
 name: "about",
 props:{},
@@ -126,6 +129,7 @@ components: {snackBarTest
            , zmlCloseButton
            , zmlContentButton
            , StudentLookup
+           , SubjectDisplayShort
            },
 data: () => ({
   studentList:null,

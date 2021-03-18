@@ -38,13 +38,14 @@
           />
         </v-col>
         <v-col cols="4">
-          
           <!--v-text-field v-model="sub.color" label="Colour"/-->
         <auto-sel-color id="zyx1" 
             :initialValue="sub.color" 
              v-model="sub.color"/>
-          
-
+        </v-col>
+        <v-col cols="4">
+          <v-text-field v-model="sub.sortider" label="Sort Priority" 
+          />
         </v-col>
         <v-col cols="12" md="5">
                <v-text-field v-model="sub.path" 

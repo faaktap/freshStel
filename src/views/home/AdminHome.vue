@@ -18,78 +18,49 @@
     </v-toolbar-title>
 </v-toolbar>
 
-<v-row>
-    <v-col cols="11" md="5">
-        {{ schoolday }}
-          <v-list dense>
-            <v-list-item-group  color="primary" class="text-center">Today:{{ today.toDateString() }}
-            <v-list-item xclass="ma-0 pa-0" v-for="day in todayPieces"  :key="day.id">
-                <v-list-item-icon>
-                  <v-icon v-if="day.type.substr(1,1) == 'e'" small>  {{ day.type.substr(3,1) }}</v-icon>
-                  <v-icon v-else small> mdi-pause-circle-outline </v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-            {{ day.start }}  
-                </v-list-item-title>
-                <v-list-item-subtitle>
-            {{ day.type }} 
-                </v-list-item-subtitle>
-                <v-list-item-content>
-            {{ day.type }} 
-                </v-list-item-content>
+<v-row> <v-col cols="12">
+  <v-expansion-panels v-if="getZml.login.isAuthenticated">
+    <v-expansion-panel>
+     <v-expansion-panel-header>
+        Calendar (Click here to view your day!) {{ joke }} 
+     </v-expansion-panel-header>
+    <v-expansion-panel-content>
+        <v-row><v-col cols="3">
+        <v-text-field v-model="wieOmTeWys" /> 
+        </v-col><v-col cols="3">
+        <v-btn @click="showCal = !showCal"> Show </v-btn>
+        </v-col></v-row>
+      <calendar v-if="showCal" weekOrDay="day" :menemonic="wieOmTeWys" />
+    </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
+</v-col>
+<v-col cols="12">
+  <menu-list :list="menuFilterList" /> 
+</v-col>
+|</v-row>
 
-            </v-list-item>
-            </v-list-item-group>
-        </v-list>
-    </v-col>
-    <v-col cols="1">
-     <v-divider vertical />
-    |</v-col>
-    <v-col cols="11" md="5">
-          <v-list dense>
-            <v-list-item-group  color="primary" class="text-center">
-                Next:{{ tomorrow.toDateString() }}
-            
-            <v-list-item xclass="ma-0 pa-0" v-for="day in tomorrowPieces"  :key="day.id">
 
-                <v-list-item-icon>
-                  <v-icon v-if="day.type.substr(1,1) == 'e'" small>  {{ day.type.substr(3,1) }}</v-icon>
-                  <v-icon v-else small> mdi-pause-circle-outline </v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-            {{ day.start }}  
-                </v-list-item-title>
-                <v-list-item-subtitle>
-            {{ day.type }} 
-                </v-list-item-subtitle>
-                <v-list-item-content>
-            {{ day.type }} 
-                </v-list-item-content>
-
-            </v-list-item>
-            </v-list-item-group>
-        </v-list>
-    </v-col>
-
-</v-row>
-
-     <menu-list :list="menuFilterList" 
-     /> 
 
       <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+        <v-layout class="ma-1" row wrap justify-space-between>
+            
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> dkhs awards </v-btn>
         <v-btn to="/studentawards"> student awards </v-btn>
         <v-btn to="/about"> about </v-btn>
         <v-btn to="/hover"> hover </v-btn>
                 
-        <br>
+        <div>
         xs={{$vuetify.breakpoint.xs}} <br>
         sm={{$vuetify.breakpoint.sm}}<br>
         md={{$vuetify.breakpoint.md}}<br>
         lg={{$vuetify.breakpoint.lg}}<br>
         xl={{$vuetify.breakpoint.xl}}<br>
+        </div>
         <email-list />
+            
+         </v-layout>
       </div>
 </div>
 </template>
@@ -102,24 +73,22 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList.vue';
 import MenuList from '@/components/MenuList.vue';
-import { zDate } from '@/api/zDate.js'
+import Calendar from '@/components/Calendar.vue';
+import { zData } from "@/api/zGetBackgroundData.js"
 export default {
     name:"AdminHome",
-    components:{EmailList, MenuList},
+    components:{EmailList, MenuList, Calendar},
     data: () => ({
+        wieOmTeWys:null,
+        showCal:false,
         getZml: getters.getState({ object: "gZml" }),
         cards: ['Today', 'Yesterday'],
         today: new Date(),
         tomorrow: new Date(),
-        schoolday: null
+        schoolday: null,
+        joke: null
     }),
     computed:{
-        todayPieces() {
-            return zDate.dayType.filter(item => item.dayNo == this.today.getDay() )
-        },
-        tomorrowPieces() {
-            return zDate.dayType.filter(item => item.dayNo == this.today.getDay() )
-        },
         menuFilterList() {
             if (!this.getZml) return 0;
             return this.getZml.functions.filter(a => function()
@@ -155,7 +124,7 @@ export default {
         loadFunctions() {
            let ts = {};
            ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction'
+           ts.sql = 'select * from dkhs_lfunction order by sortorder'
            ts.api = zmlConfig.apiDKHS
            zmlFetch(ts, this.showData, this.loadError)
         },
@@ -165,14 +134,27 @@ export default {
         },
         showData(response) {
            this.getZml.functions = response
+        },
+        async CallAsyncFunction() {
+           const joke = await zData.randomChuckNorris();
+           this.joke = joke.value 
+           if  (this.joke && ( this.joke.indexOf('sex') 
+                            || this.joke.indexOf('prince albert')
+                            || this.joke.indexOf('condom')
+                            || this.joke.indexOf('placen')
+                            || this.joke.indexOf('fuck')
+                            || this.joke.indexOf('anal')
+                            || this.joke.indexOf('pregna')
+                            || this.joke.indexOf('bondag')  
+                            || this.joke.indexOf('gay'))) {
+               this.joke = await zData.randomChuckNorris().value;
+           }
         }
     },
     mounted() {
         console.log('MOUNT ADMINHME ITEMS=',this.today,this.tomorrow)
-        this.tomorrow.setDate(this.today.getDate() + 1)
-        this.schoolday = zDate.curDay(this.today)
-        console.log('today=',this.today.toDateString() )
-        console.log('tomorrow=',this.tomorrow.toDateString() )
+        this.CallAsyncFunction()
+        
     }
 }
 </script>

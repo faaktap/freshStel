@@ -9,7 +9,7 @@
                color="primary"
                large
         > 
-        <v-icon large color="white"> mdi-menu   </v-icon> {{ menuName}}
+        <v-icon color="white"> mdi-menu-down   </v-icon> {{ menuName}}
         </v-btn>
       </template>
 
@@ -42,30 +42,41 @@
       props: ['items','disabled','menuName'],
       data: () => ({
         selectedItem:'',
+        prevSel:''
       }),      
       methods:{
           //Note, it is IMPORTANT to know what is emitted by your dropdown.
           //In this case, "change" worked - but it might be different for other components.
           doClick(e) {
-              console.log('do click',e)
+              this.$cs.l('do click',e)
               this.$emit('input', e)
           },
           doFocus(e) {
-              console.log('do focus',e)
+              this.$cs.l('do focus',e)
               this.$emit('input', e)
           },
           doInput(e) {
-              console.log('do input',e)
+              this.$cs.l('do input',e)
               this.$emit('input', e)
           },
           doChange(selectedItem,$event) {
+             console.log(this.$cs);
               if ($event > -1) {
                 selectedItem = $event
-                console.log('changeIT ', selectedItem)
+                this.$cs.l('emit Input from baseDropDown ', selectedItem, $event, this.items[$event].title)
                 this.$emit('input', this.items[$event].title)
+                this.prevSel = $event
+                this.selectedItem = null
+                selectedItem = null
+              } else {
+                this.$cs.l('not emitting ', $event)
+                this.$emit('input', this.items[this.prevSel].title)
               }
           }
       },
+      mounted() {
+        this.selectedItem = ''
+      }
       /*
       watch:{
           selectedItem(n,o){

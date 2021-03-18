@@ -18,6 +18,7 @@
        menuName="Menu"
        v-bind:value="mainMenuItemselected"
        v-on:input="doMainMenuStuff($event)"
+       @changeIT="doMainMenuStuff($event)"
      />
     
     </v-col>
@@ -74,7 +75,27 @@
 
 <!-- SHOW INTERFACE FOR SELECT OR DELETE A FOLDER (FOLDERSLIST) -->    
   <v-card v-if=" mainMenuItemselected=='Select Folder' || mainMenuItemselected==null " class="ma-3 pa-2" color="light-blue darken-3">
-      <div class="caption" style="color:white"> folder selection </div>
+      <!--div class="caption" style="color:white"> folder selection </div-->
+
+      <v-btn class="caption" 
+           style="color:white" 
+           x-small
+           text  
+           title="Click to change form root folders to all folders"
+          @click="showRootFolders = !showRootFolders"> 
+          <v-icon x-small> mdi-folder</v-icon>
+          <template v-if="showRootFolders">
+            root folders              
+          </template>
+          <template v-else>
+            all folders              
+          </template>
+       </v-btn>
+
+
+
+
+
       <div v-if="folderFilter.length < 1">
           The are no folders yet, please create a "New Folder"
        </div>
@@ -211,7 +232,6 @@
     <v-card-text>
         <template v-if="curContent && curContent.type == 'file'">      
           <v-text-field dense v-model="curContent.name" label="Name" />
-          <v-text-field dense v-model="curContent.sortorder" label="Sort" />
         </template> 
         <template v-if="curContent && curContent.type == 'link'">
           <v-text-field dense v-model="curContent.name" label="URL/Link" />
@@ -231,24 +251,30 @@
              item-value="foldername"
              label="Folder"
              title="Move the file to a different folder"
-           />            
-           <v-select
-             v-model="curContent.accesstype"
-             :items="['student','pers','hidden']"
-             item-text="text"
-             item-value="id"
-             title="Change who can see the file."
-             label="Access"
-           /> 
-
+           />       
+           <v-row>
+             <v-col cols="6">     
+              <v-radio-group dense 
+                             v-model="curContent.accesstype" 
+                             column 
+                             label="Access Type" 
+                             title="Would you like the students to see this?">
+                <v-radio label="Student"  value="student" />
+                <v-radio label="Teacher"  value="teacher" />
+              </v-radio-group>
+             </v-col>
+              <v-col cols="6" class="pt-9">
+                <v-text-field dense v-model="curContent.sortorder" label="Sort" />          
+             </v-col>
+           </v-row>
+        <v-card class="ma-2 pa-2" v-if="curContent.showDescription">
+        Original Filename : {{ curContent.showDescription | file }}
         <!--
         <div class="caption">folder:{{curContent.folder}}</div>
         <div class="caption">access:{{curContent.accesstype}}</div>
         <div class="caption">created:{{curContent.create_timestamp}}
                           , updated:{{curContent.update_timestamp}}</div>
         -->
-        <v-card class="ma-2 pa-2" v-if="curContent.showDescription">
-        Original Filename : {{ curContent.showDescription | file }}
         </v-card>
     </v-card-text>
       <v-card-actions>
@@ -316,26 +342,19 @@
           Cancel
         </v-btn>      
 
-        <v-btn @click="createFolderName" 
-               color="primary"
-               small
-               :disabled="loadStatus" >
-          <v-icon small > mdi-content-save </v-icon> 
-          Create
-        </v-btn>
       </v-card-actions>
   </v-card>
 </v-dialog>
 
 
 <!-- Create a new folder, inside current folder (or other folder) -->
-<v-dialog v-model="showMoveFolder" xmax-width="500" >
-  <v-card color="blue lighten-5" class="ma-2">
-    <v-card-title>
-      Move {{ curContent.name }} underneath another folder.
-    </v-card-title>
-    <v-card-text>
-        <v-text-field v-model="curContent.name" label="Name" disabled></v-text-field>
+<v-dialog v-model="showMoveFolder" max-width="350" >
+  <v-card color="blue lighten-5" class="ma-1 pa-2 text-center">
+    <v-card-text class="ma-2 pa-2">
+      <v-card class="ma-2 pa-2" color="green">
+      Move {{ curContent.name }} underneath another folder or select {{ curContent.name }} to keep it in root.      
+      </v-card>
+        <!--v-text-field v-model="curContent.name" label="Name" disabled></v-text-field-->
         <v-select
              v-model="curContent.folder"
              :items="folderFilter"
@@ -347,15 +366,14 @@
         
     </v-card-text>
       <v-card-actions>
-      <v-spacer />
-              <v-spacer />
+
         <v-btn @click="showMoveFolder = false" 
                color="red" 
                small>
           <v-icon small > mdi-cancel </v-icon>
           Cancel
         </v-btn>      
-
+              <v-spacer />
         <v-btn @click="moveToFolder" 
                color="primary"
                small
@@ -397,11 +415,13 @@
 </zml-preview>
 </v-dialog>
 
-<template v-if="getZml.login.user == 'werner'">
-{{ folderObj}}
-<hr>
-{{ folderFilter}}
-<hr>
+<template v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+  <v-card color=green>Only.Werner<br>folderObj<br>
+  <table color="green" v-for="(f,i) in folderObj" :key="i"> <tr><td>{{ f }}</td></tr> </table>
+<hr>folderFilter<br>
+  <table v-for="(f,i) in folderFilter" :key="i"> <tr><td>{{ f }}</td></tr> </table>
+ <hr>
+  </v-card>
 </template>
 
 </div>
@@ -413,9 +433,6 @@ import { zmlLog } from '@/api/zmlLog.js';
 import { getters } from "@/api/store";
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 import baseDropDown from '@/components/base/baseDropDown.vue'
-//import baseBasicDropDown from '@/components/base/baseBasicDropDown.vue'
-//import Stepper from '@/components/base/Stepper.vue'
-//import folderProperties from '@/components/learn/folderProperties.vue'
 import getIcon from '@/api/fileUtils.js'
 import zmlPreview from '@/components/zmlPreview.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
@@ -445,7 +462,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         folderMenuItems:[
                    /*{title:'Rename Folder',icon:'mdi-folder'},*/
                    {title:'Move Folder', icon:'mdi-folder-move'},
-                   {title:'Include New Folder', icon:'mdi-all-inclusive'},
+                   //{title:'Include New Folder', icon:'mdi-folder-move-outline'},
                    {title:'New File', icon:'mdi-file'},
                    {title:'New Link', icon:'mdi-link'},
                    {title:'New Text',icon:'mdi-note-text'},
@@ -470,6 +487,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         oldFolderName:'',        
         folderObj:{},
         newFolderObj:{},
+        showRootFolders:false,
         edit: {},
         dummyObj:{},
         editMode: null,
@@ -549,7 +567,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           this.updateContent()
         },
         doFolderMenuStuff(e) {
-            //console.log('folder menu Item = ', e)
+            console.log('folder menu Item = ', e)
             this.showFolderProperties = false
             this.folderMenuItemselected = e
             if (this.folderMenuItemselected == "New File") {
@@ -605,7 +623,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
 
         },
         doMainMenuStuff(e) {
-          //console.log('main menu Item = ', e)
+          console.log('main menu Item = ', e)
           this.showFolderProperties = false
            this.mainMenuItemselected = e
 
@@ -645,15 +663,6 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
                //console.log('refresh - loadfolders and the data')
                this.loadFolders()
            }
-           if (this.mainMenuItemselected == "Move Folder") {
-               //console.log('Move folders under other folders')
-
-              this.mainMenuItemselected = null                  
-             
-              alert('new dialog - or can we use old one? - we do not have lcontent of current folder...')              
-              this.showTestDialog = true
-              //this.fixUpForAddFolder()               
-           }
            //-------------------------------------------------- INSIDE FOLDER STUFF===========
         },
         fixUpForAddFolder() {
@@ -674,15 +683,6 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         },
         folderProperties() {
            this.showFolderProperties = true;
-        },
-        createFolderName() {
-          alert('now we fix realfoldername and name, and call addlcontent?')
-          if (this.curContent.name == '') return;
-          if (this.curContent.folder == '') return;
-          this.curContent.realfolder = this.curContent.folder
-          this.curContent.description = 'folder:' + this.curContent.realfolder
-          this.showFolderInFolderProperties = false
-          this.updateContent()
         },
         updateFolderName() {
            //console.log('Start rename folder ' + this.folderObj.folderid + ' to ' + this.folderObj.foldername)
@@ -1126,6 +1126,12 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           }
           if (item.subjectid != this.getZml.subjectid) {
              ignore = true
+          }
+          if (this.showRootFolders) {
+              //console.log(item.folder, item.name, item)
+              if (item.folder != item.name) {
+                  ignore = true
+              }
           }
           if (!ignore) {
              let newitem = item

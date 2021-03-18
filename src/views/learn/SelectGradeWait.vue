@@ -33,14 +33,14 @@
         </v-flex>
         <v-flex>
           <v-text-field 
-              v-if="!bOrs && getZml.grade"
+              v-if="!bOrs"
               v-model="search" 
               label="search" 
               clearable
               hint="search on subject" />
         </v-flex>
         <v-flex>
-            <v-btn title="Different View" @click="bOrs = !bOrs" small icon > .. </v-btn>
+            <v-btn @click="bOrs = !bOrs" small icon > .. </v-btn>
         </v-flex>
         </v-layout>
     </v-col>
@@ -56,11 +56,13 @@
     <v-container fluid v-if="!bOrs && getZml.grade">
        <v-layout row wrap>
         <v-flex 
-         v-for="item in subjectsFilter" :key="item.itemid"
+         v-for="item in filterByGroup" :key="item.itemid"
          flex-row
          justify-space-around
          xs-12
          >
+         <!--subject-display  language="E" :item="item" :heading="heading" /-->
+         
          <subject-display2   language="E" :item="item" :heading="heading" />
 
         </v-flex>
@@ -101,8 +103,11 @@ export default {
     activated: function () {
     },
     computed: {
-      subjectsFilter() {
-        this.$cs.l('subjectFilter',this.kies, this.latest.length, this.content.length)
+      seegridType() {
+        return this.x
+      },
+      filterByGroup() {
+        console.log('filtergrp',this.kies, this.latest.length, this.content.length)
          if (this.kies == '') {
            if (this.search.length > 2 ) {
              //do the search
@@ -123,10 +128,15 @@ export default {
          let selectedData = [...this.content].filter(o => {
            return o.gid == filterObj.gid;
             });     
-         this.$cs.l('size now..', selectedData.length)
+         console.log('size now..', selectedData.length)
          if (this.search.length < 2 ) {
-           //make it only updated here...
-           return(selectedData)
+           //Delete all with no activity here...
+           let selData = []
+           selectedData.forEach(ele => {
+              let activity = this.latest.find(obj => ele.id == obj.id && ele.grade == obj.id)
+              if (activity)  this.selData.push(activity)
+           })
+           return(selData)           
          } else {
            //do search 
                 let result = []
@@ -149,15 +159,12 @@ export default {
         zmlFetch(ts, this.latestSubjects, this.loadError)
       },
       latestSubjects(response) {
-        response.forEach(ele => {
-          this.latest.push(ele)
-        })
-          this.$cs.l('Done with latest', this.latest.length, response)
-          this.doLoadSubjects()
+          this.latests = response
+          console.log('Done with latest', this.latest.length, response)
       },
       goTo(where) {
         this.kies = where;
-        this.$cs.l('GO----TO',where)
+        console.log('GO----TO',where)
         this.getZml.grade = where
         router.push({ name: 'SelectGrade'  
                     , params:{heading:"Grade", gradeno:where }
@@ -169,16 +176,14 @@ export default {
                      , meta: {layout: "AppLayoutGray" }})
       },
       doLoadGrades() {
-        this.$cs.l('loading grades', this.content.length)
+        console.log('loading grades', this.content.length)
         this.grades = [{id:8,name: 'Grade 8'}
                           ,{id:9,name: 'Grade 9'}
                           ,{id:10,name: 'Grade 10'}
                           ,{id:11,name: 'Grade 11'}
                           ,{id:12,name: 'Grade 12'}
                           ]
-      },
-      doLoadSubjects() {
-        this.$cs.l('loading subjects', this.latest.length)
+        console.log('loading subjects', this.content.length)
         this.grades.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
              if (sub.subjectid > 0 && sub.subjectid < 400) {
@@ -188,17 +193,7 @@ export default {
                            ,nameafr: sub.beskrywing
                            ,title: sub.shortname + ' ' + grp.id
                           }
-                  if (this.latest.length) {
-                    let idx = this.latest.findIndex(x => 
-                    x.id == obj.id && grp.id == x.grade
-                    //this.$cs.l(`xx = $(x.id) == $(obj.id) && $(grp.id) == $(x.grade)`)
-                    )
-                    this.$cs.l(idx)
-                    if (idx != -1) this.content.push(obj)
-                  } else {
-                    this.content.push(obj)
-                  }
-                  
+                  this.content.push(obj)
              }
           })
          })
@@ -209,17 +204,20 @@ export default {
           infoSnackbar("No Data to display - Have you logged in?");
           return;
         }
-        this.doLoadGrades()
-        this.$cs.l('What is heading????', this.heading)
         if (this.heading == "Grade") {
-            this.$cs.l('We have a grade!')
-            this.$cs.l('load latest changes and subjects..')
+            console.log('load latest...')
             this.loadLatestChangesOnSubjects()
+            console.log('load grades...', this.latest.length)
+            //let promise = timeoutPromise('wauit a bit',500)
+            //promise(e => console.log('dswdfsdfsdfsdfsdfsdf',e))
+            setTimeout(() => { this.doLoadGrades() }, 1500)
+
+            
         } else {
             this.getZml.login.gradeLastChosen = this.getZml.grade;
             let loginDetails = JSON.stringify(this.getZml.login)
             localStorage.setItem('login', loginDetails);
-            this.$cs.l('PUSH FOR PLATFORM!!!')
+            console.log('PUSH FOR PLATFORM!!!')
             router.push({name:'StudentHub' 
                        ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                        ,meta: {layout: "AppLayoutGray" }})
@@ -231,7 +229,7 @@ export default {
                        ,meta: {layout: "AppLayoutGray" }})
             */
         }
-        this.$cs.l('MAT: Mounted')
+        console.log('MAT: Mounted')
     },
     watch: { 
     }

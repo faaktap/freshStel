@@ -1,13 +1,19 @@
 <template>
 <div ref="myref">
-
+<v-text-field v-model="getZml.subjectid" label="subjectid"/>
+<subject-display-short /> {{ getZml.subjectid}}
+<grade-display-short /> {{ getZml.grade}}
+    
     <folder-select grade=8 
                    subjectid=10 
                   @selected="selectFolder"> 
     </folder-select>
     
+
 <v-btn @click="showFolders = !showFolders"    > Show Folders </v-btn>
 
+
+<h1> Showing Folder List (v-dialog) front-json-to-csv</h1>
 <v-dialog v-model="showFolders" color="light-blue">
     <front-json-to-csv v-if="folders"
                    :json-data="contentFolders"
@@ -18,6 +24,7 @@
   </front-json-to-csv>
 </v-dialog>
 
+<h1> Display Student Content </h1>
 <v-card class="ma-3 pa-4">
  <div class="student-container">
   <div class="Photo">
@@ -63,10 +70,16 @@ import { zmlFetch } from '@/api/zmlFetch.js';
 import { getters } from "@/api/store";
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import FolderSelect from '@/components/learn/FolderSelect.vue'
+import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort.vue'
+import GradeDisplayShort from '@/components/learn/GradeDisplayShort.vue'
 export default {
 name: "ViewStudentTestGrid",
 props:{},
-components: {FrontJsonToCsv, FolderSelect},    
+components: {FrontJsonToCsv
+          , FolderSelect
+          , SubjectDisplayShort
+          , GradeDisplayShort
+          },    
 data: () => ({
     getZml: getters.getState({ object: "gZml" }),
     folders:[],

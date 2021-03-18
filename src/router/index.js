@@ -250,14 +250,8 @@ const routes = [
     ,meta: {layout: la[3], authentication: "public"}
   },  
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/components/ExampleCalendar.vue')
-    ,name: 'ecal'
-    ,path: '/ecal'
-    ,meta: {layout: la[3], authentication: "public"}
-  },    
-  {
     component: () => import(/* webpackChunkName: "test" */ '@/components/TextColorPicker.vue')
-    ,name: 'color'
+    ,name: 'color' 
     ,path: '/color'
     ,meta: {layout: la[3], authentication: "public"}
   },      
