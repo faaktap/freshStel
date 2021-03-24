@@ -1,23 +1,17 @@
 <template>
   <v-container v-if="emailList">
-   <v-row><v-col col="12">
+   <v-row><v-col cols="12">
     <v-card class="mx-auto">
        <v-container>
          <v-row dense>
            <v-col cols="12">
              <v-card color="purple lighten-3">
-               <div class="d-flex flex-wrap justify-space-between">
- 
   <v-data-table
     :headers="emailHeader"
     :items="emailList"
     :items-per-page="5"
     class="elevation-1"
-    color="purple lighten-3"
   ></v-data-table> 
-
-               </div>
-               
              </v-card>
            </v-col>
          </v-row>
@@ -34,14 +28,14 @@ export default {
     data: () => ({
       emailList:null,
       emailHeader: [
-          {text: 'id',            align: 'start',            value: 'subid' },
+          //{text: 'id',            align: 'start',            value: 'subid' },
           {text: 'email',         align: 'start',            value: 'email' },
-          {text: 'impNumber',     align: 'start',            value: 'impnumber' },
+          //{text: 'impNumber',     align: 'start',            value: 'impnumber' },
           {text: 'fullname',      align: 'start',            value: 'name' },
           {text: 'OptOut',       align: 'start',            value: 'outid' },
           {text: 'Inserted',       align: 'start',            value: 'insertdate' },
-          {text: 'Changed',       align: 'start',            value: 'changedate' },
-          {text: 'Extra',       align: 'start',            value: 'extra' },
+          //{text: 'Changed',       align: 'start',            value: 'changedate' },
+          //{text: 'Extra',       align: 'start',            value: 'extra' },
         ]
 
     }),

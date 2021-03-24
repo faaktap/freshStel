@@ -1,5 +1,5 @@
-const PROJECT_ID = "onZml43"
-const MEASUREMENT_ID = "Z-ZML43"
+const PROJECT_ID = "zml46.1"
+const MEASUREMENT_ID = "Z-ZML46.1"
 const DEFAULT_LAYOUT = "AppLayoutDefault"
 const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 
@@ -23,8 +23,8 @@ export const zmlConfig = {
   localPath:  "https://kuiliesonline.co.za/",
   videoPath: "https://kuiliesonline.co.za/",
   maxUploadSize: MAX_UPLOAD_SIZE,
-  projectId: PROJECT_ID,
-  measurementId: MEASUREMENT_ID,
+  projectID: PROJECT_ID,
+  measurementID: MEASUREMENT_ID,
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
   cl: function (...args) {  

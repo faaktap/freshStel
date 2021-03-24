@@ -56,17 +56,31 @@ const routes = [
     //Actual award!
     path: '/virtualawards/:chapterid',
     name: 'virtualawards',
-    component: () => import(/* webpackChunkName: "awards" */ '../views/awards/AwardCarousel.vue'),
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
     props: true,
     params: {chapterid: 4, editmode: false},
     meta: {layout: la[0], authentication: "public" }
   },  
+  { 
+    path: '/va/:chapterid',
+    name: 'va',
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/zmlCarousel.vue'),
+    props: true,
+    params: {chapterid: 4, editmode: false},
+    meta: {layout: la[0], authentication: "public" }
+  },    
   {
     path: '/studentawards',
     name: 'studentawards',
-    component: () => import(/* webpackChunkName: "awards" */ '../views/awards/StudentAwardTable.vue'),
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/StudentAwardTable.vue'),
     meta: {layout: la[1], authentication: "public" }
   },  
+  {
+    path: '/awardedit',
+    name: 'awardedit',
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardEdit.vue'),
+    meta: {layout: la[3], authentication: "public" }
+  },    
   {
     component: () => import(/* webpackChunkName: "learn" */ '../views/learn/LearnTree.vue'),
     path: '/learntree', 

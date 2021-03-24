@@ -187,6 +187,7 @@ export default {
   }
   ,methods: {
     getData() {
+      console.log('start backgound loading')
       zData.initialData('Load Important Data')
       zData.calendarData('Load Holiday and Birthday Data') 
       zData.functionData('Load functions') 

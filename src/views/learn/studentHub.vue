@@ -380,7 +380,10 @@ export default {
         this.loadData()
       } else {
          this.loadStatus = true
-         zmlFetch({task: 'getsubjects'}, this.loadSubjects, this.loadError)
+         let ts = {}
+         ts.api = zmlConfig.apiDKHS
+         ts.task = 'getlsubjects'         
+         zmlFetch(ts, this.loadSubjects, this.loadError)
       }
     }
   }

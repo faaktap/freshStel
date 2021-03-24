@@ -1,5 +1,27 @@
 <template>
 <v-container fluid>
+
+<v-btn @click="uploadStuffShow = !uploadStuffShow"> upload </v-btn>
+<v-row v-if="uploadStuffShow">
+ <v-col cols=6 >
+   <v-text-field v-model="uploadTitleMessage" label="uploadTitleMessage" />
+   <v-text-field v-model="uploadCardColor" label="uploadCardColor" />
+   <v-text-field v-model="uploadExtraPath" label="uploadExtraPath" />
+   <v-text-field v-model="uploadPrependName" label="uploadPrependName" />
+   <v-text-field v-model="uploadBtnColor" label="uploadBtnColor" />
+ </v-col>
+ <v-col cols=6 >
+  <upload-wrapper
+         :titleMessage="uploadTitleMessage"
+         :cardColor="uploadCardColor"
+         :extraPath="uploadExtraPath"
+         :prependName="uploadPrependName"
+         :btnColor="uploadBtnColor"
+         @filesBeingUploaded="processListOfFiles"
+         @fileUploadDone="tellOfOneFile"
+  />
+ </v-col>
+</v-row>
     <v-row>
       <v-col cols=3 >
    <v-card color="primary"> primary:login:{{ getZml.login }} </v-card>
@@ -269,7 +291,11 @@
   <v-col cols="12">
     <h3>SMART MARQUEE </h3>
     <smart-marquee
-        :panelIndex="selectedSubject"> 
+        :panelIndex="selectedSubject"
+        :list="[{id:1 ,name:'Caterina Malbel'},{id:2 ,name:'Caterina Malbsek'},{id:3 ,name:'Caty Malbek'},{id:4 ,name:'Karet Zofar'}]"
+        listHeading="TopOfRight"
+        heading="Werner Middle Smit"
+        > 
     </smart-marquee>       
     <h3>SMART DSPLAY </h3> 
     <smart-display
@@ -322,11 +348,18 @@ import SmartDisplay from '@/components/awards/SmartDisplay';
 import SmartPhoto from '@/components/awards/SmartPhoto';
 import SmartText from '@/components/awards/SmartText';
 import SmartMarquee from '@/components/awards/SmartMarquee';
+import UploadWrapper from '@/test/UploadWrapper';
 export default {
   components: {
-    SmartMarquee,SmartText,SmartPhoto,SmartDisplay,AutoSel, AutoSelObj, AutoSelSub//, OnFocus
+    UploadWrapper,SmartMarquee,SmartText,SmartPhoto,SmartDisplay,AutoSel, AutoSelObj, AutoSelSub//, OnFocus
   },  
  data: () => ({
+  uploadTitleMessage:"upload a file or files",
+  uploadCardColor:"lightpink",
+  uploadExtraPath:"Test/werner1",
+  uploadPrependName:"prep-",
+  uploadBtnColor:"primary",
+  uploadStuffShow:false,
   getZml: getters.getState({ object: "gZml" }),
   classtest:'col-4 col-sm-6 col-md-8',
   fruitOptions: ['appels','pere','tamaties','waatlemoen'],
@@ -357,6 +390,12 @@ export default {
     ],  
  }),
  methods:{
+   processListOfFiles(e) {
+     console.log('we have received a list of files to be done', e)
+   },
+   tellOfOneFile(e) {
+     console.log('we have received one file done', e)
+   },
    testzData() {
      zData.initialData('hallo')
    },

@@ -50,14 +50,15 @@
                  small
                  class="white--text font-weight-black"> Logout </v-btn>
         </v-card-actions>
-        <div class="ma-2 caption"> <v-icon small>mdi-brain</v-icon>{{programname}} vers:0.112</div>
+        <div class="ma-2 caption"> <v-icon small>mdi-brain</v-icon>{{programname}} version {{ version }}</div>
       </v-card>
     </v-menu>
-</div>
+</div> 
 </template>
 
 <script>
 import ToolbarButtons from '@/components/toolbarButtons'
+import { zmlConfig } from '@/api/constants.js'
 import { getters } from "@/api/store";
   export default {
     components: {ToolbarButtons},
@@ -74,12 +75,13 @@ import { getters } from "@/api/store";
         LoginHeading()    { return this.$t('message.LoginHeading') },
         rightMenuButton() { return this.$t('btn.rightmenubutton') },
         programname()     { return this.$t('message.programname') },
+        version()         { return zmlConfig.projectID },
     },
     mounted:function() {
         if (this.getZml.login.isAuthenticated == true) {
-          console.log('MNT LOGIN - Auth True')
+          console.log('MNT LOGIN - Auth True',this.version)
         } else {
-          console.log('MNT LOGIN - Auth False')  
+          console.log('MNT LOGIN - Auth False',this.version)  
         }
     }
   }

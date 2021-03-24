@@ -19,9 +19,7 @@ How does this work?
 6. When user click on one, we return the id.
 A. The search function, use the itemdisplay to get data to display in dropdown
    -->
- <div>
-<!--   what = {{ what }}
-   <br>initialValue = {{ initialValue }}-->
+ <div v-if="itemObj && itemObj.length > 0">
    <!-- filled, outlined,solo, solo-inverted, flat-->
     <v-autocomplete 
         cache-items
@@ -30,7 +28,6 @@ A. The search function, use the itemdisplay to get data to display in dropdown
         message
         v-model="what"
         v-on:input="$emit('input', what)"
-        v-if="itemObj && itemObj.length > 0"
         :value="searchText"
         :search-input.sync="search"
         :items="itemObj"
@@ -55,9 +52,6 @@ A. The search function, use the itemdisplay to get data to display in dropdown
     open {{ data.itemObj.shortname }}
   </template>-->  
     </v-autocomplete> <!--//return-object -->
-   <div v-else>
-     (No Subject Data Available)
-   </div>
 
 </div>
 </template>
@@ -75,9 +69,9 @@ export default {
     what: null,
   }),
   mounted() { 
-    this.what = this.itemObj.find(item => item.id == this.initialValue)
-    console.log('found: ', this.what)
-     //this.what = this.initialValue
+    //this.what = this.itemObj.find(item => item.id == this.initialValue)
+    //console.log('found: ', this.what)
+     this.what = this.initialValue
    },
   computed: {
     searchText() {

@@ -12,7 +12,7 @@
   <hr />
   </v-layout>
 
-  <v-container v-if="['admin','teacher'].includes(getZml.login.type)">
+  <v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
 
   <v-card >
       <v-card-title>
@@ -20,23 +20,22 @@
       </v-card-title>
       <v-card-text>
        <student-lookup @dataEntered="studentFound"  />
-       <v-layout row v-if="studentList">
-         <v-flex>
+       <v-row v-if="studentList">
+         <v-col cols="12" md="9">
             <student-name-card :studentList="studentList" />
-         </v-flex>
-         <v-flex>
+           <student-email-list v-if="studentList" :studentList="studentList" />            
+         </v-col>
+         <v-col cols="12" md="3">
             <student-photo-list :studentList="studentList" />
-         </v-flex>
-        </v-layout>
+         </v-col>
+         <v-col cols="12" md="8">
+
+         </v-col>
+        </v-row>
   
       </v-card-text>
   </v-card>
  </v-container>
- <v-row>
-   <v-col xs12 cols="12">
- <student-email-list v-if="studentList" :studentList="studentList" />
-   </v-col>
- </v-row>
 
   <router-link :to="{ name: 'PersonelInfo'}" > <v-icon> mdi-nature-people </v-icon> </router-link>
   

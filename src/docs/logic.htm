@@ -320,3 +320,43 @@ CREATE TABLE dkhs_teachersubject (
   username int(11) NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
+
+select subjectid id
+     , shortname name
+     , subjectid
+     , sortorder
+     , shortname
+     , path
+     , description
+     , beskrywing
+     , linksubjectid
+     , picture
+     , color
+  from dkhs_lsubject
+ where sortorder > 0
+ order by sortorder
+ 
+ select subjectid id
+      , dkhs_lsubject.*
+  from dkhs_lsubject
+ where sortorder > 0
+ order by sortorder
+ 
+ select grade, subjectid id, max(update_timestamp), count(*)
+  from dkhs_lcontent 
+ where sortorder > 0
+   and accesstype != 'teacher'
+ group by grade, subjectid
+
+ 
+ 
+ ------------------------AWARDS
+ dkhs_story_main    (1,4,999)
+  ...  dkhs_story   (link to chapterid)  storyid, chapterid, orderid, type, otherid, detail1, detail2
+  
+   path: '/dkhsawards', '@/views/awards/AwardStories.vue'
+   path: '/virtualawards/:chapterid', '@/views/awards/AwardCarousel.vue', params: {chapterid: 4, editmode: false},
+   path: '/studentawards', '@/views/awards/StudentAwardTable.vue',
+

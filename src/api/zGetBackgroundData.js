@@ -14,10 +14,9 @@ export const zData = {
         if (whatever !== undefined)
             zData.l(whatever);
 
-        if (!getters.getState({ object: "gZml" }).subjects.length
-            || !getters.getState({ object: "gZml" }).folders.length
-            || !getters.getState({ object: "gZml" }).functions.length) {
+        if (!getters.getState({ object: "gZml" }).subjects.length) {
             let ts = { api: zmlConfig.apiDKHS, task: 'loadlearn' };
+            console.log('do loadLearn from initialData (zData)')
             zmlFetch(ts, finishedLoadingBasic, errorLoading);
         }
         return "something";
@@ -34,8 +33,8 @@ export const zData = {
             zmlFetch(ts, finishedLoadingCalendar, errorLoading);
         }
         return "something"
-      },
-      functionData: (whatever) => {  
+    },
+    functionData: (whatever) => {  
         if (whatever !== undefined) zData.l(whatever)
         if (!getters.getState({ object: "gZml" }).functions.length) {
             let ts = {}
@@ -45,7 +44,7 @@ export const zData = {
             zmlFetch(ts, finishedLoadingFunctions, errorLoading);
         }
         return "something"
-      },
+    },
     randomChuckNorris: async () => {
         let response = await fetch('https://api.chucknorris.io/jokes/random')
         let data = await response.json()
@@ -73,9 +72,9 @@ function finishedLoadingCalendar(response) {
 //----------------------------------------------------------------
 function finishedLoadingBasic (response) {
     //getZml = getters.getState({ object: "gZml" })
-    zData.l(getters.getState({ object: "gZml" }).subjects.length 
-               ,getters.getState({ object: "gZml" }).folders.length
-               ,getters.getState({ object: "gZml" }).functions.length)
+    console.log('s',getters.getState({ object: "gZml" }).subjects.length 
+               ,'fo',getters.getState({ object: "gZml" }).folders.length
+               ,'fo',getters.getState({ object: "gZml" }).functions.length)
     getters.getState({ object: "gZml" }).subjects = response.subjects;
     getters.getState({ object: "gZml" }).folders = response.folders;
     getters.getState({ object: "gZml" }).functions = response.functions;    
@@ -126,5 +125,5 @@ function finishedLoadingFunctions (response) {
 }
 function errorLoading (response) {
     alert('We had an error loading your data!' + response)
-    zData.l('We had an error loading your data!',response)
+    console.log('We had an error loading your data!',response)
 }

@@ -51,8 +51,6 @@
                         :alles=page
                         :panelIndex=panelIndex />
 
-
-
 <v-container v-if="currentEditMode">
    {{page}}
    <v-btn @click="addNewOneAfter"> Add New One After </v-btn>
@@ -165,7 +163,7 @@ export default {
            //Skip all type 2's (since we added students below it as type 3)
            if (row.type == 2) { 
             continue;
-           }
+           } 
            //These are students with names, diplomas and bookprizes
            if (row.type == 3) {
              diplomaSubjectArr = [];
