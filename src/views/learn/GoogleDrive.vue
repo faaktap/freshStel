@@ -26,7 +26,7 @@
 
 <!-- SHOW INTERFACE FOR FOLDER LIST and OTHER ITEMS like ADD FILES-->              
   <v-card  v-if="mainMenuItemselected=='New File'" class="ma-3 pa-2" color="blue lighten-2">
-        <v-icon> S </v-icon> elected folder : <strong>{{ folderObj.foldername }}</strong>
+        <v-icon> S </v-icon> elected folder : <strong>{{ folderObj.name }}</strong>
         <br>
         <i v-if="files.length == 0">You are welcome to drag your files from explorer,
                and drop them on this blue pad for further processing, or click on the paperclip below
@@ -81,7 +81,7 @@
            style="color:white" 
            x-small
            text  
-           title="Click to change form root folders to all folders"
+           title="Click to change from root folders to all folders"
           @click="showRootFolders = !showRootFolders"> 
           <v-icon x-small> mdi-folder</v-icon>
           <template v-if="showRootFolders">
@@ -93,11 +93,8 @@
        </v-btn>
 
 
-
-
-
       <div v-if="folderFilter.length < 1">
-          The are no folders yet, please create a "New Folder"
+          There are no folders yet, please create a "New Folder"
        </div>
         <v-btn @click="selectFolder(f)" 
                 v-for="f in folderFilter"
@@ -105,8 +102,8 @@
                 color="green lighten-4"
                 class="ma-2 no-uppercase"
                 rounded
-                >xx
-         <strong>{{ f.foldername }}</strong>
+                >
+         <strong>{{ f.name }}</strong>
         </v-btn>
   </v-card>
 
@@ -116,48 +113,27 @@
   </v-card>
 
 <!-- ----------------- SHOW FOLDER NAME ON CHIP ----------------------- -->
-<v-container fluid v-show="!!folderObj.foldername">
+<v-container fluid v-show="!!folderObj.name">
   <v-layout class="ma-1" row wrap>
     <v-flex>
-
       <base-drop-down  
-      :disabled="!folderObj.foldername"
+      :disabled="!folderObj.name"
       :items="folderMenuItems" 
-      :menuName="folderObj.foldername"
+      :menuName="folderObj.name"
        v-bind:value="mainMenuItemselected"
        v-on:input="doFolderMenuStuff($event)"
      />
 
     </v-flex>
-    <!--v-flex>
-    <v-card class="ma- pa-1" 
-            color="light-blue darken-3" 
-           :loading="loadStatus" >
-    <v-chip color="light-blue" 
-           @click="folderProperties"
-           title="Rename folder"
-    >
-      {{ folderObj.foldername }}
-    </v-chip>
-    <v-btn icon dark @click="sortName = !sortName"> 
-        <template v-if="sortName">
-        <v-icon> mdi-sort</v-icon>
-        <v-icon> mdi-sort-numeric-ascending</v-icon>
-        </template>
-    </v-btn>
-    </v-card>
-    </v-flex-->
   </v-layout>
 </v-container>
 
 
-<!-- MAIN CANVAS --------------->
+<!-- MAIN CANVAS ------------(Show Files, text, links and folders for selected folder --->
 <google-drive-items :itemList="filterContent" 
                     :folderObj="folderObj" 
                    @iconClick="iconClick"
                    @contentProperties="contentProperties" />
-
-
 <br /> <br /> 
 
 
@@ -171,7 +147,7 @@
       Folder Properties
     </v-card-title>
     <v-card-text>
-        <v-text-field v-model="folderObj.foldername" label="Name"></v-text-field>
+        <v-text-field v-model="folderObj.name" label="Name"></v-text-field>
         {{ folderObj }}
     </v-card-text>
       <v-card-actions>
@@ -226,8 +202,11 @@
  <v-dialog v-if="curContent" v-model="showFileProperties" max-width="500" >
   <v-card>
     <v-card-title>
-       <v-icon> {{ curContent.icon }} </v-icon>  Properties for: 
-            <v-card color="blue lighten-5" class="caption ma-2 pa-2"> {{ curContent.name | shorten }} ( {{ curContent.type }} )</v-card>
+       <v-icon> {{ curContent.icon }} </v-icon>  
+         Properties for: 
+       <v-card color="blue lighten-5" class="caption ma-2 pa-2">
+         {{ curContent.name | shorten }} ( {{ curContent.type }} )
+       </v-card>
     </v-card-title>
     <v-card-text>
         <template v-if="curContent && curContent.type == 'file'">      
@@ -235,36 +214,42 @@
         </template> 
         <template v-if="curContent && curContent.type == 'link'">
           <v-text-field dense v-model="curContent.name" label="URL/Link" />
-          <v-text-field  v-show="curContent.mode != 'add'" dense v-model="curContent.sortorder" label="Sort" />
           <v-textarea dense v-model="curContent.description" label="Link Description" />
         </template>
         <template v-if="curContent && curContent.type == 'text'">
           <v-text-field dense v-model="curContent.name" label="Text Heading" />
-          <v-text-field v-show="curContent.mode != 'add'" dense v-model="curContent.sortorder" label="Sort" />
-          <v-textarea dense v-model="curContent.description" label="Text" />
+          <v-textarea dense 
+                      v-model="curContent.description" 
+                      label="Text" 
+                      xstyle="width:200px;"
+                      xheight="60"
+                      append-icon="mdi-text-box"
+                      xclass="ml-5"                      
+                      />
         </template>
-  
-           <v-select
-             v-model="curContent.folder"
-             :items="folderFilter"
-             item-text="foldername"
-             item-value="foldername"
-             label="Folder"
-             title="Move the file to a different folder"
-           />       
            <v-row>
-             <v-col cols="6">     
-              <v-radio-group dense 
-                             v-model="curContent.accesstype" 
-                             column 
-                             label="Access Type" 
-                             title="Would you like the students to see this?">
-                <v-radio label="Student"  value="student" />
-                <v-radio label="Teacher"  value="teacher" />
-              </v-radio-group>
+             <v-col cols="6" md="5">        
+                <v-select
+                v-model="curContent.folder"
+                :items="folderFilter"
+                item-text="name"
+                item-value="name"
+                chips dense
+                label="Folder"
+                title="Move the file to a different folder"
+                />       
              </v-col>
-              <v-col cols="6" class="pt-9">
-                <v-text-field dense v-model="curContent.sortorder" label="Sort" />          
+             <v-col cols="6" md="5">     
+               <v-select
+               v-model="curContent.accesstype"
+               :items="['teacher','student']"
+               chips dense
+               label="Access type"
+               title="Would you like the students to see this?"
+              />       
+             </v-col>
+              <v-col cols="3" md="2" xclass="pt-9">
+              <v-text-field v-show="curContent.mode != 'add'" dense v-model="curContent.sortorder" label="Sort" />
              </v-col>
            </v-row>
         <v-card class="ma-2 pa-2" v-if="curContent.showDescription">
@@ -324,7 +309,7 @@
         <v-select
              v-model="curContent.folder"
              :items="folderFilter"
-             item-text="foldername"
+             item-text="name"
              item-value="realfoldername"
              label="Folder"
              title="Folder where this one can live."
@@ -358,12 +343,12 @@
         <v-select
              v-model="curContent.folder"
              :items="folderFilter"
-             item-text="foldername"
-             item-value="realfoldername"
+             item-text="name"
+             item-value="description"  
              label="Folder"
              title="Folder where this one can live."
         />            
-        
+        <!--//description is the REAL foldername! above, so we send that as value-->
     </v-card-text>
       <v-card-actions>
 
@@ -416,17 +401,35 @@
 </v-dialog>
 
 <template v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-  <v-card color=green>Only.Werner<br>folderObj<br>
-  <table color="green" v-for="(f,i) in folderObj" :key="i"> <tr><td>{{ f }}</td></tr> </table>
-<hr>folderFilter<br>
-  <table v-for="(f,i) in folderFilter" :key="i"> <tr><td>{{ f }}</td></tr> </table>
- <hr>
-
-   <table v-for="(f,i) in getZml.folders" :key="i"> 
-     <tr v-if="f.subjectid == getZml.subjectid"><td>{{ f }}</td></tr> 
-    </table>
-
+  <v-card color=blue>
+   <v-row>
+    <v-col cols="4" v-for="(f,i) in content" :key="i">
+     <v-card class="ma-2 pa-1">
+      {{i}} {{ f }} <br>
+     </v-card>
+    </v-col>
+   </v-row>
   </v-card>
+  <v-card color=green>
+   <table color="light-green" v-for="(f,i) in folderObj" :key="i"> <tr><td>{{ f }}</td></tr> </table>
+   <hr>folderFilter {{folderFilter.length}} <br>
+   <v-row>
+    <v-col cols="4"  v-for="(f,i) in folderFilter" :key="i" class="ma-2 pa-2">
+     <v-card> 
+        {{f.contentid }} {{f.name}} <br> {{f.description}} g & s = {{ f.grade }}, {{ f.subjectid }} 
+     </v-card>
+    </v-col>
+   </v-row>
+   getZml.folders : {{ getZml.folders.length }} Subs : {{ getZml.subjects.length }}
+   <v-row>
+    <v-col cols="6" v-for="(f,i) in getZml.folders" :key="i">
+     <v-card class="ma-2 pa-1">
+      {{f.contentid }} {{f.name}} <br> {{f.description}} g & s = {{ f.grade }}, {{ f.subjectid }}
+     </v-card>
+    </v-col>
+   </v-row>
+  </v-card>
+  
 </template>
 
 </div>
@@ -558,13 +561,11 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             //get the folder from folderObj and pass it to selectFolder
             //But we cannot use folderfilter, since it might onlu contain rootfolders
             //let fIdx = this.folderFilter.findIndex(p => p.foldername == c.name);
-            let fIdx = this.getZml.folders.findIndex(p =>{
-              p.foldername == c.name 
+            let fIdx = this.getZml.folders.findIndex(p => 
+              p.name == c.name 
               && p.grade == this.getZml.grade
               && p.subjectid == this.getZml.subjectid
-              if (p.grade == this.getZml.grade && p.subjectid == this.getZml.subjectid) 
-                  console.log('cmp:', p.foldername ,c.name )
-            })
+            )
 
             if (fIdx != -1) {
               console.log('passing : ', this.getZml.folders[fIdx])
@@ -577,7 +578,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           console.log('GD:SELECTFOLDER')
            console.log('selectFolder ', folder)
            this.folderObj = folder
-           this.oldFolderName = folder.foldername
+           this.oldFolderName = folder.name
            this.mainMenuItemselected = null
            console.log('folder selected:', this.folderObj)
         },
@@ -587,7 +588,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             alert('no update')
             return
           }
-          //console.log('moving to folder:',this.curContent.folder)
+          console.log('moving to folder:',this.curContent.folder)
           this.showMoveFolder = false
           this.updateContent()
         },
@@ -634,7 +635,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
               this.mainMenuItemselected = null        
               //we find the content for the current selected folder, and load in curContent
               // then we display moveFolder, and allow them to select another folder
-              this.curContent = this.content.find(ele => ele.name == this.folderObj.foldername)
+              this.curContent = this.content.find(ele => ele.name == this.folderObj.name)
               this.showMoveFolder = true
            }
 
@@ -656,7 +657,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             || this.mainMenuItemselected == "New File" 
             || this.mainMenuItemselected == "Move Folder" 
             || this.mainMenuItemselected == "Empty Folder") {
-               if (!this.folderObj.foldername) {
+               if (!this.folderObj.name) {
                   infoSnackbar('You need to select a folder before you use "' + this.mainMenuItemselected + '"')
                   this.mainMenuItemselected = null                  
                   return
@@ -669,7 +670,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
            if (this.mainMenuItemselected == "Empty Folder") {
                this.mainMenuItemselected=='Select Folder'  //we use this to still display folders on screen
                //console.log('start empty folder', this.folderObj.foldername)               
-               if (!this.folderObj.foldername) {
+               if (!this.folderObj.name) {
                    infoSnackbar('we have no selected folder')
                    return
                }
@@ -678,7 +679,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
            if (this.mainMenuItemselected == "Delete Folder") {
                this.mainMenuItemselected=='Select Folder'  //we use this to still display folders on screen
                //console.log('delete folder', this.folderObj.foldername)
-               if (!this.folderObj.foldername) {
+               if (!this.folderObj.name) {
                    infoSnackbar('we have no selected folder')
                    return
                }
@@ -712,7 +713,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         },
         updateFolderName() {
            //console.log('Start rename folder ' + this.folderObj.folderid + ' to ' + this.folderObj.foldername)
-           if (this.oldFolderName == this.folderObj.foldername) {
+           if (this.oldFolderName == this.folderObj.name) {
                infoSnackbar('the two names are the SAME!!!!')
                return
            }
@@ -720,13 +721,14 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
                infoSnackbar('We do not have the old folder name')
                return
            }
-           if (this.folderObj.foldername == '') {
+           if (this.folderObj.name == '') {
                infoSnackbar('Folder cannot be blank')
                return
            }
 
            let ts = {};
            ts.data = this.folderObj
+           ts.data.persid = this.getZml.login.userid
            ts.data.oldfoldername = this.oldFolderName
            ts.api = zmlConfig.apiDKHS
            ts.task = 'renameFolder';
@@ -780,6 +782,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
              }
              let ts = {}
              ts.data = this.curContent
+             ts.data.persid = this.getZml.login.userid
              ts.task = 'insertlcontent'
              ts.api = zmlConfig.apiDKHS
              this.progress = true;
@@ -787,16 +790,17 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
              zmlFetch(ts, this.afterSaveData);   
              this.loadFolders();
              return
+          } else {
+             console.log('HERE WE UPDATE CONTENT', this.curContent) 
+             let ts = {}
+             ts.task = 'updatelcontent'
+             ts.data = this.curContent
+             ts.data.persid = this.getZml.login.userid
+             ts.api = zmlConfig.apiDKHS
+             this.progress = true;
+             this.showFileProperties = false
+             zmlFetch(ts, this.afterSaveData);   
           }
-          //console.log('HERE WE UPDATE CONTENT', this.curContent) 
-          let ts = {}
-          ts.task = 'updatelcontent'
-          ts.data = this.curContent
-          ts.api = zmlConfig.apiDKHS
-          this.progress = true;
-          this.showFileProperties = false
-          zmlFetch(ts, this.afterSaveData);   
- 
         },
       saveNewFolder() {
         console.log('GD:SAVENEWFOLDER')
@@ -1050,7 +1054,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           let edit = {name: ''
                    , description:''
                    , type:'file'
-                   , folder:this.folderObj.foldername
+                   , folder:this.folderObj.name
                    , realfolder:this.folderObj.realfoldername
                    , accesstype: 'student'
                    , grade: this.getZml.grade.toString()
@@ -1123,6 +1127,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
               zmlFetch(ts, this.showData);
            } else {
              alert('you are not allowed!')
+             this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
            }
         },
        async myConfirm(message,passedParameter, nextProc) {
@@ -1139,57 +1144,53 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       folderFilter() {
         console.log('GD:FOLDERFILTER')
         let tempT = []
-        if (this.getZml.folders.length == 0) {
+        if (typeof this.getZml.folders === 'undefined' || this.getZml.folders.length == 0) {
           console.log('folders are ZERO LENGTH')
           return ['temp']
         }
-        let ignore = false
-        this.getZml.folders.forEach(item => {
-          ignore = false;
-          if (item.grade != this.getZml.grade) {
-             ignore = true
-          }
-          if (item.subjectid != this.getZml.subjectid) {
-             ignore = true
-          }
+        this.getZml.folders.filter(ele => ele.grade == this.getZml.grade && ele.subjectid == this.getZml.subjectid).forEach(item => {
+          console.log('folder filter : ', item.folder, item.name, item)
           if (this.showRootFolders) {
-              //console.log(item.folder, item.name, item)
-              if (item.folder != item.name) {
-                  ignore = true
+              console.log(item.folder, item.name, item)
+              if (item.folder == item.description) {
+                  const newitem = item
+                  tempT.push(  newitem );
               }
-          }
-          if (!ignore) {
-             let newitem = item
+          } else {
+             const newitem = item
              tempT.push(  newitem );
           }
         })
+        console.log('GD:FOLDERFILTER 3', tempT.length)
         return tempT
       },
       filterContent() {
         //return this.content;
          //c.folder == folderObj.foldername && c.type!='folder'
         console.log('GD:FILTERCONTENT')
+        console.log('GD:FILTERCONTENT',this.folderObj)
         let res = []         
-        if (this.folderObj.foldername) {
+        if (this.folderObj.name) {
             //take out all foldernames
             this.content.forEach(ele => {
-                if (ele.folder == this.folderObj.foldername) {
+                if (ele.folder == this.folderObj.name) {
                    // if (ele.type != 'folder') {
-                      if (ele.name != this.folderObj.foldername) 
+                      if (ele.name != this.folderObj.name) 
                         res.push(ele);
                    // }
                 }
             })
-          //  console.log('Length : ', res.length)
             if (this.SortName == true) { 
                // res.sort((a, b) => a.name.localeCompare(b.name));
                res.sort(function(a, b) {
-            //     console.log(a.name, b.name)
+                 console.log(a.name, b.name)
                  return (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0))
                })
             }
+            console.log('Length : ', res.length)
             return res
         } else {
+           console.log('wys alles Length : ', this.content.length)
            return this.content;
         }
       }
@@ -1225,6 +1226,9 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
            let s = 's'
            if (val == 1) s = ''
            return val + ' ' + singular + s
+       },
+       subjectLookup: function(val) {
+         return "s " + val // this.getZml.subjects.find(a => a.subjectid == val).shortname
        }
     },      
     mounted: function () {
@@ -1251,7 +1255,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       subjectid() {
         //reset our folders if a new subject is selected
         if (this.folderObj) {
-            this.folderObj.foldername = ''
+            this.folderObj.name = ''
         }
         this.files = []
         this.mainMenuItemselected = null
@@ -1260,7 +1264,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       grade() {
         //reset our folders if a new grade is selected
         if (this.folderObj) {
-            this.folderObj.foldername = ''
+            this.folderObj.name = ''
         }
         this.files = []
         this.mainMenuItemselected = null

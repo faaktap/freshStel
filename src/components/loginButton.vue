@@ -30,6 +30,9 @@
         <v-card-text> 
                 Logins : {{ getZml.login.logins }}
            <br/>Last Login : {{ getZml.login.lastdate }}
+       <div v-if="getZml.login.username=='werner'">
+         {{ getZml.login }}
+       </div>
            
         </v-card-text>
         <v-card-actions>

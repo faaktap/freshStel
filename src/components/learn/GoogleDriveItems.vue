@@ -1,8 +1,10 @@
 <template>
 <v-container fluid>
- <v-card color="blue lighten-5" class="ma-2 pa-1" v-if="itemList && itemList.length > 0 && folderObj.foldername">
+  <!--folderObj:{{ folderObj }}<br> 
+   itemList: {{ itemList }}-->
+ <v-card color="blue lighten-5" class="ma-2 pa-1" v-if="itemList && itemList.length > 0 && folderObj.name">
   <v-layout fluid 
-        v-show="folderObj.foldername" 
+        v-show="folderObj.name" 
         row 
         class="ma-1" 
         align-content-start 

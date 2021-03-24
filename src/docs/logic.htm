@@ -360,3 +360,30 @@ select subjectid id
    path: '/virtualawards/:chapterid', '@/views/awards/AwardCarousel.vue', params: {chapterid: 4, editmode: false},
    path: '/studentawards', '@/views/awards/StudentAwardTable.vue',
 
+
+loadfolder - dkhs_lcontent
+SELECT f.folderid , f.subjectid , f.grade , f.foldername , f.realfoldername
+ , c.contentid , c.name , c.description , c.folder
+ , f.icon , f.create_timestamp , f.update_timestamp
+  FROM dkhs_lfolder f, dkhs_lcontent c
+ where f.realfoldername = c.description
+ and c.grade = f.grade  and c.subjectid = f.subjectid 
+ and f.sortorder != 0 and c.sortorder != 0
+
+SELECT c.contentid 
+     , c.contentid folderid
+     , c.name 
+     , c.description 
+     , c.realfoldername
+     , c.type
+     , c.subjectid
+     , c.grade
+     , c.icon
+     , c.folder
+     , c.accesstype
+     , c.persid
+     , c.create_timestamp
+     , c.update_timestamp
+  FROM dkhs_lcontent c
+ where c.sortorder != 0 and c.type = 'folder'
+

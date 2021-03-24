@@ -82,7 +82,7 @@ const routes = [
     meta: {layout: la[3], authentication: "public" }
   },    
   {
-    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/LearnTree.vue'),
+    component: () => import(/* webpackChunkName: "leer" */ '../views/learn/LearnTree.vue'),
     path: '/learntree', 
     name: 'LearnTree',
     meta: {layout: la[3], authentication: "learner" },
@@ -90,25 +90,25 @@ const routes = [
     params: {currentSubjectID:'2', grade:'12'}
   },
   {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/viewLearn.vue'),
+    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/viewLearn.vue'),
     path: '/viewlearn', name: 'ViewLearn',
     meta: {layout: la[3], authentication: "teacher" },
     children: [
            //editItem component is rendered when /user/:id is matched
            { path: ':id'
-            , component: () => import(/* webpackChunkName: "learn1" */ '@/views/learn/editItem.vue')
+            , component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/editItem.vue')
             , props: {default:true}, }
               ]
   },
   {
-    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/Grade.vue'),
+    component: () => import(/* webpackChunkName: "leer" */ '../views/learn/Grade.vue'),
     path: '/grade',
     name: 'Grade',
     props: true,
     meta: {layout: la[3], authentication: "learner" }
   },    
   {
-    component: () => import(/* webpackChunkName: "learn" */ '../views/learn/SelectGrade.vue'),
+    component: () => import(/* webpackChunkName: "leer" */ '../views/learn/SelectGrade.vue'),
     path: '/grade/:gradeno',
     name: 'SelectGrade',
     props: true,
@@ -116,7 +116,7 @@ const routes = [
     meta: {layout: la[3], authentication: "learner" }
   },  
   {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/StudentHub.vue'),
+    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub.vue'),
     path: '/studenthub',
     name: 'StudentHub',
     props: true,
@@ -124,7 +124,7 @@ const routes = [
     meta: {layout: la[3], authentication: "learner" }
   },
   {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/ViewSubjects.vue')
+    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/ViewSubjects.vue')
     ,name: 'ViewSubjects'
     ,path: '/subjects'
     ,meta: {layout: la[0], authentication: "public"}

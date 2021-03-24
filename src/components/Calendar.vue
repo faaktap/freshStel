@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-row v-if="menemonic">
     <v-col>
     <v-sheet
@@ -117,12 +118,20 @@
         </v-menu>
 
 
-
         
       </v-sheet>
-    
     </v-col>
   </v-row>
+  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+    <v-row>
+        <v-col cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
+        <v-card color="blue" class="ma-2 pa-1" >
+        {{ i }} {{ f.name }} - {{ f.start }} {{ f.end }} {{ f.type }} 
+         </v-card>
+        </v-col>
+   </v-row>
+  </v-container>
+</div>  
 </template>
 
 <script>
@@ -183,7 +192,7 @@ export default {
         console.log('fetch for:', this.personeelMenemonic)
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = 'select * from rooster where user_name = "' + this.personeelMenemonic + '"';
+        ts.sql = "select * from rooster where user_name = '" + this.personeelMenemonic + "'";
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
         zmlFetch(ts, this.afterRoosterSelect);   
@@ -213,12 +222,13 @@ export default {
         //console.log('sunday is : ' , template)
         for (let t=0; t < 5; t++) {
            template = zDate.addOneDay(template)
-           //console.log('day to work with is : ' , template)
+           console.log('day to work with is : ' , template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal => 
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
            )
-           //console.log('Found calendar entry ', sday.name)
+           if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
+           console.log('Found calendar entry ', sday)
            response.forEach(ele => {
              let n = ''
              switch (sday.name.substr(0,4)) {
@@ -295,11 +305,11 @@ export default {
       activateCalendar() {
           //if (this.$refs.calendar !== undefined) {
           if (this.calReady == false) {  
-            console.info('Calendar is Ready!!: ' , this.$refs.calendar)
+            console.info('Calendar is Ready?: ' , this.$refs.calendar)
             if (this.$refs.calendar)  this.$refs.calendar.checkChange()
             this.calReady = true
-            this.scrollToTime()
-            this.updateTime()
+            if (this.$refs.calendar) this.scrollToTime()
+            if (this.$refs.calendar) this.updateTime()
           } else {
            console.error('Calendar still not Ready!!: ' , this.calReady, this.$refs.calendar)
          }
