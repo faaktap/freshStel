@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-row v-if="menemonic">
+  <v-row v-if="studentGradeClass">
     <v-col>
     <v-sheet
       tile
@@ -33,7 +33,7 @@
             {{ $refs.calendar.title }}
           </v-toolbar-title>
           <v-spacer />
-   {{ menemonic }}
+   {{ studentGradeClass }}
         <v-spacer />
         <v-btn icon
                class="ma-2"
@@ -97,7 +97,7 @@
             </v-toolbar>
             <v-card-text>
               <span v-if="selectedEvent" v-html="selectedEvent.details"></span>
-              <v-text-field v-model="personeelMenemonic" label="Educator Menemonic" />
+              <v-text-field v-model="pStudentGradeClass" label="Student Class" />
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -143,7 +143,7 @@ import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 export default {
   name: 'Calendar',
-  props: ['menemonic','weekOrDay'],
+  props: ['studentGradeClass','weekOrDay'],
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
       loading:false,
@@ -155,7 +155,7 @@ export default {
       selectedEvent: null,
       selectedElement: null,
       selectedOpen: null,
-      personeelMenemonic: ''
+      pStudentGradeClass: ''
   }),
   methods:{
       checkChange() {
@@ -184,29 +184,51 @@ export default {
         return "done"
       },
       loadRooster(){
-        //console.log('ShowLoadRooster')
+        console.log('ShowLoadRooster')
         this.selectedOpen = false
-        this.personeelMenemonic = this.menemonic
-        if (!this.personeelMenemonic) this.personeelMenemonic = 'WIE'
+        this.pStudentGradeClass = this.studentGradeClass
+        if (this.pStudentGradeClass == '') this.pStudentGradeClass = 'GR10A1';
 
-/*      we have GROEN as a menemonic - so cannot do this test
-        if (this.personeelMenemonic.substr(0,2) == 'GR') {
+
+        if (this.pStudentGradeClass.substr(0,1) !== 'G') {
           //This is not a personeel mnemonic, it's a grade,
           //so our select statement need to change
-          alert('we need a personel menemonic, not a grade')
+          alert('we need a studentGradeClass not,'+this.pStudentGradeClass )
           return
         }
-*/
-        console.log('fetch for:', this.personeelMenemonic)
+        //Massage the grade if it is in G08A2 to be GR08A2 
+        //Since rooster store them like that.
+        if (this.pStudentGradeClass.substr(0,2) !== 'GR') {
+            
+            this.pStudentGradeClass = this.pStudentGradeClass[0] + 'R' + this.pStudentGradeClass.substr(1)
+
+        }
+
+        
+
+        console.log('fetch for:', this.pStudentGradeClass)
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = "select * from rooster where user_name = '" + this.personeelMenemonic + "'";
+        ts.sql = "SELECT * FROM rooster WHERE " 
+               + "   day1 like '%" + this.pStudentGradeClass + "%'"
+               + "or day2 like '%" + this.pStudentGradeClass + "%'"
+               + "or day3 like '%" + this.pStudentGradeClass + "%'"
+               + "or day4 like '%" + this.pStudentGradeClass + "%'"
+               + "or day5 like '%" + this.pStudentGradeClass + "%'"
+               + "or day6 like '%" + this.pStudentGradeClass + "%'"
+               + "or day7 like '%" + this.pStudentGradeClass + "%'"
+               + "or day8 like '%" + this.pStudentGradeClass + "%'"
+               + "or day9 like '%" + this.pStudentGradeClass + "%'"
+               + "or day10 like '%" + this.pStudentGradeClass + "%'"
+               + "or day11 like '%" + this.pStudentGradeClass + "%'";
+        console.log(ts.sql)       
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
         zmlFetch(ts, this.afterRoosterSelect);   
       },
       getPeriodStartTime(hm,element, dateLooking) {
-         let perStart = zDate.dayType.find(dt =>  dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )  
+         let perStart = zDate.dayType.find(dt => 
+                      dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )  
          hm.h = parseInt(perStart.start.substr(0,2))
          hm.m = parseInt(perStart.start.substr(3,2))
       },
@@ -216,8 +238,8 @@ export default {
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
-          console.log('we have a problem with : ', subjectShortName)
-          return "amber"
+          //console.log('we have a problem with : ', subjectShortName)
+          return "amber darken-2"
         }
       },
       afterRoosterSelect(response) {
@@ -245,6 +267,7 @@ export default {
            console.log('Found calendar entry ', sday)
            response.forEach(ele => {
              let n = ''
+             
              switch (sday.name.substr(0,4)) {
                case 'day1': n = ele.day1; break
                case 'day2': n = ele.day2; break
@@ -257,14 +280,15 @@ export default {
                case 'day9': n = ele.day9; break
                case 'day10':n = ele.day10; break
              }
-             if (n) {
+             if (n && n.includes(this.pStudentGradeClass)) {
+               console.log(n.includes(this.pStudentGradeClass) , ele)
                let hm = {}
                this.getPeriodStartTime(hm,ele,template)
                let lines = n.split(/\n/);
                const per = lines[0]
                const grade = lines[1]
                const evt = {
-                       name: per + ' ' + ele.periodno + ' ' + grade.substr(0,4) + ' ' + ele.user_name
+                       name: per + ' ' + ele.user_name + ' ' + grade
                      , start: template.setHours(hm.h, hm.m, 0, 0) 
                      , end:   template.setHours(hm.h, hm.m + 45, 0, 0) 
                      , color: this.subjectColor( n.substr(0,3) )
@@ -272,6 +296,8 @@ export default {
                      , details: n
                  }
                this.events.push( evt )
+             } else {
+                 console.log('ignored:' , n)
              }
            })
         }
@@ -360,10 +386,12 @@ export default {
       this.rinseRepeat()
   },
   watch: {
-    menemonic() {
-      console.log('new one : ', this.menemonic)
+    pStudentGradeClass() {
+        /*
+      console.log('new one : ', this.studentGradeClass)
       zData.calendarData('Load Calendar Data')
       this.loadRooster()
+      */
     }
   },
 }

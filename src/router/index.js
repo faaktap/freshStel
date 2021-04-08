@@ -82,6 +82,12 @@ const routes = [
     meta: {layout: la[3], authentication: "public" }
   },    
   {
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AKandidate.vue')
+    ,name: 'AKandidate'
+    ,path: '/a'
+    ,meta: {layout: la[0], authentication: "public"}
+  },        
+  {
     component: () => import(/* webpackChunkName: "leer" */ '../views/learn/LearnTree.vue'),
     path: '/learntree', 
     name: 'LearnTree',
@@ -139,6 +145,18 @@ const routes = [
     component: () => import(/* webpackChunkName: "admin" */ '@/views/student/PersonelInfo.vue'),
     path: '/personel',
     name: 'PersonelInfo',
+    meta: {layout: la[3], authentication: "admin" }
+  },    
+  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/components/student/PersonelMenemonic.vue'),
+    path: '/sgrade1',
+    name: 'sgrade1',
+    meta: {layout: la[3], authentication: "admin" }
+  },    
+  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/components/student/StudentClass.vue'),
+    path: '/sgrade',
+    name: 'sgrade',
     meta: {layout: la[3], authentication: "admin" }
   },    
   {
@@ -208,12 +226,6 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },  
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/awards/AKandidate.vue')
-    ,name: 'AKandidate'
-    ,path: '/a'
-    ,meta: {layout: la[0], authentication: "public"}
-  },      
-  {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
     ,name: 'ViewCampaigns'
     ,path: '/campaigns'
@@ -243,7 +255,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewLog.vue')
     ,name: 'ViewLog'
     ,path: '/userlist'
-    ,meta: {layout: la[0], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "public"}
   },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/test/test.vue')
@@ -255,12 +267,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "test" */ '@/views/student/ViewStudentTestGrid.vue')
     ,name: 'sview'
     ,path: '/sview'
-    ,meta: {layout: la[3], authentication: "public"}
-  },  
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/components/TestCalendar.vue')
-    ,name: 'tcal'
-    ,path: '/tcal'
     ,meta: {layout: la[3], authentication: "public"}
   },  
   {

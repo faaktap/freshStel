@@ -9,7 +9,7 @@ See https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api if you 
 -----------------------------*/
 
 // eslint-disable-next-line
-function zmlFetch(task,callback,errcallback) {
+function zmlFetch(task,callback,errcallback, extraParameter) {
         task.program = 'zmlShop'
         task.status = 'trying'
         let apiConfig = {method: 'POST',
@@ -26,7 +26,7 @@ function zmlFetch(task,callback,errcallback) {
         })  
         .then(responseAsJson => { 
            //console.log('here we can decompress if return is gzipped, or we can do local callback to save globals?')
-           if (callback) callback(responseAsJson,task)
+           if (callback) callback(responseAsJson,task,extraParameter)
            //console.log('ZF: after fetch callback for ',task.task)
         })
         .catch(err => {

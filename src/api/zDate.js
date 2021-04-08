@@ -149,9 +149,22 @@ export const zDate = {
     return isSameDay(...args)
   },
   gotoMonday: function(date){
-    while (date.getDay() > 1) {
-      date.setDate(date.getDate() - 1);
+    //Monday is 1, Sunday is 7
+    //If we are on 6 or 7, we want to advance to next week.
+    //Else we want to go back to this week Monday
+    //console.log('gtm:current day is a' ,date.getDay())
+    let addOrSubtract = 0
+    if (date.getDay() > 5) { 
+      addOrSubtract = 1
+    } else {
+      addOrSubtract = -1
     }
+    //console.log('gtm:we will be ', addOrSubtract)
+    while (date.getDay() > 1) {
+      date.setDate(date.getDate() + addOrSubtract);
+      //console.log('gtm:inside while we have now..' ,date.getDay())
+    }
+    //console.log('gtm:we return:' ,date.getDay())
     return date
   },
   addOneDay: function(date) {

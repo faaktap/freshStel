@@ -17,6 +17,7 @@ export default {
     methods:{
       setGrade(grade) {
         this.getZml.grade = grade
+        this.$emit('input', grade)
       },
     }
 }

@@ -17,6 +17,40 @@ function debounce(func, wait, immediate) {
     }
     // -- end debounce
 
+//https://github.com/vuejs-tips/v-debounce/blob/master/debounce.js
+function tinydebounce (fn, delay) {
+  var timeoutID = null
+  return function () {
+    clearTimeout(timeoutID)
+    var args = arguments
+    var that = this
+    timeoutID = setTimeout(function () {
+      fn.apply(that, args)
+    }, delay)
+  }
+}
+//Example:tinydebounce (https://github.com/vuejs-tips/tiny-debounce/blob/master/demo.vue)
+/*
+<input v-model="input" placeholder="type here" />
+  <p>
+    {{debouncedInput}}
+  </p>
+import tinydebounce from '@/api/externals.js'  
+export default {  
+ data () {
+    return {
+      input: '',
+      debouncedInput: ''
+    }
+ },  
+ watch: {
+    input: tinydebounce(function (newVal) {
+      this.debouncedInput = newVal
+    }, 500)
+  }  
+*/  
+
+
     // animate css
     function animateCss(element, animationName, callback) {
         const node = document.querySelector(element)
@@ -32,4 +66,4 @@ function debounce(func, wait, immediate) {
         node.addEventListener('animationend', handleAnimationEnd);
     }
     // -- end animate css
-export {debounce, animateCss}
+export {tinydebounce,debounce, animateCss}

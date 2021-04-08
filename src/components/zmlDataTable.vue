@@ -1,7 +1,13 @@
 <template>
-
-  <v-container v-if="dataList && dataHeader" ref="printxxxxxxxx">
-      <v-btn @click="printIt"> print </v-btn>
+  <v-container v-if="dataList && dataHeader" id="printMe">
+    
+    <v-row>
+   <v-col cols="12">
+     
+     <div class="heading text-center"> 
+       <v-btn small class="pa-1 ma-1" @click="printIt"> print </v-btn> {{ userHeader }}   </div>
+   </v-col>
+   <v-col cols="12">
    <v-data-table
     :headers="dataHeader"
     :items="dataList"
@@ -11,14 +17,17 @@
     hide-default-footer
    >
    </v-data-table>       
+   </v-col>
+   </v-row>
   </v-container>   
 </template>
 
 
 <script>
+import printJS from "print-js";
 export default {
     name:"zmlDataTable",
-    props: ['dataList'],
+    props: ['dataList', 'userHeader'],
     data: () => ({
         dataHeader: [
           {text: 'User',             value: 'user_name' },
@@ -36,6 +45,21 @@ export default {
           })
       },
       printIt() {
+        const style =
+          "@page { margin-top: 10px } @media print { h1 { color: blue },heading { color: blue } }";
+        const headerStyle = "align:center;";
+          printJS({
+          printable: "printMe",
+          type: "html",
+          header: this.name + " kuiliesonline.co.za " + '  yyyy/mm/dd hh:mm',
+          headerStyle: headerStyle,
+          style: style,
+          scanStyles: false,
+          onPrintDialogClose: () => console.log("The print dialog was closed"),
+          onError: e => console.log(e)
+          });
+
+/*  Other way of printing the data....        
             // Get HTML to print from element
             console.log(this.$refs)
             let prtHtml = '<table style="border-collapse: collapse">'
@@ -78,7 +102,9 @@ export default {
             WinPrint.focus();
             WinPrint.print();
             WinPrint.close();          
+*/            
       }
+
     },
     computed:{
         listLength() {

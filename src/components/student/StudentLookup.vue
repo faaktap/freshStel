@@ -31,7 +31,9 @@
 import { zmlFetch } from '@/api/zmlFetch';
 export default {
    name: "StudentLookup",
-   props: {},
+   props: {
+     searchMore: {type: String, default:"false"}
+   },
    data: () => ({
     searchResult: '',
     search: "",
@@ -78,14 +80,24 @@ export default {
          }
     },
     loadOurListWithNewValues(pSrch){
-      let ts = {task: 'getstudentsurname', surname:pSrch};
+      let ts = {}
+      if (this.searchMore) {
+        ts = {task: 'getstudentother', like:pSrch};
+      } else {
+        ts = {task: 'getstudentsurname', surname:pSrch};
+      }
       zmlFetch(ts, this.listLoadDone, this.listLoadError);
     },
     listLoadDone(response){
         this.list = [];
         for (let i=0; i < response.length; i++) {
             let row = response[i];
-            let obj = {desc: row.grade + ' ' + row.idno + ' ' + row.surname + ', ' + row.firstname, data: response[i]};
+            let obj = {}
+            if (this.searchMore) {
+               obj = {desc: row.studentid + ' ' + row.grade + ' ' + row.gclass + ' ' + row.idno + ' ' + row.surname + ', ' + row.firstname, data: response[i]};
+            } else {
+               obj = {desc: row.grade + ' ' + row.idno + ' ' + row.surname + ', ' + row.firstname, data: response[i]};
+            }
             this.list.push(obj);
         }
         this.loadingItems = false;

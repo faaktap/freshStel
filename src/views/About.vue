@@ -1,22 +1,24 @@
 <template>
 <div>
-  
-<h1>ABOUT</h1>
+  <h1>ABOUT</h1>
 
-
-        <hero-section 
-            title="About the Virtual School System" 
-            text="About this" 
-            moretext="It is an example" 
-            color="purple"
-            button=""
-            icon=""
-            func=""
-        />
+  <hero-section 
+      title="About the Virtual School System" 
+      text="About this" 
+      moretext="It is an example" 
+      color="purple"
+      button=""
+      icon=""
+      func=""
+  />
 
 only werner:
+<base-tool :toolList="toolList" 
+            toolbarName="Name of Toolbar a bit longer than usual"
+            @toolclick="listenToToolbar"/>
+
 <h1> transition Groups for Lists </h1>
-<transition-group name="list" tag="p">
+<transition-group name="list" tag="span">
         <span v-for="item in menuItems" :key="item.title" class="ma-1">
           {{ item.title }} <v-icon small>  {{ item.icon }}</v-icon> {{ item.title }}
         </span>
@@ -36,7 +38,7 @@ only werner:
 </v-col>
 <v-col cols="6">
 <div>
-      <transition-group name="flip-list" tag="v-btn">
+      <transition-group name="flip-list"> <!-- Carefull with vuetify tags - does ot work-->
         <v-btn v-for="item in menuItems" :key="item.title" class="ma-2">
           <v-icon> {{ item.icon }}</v-icon> {{ item.title }}
         </v-btn>
@@ -144,7 +146,7 @@ import {halloWorld,test} from "./About.js"
 import zmlPreview from '@/components/zmlPreview.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
 import zmlContentButton from '@/components/zmlContentButton.vue'
-
+import baseTool from '@/components/base/baseTool.vue'
 import StudentLookup from '@/components/student/StudentLookup.vue'
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort.vue'
 export default {
@@ -158,6 +160,7 @@ components: {snackBarTest
            , zmlContentButton
            , StudentLookup
            , SubjectDisplayShort
+           , baseTool
            },
 data: () => ({
   studentList:null,
@@ -187,12 +190,21 @@ data: () => ({
     ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
     ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/test'    ,'/sview'
     ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards'],        
-    randomColors:[],           
+    randomColors:[],     
+    toolList:[{name:"Button1"},{name:"button2"},{name:"button3"}],
+    baseColors:[],
+    tint:[],
+    variant:[],
+
 }),
 computed: {
 
 },
 methods: {
+  listenToToolbar(e) {
+    console.log(e)
+    alert(e)
+  },
   addTopDeleteBottom() {
     let i = 4
     while (i>1){
@@ -220,14 +232,11 @@ methods: {
     return newArr
   },  
   anyColor(){
-    let baseColors = ['red','green','blue','yellow','pink','purple','indigo','teal','lime','orange','brown','amber']
-    let tint = ['darken','lighten','accent']
-    let variant = [1,2,3,4]
-    let b = Math.floor(Math.random() * baseColors.length) 
-    let t = Math.floor(Math.random() * tint.length) 
-    let v = Math.floor(Math.random() * variant.length) 
+    let b = Math.floor(Math.random() * this.baseColors.length) 
+    let t = Math.floor(Math.random() * this.tint.length) 
+    let v = Math.floor(Math.random() * this.variant.length) 
 
-    return baseColors[b] + ' ' + tint[t] + '-' + variant[v]
+    return this.baseColors[b] + ' ' + this.tint[t] + '-' + this.variant[v]
   },
 
   IDs(value) {
@@ -252,6 +261,10 @@ methods: {
   }
 },
 mounted: function() {
+  this.baseColors = ['red','green','blue','yellow','pink','purple','indigo','teal','lime','orange','brown','amber']
+  this.tint = ['darken','lighten','accent']
+  this.variant = [1,2,3,4]
+
   for (let i=0 ; i<40 ; i++) {
      this.randomColors[i] = this.anyColor()
   }
@@ -274,5 +287,9 @@ mounted: function() {
 .list-leave-to {
   opacity: 0;
   transform: translateY(30px);
+}
+.my-toolbar >>> .v-toolbar__content {
+  padding: 2px;
+  justify-content: right;
 }
 </style>

@@ -1,0 +1,338 @@
+ Volume in drive E is MusicWS
+ Volume Serial Number is DC08-ECF6
+
+ Directory of E:\NodeModules\fresh\src
+
+2021/02/01  00:40    <DIR>          assets
+2021/02/01  00:40    <DIR>          layouts
+2021/02/01  00:40    <DIR>          plugins
+2021/02/11  23:56             1ÿ922 App.vue
+2021/02/25  15:39    <DIR>          router
+2021/03/01  13:26    <DIR>          views
+2021/03/17  11:05    <DIR>          api
+2021/03/18  01:05    <DIR>          docs
+2021/03/18  23:21               886 main.js
+2021/03/19  22:54    <DIR>          test
+2021/03/28  11:20    <DIR>          components
+2021/03/28  16:46    <DIR>          ..
+2021/03/28  16:46    <DIR>          .
+2021/03/28  16:46                31 1
+               3 File(s)          2ÿ839 bytes
+
+ Directory of E:\NodeModules\fresh\src\api
+
+2020/12/06  13:14             1ÿ106 externals.js
+2021/02/01  00:38             2ÿ054 DialogConfirm.vue
+2021/02/01  00:38               205 event-bus.js
+2021/02/01  00:38               949 zmlMail.js
+2021/02/17  17:54             1ÿ155 zmlLog.js
+2021/02/18  14:21             3ÿ443 translate.js
+2021/02/21  00:48             2ÿ988 fileUtils.js
+2021/02/28  13:19             2ÿ088 zmlFetch.js
+2021/03/01  15:44             1ÿ284 buttons.js
+2021/03/03  22:07             3ÿ513 buttons.json
+2021/03/04  01:40             1ÿ674 fileUploadHelper.js
+2021/03/04  15:44               519 zmlRoute.js
+2021/03/07  23:52            26ÿ251 exif.js
+2021/03/08  17:27    <DIR>          csv
+2021/03/17  00:43             2ÿ669 store.js
+2021/03/17  11:05    <DIR>          ..
+2021/03/17  11:05    <DIR>          .
+2021/03/17  14:04                 0 ChuckNorris.js
+2021/03/17  20:45               914 GlobalActions.js
+2021/03/19  10:57             5ÿ357 zGetBackgroundData.js
+2021/03/25  21:21             2ÿ886 constants.js
+2021/03/27  12:49             9ÿ056 zDate.js
+              19 File(s)         68ÿ111 bytes
+
+ Directory of E:\NodeModules\fresh\src\api\csv
+
+1985/10/26  10:15             3ÿ476 README.md
+2021/03/08  17:17             2ÿ088 helpers.js
+2021/03/08  17:27             2ÿ211 JsonToCsv.vue
+2021/03/08  17:27    <DIR>          ..
+2021/03/08  17:27    <DIR>          .
+2021/03/09  00:47             3ÿ489 FrontJsonToCsv.vue
+               4 File(s)         11ÿ264 bytes
+
+ Directory of E:\NodeModules\fresh\src\assets
+
+2021/02/01  00:38             6ÿ849 logo.png
+2021/02/01  00:38               539 logo.svg
+2021/02/01  00:40    <DIR>          ..
+2021/02/01  00:40    <DIR>          .
+               2 File(s)          7ÿ388 bytes
+
+ Directory of E:\NodeModules\fresh\src\components
+
+2021/02/01  00:38               178 EmptyRouterView.vue
+2021/02/01  00:38             1ÿ002 snackBarTest.vue
+2021/02/01  00:38             3ÿ463 HelloWorld.vue
+2021/02/01  00:38             4ÿ578 ContactForm.vue
+2021/02/01  00:38             1ÿ852 zmlDialog.vue
+2021/02/01  00:38               685 i18nTest.vue
+2021/02/08  16:22               642 AutocompleteDropdown.vue
+2021/02/08  17:58             1ÿ104 AutoSel.vue
+2021/02/10  19:19               688 OnFocus.vue
+2021/02/17  17:45             1ÿ451 AutoSelObj.vue
+2021/02/19  14:32             2ÿ001 openInOtherWindow.vue.wait
+2021/02/20  14:01               392 zmlCloseButton.vue
+2021/02/20  19:06             1ÿ497 zmlExpansionButton.vue
+2021/02/20  19:24             2ÿ491 zmlContentButton.vue
+2021/02/23  19:29             7ÿ628 FlexGridStuff.vue
+2021/02/25  15:39    <DIR>          base
+2021/02/28  17:05             1ÿ480 EmailList.vue
+2021/03/03  20:58             2ÿ237 zmlTitle.vue
+2021/03/03  22:05             5ÿ507 toolbarButtons.vue
+2021/03/07  17:20             3ÿ689 zmlFileLoad.vue.bak
+2021/03/07  17:20             3ÿ689 zmlFileLoad.vue
+2021/03/07  23:50            19ÿ235 ImageUploader.vue
+2021/03/08  00:25             3ÿ478 zmlPictureLoad.vue
+2021/03/09  00:47             3ÿ393 zmlDataTable.vue
+2021/03/11  14:59             5ÿ096 TestCalendar.vue.basic
+2021/03/13  10:24               550 zmlButtonTool.vue
+2021/03/13  10:26             2ÿ605 MenuList.vue
+2021/03/15  22:45             1ÿ678 AutoSelColor.vue
+2021/03/16  12:44             5ÿ896 VideoUploader.vue
+2021/03/16  23:54            12ÿ615 TestCalendar.vue
+2021/03/17  10:41             2ÿ751 zmlPreview.vue
+2021/03/19  01:11             3ÿ867 TextColorPicker.vue
+2021/03/19  10:54            13ÿ709 Login.vue
+2021/03/19  17:13             2ÿ871 AutoSelSub.vue
+2021/03/22  23:21    <DIR>          awards
+2021/03/24  18:13    <DIR>          learn
+2021/03/24  23:50             3ÿ190 loginButton.vue
+2021/03/25  11:34            14ÿ625 Hover.vue
+2021/03/25  12:23    <DIR>          transition
+2021/03/26  17:46    <DIR>          student
+2021/03/27  17:08            12ÿ785 Calendar.vue
+2021/03/28  11:20    <DIR>          ..
+2021/03/28  11:20    <DIR>          .
+2021/03/28  16:44            13ÿ976 CalendarStudent.vue
+              37 File(s)        168ÿ574 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\awards
+
+2021/03/15  19:38             2ÿ297 SmartText.vue
+2021/03/15  19:39             2ÿ889 SmartPhoto.vue
+2021/03/18  14:12             4ÿ552 SmartDisplay.vue
+2021/03/22  23:21    <DIR>          ..
+2021/03/22  23:21    <DIR>          .
+2021/03/24  10:24             6ÿ469 SmartMarquee.vue
+               4 File(s)         16ÿ207 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\base
+
+2021/02/01  00:38               669 BaseListItemGroup.vue
+2021/02/17  18:16             2ÿ046 Stepper.vue
+2021/02/19  00:33             2ÿ406 baseBasicDropDown.vue
+2021/02/25  15:39    <DIR>          ..
+2021/02/25  15:39    <DIR>          .
+2021/03/18  21:04             2ÿ725 baseDropDown.vue
+               4 File(s)          7ÿ846 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\learn
+
+2021/02/02  13:14             6ÿ486 FileUploader.vue
+2021/02/02  13:16            52ÿ133 handyUploader.vue
+2021/02/09  23:54             1ÿ293 AutoList.vue
+2021/02/11  13:28             1ÿ021 contentEdit.vue
+2021/02/18  21:37               991 folderProperties.vue
+2021/02/20  19:53             2ÿ050 SubjectDisplay.vue
+2021/02/20  19:59             1ÿ913 SubjectDisplay2.vue
+2021/02/24  00:44             1ÿ086 StudentFolderDisplay.vue
+2021/02/26  18:40             7ÿ535 StudentItemDisplay.vue
+2021/03/09  17:34             2ÿ823 FolderSelect.vue
+2021/03/17  11:03             2ÿ934 SubjectEdit.vue
+2021/03/18  14:33             1ÿ224 SubjectDisplayShort.vue
+2021/03/24  18:13    <DIR>          ..
+2021/03/24  18:13    <DIR>          .
+2021/03/24  23:30             2ÿ125 GoogleDriveItems.vue
+2021/03/25  01:20                37 FileList.vue
+2021/03/27  18:37               543 GradeDisplayShort.vue
+              15 File(s)         84ÿ194 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\student
+
+2021/02/21  23:53             2ÿ298 StudentPhotoList.vue
+2021/02/28  00:29             1ÿ880 PersonelShowAll.vue.delete
+2021/02/28  13:14             3ÿ572 StudentLookup.vue
+2021/02/28  13:14             3ÿ083 PersonelLookup.vue
+2021/03/08  10:51             5ÿ708 PersonelNameCard.vue
+2021/03/08  16:20             7ÿ553 PersonelEdit.vue
+2021/03/08  22:48             6ÿ040 PersonelNameList.vue
+2021/03/23  19:27             2ÿ201 StudentEmailList.vue
+2021/03/23  20:27             1ÿ517 StudentNameCard.vue
+2021/03/25  23:26             1ÿ536 ListOfGrades.vue
+2021/03/25  23:27               811 StudentGrade.vue
+2021/03/26  00:31             3ÿ099 StudentClass.vue
+2021/03/26  17:46    <DIR>          ..
+2021/03/26  17:46    <DIR>          .
+2021/03/27  12:54             2ÿ670 PersonelMenemonic.vue
+              13 File(s)         41ÿ968 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\transition
+
+2021/03/25  11:31             1ÿ052 FadeTransition.vue
+2021/03/25  11:53             1ÿ779 TransitionTest.vue
+2021/03/25  12:23    <DIR>          ..
+2021/03/25  12:23    <DIR>          .
+2021/03/25  23:10             1ÿ650 ListTransition.vue
+               3 File(s)          4ÿ481 bytes
+
+ Directory of E:\NodeModules\fresh\src\docs
+
+2021/02/01  00:38               435 toRead.txt
+2021/02/01  00:38             1ÿ936 readme.md
+2021/02/06  21:22             3ÿ143 testme.vue
+2021/02/09  17:52             4ÿ192 rekeningkunde.sql
+2021/02/11  07:37             2ÿ511 impress.txt
+2021/02/18  20:14                65 draggable.vue
+2021/02/22  16:14             1ÿ158 wiegandnotes.htm
+2021/02/22  16:27             4ÿ281 staff.htm
+2021/02/26  22:02               627 paths.htm
+2021/02/27  18:08             9ÿ532 logic.htm.old
+2021/03/03  00:35            46ÿ518 GoogleDrive.vue.split
+2021/03/13  17:20             4ÿ788 virtualWelkom.htm
+2021/03/16  13:12            18ÿ109 SchoolCalendar.csv
+2021/03/16  13:19            22ÿ123 SchoolCalendar.ods
+2021/03/17  00:20             6ÿ995 Data List prepared by Kuilies Online.csv
+2021/03/18  01:05    <DIR>          .
+2021/03/18  01:05    <DIR>          ..
+2021/03/18  01:34             1ÿ677 studentHomework.htm
+2021/03/27  14:21            14ÿ087 logic.htm
+              17 File(s)        142ÿ177 bytes
+
+ Directory of E:\NodeModules\fresh\src\layouts
+
+2021/02/01  00:38             1ÿ679 AppLayoutBlue.vue
+2021/02/01  00:38               731 AppLayout.vue
+2021/02/01  00:38             1ÿ943 AppLayoutLaundry.vue
+2021/02/01  00:38             2ÿ385 LaundryLinks.vue
+2021/02/01  00:40    <DIR>          ..
+2021/02/01  00:40    <DIR>          .
+2021/02/10  15:37             1ÿ131 AppLayoutBasic.vue
+2021/02/22  14:43             2ÿ364 AppLayoutLinks.vue
+2021/02/24  10:40               318 AppLayoutDefault.vue
+2021/03/03  21:07             2ÿ448 AppLayoutGray.vue
+               8 File(s)         12ÿ999 bytes
+
+ Directory of E:\NodeModules\fresh\src\plugins
+
+2021/02/01  00:40    <DIR>          ..
+2021/02/01  00:40    <DIR>          .
+2021/03/18  15:29               879 vuetify.js
+               1 File(s)            879 bytes
+
+ Directory of E:\NodeModules\fresh\src\router
+
+2021/02/25  15:39    <DIR>          ..
+2021/02/25  15:39    <DIR>          .
+2021/03/28  11:38            10ÿ114 index.js
+               1 File(s)         10ÿ114 bytes
+
+ Directory of E:\NodeModules\fresh\src\test
+
+1985/10/26  10:15                11 main.ts
+2021/03/11  18:24             7ÿ167 ExampleCalendar.vue
+2021/03/16  12:43             5ÿ220 test.vue
+2021/03/19  01:20             1ÿ700 DynamicMarqueeElement.ts
+2021/03/19  01:25            13ÿ170 DynamicMarquee.ts
+2021/03/19  22:54    <DIR>          ..
+2021/03/19  22:54    <DIR>          .
+2021/03/20  00:24             5ÿ845 UploadWrapper.vue
+               6 File(s)         33ÿ113 bytes
+
+ Directory of E:\NodeModules\fresh\src\views
+
+2021/02/01  00:38               413 MyPageView.vue
+2021/02/01  00:40    <DIR>          sections
+2021/02/15  16:27               754 Route1.vue
+2021/02/15  16:28             1ÿ447 RouteTest.vue
+2021/02/19  14:28               317 About.js
+2021/02/24  15:18             3ÿ453 TestExpand.vue
+2021/02/24  16:03               894 ErrorPage.vue
+2021/02/26  19:18    <DIR>          home
+2021/02/27  23:57             3ÿ290 Home.vue
+2021/03/01  13:26    <DIR>          .
+2021/03/01  13:26    <DIR>          ..
+2021/03/01  15:25    <DIR>          vote
+2021/03/09  01:05    <DIR>          student
+2021/03/18  15:44             6ÿ685 ViewFunctions.vue
+2021/03/18  18:40    <DIR>          learn
+2021/03/19  16:12             8ÿ609 About.vue
+2021/03/23  22:56    <DIR>          awards
+2021/03/27  18:34             6ÿ253 ViewLog.vue
+              10 File(s)         32ÿ115 bytes
+
+ Directory of E:\NodeModules\fresh\src\views\awards
+
+2021/02/01  18:14             2ÿ463 StudentAwardTable.vue
+2021/02/23  19:40             1ÿ656 AKandidate.vue
+2021/03/13  23:31            13ÿ870 Prizes.vue
+2021/03/15  10:07             3ÿ485 AwardStories.vue
+2021/03/23  12:44             9ÿ408 AwardEdit.vue
+2021/03/23  22:56    <DIR>          .
+2021/03/23  22:56    <DIR>          ..
+2021/03/23  23:28            11ÿ041 AwardCarousel.vue
+2021/03/24  10:38            11ÿ329 zmlCarousel.vue
+               7 File(s)         53ÿ252 bytes
+
+ Directory of E:\NodeModules\fresh\src\views\home
+
+2021/02/26  19:18    <DIR>          ..
+2021/02/26  19:18    <DIR>          .
+2021/03/17  14:36             2ÿ152 TeacherHome.vue
+2021/03/27  16:59             5ÿ992 AdminHome.vue
+2021/03/28  12:20             4ÿ785 StudentHome.vue
+               3 File(s)         12ÿ929 bytes
+
+ Directory of E:\NodeModules\fresh\src\views\learn
+
+2021/02/07  09:04            16ÿ550 oldTree.vue
+2021/02/07  23:52            15ÿ502 LearnTree.vue
+2021/02/08  12:42             5ÿ830 editItem.vue
+2021/03/15  23:09             5ÿ450 ViewSubjects.vue
+2021/03/16  00:10            22ÿ415 viewContent.vue
+2021/03/18  14:17             3ÿ109 viewLearn.vue
+2021/03/18  18:40    <DIR>          ..
+2021/03/18  18:40    <DIR>          .
+2021/03/18  18:40             8ÿ371 SelectGradeWait.vue
+2021/03/18  19:46             1ÿ690 Grade.vue
+2021/03/18  21:07             8ÿ441 SelectGrade.vue
+2021/03/19  11:32            15ÿ947 StudentHub.vue
+2021/03/25  01:28            48ÿ675 GoogleDrive.vue
+              11 File(s)        151ÿ980 bytes
+
+ Directory of E:\NodeModules\fresh\src\views\sections
+
+2021/02/01  00:38             1ÿ191 SocialSection.vue
+2021/02/01  00:40    <DIR>          ..
+2021/02/01  00:40    <DIR>          .
+2021/02/28  13:13             2ÿ932 HeroSection.vue
+               2 File(s)          4ÿ123 bytes
+
+ Directory of E:\NodeModules\fresh\src\views\student
+
+2021/03/08  11:12             5ÿ447 PersonelInfo.vue
+2021/03/09  01:05    <DIR>          ..
+2021/03/09  01:05    <DIR>          .
+2021/03/17  16:44             5ÿ380 ViewStudentTestGrid.vue
+2021/03/23  19:31             2ÿ493 StudentInfo.vue
+               3 File(s)         13ÿ320 bytes
+
+ Directory of E:\NodeModules\fresh\src\views\vote
+
+2020/10/19  12:25             1ÿ314 InputBox.vue
+2021/03/01  15:25    <DIR>          ..
+2021/03/01  15:25    <DIR>          .
+2021/03/01  19:51             2ÿ287 ViewBox.vue
+2021/03/04  14:23             5ÿ846 DisplayItem.vue
+2021/03/12  19:34             7ÿ992 ApplicantRegister.vue
+2021/03/13  16:08             9ÿ176 ViewCampaigns.vue
+2021/03/13  16:10            11ÿ203 ViewVote.vue
+               6 File(s)         37ÿ818 bytes
+
+     Total Files Listed:
+             179 File(s)        917ÿ691 bytes
+              65 Dir(s)  151ÿ499ÿ059ÿ200 bytes free

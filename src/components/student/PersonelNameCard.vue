@@ -24,7 +24,8 @@
           :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelRecord.data.photo + '?'+Math.random()" 
            max-width="220" 
            position="left left"
-           class="ma-2">
+           class="ma-2"
+           style="border-radius:50px">
    </v-img>
    </div>
   <div class="Surname headline">

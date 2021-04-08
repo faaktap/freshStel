@@ -25,12 +25,19 @@
         Calendar (Click here to view your day!) {{ joke }} 
      </v-expansion-panel-header>
     <v-expansion-panel-content>
-        <v-row><v-col cols="3">
-        <v-text-field v-model="wieOmTeWys" /> 
-        </v-col><v-col cols="3">
-        <v-btn @click="showCal = !showCal"> Show </v-btn>
+        <v-row><v-col cols="10">
+        <!--v-text-field v-model="wieOmTeWys" /--> 
+        <personel-menemonic v-model="wieOmTeWys" @click="showCal=false" />
+        </v-col><v-col cols="2">
+        <v-btn @click="weekOrDayChange">  {{ weekOrDay }} </v-btn>
+        <v-btn @click="showCal = !showCal"> 
+          <template v-if="!showCal">Show Calendar</template>
+          <template v-else>Hide Calendar </template>
+        </v-btn>
         </v-col></v-row>
-      <calendar v-if="showCal" weekOrDay="day" :menemonic="wieOmTeWys" />
+      <calendar v-show="showCal" 
+               :weekOrDay="weekOrDay" 
+               :menemonic="wieOmTeWys" />
     </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -71,22 +78,24 @@ import { zmlFetch } from '@/api/zmlFetch.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
+import { zData } from "@/api/zGetBackgroundData.js"
 import EmailList from '@/components/EmailList.vue';
 import MenuList from '@/components/MenuList.vue';
 import Calendar from '@/components/Calendar.vue';
-import { zData } from "@/api/zGetBackgroundData.js"
+import PersonelMenemonic from '@/components/student/PersonelMenemonic.vue';
 export default {
     name:"AdminHome",
-    components:{EmailList, MenuList, Calendar},
+    components:{EmailList, MenuList, Calendar,PersonelMenemonic},
     data: () => ({
-        wieOmTeWys:null,
+        wieOmTeWys:'Teacher',
         showCal:false,
         getZml: getters.getState({ object: "gZml" }),
         cards: ['Today', 'Yesterday'],
         today: new Date(),
         tomorrow: new Date(),
         schoolday: null,
-        joke: null
+        joke: null,
+        weekOrDay:"day"
     }),
     computed:{
         menuFilterList() {
@@ -100,9 +109,16 @@ export default {
 
                 }
             )
-        }
+        },
     },
     methods:{
+        weekOrDayChange() {
+            if (this.weekOrDay == 'day') {
+                this.weekOrDay = 'week'
+            } else {
+                this.weekOrDay = 'day'
+            }
+        },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "light-green lighten-3"
@@ -111,7 +127,7 @@ export default {
                default : return "orange lighten-4"
            }
        },        
-        click(what) {
+       click(what) {
             if (doStuff(this.$router,what.payload) == 0) {
                 if (what.payload.substr(0,4).toLowerCase() == 'http') {
                     window.open(what.payload,'_' + 'ko_external')

@@ -1,20 +1,7 @@
 <template>
 <div>
-    <!--div>
-    <dynamic-marquee
-    direction="column"
-    :reverse="istrue"
-    :repeat="istrue"
-    :hoverPause="istrue"
-    :speed="speed"
-     >
-        <v-btn>sdfj ;sadjf</v-btn>
-        <div>dsfg</div>
-        <div>dsfgdsfg</div>
-    </dynamic-marquee>
-     </div-->
-
- <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3)">
+  <observer @on-change="onChange">
+  <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3)">
   <v-card-title primary-title class="justify-center">
     <v-card color="rgb(5, 101, 18, 0.4)" class="rounded pa-3">
       <h1 class="wordbreak text-justify"> {{ heading }}</h1>
@@ -44,17 +31,21 @@
            <v-card  color="rgb(15, 1, 18, 0.8)"> 
             <div class="rounded koek1 white--text ma-2">
               <v-icon color="light-green"> mdi-star </v-icon>
-                 {{ listHeading }}
-              <v-icon color="light-green"> mdi-star </v-icon>
+                 {{ listHeading }} 
+                 <v-btn x-small  @click="pause = !pause">
+              <v-icon color="light-green"> mdi-star </v-icon> pause
+                 </v-btn>
             </div>
             
             </v-card>
-            <v-card color="rgb(15, 1, 18, 0.8)" class="rounded" height="300">
+            <v-card color="rgb(15, 1, 18, 0.8)" class="rounded  pb-1" height="300">
+              {{ listFilter }}
               <transition-group xname="list-complete" name="list" tag="div">
               <div v-for="a in listFilter" :key="a.id">
+                <!-- {{ passedList.length }} {{ list.length }} -->
                 <div class="koek lightgray--text">
                    <!--h2> <v-icon color="yellow"> mdi-star-outline </v-icon>  {{ a.name }}  </h2-->
-                   <h2 class="ml-4 xtext-justify"> {{ a.name }} </h2><br>
+                   <h2 class="pt-2 ml-3 xtext-justify"> {{ a.name }} </h2><br>
                 </div>
               </div>
               </transition-group>
@@ -66,7 +57,17 @@
     
   </v-card-text>
  </v-card>
- cc
+ <!--v-row>
+   <v-col cols="6">
+     {{ passedList}}
+   </v-col>
+   <v-col cols="6">
+     {{ listFilter }}
+     <hr>
+     {{ list }}
+   </v-col>
+ </v-row-->
+  </observer>
  </div>
 </template>
 
@@ -74,33 +75,45 @@
 <script>
 //import DynamicMarquee from 'vue-dynamic-marquee'
 //import DynamicMarquee from '@/test/DynamicMarquee.ts'
+import Observer from 'vue-intersection-observer'
 export default {
     name: "smartDisplay",
-   // components: {DynamicMarquee},
+    components: {Observer},
     props: {
             panelIndex:Number,
-            list:Array,
+            passedList:Array,
             listHeading:String,
             heading:String,
             size:String,
             },
     data () {
       return {
+        list:[],
         show:false,
         currentPanel:null,
         istrue:true,
         speed:{type: 'pps', number: 100},
         //list: [{id:1 ,name:'Caterina Malbel'},{id:2 ,name:'Caterina Malbsek'},{id:3 ,name:'Caty Malbek'},{id:4 ,name:'Karet Zofar'}],
         timerHandle:null,      
+        pause:false,
+        indexList:0,
        } 
     },
     computed:{
       listFilter(){
         if (this.list.length < 7) return this.list;
-        return this.list.slice(this.list.length-7, this.list.length)
+        return this.list.slice(0, 7)
       },
     },
     methods: {
+        onChange(entry, unobserve) {
+          // After loading Cancel monitoring, optimise performance
+          if (entry.isIntersecting) {
+            unobserve()
+            console.log('entry - not observing anymore..', entry)
+          }
+          
+        },
         onKeyDown(){
             console.log('keydown')
         },      
@@ -108,40 +121,59 @@ export default {
            return new Promise(resolve => setTimeout(resolve, ms));
         },
         doSomething(param) {
-          console.log('ds', param)
-          //this.list.unshift({id: Math.floor(Math.random() * (1000 + 1)) ,name:"New Name " +  Math.floor(Math.random() * (1000 + 1)) })
-          //this.list.pop()
-          //this.list.pop()
-          this.list.pop()
-          if (this.list.length == 6) {
-            clearInterval(this.timerHandle);
-            console.log('we are done!')
+          if (this.pause == true) return;
+          if (param == '') return;  //we dont use the param - can take it out
+          //console.log(param)
+          //console.log(`dosomething ${param} listlen=${this.list.length} plistlen=${this.passedList.length}`)
+          if (this.list.length == this.passedList.length) {
+            this.list.length = 0
+            //Starting fresh
+            console.log('we are done - but are continuing for effect!')
             this.$emit('wearedone')
+          } else {
+            const currentOne = this.list.length
+            //console.log('ds - add one', currentOne, this.passedList[currentOne] )
+            this.list.unshift(this.passedList[currentOne])
+            //console.log('ds - added one', this.list.length)
           }
-
+          //console.log('ds - ended', this.list.length)
         },
         startTimer(duration, funcToCall) {
           let timer = duration, minutes, seconds;
-          console.log(duration, minutes, seconds,timer)
+          //console.log(duration, minutes, seconds,timer)
           this.timerHandle = setInterval(function () {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-            console.log(minutes + ":" + seconds)
+            //console.log(minutes + ":" + seconds)
             //display.textContent = minutes + ":" + seconds;
-            funcToCall('param')
+            funcToCall(minutes + ':' + seconds)
             if (--timer < 0) {
               timer = duration;
             }
           }, 2000);
-        }        
+        },
+        startTheProcess() {
+           console.log('We are activated = len:', this.list.length)
+           this.pause = false
+           if (this.passedList.length) {
+              this.startTimer( 60 * 5, this.doSomething)
+           }
+        },
+        stopTheProcess() {
+          console.log('We are DEactivated = len:', this.list.length)
+          this.pause = true
+        }
+    },
+    activated: function() {
+
+    },
+    deactivated: function()  {
     },
     mounted: function() {
       console.log('start marquee timer')
-      if (this.list.length) {
-         this.startTimer( 60 * 5, this.doSomething)
-      }
+      this.startTheProcess()
     }
 }
 </script>

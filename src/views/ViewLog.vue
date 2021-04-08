@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="logList">
+  <v-container v-if="logList && getZml.login.isAuthenticated">
    <v-row>
      <v-col cols="12">
      <h1> Registered Users  {{ logList.length}} </h1>
@@ -63,13 +63,14 @@
          </v-row>
        </v-container>
     </v-card>
-   </v-col></v-row>
-<v-dialog v-model="showPasswordChange" :scrollable="false" persistent width="50%">
-  <v-card v-if="curItem">
+   </v-col>
+  </v-row>
+   <v-dialog v-model="showPasswordChange" :scrollable="false" persistent width="50%" >
+  <v-card v-if="curItem" elevation="12" color="white darken-1">
     <v-card-title>
       PASSWORD RESET
     </v-card-title>
-    {{ curItem }}
+    
     <v-card-text>
       <v-card color="green" class="ma-2 pa-2">
       User : {{ curItem.user_name }}
@@ -99,11 +100,14 @@
 
 <script>
 import { zmlFetch } from "@/api/zmlFetch";
+import { zmlConfig } from '@/api/constants';
+import { getters } from "@/api/store";
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 export default {
     name:"ViewLog",
     props: [],
     data: () => ({
+        getZml: getters.getState({ object: "gZml" }),
         showPasswordChange:false,
         curItem:{},
         search:null,
@@ -152,7 +156,7 @@ group by u.userid,u.user_name, l.user, u.user_fullname, user_type, user_grade, u
           this.tableLoading = false
       },
       processError(response) {
-        console.log('ERROR on USER RESET FORM : ' , response)
+        zmlConfig.cl('ERROR on USER RESET FORM : ' , response)
       },
       passwordReset() {
         let sl = { task: 'plainSql'

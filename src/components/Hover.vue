@@ -1,6 +1,8 @@
 <template>
 <v-container fluid>
 
+
+<transition-test />
 <v-btn @click="uploadStuffShow = !uploadStuffShow"> upload </v-btn>
 <v-row v-if="uploadStuffShow">
  <v-col cols=6 >
@@ -349,9 +351,13 @@ import SmartPhoto from '@/components/awards/SmartPhoto';
 import SmartText from '@/components/awards/SmartText';
 import SmartMarquee from '@/components/awards/SmartMarquee';
 import UploadWrapper from '@/test/UploadWrapper';
+import TransitionTest from './transition/TransitionTest.vue'
 export default {
   components: {
-    UploadWrapper,SmartMarquee,SmartText,SmartPhoto,SmartDisplay,AutoSel, AutoSelObj, AutoSelSub//, OnFocus
+    UploadWrapper
+    ,SmartMarquee,SmartText,SmartPhoto,SmartDisplay
+    ,AutoSel, AutoSelObj, AutoSelSub
+    ,TransitionTest//, OnFocus
   },  
  data: () => ({
   uploadTitleMessage:"upload a file or files",

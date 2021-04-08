@@ -1,6 +1,69 @@
 <html>
 <body>
+
+<p>We are excited to see where the <dfn id="NASA">National Aeronautics and Space Administration</dfn> (<abbr title="National Aeronautics and Space Administration">NASA</abbr>) takes us next, given their many successes on the Moon and Mars.</p> 
+<p>We are excited to see where <abbr title="National Aeronautics and Space Administration">NASA</abbr> takes us next, given their many successes on the Moon and Mars.</p>
+
+<details>
+   <summary>Reading the fine print</summary>
+   <p>This is where we hide all of the secret terms and conditions. Your mileage may vary.</p> 
+</details>
+
+<p>My son thinks he is <dfn>Godzilla</dfn>, who is generally depicted as an enormous, violent, prehistoric sea monster awakened and empowered by nuclear radiation. It's true, there are similarities.</p>
+
+<hr>
+<p>He is not as enamored with <dfn id="kong">King Kong</dfn> who resembles an enormous gorilla-like ape that has appeared in various media since 1933. </p> 
+
+...
+
+<p>Complaints about <a href="#kong">Kong</a> include how he has no atomic fire breath.</p>
+<hr>
+
+<p>
+ <dfn>
+  <abbr title="Massive Unidentified Terrestrial Organism">MUTO</abbr>
+ </dfn> refers to a species of giant monsters that first appeared 
+  in <cite>Godzilla</cite> (2014) 
+  and <cite>Godzilla: King of the Monsters</cite> (2019). 
+  In <cite>Godzilla vs. Kong</cite> (2021), the enemy has changed.</p>
+
+<dl>
+   <dt><dfn>Monster Island</dfn></dt>
+   <dd>Island where Godzilla lives</dd>
+   <dt><dfn>Skull Island</dfn></dt>
+   <dd>Island where Kong lives</dd>
+</dl>
+
+
 <pre>
+
+<h2> Subjects / Teachers / Students </h1>
+SELECT gr, subject, col7, count(*) FROM `aSubTSG` group by col7,subject, gr
+ORDER BY `col7` ASC
+
+SELECT null
+     , sid studentid
+     , COL7 subjectid
+     , COL7 subjectid     
+     , teacher teachername
+     , substr(teacher, 1, instr(teacher,' ')-1 ) teacherinitial
+     , substr(teacher, instr(teacher,' ')+1 ) teachersurname
+     , subject subjectname
+FROM aSubTSG
+
+CREATE TABLE dkhs_studsub (
+  studsubid int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  studentid int(11), 
+  hodsubjectid int(11), 
+  subjectid int(11), 
+  teacher varchar(80) NOT NULL,
+  teacherinitial varchar(10),  
+  teachersurname varchar(40),
+  subjectname varchar(50),
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+<hr>
+
 <h1> Main Carousel </h1>
 DROP TABLE dkhs_storymain;
 CREATE TABLE dkhs_storymain (
@@ -353,6 +416,50 @@ select subjectid id
  
  
  ------------------------AWARDS
+ 
+ SELECT * FROM `a_prize`
+where oncertificate like '%high%'
+or oncertificate like '%hoog%'
+order by grade, position desc
+
+SELECT name, surname 
+FROM a_prize
+where oncertificate like '%high%'
+or oncertificate like '%hoog%'
+order by grade, position desc
+
+SELECT p.name, p.surname , p.position, s.studentid
+FROM a_prize p, dkhs_student s
+where (oncertificate like '%high%'
+or oncertificate like '%hoog%')
+and (p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%'))
+order by p.grade, p.position desc
+
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.grade,s.grade
+FROM a_prize p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+where (oncertificate like '%high%'
+or oncertificate like '%hoog%')
+order by p.grade, p.position desc
+
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.grade,p.oncertificate
+FROM a_prize p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+where (oncertificate like '%high%'
+or oncertificate like '%hoog%')
+order by p.grade, p.position desc
+
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.grade, p.oncertificate, p.type
+FROM a_prize p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+order by p.grade, p.type, p.position desc
+
+SELECT p.id,p.storyid,p.type,p.grade,p.position,p.name,p.surname,p.prize, p.oncertificate, s.studentid
+  FROM a_prize p
+  left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+  order by p.grade, p.position desc, p.id desc
+  
+
  dkhs_story_main    (1,4,999)
   ...  dkhs_story   (link to chapterid)  storyid, chapterid, orderid, type, otherid, detail1, detail2
   
@@ -387,3 +494,60 @@ SELECT c.contentid
   FROM dkhs_lcontent c
  where c.sortorder != 0 and c.type = 'folder'
 
+
+
+select *  FROM `dkhs_lcontent` WHERE subjectid = 10 and grade=8
+
+//Rooster for grades/classes
+SELECT * FROM `rooster` WHERE 
+day1 like '%GR10A2%'
+or day2 like '%GR10A2%'
+or day3 like '%GR10A2%'
+or day4 like '%GR10A2%'
+or day5 like '%GR10A2%'
+or day6 like '%GR10A2%'
+or day7 like '%GR10A2%'
+or day8 like '%GR10A2%'
+or day9 like '%GR10A2%'
+or day10 like '%GR10A2%'
+or day11 like '%GR10A2%'
+
+
+SELECT * FROM `rooster` WHERE 
+day1 like '%' + this.personeelstudentGradeClass +' %'
+or day2 like '%' + this.personeelstudentGradeClass +' %'
+or day3 like '%' + this.personeelstudentGradeClass +' %'
+or day4 like '%' + this.personeelstudentGradeClass +' %'
+or day5 like '%' + this.personeelstudentGradeClass +' %'
+or day6 like '%' + this.personeelstudentGradeClass +' %'
+or day7 like '%' + this.personeelstudentGradeClass +' %'
+or day8 like '%' + this.personeelstudentGradeClass +' %'
+or day9 like '%' + this.personeelstudentGradeClass +' %'
+or day10 like '%' + this.personeelstudentGradeClass +' %'
+or day11 like '%' + this.personeelstudentGradeClass +' %'
+
+
+
+
+select  
+  n "first/last name"
+, if(n='f',upper(name),cnt) "First Name"
+, if(n='s',upper(name),cnt) "Last Name"
+from 
+(
+SELECT "f" n ,firstname name , count(*) cnt  FROM `dkhs_student` group by firstname having count(*) > 11  
+union 
+SELECT "s" n,surname name, count(*) cnt FROM `dkhs_student` group by surname having count(*) > 11
+order by 3
+) stuff
+
+select  n "first/last name"
+, if(n='f',upper(name),cnt) "First Name/Occurence"
+, if(n='s',upper(name),cnt) "Last Name/Occurence"
+from 
+(
+SELECT "f" n ,firstname name , count(*) cnt  FROM `dkhs_student` group by firstname having count(*) > 11  
+union 
+SELECT "s" n,surname name, count(*) cnt FROM `dkhs_student` group by surname having count(*) > 11
+order by 3
+) stuff

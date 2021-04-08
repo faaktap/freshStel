@@ -28,11 +28,11 @@ export const zmlConfig = {
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
   cl: function (...args) {  
-    //console.log(...args); 
+    console.log(...args); 
   },
   randomColor: function() {
     return Math.floor(Math.random()*16777215).toString(16)
-  }
+  },
 }
 
 export const promiseTimeout = function(ms, promise){
