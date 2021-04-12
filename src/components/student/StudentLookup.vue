@@ -32,7 +32,7 @@ import { zmlFetch } from '@/api/zmlFetch';
 export default {
    name: "StudentLookup",
    props: {
-     searchMore: {type: String, default:"false"}
+     searchMore: {type: Boolean, default:false}
    },
    data: () => ({
     searchResult: '',

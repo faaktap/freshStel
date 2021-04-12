@@ -30,16 +30,21 @@
         <v-col align="center" cols="12" lg="6" md="6">
            <v-card  color="rgb(15, 1, 18, 0.8)"> 
             <div class="rounded koek1 white--text ma-2">
-              <v-icon color="light-green"> mdi-star </v-icon>
-                 {{ listHeading }} 
-                 <v-btn x-small  @click="pause = !pause">
-              <v-icon color="light-green"> mdi-star </v-icon> pause
-                 </v-btn>
+              
+              <v-btn x-small  @click="pause = !pause">
+                 <v-icon color="light-green"> mdi-star </v-icon>
+                 <template v-if="!pause">
+                    pause
+                 </template>
+                 <template v-else>
+                    continue
+                 </template>
+                 <v-icon color="light-green"> mdi-star </v-icon>
+              </v-btn>
             </div>
             
             </v-card>
             <v-card color="rgb(15, 1, 18, 0.8)" class="rounded  pb-1" height="300">
-              {{ listFilter }}
               <transition-group xname="list-complete" name="list" tag="div">
               <div v-for="a in listFilter" :key="a.id">
                 <!-- {{ passedList.length }} {{ list.length }} -->
@@ -248,8 +253,8 @@ text-decoration: underline wavy red
   hyphens: auto;
 }
 
-.koek1 { font-family: 'Noto Sans JP', sans-serif;}
-.koek {font-family: 'Dancing Script', cursive;}
+.koek1 { font-family: 'Noto Sans JP', sans-serif; }
+.koek {font-family: 'Dancing Script', cursive; font-size:4vh ;}
 
 /* always present */
 .expand-transition {

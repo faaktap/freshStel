@@ -15,7 +15,7 @@
          <v-container fill-height fluid >
           <v-row align="center" justify="center">
            <v-col >
-             <p v-html="atext" class="text-lg-h6 font-weight-light wordbreak text-justify"></p>
+             <p v-html="atext" class="text-lg-h6 font-weight-light wordbreak text-justify ma-3"></p>
             </v-col>
            </v-row>
           </v-container>
@@ -26,8 +26,12 @@
       <v-col align="center" cols="12" md="6">
          
         <v-card color="rgba(15, 101, 8, 0.4)" class="rounded koek1 pa-3">
-            <v-img src="https://kuiliesonline.co.za/img/CleanDKHS.png" height=100 contain></v-img><br>
-          <div class="text-md-h4  d-xs-none d-sm-block wordbreak text-center"> {{ maintitle }} </div>
+            <v-img color="rgba(15, 101, 8, 0.9)" 
+                   elevation="4" 
+                  :src="image" 
+                   height=220 contain>
+            </v-img><br>
+          <div class="text-md-h4  d-xs-none d-sm-block wordbreak text-center" v-html="maintitle">  </div>
           
         </v-card>
          
@@ -44,7 +48,11 @@
 export default {
     name: "smartDisplay",
     components: {},
-    props: {title:String, atext:String, maintitle:String},
+    props: {title:String
+          , atext:String
+          , maintitle: {type:String, default:"Prysuitdeling / Prizegiving"}
+          , image: {type:String, default:"https://www.kuiliesonline.co.za/img/CleanDKHS.png"}
+          },
     data () {
       return {
         show:true,

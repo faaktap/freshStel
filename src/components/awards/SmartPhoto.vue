@@ -28,7 +28,10 @@
         <v-container fill-height fluid>
          <v-row align="center" justify="center">
           <v-col>
-           <p v-html="caption" class="text-h5 font-italic"></p>
+           <p v-html="caption" 
+              class="font-italic"
+              :class="sizeCaption" 
+              ></p>
           </v-col>
          </v-row>
         </v-container>
@@ -53,6 +56,17 @@ export default {
         show:true,
         currentPanel:null
        } 
+    },
+    computed: {
+      sizeCaption() {
+         if (this.caption.length < 20) {
+           return 'text-h3'
+         }
+         if (this.caption.length < 30) {
+           return 'text-h4'
+         }
+         return 'text-h5'
+      }
     },
     methods: {
         sleep(ms) {

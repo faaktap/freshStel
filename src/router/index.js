@@ -226,6 +226,12 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },  
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/StreamLineDB.vue')
+    ,name: 'streamline'
+    ,path: '/streamline'
+    ,meta: {layout: la[0], authentication: "public"}
+  },    
+  {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
     ,name: 'ViewCampaigns'
     ,path: '/campaigns'

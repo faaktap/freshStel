@@ -26,12 +26,12 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
         })  
         .then(responseAsJson => { 
            //console.log('here we can decompress if return is gzipped, or we can do local callback to save globals?')
-           if (callback) callback(responseAsJson,task,extraParameter)
+           if (callback) callback(responseAsJson,task,extraParameter ?? 'none')
            //console.log('ZF: after fetch callback for ',task.task)
         })
         .catch(err => {
             if ( typeof errcallback === 'undefined') {
-                console.log('we have no error callback on this call', err)
+                console.log('we have no error callback on this call', err, task.task)
             } else {
                 errcallback(err)                
             }
