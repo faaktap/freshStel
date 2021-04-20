@@ -18,7 +18,8 @@
   <v-row>
     <v-col cols="12" lg="12">
         <v-layout wrap>
-        <v-flex v-for="gr in grades" :key="gr.id" justify-space-around
+          <grade-display-short displaySize="medium" @input=goTo />    
+        <!--v-flex v-for="gr in grades" :key="gr.id" justify-space-around
          xs-6 >
          <template v-if="gr.id == gradeno">
             <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-1" disabled color="red">
@@ -30,7 +31,7 @@
             {{ gr.name }} 
              </v-btn>            
           </template>
-        </v-flex>
+        </v-flex-->
         <v-flex>
           <v-text-field 
               v-if="!bOrs && getZml.grade"
@@ -78,16 +79,17 @@ import SubjectDisplay2 from "@/components/learn/SubjectDisplay2"
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
 import router from "@/router"
 import { infoSnackbar  } from '@/api/GlobalActions'; //,timeoutPromise
+import GradeDisplayShort from '@/components/learn/GradeDisplayShort.vue'
 export default {
     name: "Material",
-    components: ( { //SubjectDisplay
+    components: { //SubjectDisplay
                    SubjectDisplay2
-                 , SubjectDisplayShort} ),
+                 , SubjectDisplayShort
+                 , GradeDisplayShort
+                },
     props: [ 'heading', 'gradeno' ],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        //kies: 8,
-        grades:[],
         content:[],
         latest:[],
         language:null,
@@ -152,8 +154,8 @@ export default {
         response.forEach(ele => {
           this.latest.push(ele)
         })
-          this.$cs.l('Done with latest', this.latest.length, response)
-          this.doLoadSubjects()
+        this.$cs.l('Done with latest', this.latest.length, response)
+        this.doLoadSubjects()
       },
       goTo(where) {
         this.kies = where;
@@ -168,18 +170,9 @@ export default {
                      , params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                      , meta: {layout: "AppLayoutGray" }})
       },
-      doLoadGrades() {
-        this.$cs.l('loading grades', this.content.length)
-        this.grades = [{id:8,name: 'Grade 8'}
-                          ,{id:9,name: 'Grade 9'}
-                          ,{id:10,name: 'Grade 10'}
-                          ,{id:11,name: 'Grade 11'}
-                          ,{id:12,name: 'Grade 12'}
-                          ]
-      },
       doLoadSubjects() {
         this.$cs.l('loading subjects', this.latest.length)
-        this.grades.forEach(grp => {
+        this.getZml.grades.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
              if (sub.subjectid > 0 && sub.subjectid < 400) {
                  let obj = {gid: grp.id
@@ -191,7 +184,7 @@ export default {
                   if (this.latest.length) {
                     let idx = this.latest.findIndex(x => 
                     x.id == obj.id && grp.id == x.grade
-                    //this.$cs.l(`xx = $(x.id) == $(obj.id) && $(grp.id) == $(x.grade)`)
+                    //console.log(`xx = $(x.id) == $(obj.id) && $(grp.id) == $(x.grade)`)
                     )
                     this.$cs.l(idx)
                     if (idx != -1) this.content.push(obj)
@@ -209,7 +202,6 @@ export default {
           infoSnackbar("No Data to display - Have you logged in?");
           return;
         }
-        this.doLoadGrades()
         this.$cs.l('What is heading????', this.heading)
         if (this.heading == "Grade") {
             this.$cs.l('We have a grade!')

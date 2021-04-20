@@ -197,7 +197,7 @@ export default {
           return
         }
 */
-        console.log('fetch for:', this.personeelMenemonic)
+        //console.log('fetch for:', this.personeelMenemonic)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = "select * from rooster where user_name = '" + this.personeelMenemonic + "'";
@@ -212,11 +212,11 @@ export default {
       },
       subjectColor(subjectShortName) {
         let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )  
-        console.log('SubColor=', colorObj , subjectShortName)
+        //console.log('SubColor=', colorObj , subjectShortName)
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
-          console.log('we have a problem with : ', subjectShortName)
+          //console.log('we have a problem with : ', subjectShortName)
           return "amber"
         }
       },
@@ -230,19 +230,19 @@ export default {
         }
         let template = zDate.todayNoHours()
         template = zDate.gotoMonday(template)
-        console.log('monday is : ' , template)
+        //console.log('monday is : ' , template)
         //Go back one more day (to Sunday)
         template.setDate(template.getDate() - 1);
-        console.log('sunday is : ' , template)
+        //console.log('sunday is : ' , template)
         for (let t=0; t < 7; t++) {
            template = zDate.addOneDay(template)
-           console.log('day to work with is : ' , template)
+           //console.log('day to work with is : ' , template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal => 
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
            )
            if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
-           console.log('Found calendar entry ', sday)
+           //console.log('Found calendar entry ', sday)
            response.forEach(ele => {
              let n = ''
              switch (sday.name.substr(0,4)) {
@@ -287,7 +287,7 @@ export default {
         const open = () => {
           this.selectedEvent = event
           this.selectedElement = nativeEvent.target
-          console.log('ShowEventbef:',this.selectedEvent, this.selectedElement, this.selectedOpen)
+          //console.log('ShowEventbef:',this.selectedEvent, this.selectedElement, this.selectedOpen)
           setTimeout(() => {
             this.selectedOpen = true
           }, 10)
@@ -332,7 +332,7 @@ export default {
        rinseRepeat() {
          this.activateCalendar()
          if (!this.calReady) {
-          console.log('hanging around for cal..calReady=',this.calReady)
+          //console.log('hanging around for cal..calReady=',this.calReady)
           setTimeout(() => { this.rinseRepeat() }, 4000)
          }
       }       
@@ -361,7 +361,7 @@ export default {
   },
   watch: {
     menemonic() {
-      console.log('new one : ', this.menemonic)
+      //console.log('new one : ', this.menemonic)
       zData.calendarData('Load Calendar Data')
       this.loadRooster()
     }

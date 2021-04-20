@@ -46,7 +46,7 @@
             </v-card>
             <v-card color="rgb(15, 1, 18, 0.8)" class="rounded  pb-1" height="300">
               <transition-group xname="list-complete" name="list" tag="div">
-              <div v-for="a in listFilter" :key="a.id">
+              <div v-for="a in listFilter" :key="a.name">
                 <!-- {{ passedList.length }} {{ list.length }} -->
                 <div class="koek lightgray--text">
                    <!--h2> <v-icon color="yellow"> mdi-star-outline </v-icon>  {{ a.name }}  </h2-->
@@ -86,7 +86,8 @@ export default {
     components: {Observer},
     props: {
             panelIndex:Number,
-            passedList:Array,
+            propPassedList:Array,
+            propPassedString:String,  //allow them to pass a string with commas
             listHeading:String,
             heading:String,
             size:String,
@@ -94,6 +95,7 @@ export default {
     data () {
       return {
         list:[],
+        passedList:[],
         show:false,
         currentPanel:null,
         istrue:true,
@@ -102,6 +104,8 @@ export default {
         timerHandle:null,      
         pause:false,
         indexList:0,
+        firstIteration:true,
+
        } 
     },
     computed:{
@@ -112,6 +116,7 @@ export default {
     },
     methods: {
         onChange(entry, unobserve) {
+          // When this is executed, we are onscreen!
           // After loading Cancel monitoring, optimise performance
           if (entry.isIntersecting) {
             unobserve()
@@ -128,31 +133,26 @@ export default {
         doSomething(param) {
           if (this.pause == true) return;
           if (param == '') return;  //we dont use the param - can take it out
-          //console.log(param)
-          //console.log(`dosomething ${param} listlen=${this.list.length} plistlen=${this.passedList.length}`)
           if (this.list.length == this.passedList.length) {
             this.list.length = 0
             //Starting fresh
-            console.log('we are done - but are continuing for effect!')
-            this.$emit('wearedone')
+            //console.log('we are done - but are continuing the display for effect')
+            if (this.firstIteration == true) {
+              this.$emit('wearedone')
+              this.firstIteration = false
+            }
           } else {
             const currentOne = this.list.length
-            //console.log('ds - add one', currentOne, this.passedList[currentOne] )
             this.list.unshift(this.passedList[currentOne])
-            //console.log('ds - added one', this.list.length)
           }
-          //console.log('ds - ended', this.list.length)
         },
         startTimer(duration, funcToCall) {
           let timer = duration, minutes, seconds;
-          //console.log(duration, minutes, seconds,timer)
           this.timerHandle = setInterval(function () {
             minutes = parseInt(timer / 60, 10);
             seconds = parseInt(timer % 60, 10);
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
-            //console.log(minutes + ":" + seconds)
-            //display.textContent = minutes + ":" + seconds;
             funcToCall(minutes + ':' + seconds)
             if (--timer < 0) {
               timer = duration;
@@ -164,6 +164,7 @@ export default {
            this.pause = false
            if (this.passedList.length) {
               this.startTimer( 60 * 5, this.doSomething)
+              this.$emit('wearebusy')
            }
         },
         stopTheProcess() {
@@ -177,9 +178,37 @@ export default {
     deactivated: function()  {
     },
     mounted: function() {
-      console.log('start marquee timer')
       this.startTheProcess()
-    }
+    },
+    watch: { 
+      propPassedString: {
+        immediate: true,
+        handler() {
+          if (this.propPassedString) {  
+            //this.passedList = this.propPassedString.split(',')    
+            if (this.propPassedString.length > 1 ) {
+              //this is one long string with commas, put it in a single array
+              let test  = this.propPassedString.split(',')
+              test.forEach(a => this.passedList.push({ name:a }))
+            } else {
+              this.passedList = Array.from(this.propPassedString, a => ({ name:a }) )
+            }
+          } else {
+            this.passedList = this.propPassedList
+          }
+        }
+      },
+      propPassedList: {
+        immediate: true,
+        handler(newval) { 
+          console.log('watch handler for propPassedLIST' , newval)
+          if (this.propPassedList && this.propPassedList.length > 0) {
+             this.passedList = this.propPassedList
+          }
+          console.log('passedList = (from[])', this.passedList)
+        }
+      }
+   },
 }
 </script>
 
@@ -254,7 +283,7 @@ text-decoration: underline wavy red
 }
 
 .koek1 { font-family: 'Noto Sans JP', sans-serif; }
-.koek {font-family: 'Dancing Script', cursive; font-size:4vh ;}
+.koek {font-family: 'Dancing Script', cursive; font-size:3.8vh ;}
 
 /* always present */
 .expand-transition {

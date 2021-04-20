@@ -11,31 +11,28 @@
         align-baseline 
         justify-space-between
   >  
-     
     <v-flex v-for="item in itemList" :key="item.contentid" class="ma-1" align-self-start>
-
-      <v-card color="grey lighten-3" min-width="150" class="pa-2">
-        
-        <v-icon :color="chipColor(item.type)" 
+     <v-card color="grey lighten-3" min-width="150" class="pa-2">
+       <v-icon :color="chipColor(item.type)" 
                 class ="mx-2"
                 title="Click to Preview"
                @click="iconClick(item);" >
                 {{ item.icon }} 
-        </v-icon>
-      <v-btn class="no-uppercase" 
+       </v-icon>
+       <v-btn class="no-uppercase wordbreak text-truncate" 
              right
              @click="contentProperties(item)"
              :title="item.update_timestamp + '(' + item.description + ')'"
              min-width="150"
+             xmax-width="450"
              text
              draggable="btndrag"
              >
-         {{ item.name }} 
-     </v-btn>
-      </v-card>
-     
+        <div class="no-uppercase wordbreak text-truncate">  {{ item.name }}  </div>
+       </v-btn>
+     </v-card>
     </v-flex>
-   </v-layout>    
+  </v-layout>    
   </v-card>
   <v-card v-else color="blue lighten-5" class="ma-2 pa-1">
       NO ITEMS TO DISPLAY
@@ -73,4 +70,11 @@ export default {
   word-wrap: break-word;
   hyphens: auto;     
 }
+.wordbreak {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  hyphens: auto;
+}
+
 </style>

@@ -1,14 +1,29 @@
 <template>
   <div>
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
+      <v-expansion-panels>
+       <v-expansion-panel v-for="a in getData" :key="a.id">
+        <v-expansion-panel-header>
+          {{ a.id }} - {{ a.desc }} - {{ a.response.length }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+         <v-row>
+          <v-col cols="6">
+           <v-textarea v-model="a.sql" :label="a.desc + ' sql statement'" />
+          </v-col><v-col cols="6">
+           <h3> {{ a.desc }} - {{ a.response.length }}</h3>
+         </v-col>
+         </v-row>
+         <base-table :tList="a.response" :tHeading="a.response.length" :bHeading="a.desc" />
+        </v-expansion-panel-content>
+       </v-expansion-panel>
+      </v-expansion-panels>
+
+      <h5> Can we see lists? </h5>
+<div v-for="a in getData" :key="a.id">
+  {{ a.id }} {{ a.response.length }}
+</div>
       <v-btn @click="loadAllData"> loadAllData </v-btn>
-      {{ rfo.length }} {{ rso.length }} {{ rto.length }}
-      <h1> First One </h1>
-      <base-table :tList="rfo" :tHeading="getData[0].sql" bHeading="Data & Names from a_prize for Top10" />
-      <h1> 2nd One </h1>
-      <base-table :tList="rso" :tHeading="getData[1].sql" bHeading="All Data from a_prize" />
-      <h1> Third One </h1>
-      <base-table :tList="rto" :tHeading="getData[2].sql" bHeading="Diplomas and Subjects" />
   </div>
 </template>
 
@@ -29,24 +44,43 @@ export default {
         progress:false,
         timerHandle:null,
         dataSequence:false,
-        getData:[{id:0,desc:"first-one", workDone:WAIT, response:{}
-                 ,processor:this.firstone
-                 ,sql:"SELECT p.id,p.storyid,p.type,p.grade,p.position"
-                     + " ,p.name,p.surname,p.prize, p.oncertificate, s.studentid"
-                     + "  FROM a_prize p "
-                     + " LEFT JOIN dkhs_student s "
-                     + "    on p.surname like concat('%',s.surname,'%') "
-                     + "   and p.name like concat('%',s.firstname,'%') "
-                     + " where ( p.type = 'TOP10' and position in (10,9,8,7,6) )"
-                     + "    or (p.type != 'TOP10' and position in (5,4,3,2,1) )"
-                     + " ORDER BY p.grade, p.position desc, p.id desc"}
-
-                 ,{id:1,desc:"2nd-one", workDone:WAIT, response:{}
-                 , processor:this.secondone
-                 , sql:"select * from a_diploma order by grade, type , surname, name"}
-                 ,{id:2,desc:"3rd-one", workDone:WAIT, response:{}
+        getData:[{id:0
+                 , desc: "Emails Sent"
+                 , workDone: WAIT
+                 , response: {}
+                 , processor: this.firstone
+                 , sql:"SELECT s.deliveryid, m.subject, s.status "
+                    + "     , min(s.sentdate) startdate , max(s.sentdate) enddate "
+                    + "     , datediff( max(s.sentdate), min(s.sentdate)) diff "
+                    + "     , count(*) "
+                    + "FROM m_emailsent s, m_delivery m "
+                    + "where m.deliveryid = s.deliveryid "
+                    + "group by s.deliveryid desc, s.status"}
+                 ,{id:1
+                 , desc: "User Logins"
+                 , workDone: WAIT
+                 , response: {}
+                 , processor: this.secondone
+                 , sql:"SELECT user_type "
+                     + "     , min(lastlogindate) "
+                     + "     , max(lastlogindate)"
+                     + "     , sum(logins)"
+                     + "     , count(*) "
+                     + "FROM dkhs_learner "
+                     + "group by user_type"}
+                 ,{id:2
+                 , desc:"Ip Adresses in Log"
+                 , workDone:WAIT
+                 , response:{}
                  , processor:this.thirdone
-                 , sql:"select * from a_diploma order by grade, surname, name"}
+                 , sql:"SELECT ip"
+                     + "     , min(log_dte) firsttme "
+                     + "     , max(log_dte) lasttme "
+                     + "     , count(*) times"
+                     + "  FROM dkhs_log "
+                     + "where log_dte > DATE_SUB(now(), INTERVAL 31 DAY)"
+                     + "group by ip  "
+                     + "ORDER BY lasttme desc, times"}
                 ],
         rfo:{},
         rso:{},
@@ -122,7 +156,8 @@ export default {
            console.log('We are done with all, reset back to wait, and clear response')
            this.getData.forEach(ele => {
              ele.workDone = WAIT 
-             ele.response = ''
+             // do not delte response, we should be able to use it from here...
+             //ele.response = ''
            })
            console.log('Stop the timer interval:', this.timerHandle)
            if (this.timerHandle) {

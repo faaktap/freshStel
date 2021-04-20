@@ -189,7 +189,8 @@ data: () => ({
    '/personel',   '/viewfunctions',   '/nested',    'dialog',    '/werner'
     ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
     ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/test'    ,'/sview'
-    ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards'],        
+    ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards', '/va/123','/awardedit','/AKandidate'
+    ,'/werner','/flex','/streamline','/expand'],        
     randomColors:[],     
     toolList:[{name:"Button1"},{name:"button2"},{name:"button3"}],
     baseColors:[],

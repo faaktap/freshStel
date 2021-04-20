@@ -184,7 +184,7 @@ export default {
         return "done"
       },
       loadRooster(){
-        console.log('ShowLoadRooster')
+        //console.log('ShowLoadRooster')
         this.selectedOpen = false
         this.pStudentGradeClass = this.studentGradeClass
         if (this.pStudentGradeClass == '') this.pStudentGradeClass = 'GR10A1';
@@ -206,7 +206,7 @@ export default {
 
         
 
-        console.log('fetch for:', this.pStudentGradeClass)
+        //console.log('fetch for:', this.pStudentGradeClass)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = "SELECT * FROM rooster WHERE " 
@@ -221,7 +221,7 @@ export default {
                + "or day9 like '%" + this.pStudentGradeClass + "%'"
                + "or day10 like '%" + this.pStudentGradeClass + "%'"
                + "or day11 like '%" + this.pStudentGradeClass + "%'";
-        console.log(ts.sql)       
+        //console.log(ts.sql)       
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
         zmlFetch(ts, this.afterRoosterSelect);   
@@ -234,7 +234,7 @@ export default {
       },
       subjectColor(subjectShortName) {
         let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )  
-        console.log('SubColor=', colorObj , subjectShortName)
+        //console.log('SubColor=', colorObj , subjectShortName)
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
@@ -252,19 +252,19 @@ export default {
         }
         let template = zDate.todayNoHours()
         template = zDate.gotoMonday(template)
-        console.log('monday is : ' , template)
+        //console.log('monday is : ' , template)
         //Go back one more day (to Sunday)
         template.setDate(template.getDate() - 1);
-        console.log('sunday is : ' , template)
+        //console.log('sunday is : ' , template)
         for (let t=0; t < 7; t++) {
            template = zDate.addOneDay(template)
-           console.log('day to work with is : ' , template)
+           //console.log('day to work with is : ' , template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal => 
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
            )
            if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
-           console.log('Found calendar entry ', sday)
+           //console.log('Found calendar entry ', sday)
            response.forEach(ele => {
              let n = ''
              
@@ -281,7 +281,7 @@ export default {
                case 'day10':n = ele.day10; break
              }
              if (n && n.includes(this.pStudentGradeClass)) {
-               console.log(n.includes(this.pStudentGradeClass) , ele)
+               //console.log(n.includes(this.pStudentGradeClass) , ele)
                let hm = {}
                this.getPeriodStartTime(hm,ele,template)
                let lines = n.split(/\n/);

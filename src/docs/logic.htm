@@ -554,3 +554,54 @@ order by 3
 
 
 https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=trophy&studentno=17295
+
+
+
+
+//New ATOP10 - given on 14-04-2021
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.graad,s.grade
+FROM aTOP10 p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+order by p.graad, p.position desc
+
+//join with adiplomatop10
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.graad,s.grade, d.*
+FROM aTOP10 p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+left join adiplomatop10 d on d.surname like concat('%',s.surname,'%') and d.name like concat('%',s.firstname,'%')
+order by p.graad, p.position desc
+
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.graad,s.grade, d.name, d.surname
+  , concat(ifnull(d.subject1,'END'),'<br>'
+          ,ifnull(d.subject2,'END'),'<br>'
+          ,ifnull(d.subject3,'END'),'<br>'
+          ,ifnull(d.subject4,'END'),'<br>'
+          ,ifnull(d.subject5,'END'),'<br>'
+          ,ifnull(d.subject6,'END'),'<br>'
+          ,ifnull(d.subject7,'END'),'<br>'
+          ,ifnull(d.subject8,'END'),'<br>'
+          ,ifnull(d.subject9,'END'),'<br>')
+FROM aTOP10 p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+left join a_diploma d on p.surname like concat('%',d.surname,'%') and p.name like concat('%',d.name,'%')
+order by p.graad, p.position desc
+
+
+SELECT p.name, p.surname , p.position, ifnull(s.studentid,'nono'), p.graad,s.grade, s.firstname, s.surname
+FROM aTOP10 p
+left join dkhs_student s on p.surname like concat('%',s.surname,'%') and p.name like concat('%',s.firstname,'%')
+order by p.graad, p.position desc
+
+SELECT d.name, d.surname, p.position, p.graad, p.*, d.*
+,concat(ifnull(d.subject1,'END'),'<br>'
+          ,ifnull(d.subject2,'END'),'<br>'
+          ,ifnull(d.subject3,'END'),'<br>'
+          ,ifnull(d.subject4,'END'),'<br>'
+          ,ifnull(d.subject5,'END'),'<br>'
+          ,ifnull(d.subject6,'END'),'<br>'
+          ,ifnull(d.subject7,'END'),'<br>'
+          ,ifnull(d.subject8,'END'),'<br>'
+          ,ifnull(d.subject9,'END'),'<br>')
+FROM adiplomatop10 d
+left join aTOP10 p on d.surname = p.surname and d.name = p.name
+order by p.graad,p.position desc

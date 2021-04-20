@@ -41,13 +41,7 @@
    <!-- START GRADE AND SUBJECT SELECTION -->
    <v-row>
      <v-col xs="12" lg="6">
-       <v-btn v-for="g in groups" :key="g" 
-              @click="getZml.grade = g" 
-              :color="gradeColor(g)" 
-              class="ma-2">
-          Grade {{ g}} 
-       </v-btn>          
-
+       <grade-display-short displaySize="medium" />        
      </v-col>
      <v-col xs="12" lg="6">
        <SubjectDisplayShort />
@@ -74,11 +68,12 @@ import viewContent from '@/views/learn/viewContent.vue';
 import GoogleDrive from '@/views/learn/GoogleDrive.vue';
 import { getters } from "@/api/store";
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
+import GradeDisplayShort from '@/components/learn/GradeDisplayShort.vue'
   export default {
-      components: {viewContent, GoogleDrive,SubjectDisplayShort},
+      components: {viewContent, GoogleDrive,SubjectDisplayShort, GradeDisplayShort},
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),      
-      groups:[8,9,10,11,12]
+     // groups:[8,9,10,11,12]
 
     }),
     methods: {
@@ -87,10 +82,6 @@ import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
         if (idx && this.getZml.subjects[idx].color) return this.getZml.subjects[idx].color
         return "red"
       },
-      gradeColor(gid){
-        if (gid == this.getZml.grade) return "red"
-        return ""
-      }
     },
     mounted: function () {
         zmlConfig.cl('Mount:Edit');

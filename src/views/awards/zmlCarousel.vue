@@ -1,6 +1,6 @@
 <template>
 <div>
-    <!--ul v-for="page in awardList" :key="page.storyid">
+    <!--ul v-for="page in awardList" :key="page.chapterid">
     <li>{{ page }}</li>
     </ul-->
    <v-parallax v-if="startSlideShow"
@@ -30,7 +30,7 @@
   <v-carousel-item v-for="page in awardList"
                    color="rgba(255, 1, 7, 0.2)"
                    contain
-                  :key="page.id">   
+                  :key="page.storyid">   
                   <!--{{ page }} -->
          <smart-text v-if="page.type == 1" 
                     :title="page.detail1"
@@ -40,16 +40,17 @@
          />
          <smart-marquee v-if="page.type == 2"    
                        :panelIndex="panelIndex"
-                       :passedList="page.winners"
-                       :listHeading="page.listHeading"
-                       :heading="page.heading"
+                       :xxxxxpropPassedList="page.winners"
+                       :xxxpropPassedList="[]"
+                       :propPassedString="page.detail2"
+                       :heading="page.detail1"
                        @wearedone="nextOne"
         />
          <smart-photo v-if="page.type == 4" 
                      :title="page.detail1"
                      :caption="page.detail2"
                      :photoPath="page.photoPath"
-                     :photoNo="page.photoNo" 
+                     :photoNo="page.studentID" 
          />
          <smart-display v-if="page.type == 3"    
                        :studentid="page.studentid"
@@ -107,12 +108,16 @@
                         label="Select a Chapter" /> 
   </v-layout> 
   <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+      <front-json-to-csv v-if="awardList"
+                   :json-data="awardList"
+                   :csv-title="'My Test csv title'">
+     </front-json-to-csv> 
     <v-card 
             v-for="page in awardList"
            :key="page.id"
            color="green darken-2">  
            <v-card-title>
-             {{ page.storyid }} - {{ page.id }}
+             {{ page.chapterid }} - {{ page.id }}
            </v-card-title>
      {{ page }} 
      <v-card-actions> end </v-card-actions>
@@ -128,9 +133,10 @@ import SmartDisplay from '@/components/awards/SmartDisplay'
 import SmartText from '@/components/awards/SmartText'
 import SmartPhoto from '@/components/awards/SmartPhoto'
 import SmartMarquee from '@/components/awards/SmartMarquee'
+import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
 export default {
-    components: {SmartDisplay, SmartText, SmartPhoto, SmartMarquee},
+    components: {SmartDisplay, SmartText, SmartPhoto, SmartMarquee,FrontJsonToCsv},
     props: [ 'chapterid','editmode' ],
     data () {
       return {
@@ -173,12 +179,29 @@ export default {
                  , processor:this.processData
                  , sql:"select * from a_diploma order by grade, type , surname, name"}
                 ],
-        constantStoryId:22,
+        constantchapterid:22,
       }
    }, 
+   /*
+   */
    computed: {    
+
    }, 
    methods: {
+     ordinal_suffix_of(i) {
+         var j = i % 10,
+             k = i % 100;
+         if (j == 1 && k != 11) {
+             return i + "st";
+         }
+         if (j == 2 && k != 12) {
+             return i + "nd";
+         }
+         if (j == 3 && k != 13) {
+             return i + "rd";
+         }
+         return i + "th";
+     },
      addNewOneAfter() {
 
      },
@@ -189,7 +212,7 @@ export default {
          //this.panelIndex += 1
      },
      carouselDataFilter() {
-         let arr = this.awardList.filter(a => a.type == 1 );
+         let arr = this.awardList.filter(a => (a.type == 1 || a.type == 2) );
          return arr;
      },
      loadAllData() {
@@ -236,9 +259,9 @@ export default {
                this.timerHandle = null
            }
            this.progress = false;
-            this.startSlideShow = true    
+           this.startSlideShow = true    
         }
-        console.info('RC - End ',this.getData.map( ({workDone}) =>  (workDone)  ).flat() )
+        console.info('RC - End ',this.startSlideShow ,this.getData.map( ({workDone}) =>  (workDone)  ).flat() )
         return "not used @the moment"
      },
      startTimer(duration, funcToCall) {
@@ -254,40 +277,45 @@ export default {
         let localtimehandle = this.timerHandle
      },
      uid() {
-       this.uniqid++
+       this.uniqid += 10
        return this.uniqid
      },
      processTest(e) {
        console.log('process data function - qNo = ', e.id)
        this.awardList.push(
-             {id:this.uid()
-             , storyid:this.constantStoryId
+             {storyid:this.uid()
+             , chapterid:this.constantchapterid
              , type:1
              , detail1:'De Kuilen Akademiese Prysuitdeling / Academic Prizegiving'
-             , detail2:'<br>Kort boodskappie van mnr mellet...<br><br>  The 2020 school year will not only be remembered for rewriting NSC Mathematics and Physical Sciences papers, beautiful face masks and wearing civvies to school. They will be remembered as the covid .... In that sense they tackled the sizeable problem of teaching and learning during Covid 19. Congratulations to every prize winner, you made us proud in 2020.'}
+             , detail2:'<br>Kort boodskappie van mnr mellet...<br><br>  The 2020 school year will not only be remembered for rewriting NSC Mathematics and Physical Sciences papers, beautiful face masks and wearing civvies to school. They will be remembered as the covid .... In that sense they tackled the sizeable problem of teaching and learning during Covid 19. Congratulations to every prize winner, you made us proud in 2020.'
+             , maintitle:''
+             , studentID:''
+             , winners:''
+}
        )
        let newGrade = 0
        e.response.forEach(ele => {
          console.log('grade : ' , newGrade)
            if (newGrade != ele.grade) {
              this.awardList.push(
-                   {id:this.uid()
-                   , storyid:this.constantStoryId
+                   {storyid:this.uid()
+                   , chapterid:this.constantchapterid
                    , type:1
                    , detail1:'GRADE ' + ele.grade + ' - TOP 10'  
                    , detail2:'<br><br>Our 10 learners in Grade ' + ele.grade + ' with the highest overall average.<br> The top 5 receives book prizes<br><br>Congratulations!'
                    , maintitle: '<br><br><br>GRADE ' + ele.grade + ' - TOP 10'
+                   , studentID:''
                    , image: 'https://www.kuiliesonline.co.za/img/top10.png'}
              )
              newGrade = ele.grade
            } 
            this.awardList.push(
-                 {id:this.uid()
-                 , storyid:this.constantStoryId
+                 {storyid:this.uid()
+                 , chapterid:this.constantchapterid
                  , type:4
                  , photoPath: "https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=award&studentno="
-                 , photoNo: ele.studentid
-                 , detail1: ele.oncertificate ? ele.oncertificate : 'GRADE ' + ele.grade + ' TOP 10 ( Number ' + ele.position + ')'
+                 , studentID: ele.studentid
+                 , detail1: ele.oncertificate ? ele.oncertificate : 'GRADE ' + ele.grade + ' TOP 10 (' + this.ordinal_suffix_of(ele.position) + ')'
                  , detail2: ele.name + ' ' + ele.surname
                  })
        })
@@ -295,27 +323,28 @@ export default {
      },
      processData(e) {
          console.log('process data function - qNo = ', e.id)
-         let o = {id:0, storyid:0, grade:0, type:'', winners:[], heading:'', listHeading:''}    
+         let o = {storyid:0, chapterid:0, grade:0, type:'', winners:[], detail1:'', detail2:'', studentid:'', eletype:''}
          e.response.forEach(ele => {
-           console.log(ele.grade, o.grade, ele.type, o.type, ele)
-           if (o.grade == ele.grade && o.listHeading == ele.type) {
+           //console.log(ele.grade, o.grade, ele.type, o.type, ele)
+           if (o.grade == ele.grade && o.eletype == ele.type) {
                //Same grade and type winners, add them to queue list
                o.winners.push( {id:ele.id
                              , name: ele.name +' ' + ele.surname 
                              , pos:ele.position} )
            } else {
-               if (o.grade !== 0 && o.listHeading != ele.type ) {
+               if (o.grade !== 0 && o.eletype != ele.type ) {
                   //If the type changes, then we add the current winnerslist
-                  this.newSlide(o.heading, o.listHeading,o.heading, '')
+                  this.newSlide(o.detail1, o.eletype,'', '')
+                  o.detail2 = o.winners.flatMap(ele => ele.name)
                   this.awardList.push(o)
-                  console.log('awardList for ', o.heading , this.awardList.length)
-                  o = {id:0, storyid:0, grade:0, type:'', winners:[], heading:'', listHeading:''}
+                  o = {storyid:0, chapterid:0, grade:0, type:'', winners:[], detail1:'', detail2:'', eletype:''}
                }
-               o.storyid = this.constantStoryId
-               o.id = this.uid() //ele.id
+               o.chapterid = this.constantchapterid
+               o.storyid = this.uid() //ele.id
                o.grade = ele.grade
-               o.listHeading = ele.type
-               o.heading = 'Grade ' + ele.grade + ' ' + ele.type
+               o.eletype = ele.type
+               //o.detail2 = ele.type
+               o.detail1 = 'GRADE ' + ele.grade + ' ' + ele.type.toUpperCase()
                o.type = 2
                o.position = ele.position
                o.winners.length = 0
@@ -328,11 +357,11 @@ export default {
        e.workDone = DONE
      },
      newSlide(d1, d2,mtitle, img) {
-       console.log(d1, d2,mtitle, img)
+       console.info(d1, d2,mtitle, img)
        /*
         this.awardList.push(
-              {id:this.uid()
-              , storyid:this.constantStoryId
+              {storyid:this.uid()
+              , chapterid:this.constantchapterid
               , type:1
               , detail1: d1 //'(newtype) GRADE ' + ele.grade + ' - '  + ele.type
               , detail2: '<br><br>' +  d2  + '<br><br>'//'<br><br>Grade ' + ele.grade
@@ -353,11 +382,14 @@ export default {
      }, 
      backgroundSoundMute() {
         console.info('mute backgroundsound', this.schoolSongSound, this.schoolSongSound.volume);
-        this.schoolSongSound.volume = 0.1;
-        this.carouselSound.volume = 0.1;
-        this.carouselSound.mutes = true;
-        this.schoolSongSound.mutes = true;
-        //this.carouselSound.volume = this.carouselSound.volume - 0.2;
+        if (this.schoolSongSound.mutes == true) {
+            this.schoolSongSound.mutes = false;
+            this.schoolSongSound.volume = 0.02;            
+        } else {
+           //this.carouselSound.mutes = true;
+           this.schoolSongSound.mutes = true;
+           this.schoolSongSound.volume = 0
+        }
      }, 
      playSound(response) {
         console.log(response);

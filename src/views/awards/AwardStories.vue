@@ -5,11 +5,11 @@
   <v-container class="grey lighten-5 pa-4">
     <v-row  v-if="allStories">
         <v-col cols="12" col="4" v-for="s in allStories" :key="s.storyid">
-            {{ s.storymainid }} {{ s.storytitle }} {{ s.activedate.substr(0,10) }} 
+            {{ s.storymainid }} - {{ s.storytitle }} {{ s.activedate.substr(0,10) }} 
             <v-btn @click="showStory(s.storymainid)"> show </v-btn>
         </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="aw">
     <v-col cols="12" class="xs12" >
     <v-card class="mx-auto" max-height="600">
       awb = {{aw.background}}

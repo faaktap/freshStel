@@ -13,7 +13,7 @@
    <v-row>
     <v-col cols=4>
       <base-drop-down  
-      :disabled="getZml.subjectid > 0 && getZml.grade > 0"
+      :disabled="getZml.subjectid && getZml.grade"
       :items="mainMenuItems" 
        menuName="Menu"
        v-bind:value="mainMenuItemselected"
@@ -25,7 +25,7 @@
     <v-col cols=8>
 
 <!-- SHOW INTERFACE FOR FOLDER LIST and OTHER ITEMS like ADD FILES-->              
-  <v-card  v-if="mainMenuItemselected=='New File'" class="ma-3 pa-2" color="blue lighten-2">
+  <v-card v-if="mainMenuItemselected=='New File'" class="ma-3 pa-2" color="blue lighten-2">
         <v-icon> S </v-icon> elected folder : <strong>{{ folderObj.name }}</strong>
         <br>
         <i v-if="files.length == 0">You are welcome to drag your files from explorer,
@@ -400,6 +400,11 @@
 </zml-preview>
 </v-dialog>
 
+
+
+
+
+
 <template v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
   <v-card color=blue>
    <v-row>
@@ -539,7 +544,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           }
         },
         contentProperties(c) {
-            console.log('GD:content Properties:', c)
+            //console.log('GD:content Properties:', c)
             this.curContent = c
             this.curContent.showDescription = ''
             /*
@@ -557,7 +562,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
                  
         },
         getReadyToSelectFolder(c) {
-          console.log('GD:GETREADYTOSELECTFOLDER',c.name, c)
+            //console.log('GD:GETREADYTOSELECTFOLDER',c.name, c)
             //get the folder from folderObj and pass it to selectFolder
             //But we cannot use folderfilter, since it might onlu contain rootfolders
             //let fIdx = this.folderFilter.findIndex(p => p.foldername == c.name);
@@ -568,19 +573,19 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             )
 
             if (fIdx != -1) {
-              console.log('passing : ', this.getZml.folders[fIdx])
+               //console.log('passing : ', this.getZml.folders[fIdx])
                this.selectFolder(this.getZml.folders[fIdx])
             }
-            console.log('GD:Result : We could not find it ', fIdx,this.getZml.folders)
+            //console.log('GD:Result : We could not find it ', fIdx,this.getZml.folders)
             return
         },
         selectFolder(folder) {
-          console.log('GD:SELECTFOLDER')
-           console.log('selectFolder ', folder)
+           //console.log('GD:SELECTFOLDER')
+           //console.log('selectFolder ', folder)
            this.folderObj = folder
            this.oldFolderName = folder.name
            this.mainMenuItemselected = null
-           console.log('folder selected:', this.folderObj)
+           //console.log('folder selected:', this.folderObj)
         },
         moveToFolder() {
           this.curContent.mode == 'update'
@@ -588,12 +593,12 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             alert('no update')
             return
           }
-          console.log('moving to folder:',this.curContent.folder)
+          //console.log('moving to folder:',this.curContent.folder)
           this.showMoveFolder = false
           this.updateContent()
         },
         doFolderMenuStuff(e) {
-            console.log('folder menu Item = ', e)
+            //console.log('folder menu Item = ', e)
             this.showFolderProperties = false
             this.folderMenuItemselected = e
             if (this.folderMenuItemselected == "New File") {
@@ -649,8 +654,8 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
 
         },
         doMainMenuStuff(e) {
-          console.log('main menu Item = ', e)
-          this.showFolderProperties = false
+           //console.log('main menu Item = ', e)
+           this.showFolderProperties = false
            this.mainMenuItemselected = e
 
            if (this.mainMenuItemselected == "Delete Folder" 
@@ -692,7 +697,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
            //-------------------------------------------------- INSIDE FOLDER STUFF===========
         },
         fixUpForAddFolder() {
-          console.log('GD:FIXUPFORADDFOLDER')
+          //console.log('GD:FIXUPFORADDFOLDER')
           this.curContent = {name: ''
                    , description:''
                    , type:'folder'
@@ -761,10 +766,10 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           this.updateContent()
         },
         updateContent() {
-          console.log('GD:UPDATECONTENT')
+          //console.log('GD:UPDATECONTENT')
           //console.log('Update Content:', this.curContent) 
           if (this.curContent.mode == 'add') {
-             console.log('HERE We ADD CONTENT STUFF') 
+             //console.log('HERE We ADD CONTENT STUFF') 
              //Check if data is good.
              if (this.curContent.type == 'link') {
                if (this.curContent.name.length < 5) {
@@ -791,7 +796,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
              this.loadFolders();
              return
           } else {
-             console.log('HERE WE UPDATE CONTENT', this.curContent) 
+             //console.log('HERE WE UPDATE CONTENT', this.curContent) 
              let ts = {}
              ts.task = 'updatelcontent'
              ts.data = this.curContent
@@ -803,14 +808,14 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           }
         },
       saveNewFolder() {
-        console.log('GD:SAVENEWFOLDER')
+        //console.log('GD:SAVENEWFOLDER')
         if (this.newFolder == '') return
         if (this.getZml.grade == '') { errorSnackbar('We need a grade'); return;}
         if (this.getZml.subjectid == '') { errorSnackbar('We need a subject'); return;}
         this.loadingAddFolder = true
         let obj = {foldername: this.newFolder
                   ,realfoldername: this.newFolder
-                  ,grade: this.getZml.grade
+                  ,grade: this.getZml.grade.toString()
                   ,subjectid: this.getZml.subjectid
                   ,sortorder: 22
                   ,icon: 'mdi-folder'
@@ -866,7 +871,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         this.showAddFolder = false;
         this.loadingAddFolder = false
         this.mainMenuItemselected = null
-        console.log('FOLDERS SHOULD BE UPDATED NOW!!')
+        //console.log('FOLDERS SHOULD BE UPDATED NOW!!')
         this.doMainMenuStuff("Select Folder")
       },
       errorAddFolder(response){
@@ -876,12 +881,12 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       
 
       dragEnd(ev) {
-        //ev.target.style.backgroundColor = 'primary'
-        console.log('dend',ev)
+        ev.target.style.backgroundColor = 'primary'
+        //console.log('dend',ev)
       },
       dragEnter(ev) {
-        //ev.target.style.backgroundColor = 'green'
-        console.log('dent',ev)
+        ev.target.style.backgroundColor = 'green'
+        //console.log('dent',ev)
       },
       //Handle single file for upload...
       addInputFile(e) {
@@ -913,7 +918,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         let dup = 0
         lfiles.forEach(file => {
           this.files.forEach(already => {
-              console.log(already.name, file.name)
+              //console.log(already.name, file.name)
               if (file.name == already.name)  {
                 dup += 1
               }
@@ -949,10 +954,12 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
            errorSnackbar('You need to select a folder before we can upload')
            return
         }
+        /*
         if (edit.grade < 8) {
            infoSnackbar('You need to select a grade before we can upload')
            return
         }
+        */
         if (edit.subject < 1) {
            infoSnackbar('You need to select a subject before we can upload')
            return
@@ -992,6 +999,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       },
       upload1(fileData,fdet) {
          fileData.task = 'upload'; 
+         //note that grade 'INFO' will look like GRINFO, and not sure what padStart will do to it?
           let GR = fdet.grade.toString()
           GR = 'GR' + GR.padStart(2, '0')
           const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == fdet.subjectid)
@@ -1005,11 +1013,11 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
          fileData.base64 = fileData.target.result.split(',')[1];
          fileData.size = fileData.total
          fileData.api = zmlConfig.apiUpload; 
-         console.log('start upload with ', fileData);
+         //console.log('start upload with ', fileData);
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
       },    
       doneWithUpload(response) {
-         console.log('Done with upload ' , response.filename  )
+         //console.log('Done with upload ' , response.filename  )
          this.files.forEach(file => {
             if (response.filename == file.name)  {
               file.done = true
@@ -1039,7 +1047,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         if (cnt == this.files.length) {
             this.files = [];
             this.mainMenuItemselected = null
-            console.log('Finished with upload, doing a refresh')
+            //console.log('Finished with upload, doing a refresh')
             this.loadStatus = false;
             this.loadData();
         }
@@ -1049,7 +1057,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
          this.loadStatus = false;
       },
       fillContentDefaultFile() {
-          console.log('GD:FILLCONTEXTDEFAULT')
+          //console.log('GD:FILLCONTEXTDEFAULT')
           //console.log(this.folderObj)
           let edit = {name: ''
                    , description:''
@@ -1074,7 +1082,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         },
 // Here we handle all the loading of lcontent, subjects and folders.
         showData(response) {
-          console.log('GD:SHOWDATA')
+            //console.log('GD:SHOWDATA')
             zmlConfig.cl('content=' , response);
             this.progress = false;
             if (response == '') {
@@ -1088,13 +1096,13 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             this.doMainMenuStuff("Select Folder")
         },
         loadFolders() {
-          console.log('GD:LOADFOLDERS')
+          //console.log('GD:LOADFOLDERS')
           if (this.grade && this.subjectid) {
             zmlFetch({task: 'getfolders',api: zmlConfig.apiDKHS}, this.afterFolders);
           }
         },
         loadSubjects(response) {
-          console.log('GD:LOADSUBJECTS')
+            //console.log('GD:LOADSUBJECTS')
             this.getZml.subjects = response;
             if (this.getZml.folders.length == 0) {
                this.getZml.folders.push({id:1, name:'default'})
@@ -1104,12 +1112,12 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             }
         },
         afterFolders(response) {
-          console.log('GD:AFTERFOLERS')
+          //console.log('GD:AFTERFOLERS')
           this.getZml.folders = response;
           this.loadData();
         },
         loadData() {
-           console.log('GD:LOADDATA')
+           //console.log('GD:LOADDATA')
            if (!this.grade || !this.subjectid) {
              this.content = []
              return
@@ -1119,7 +1127,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
               ts.sql = 'select * from dkhs_lcontent '
                      + ' where sortorder != 0 '
                      + ' and subjectid = ' + this.subjectid
-                     + ' and grade = ' + this.grade
+                     + ' and grade = ' + '"' + this.grade + '"'
                      + ' order by sortorder, name';
               ts.task = 'PlainSql';
               ts.api = zmlConfig.apiDKHS
@@ -1142,16 +1150,16 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
     computed:{
       //Display a list of folders on dropdown
       folderFilter() {
-        console.log('GD:FOLDERFILTER')
+        //console.log('GD:FOLDERFILTER')
         let tempT = []
         if (typeof this.getZml.folders === 'undefined' || this.getZml.folders.length == 0) {
-          console.log('folders are ZERO LENGTH')
+          //console.log('folders are ZERO LENGTH')
           return ['temp']
         }
         this.getZml.folders.filter(ele => ele.grade == this.getZml.grade && ele.subjectid == this.getZml.subjectid).forEach(item => {
-          console.log('folder filter : ', item.folder, item.name, item)
+          //console.log('folder filter : ', item.folder, item.name, item)
           if (this.showRootFolders) {
-              console.log(item.folder, item.name, item)
+              //console.log(item.folder, item.name, item)
               if (item.folder == item.description) {
                   const newitem = item
                   tempT.push(  newitem );
@@ -1161,14 +1169,14 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
              tempT.push(  newitem );
           }
         })
-        console.log('GD:FOLDERFILTER 3', tempT.length)
+        //console.log('GD:FOLDERFILTER 3', tempT.length)
         return tempT
       },
       filterContent() {
         //return this.content;
-         //c.folder == folderObj.foldername && c.type!='folder'
-        console.log('GD:FILTERCONTENT')
-        console.log('GD:FILTERCONTENT',this.folderObj)
+        //c.folder == folderObj.foldername && c.type!='folder'
+        //console.log('GD:FILTERCONTENT')
+        //console.log('GD:FILTERCONTENT',this.folderObj)
         let res = []         
         if (this.folderObj.name) {
             //take out all foldernames
@@ -1183,14 +1191,14 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             if (this.SortName == true) { 
                // res.sort((a, b) => a.name.localeCompare(b.name));
                res.sort(function(a, b) {
-                 console.log(a.name, b.name)
+                 //console.log(a.name, b.name)
                  return (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0))
                })
             }
-            console.log('Length : ', res.length)
+            //console.log('Length : ', res.length)
             return res
         } else {
-           console.log('wys alles Length : ', this.content.length)
+           //console.log('wys alles Length : ', this.content.length)
            return this.content;
         }
       }
@@ -1234,7 +1242,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
     mounted: function () {
         zmlConfig.cl('Mount:Edit-2-package');
         //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
-        console.log('MOUNT GDRV : ', this.getZml.login)
+        //console.log('MOUNT GDRV : ', this.getZml.login)
         if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
           if (this.getZml.subjects.length == 0) {
              let ts = {}

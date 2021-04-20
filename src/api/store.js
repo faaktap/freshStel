@@ -16,6 +16,10 @@ const state = Vue.observable({
                   , lastdate:'', login:''},
            store: {totalItems: 0},
            grade: '',
+           grades:[{id:8 ,text: "G08",name: 'Grade 8'} ,{id:9 ,text: "G09",name: 'Grade 9'}
+                  ,{id:10,text: "G10",name: 'Grade 10'},{id:11,text: "G11",name: 'Grade 11'}
+                  ,{id:12,text: "G12",name: 'Grade 12'},{id:'INFO',text: "Info",name: 'Info'}
+                  ],
            subject: '',
            subjectid: '',
            subjects: [],

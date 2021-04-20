@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="tHeader.length && tList.length">
-   <v-row>
+   <v-row >
     <v-col cols="12">
      <h1 class="text-center grey--text"> {{ tHeading }} </h1>
     </v-col>
@@ -64,6 +64,7 @@ export default {
             console.log('list not passed yet')
             return
         }
+        console.log('bTable = BuildHeaders')
         this.tableLoading = true
         this.tHeader = []
         Object.keys(this.tList[0]).forEach(name => {

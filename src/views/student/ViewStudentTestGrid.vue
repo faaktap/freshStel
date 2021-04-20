@@ -1,33 +1,54 @@
 <template>
 <div ref="myref">
-<v-text-field v-model="getZml.subjectid" label="subjectid"/>
-<subject-display-short /> {{ getZml.subjectid}}
-<grade-display-short /> {{ getZml.grade}}
-    
+<v-row>
+ <v-col cols="6">    
+  <v-text-field v-model="getZml.subjectid" label="subjectid" />
+ </v-col>
+ <v-col cols="6">
+   <h3> Subject Display Short </h3>
+   <subject-display-short /> Subject : {{ getZml.subjectid}}
+</v-col>
+<v-col cols="6">
+    <h3>Subject Display 2 </h3>
+</v-col>
+<v-col cols="6">
+    <h3>Subject Display 3 </h3>
+</v-col>
+<v-col>
+  <h3> Grade Display Short </h3>
+  <grade-display-short displaySize="medium" /> Grade : {{ getZml.grade}} 
+</v-col><v-col>
+  <h4>Folder Select </h4>
     <folder-select grade=8 
                    subjectid=10 
                   @selected="selectFolder"> 
     </folder-select>
-    
+    selectedFolder : {{ selectFolder }}
+</v-col>
+</v-row>
 
 <v-btn @click="showFolders = !showFolders"    > Show Folders </v-btn>
 
-
-<h1> Showing Folder List (v-dialog) front-json-to-csv</h1>
-<v-dialog v-model="showFolders" color="light-blue">
+<v-row>
+ <v-col cols=12>
+  <h1> Showing Folder List (v-dialog) front-json-to-csv</h1>
+  <v-dialog v-model="showFolders" color="light-blue">
     <front-json-to-csv v-if="folders"
                    :json-data="contentFolders"
                    :csv-title="'My Test csv title'">
-   <v-btn>
+     <v-btn>
       Download with custom title
-   </v-btn> 
-  </front-json-to-csv>
-</v-dialog>
-
-<h1> Display Student Content </h1>
-<v-card class="ma-3 pa-4">
- <div class="student-container">
-  <div class="Photo">
+     </v-btn> 
+    </front-json-to-csv>
+  </v-dialog>
+ </v-col>
+</v-row>
+<v-row>
+ <v-col cols="12">
+ <h1> Display Student Content </h1>
+ <v-card class="ma-3 pa-4">
+  <div class="student-container">
+   <div class="Photo">
       <v-img :src="st.photo" cover></v-img>
   </div>
   <div class="Surname">
@@ -60,6 +81,9 @@
  </div>
  <v-btn @click="showRefs"> showRefs </v-btn>
 </v-card>
+ </v-col>
+</v-row>
+
 </div>
 </template>
 

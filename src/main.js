@@ -29,6 +29,13 @@ const paperOptions = {
 }
 Vue.use(VueHtmlToPaper, paperOptions);
 
+
+Vue.prototype.$playSound = (path, volume = .5) => {
+  var audio = new Audio(path);
+  audio.volume = volume
+  audio.play();
+}
+
 // eslint-disable-next-line
 export const cs = {
   // eslint-disable-next-line

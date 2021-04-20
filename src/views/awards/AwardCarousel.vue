@@ -40,8 +40,9 @@
          <smart-photo v-if="page.type == 4" 
                     :title="page.detail1"
                     :caption="page.detail2"
-                    photoPath="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=sportaward&studentno="
-                    :photoNo="page.otherid" />
+                    photoPath="https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=award&studentno="
+                    :photoNo="page.otherid"
+                    soundbyte="" />
 
          <smart-display v-if="page.type == 3"    
                         :studentid="page.studentid"
@@ -50,12 +51,23 @@
                         :extraNote="page.extraNote"
                         :alles=page
                         :panelIndex=panelIndex />
+         <smart-marquee v-if="page.type == 5"    
+                       :panelIndex="panelIndex"
+                       :xxxxxpropPassedList="page.winners"
+                       :xxxpropPassedList="[]"
+                       :propPassedString="page.detail2"
+                       :heading="page.detail1"
+                       @wearebusy="marqueeBusy"
+                       @wearedone="marqueeDone"
+        />
 
-<v-container v-if="currentEditMode">
+<!--add a new one smart-marque in here, and change type in db for chapterid, where 3 make it 5.-->
+
+<!--v-container v-if="currentEditMode">
    {{page}}
    <v-btn @click="addNewOneAfter"> Add New One After </v-btn>
    <v-btn @click="editThisOne"> Edit This One </v-btn>
-</v-container>  
+</v-container-->  
 
   </v-carousel-item>
  </v-carousel> 
@@ -69,7 +81,7 @@
   
  </v-container>
   <v-layout class="mx-auto" >
-     <div class="px-2 red--text text--accent-2"> DKHS Slideshow  </div> 
+     <div class="px-2 red--text text--accent-2"> DKHS Award Show  </div> 
         <v-btn  x-small color="secondary" @click="cycle = !cycle">
          <div v-if="cycle==true"><v-icon small> mdi-play</v-icon></div>
          <div v-else><v-icon small> mdi-pause</v-icon></div>
@@ -111,8 +123,9 @@ import { zmlFetch } from '@/api/zmlFetch'
 import SmartDisplay from '@/components/awards/SmartDisplay'
 import SmartText from '@/components/awards/SmartText'
 import SmartPhoto from '@/components/awards/SmartPhoto'
+import SmartMarquee from '@/components/awards/SmartMarquee'
 export default {
-    components: {SmartDisplay, SmartText, SmartPhoto},
+    components: {SmartDisplay, SmartText, SmartPhoto,SmartMarquee},
     props: [ 'chapterid','editmode' ],
     data () {
       return {
@@ -136,14 +149,21 @@ export default {
         bgIndex:2,
         progress:true,
         schoolSongSound:new Audio('https://www.kuiliesonline.co.za/dkhs/data/sounds/SchoolSong.mp3'),
-        carouselSound:new Audio('https://kuiliesonline.co.za/dkhs/data/sounds/Musway Studio - 021-2 - Inspiring Carousel.mp3'),                       
        } 
    }, 
    computed: {    
    }, 
    methods: {
+     marqueeBusy() {
+       console.log('cycle stopped, marquee busy')
+       this.cycle=false
+     },
+     marqueeDone() {
+       console.log('cycle started, marquee done')
+       this.cycle=true
+     },
      carouselDataFilter() {
-         let arr = this.awardList.filter(a => a.type == 1 );
+         let arr = this.awardList.filter(a => (a.type == 1 || a.type == 5) );
          return arr;
      },
      loadData() {
@@ -225,25 +245,23 @@ export default {
      },
      loadError(error) {
         console.log(error)
+        alert(error)
         this.progress = false;
      },   
      backgroundSound() {
         console.info('start backgroundsound', this.carouselSound);
-        this.carouselSound.volume = 0.2;
-        this.carouselSound.play;
      }, 
      backgroundSoundMute() {
         console.info('mute backgroundsound', this.schoolSongSound, this.schoolSongSound.volume);
-        this.schoolSongSound.volume = 0.1;
-        this.carouselSound.volume = 0.1;
-        this.carouselSound.mutes = true;
-        this.schoolSongSound.mutes = true;
-
-        //this.carouselSound.volume = this.carouselSound.volume - 0.2;
+        if (this.schoolSongSound.mutes == true) {
+            this.schoolSongSound.mutes = false;
+            this.schoolSongSound.volume = 0.02;            
+        } else {
+           //this.carouselSound.mutes = true;
+           this.schoolSongSound.mutes = true;
+           this.schoolSongSound.volume = 0
+        }
      }, 
-     playSound(response) {
-        console.log(response);
-     },
      doCommand(e) {
        let cmd = String.fromCharCode(e.keyCode).toLowerCase();
        //console.log(cmd,e);
