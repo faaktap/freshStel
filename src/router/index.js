@@ -22,149 +22,101 @@ const routes = [
   { path: '/1', redirect: { name: 'Werner' }},
   */
   {
-    component: Home, 
-    path: '/',  name: 'Home',
-    meta: {layout: la[3], authentication: "public"}
-  },
-  {
-    component: Home, 
-    path: '/home',  name: 'RealHome',
-    meta: {layout: la[3], authentication: "public"}
-  },  
-  {
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
-    path: '/about', name: 'About',
-    meta: {layout: la[3], authentication: "public" }
-  },
-  {
-    path: '/hover', 
-    component:EmptyRouterView,
-    children:[{
-      name: 'Hover',
-      path: '', 
-      component: Hover,
-      meta: {layout: la[3], authentication: "learner"}
-    }]
-  },
-  { 
-    path: '/dkhsawards',
-    name: 'dkhsawards',
-    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),
-    meta: {layout: la[0], authentication: "public" }
-  },  
-  { 
+    component: Home,     path: '/',  name: 'Home',    meta: {layout: la[3], authentication: "public"}
+  },  {
+    component: Home,     path: '/home',  name: 'RealHome',    meta: {layout: la[3], authentication: "public"}
+  },  {
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),    path: '/about', name: 'About',    meta: {layout: la[3], authentication: "public" }
+  },  { 
+    //test
+    component:EmptyRouterView,   path: '/hover', 
+    children:[{ name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"} }]
+  }, { 
+    path: '/dkhsawards',   name: 'dkhsawards',
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),    meta: {layout: la[0], authentication: "public" }
+  },  { 
     //Actual award!
-    path: '/virtualawards/:chapterid',
-    name: 'virtualawards',
+    path: '/virtualawards/:chapterid',    name: 'virtualawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
-    props: true,
-    params: {chapterid: 4, editmode: false},
-    meta: {layout: la[0], authentication: "public" }
-  },  
-  { 
-    path: '/va/:chapterid',
-    name: 'va',
+    props: true,    params: {chapterid: 4, editmode: false},    meta: {layout: la[0], authentication: "public" }
+  },  { 
+    //award
+    path: '/va/:chapterid',    name: 'va',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/zmlCarousel.vue'),
-    props: true,
-    params: {chapterid: 4, editmode: false},
-    meta: {layout: la[0], authentication: "public" }
-  },    
-  {
-    path: '/studentawards',
-    name: 'studentawards',
+    props: true,    params: {chapterid: 4, editmode: false},    meta: {layout: la[0], authentication: "public" }
+  },  {
+    //award - edit
+    path: '/studentawards',    name: 'studentawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/StudentAwardTable.vue'),
     meta: {layout: la[1], authentication: "public" }
-  },  
-  {
+  },   {
     path: '/awardedit',
     name: 'awardedit',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardEdit.vue'),
     meta: {layout: la[3], authentication: "public" }
-  },    
-  {
+  },  {
+    //award
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AKandidate.vue')
-    ,name: 'AKandidate'
-    ,path: '/a'
-    ,meta: {layout: la[0], authentication: "public"}
-  },        
-  {
+    ,name: 'AKandidate'    ,path: '/a'    ,meta: {layout: la[0], authentication: "public"}
+  },  {
     component: () => import(/* webpackChunkName: "leer" */ '../views/learn/LearnTree.vue'),
-    path: '/learntree', 
-    name: 'LearnTree',
-    meta: {layout: la[3], authentication: "learner" },
-    props: {default:true},
+    path: '/learntree',     name: 'LearnTree',
+    meta: {layout: la[3], authentication: "learner" },    props: {default:true},
     params: {currentSubjectID:'2', grade:'12'}
-  },
-  {
+  },  {
+    //learning stuff
     component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/viewLearn.vue'),
-    path: '/viewlearn', name: 'ViewLearn',
-    meta: {layout: la[3], authentication: "teacher" },
+    path: '/viewlearn', name: 'ViewLearn',    meta: {layout: la[3], authentication: "teacher" },
     children: [
            //editItem component is rendered when /user/:id is matched
            { path: ':id'
             , component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/editItem.vue')
-            , props: {default:true}, }
-              ]
-  },
-  {
+            , props: {default:true} }  ]
+  },  {
     component: () => import(/* webpackChunkName: "leer" */ '../views/learn/Grade.vue'),
-    path: '/grade',
-    name: 'Grade',
-    props: true,
-    meta: {layout: la[3], authentication: "learner" }
-  },    
-  {
+    path: '/grade',    name: 'Grade',   props: true,    meta: {layout: la[3], authentication: "learner" }
+  },  {
     component: () => import(/* webpackChunkName: "leer" */ '../views/learn/SelectGrade.vue'),
-    path: '/grade/:gradeno',
-    name: 'SelectGrade',
-    props: true,
-    params: {heading: 'Grade', gradeno:10},
-    meta: {layout: la[3], authentication: "learner" }
-  },  
-  {
+    path: '/grade/:gradeno',    name: 'SelectGrade',
+    props: true,    params: {heading: 'Grade', gradeno:10},    meta: {layout: la[3], authentication: "learner" }
+  },  {
     component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub.vue'),
-    path: '/studenthub',
-    name: 'StudentHub',
-    props: true,
+    path: '/studenthub',    name: 'StudentHub',   props: true,
     params: {currentSubjectID:'2', grade:'12'},
     meta: {layout: la[3], authentication: "learner" }
-  },
-  {
+  },  {
     component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/ViewSubjects.vue')
-    ,name: 'ViewSubjects'
-    ,path: '/subjects'
-    ,meta: {layout: la[0], authentication: "public"}
-  },    
-  {
+    ,name: 'ViewSubjects'    ,path: '/subjects'  ,meta: {layout: la[0], authentication: "public"}
+  },  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/views/learn/LoadHomework.vue')
+    ,name: 'LoadHomework'    ,path: '/loadhomework'
+    ,meta: {layout: la[3], authentication: "teacher"}
+  },  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/views/student/StudentList.vue'),
+    path: '/studentlist',    name: 'studentlist',    meta: {layout: la[3], authentication: "admin" }
+  },  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/student/StudentInfo.vue'),
-    path: '/student',
-    name: 'StudentInfo',
-    meta: {layout: la[3], authentication: "admin" }
-  },  
-  {
+    path: '/student',    name: 'StudentInfo',    meta: {layout: la[3], authentication: "admin" }
+  },  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/student/PersonelInfo.vue'),
-    path: '/personel',
-    name: 'PersonelInfo',
-    meta: {layout: la[3], authentication: "admin" }
-  },    
-  {
+    path: '/personel',    name: 'PersonelInfo',    meta: {layout: la[3], authentication: "admin" }
+  },  {
     component: () => import(/* webpackChunkName: "admin" */ '@/components/student/PersonelMenemonic.vue'),
-    path: '/sgrade1',
-    name: 'sgrade1',
-    meta: {layout: la[3], authentication: "admin" }
-  },    
-  {
+    path: '/sgrade1',    name: 'sgrade1',    meta: {layout: la[3], authentication: "admin" }
+  },  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/components/student/PersonelLookup.vue'),
+    path: '/sgrade2',    name: 'sgrade2',    meta: {layout: la[3], authentication: "admin" }
+  },  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/components/student/StudentLookup.vue'),
+    path: '/sgrade3',    name: 'sgrade3',    meta: {layout: la[3], authentication: "test" }
+  },  {
     component: () => import(/* webpackChunkName: "admin" */ '@/components/student/StudentClass.vue'),
-    path: '/sgrade',
-    name: 'sgrade',
-    meta: {layout: la[3], authentication: "admin" }
-  },    
-  {
+    path: '/sgrade',    name: 'sgrade',    meta: {layout: la[3], authentication: "admin" }
+  },  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewFunctions.vue'),
-    path: '/viewfunctions',
-    name: 'ViewFunctions',
-    meta: {layout: la[3], authentication: "admin" }
+    path: '/viewfunctions',    name: 'ViewFunctions',    meta: {layout: la[3], authentication: "admin" }
   },      
+  //test
   {
     path: '/nested',
     component: EmptyRouterView,
@@ -192,19 +144,20 @@ const routes = [
     meta: {layout: la[3], authentication: "public"}
   },
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/RouteTest.vue')
-    ,name: 'WernerNoParm'
-    ,path: '/werner'
+    component: () => import(/* webpackChunkName: "test" */ '@/views/Spens.vue')
+    ,name: 'SpensNoParm'
+    ,path: '/spens'
+    ,alias: '/pantry' 
     ,meta: {layout: la[3], authentication: "public"}
   },
   {
-     component: () => import(/* webpackChunkName: "test" */ '@/views/RouteTest.vue')
-    ,name: 'Werner'
-    ,path: '/werner/:id'
+     component: () => import(/* webpackChunkName: "test" */ '@/views/Spens.vue')
+    ,name: 'Spens'
+    ,path: '/spens/:id'
     ,props: true 
     ,params:{ id:33, post: "sadfpkpokepoer poker" }
     ,meta: {layout: la[3], authentication: "public"}
-    ,alias: '/smit/:id' 
+    ,alias: '/pantry/:id' 
     ,children: [
       // UserHome will be rendered inside User's <router-view>
       // when /user/:id is matched
@@ -215,7 +168,12 @@ const routes = [
         , meta: {layout: la[3], authentication: "public"}
         , params:{ rid: 120, rpost: "sdfsdfsdfsdfsdf" }
       },
-
+      { path: 'route1/studentlist'
+        , name: 'Route1'
+        , component: () => import(/* webpackChunkName: "homework" */ '@/views/student/StudentList.vue')
+        , meta: {layout: la[3], authentication: "teacher"}
+      },
+      
       // ...other sub routes
     ]
   },
@@ -232,6 +190,24 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },    
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/base/WhackAMole.vue')
+    ,name: 'game'
+    ,path: '/game'
+    ,meta: {layout: la[0], authentication: "public"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/base/baseTabAndEdit.vue')
+    ,name: 'basetabandedit'
+    ,path: '/basetabandedit'
+    ,meta: {layout: la[0], authentication: "public"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/EmailCheck.vue')
+    ,name: 'EmailCheck'
+    ,path: '/emailcheck'
+    ,meta: {layout: la[0], authentication: "public"}
+  },
+    {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
     ,name: 'ViewCampaigns'
     ,path: '/campaigns'

@@ -34,7 +34,20 @@
                   class="elevation-1"
                  color="purple lighten-3"
                  multi-sort
+                 @click:row="clickOnTableRow"
+                 @dblclick:row.prevent="doubleClickOnTableRow"                 
                 >
+                 <template v-slot:footer>
+                   <v-card class="ma-4"> 
+                    <v-card-text class="green lighten-4">
+                    Kliek op die klein ronde dingetjie om data te verander, die op en af pyl om te skuif, en die 
+                    snaakse + teken onder regs om iets by te voeg.
+                    </v-card-text>
+                   </v-card>
+                 </template>
+                 <template v-slot:[`footer.page-text`]>
+                   <v-btn icon @click="allocate()"><v-icon >mdi-table-plus</v-icon></v-btn>
+                 </template>
                 </v-data-table> 
                </div>
               </v-card>
@@ -50,7 +63,7 @@
 
 <script>
 export default {
-    name:"BaseTable",
+    name:"BaseTableEdit",
     props: ['tList', 'tHeading', 'bHeading'],
     data: () => ({
         curItem:{},
@@ -59,6 +72,17 @@ export default {
         tHeader: []      
     }),
     methods:{
+      allocate() {
+          alert('alloc')
+      },
+      clickOnTableRow(p1,p2) {
+          console.log('click = ', p1, p2)
+          this.$emit('select', p1, p2)
+      },
+      doubleClickOnTableRow(p1,p2) {
+          console.log('dblclick = ', p1, p2)
+          this.$emit('edit', p1, p2)
+      },
       buildHeaders() {
         if (!this.tList || this.tList.length == 0) {
             console.log('list not passed yet')

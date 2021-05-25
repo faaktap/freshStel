@@ -2,16 +2,12 @@
 <v-container fluid>
   <student-grade v-model="gradeClass"> 
   </student-grade>
-  
+
  <v-row>
   <v-col cols="12" v-if="studentList.length">
     <v-card color="blue" class="ma-2">
      <v-card-title>
-     <v-btn v-if="studentList.length" 
-           @click="showListPrint=true"
-           small> 
-           export 
-     </v-btn><hr>
+     <hr>
      <div class="heading text-center">{{ classListHeader }}</div>
      </v-card-title>
      <v-card-text>
@@ -46,10 +42,18 @@
         </v-row>
      </v-card-text>
   <!--   {{ studentList }} -->
+  <v-card-actions>
+     <v-btn v-if="studentList.length" 
+           @click="showListPrint=true"
+           small> 
+           export 
+     </v-btn>
+
+  </v-card-actions>
     </v-card>
+
   </v-col>
   </v-row>
-
 
 <v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
    <zml-close-button @btn-click="showListPrint = !showListPrint" />
@@ -61,7 +65,7 @@
    </v-btn> 
   </front-json-to-csv>
 </v-dialog>
-
+ 
 
 </v-container>
 </template>
@@ -88,7 +92,7 @@ export default {
         showListPrint:false,
         classListHeader:'',
     }),
-    methods:{
+    methods:{ 
       loadData(response) {
         this.classListHeader = "Student List for Class " + this.gradeClass.g + ' ' + this.gradeClass.c
         this.studentList.length = 0

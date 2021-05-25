@@ -27,8 +27,18 @@ const i= [
     {ext:'sql'  ,icon: 'mdi-database',          color:'green darken-3'},
     {ext:'com'  ,icon: 'mdi-link-box',          color:'green darken-3'},
     ]
-
-  
+ export const getIconColor = ( iconName) => {
+   console.log('geticoncolor', iconName)
+     const index = i.findIndex(p => p.icon == iconName)
+     if (index > 0 ) {
+       console.log('getcolor', i[index].color) 
+       return i[index].color
+     } else {
+      console.log('nocolor for ', iconName) 
+       return "green lighten-1"
+     }
+ } 
+ 
  export const getIcon = ( fileName) => {
    console.log('geticon', fileName)
      const ext = fileName.split('.').pop().toLowerCase()

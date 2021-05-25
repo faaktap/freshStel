@@ -29,8 +29,8 @@
                                >
          {{ btnFace }}
          <template v-slot:actions>
-           <v-btn icon @click.stop="test" >
-             <v-icon color="teal">
+           <v-btn icon @click.stop="test" > 
+             <v-icon :color="iconColor(item.icon)">
               {{ item.icon | repl}}
              </v-icon>
            </v-btn>
@@ -115,7 +115,8 @@
 <script>
 import zmlPreview from '@/components/zmlPreview.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
-import {getIcon, getFileType} from '@/api/fileUtils.js'
+import {getIconColor, getIcon, getFileType} from '@/api/fileUtils.js'
+
 export default {
     name:"zmlContentButton",
     components: {zmlPreview, zmlCloseButton},
@@ -146,12 +147,16 @@ export default {
         },
         icn : function (days) {
          //show color based on amount of days
-         if (days < 8)  return "red lighten-"+days
-         return "green"
+         if (days < 8)  return "blue darken-"+days
+         if (days < 30)  return "green"
+         return "indigo"
        },
 
     },
     methods: {
+        iconColor(iconname) {
+          return getIconColor(iconname)
+        },      
         actionlink(type)  {
             if (type == 'link') {
                 return this.item.name

@@ -15,7 +15,7 @@
       <base-drop-down  
       :disabled="getZml.subjectid && getZml.grade"
       :items="mainMenuItems" 
-       menuName="Menu"
+       :menuName="'Menu' + ' ' + getZml.subject"
        v-bind:value="mainMenuItemselected"
        v-on:input="doMainMenuStuff($event)"
        @changeIT="doMainMenuStuff($event)"
@@ -24,8 +24,11 @@
     </v-col>
     <v-col cols=8>
 
-<!-- SHOW INTERFACE FOR FOLDER LIST and OTHER ITEMS like ADD FILES-->              
-  <v-card v-if="mainMenuItemselected=='New File'" class="ma-3 pa-2" color="blue lighten-2">
+<!-- SHOW INTERFACE FOR FOLDER LIST and OTHER ITEMS like ADD FILES-->    
+  <v-card v-if="mainMenuItemselected=='New File' || folderMenuItemselected=='New File'" 
+          class="ma-3 pa-2" 
+          color="blue lighten-2"
+  >
         <v-icon> S </v-icon> elected folder : <strong>{{ folderObj.name }}</strong>
         <br>
         <i v-if="files.length == 0">You are welcome to drag your files from explorer,
@@ -470,6 +473,10 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
                    /*{title:'Empty Folder',icon:'mdi-delete'},*/
                    {title:'Delete Folder',icon:'mdi-delete-empty'},
                    {title:'Refresh Folder',icon:'mdi-database-refresh'},
+
+//                   {title:'New Link', icon:'mdi-link'},
+//                   {title:'New Text',icon:'mdi-note-text'},
+
                    ],
         folderMenuItemselected:null,                   
         folderMenuItems:[
@@ -492,7 +499,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
          v => v.length <= 20 || 'Path must be less than 80 characters',
         ],
         fileRules: [
-          value => !value || value.size < 20000000 || 'File size should be less than 20 MB!',
+          value => !value || value.size < zmlConfig.maxUploadSize  || 'File size should be less than 20 MB!',
         ],
         getZml: getters.getState({ object: "gZml" }),
         loadingAddFolder: false,
@@ -938,12 +945,14 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       uploadCancel() {
             this.myConfirm('Are you sure about cancelling the file upload process ?'
                          , null
-                         , function () {
-                             this.files = []
-                             this.loadStatus=false
-                             infoSnackbar('If this was a big file, it would be best to refresh your browser.')
-                         })
-        },
+                         , this.cancelTheUpload)
+      },
+      cancelTheUpload() {
+        this.files = []
+        this.loadStatus=false
+        console.log('WE DID Cancel!!!!!')
+        infoSnackbar('If this was a big file, it would be best to refresh your browser.')
+      },
       uploadTheFilesCheck() {
         let edit = this.fillContentDefaultFile()
         if (!edit.folder) {
@@ -1003,6 +1012,10 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
           let GR = fdet.grade.toString()
           GR = 'GR' + GR.padStart(2, '0')
           const idx = this.getZml.subjects.findIndex(ele => ele.subjectid == fdet.subjectid)
+          if (idx == -1) {
+            errorSnackbar('Error on subject: ' + fdet.subjectid + ' does not exist in our list?')
+            return
+          }
           const subjectpath = this.getZml.subjects[idx].path
          fileData.extrapath =  "/Subjects/" + GR + "/" + subjectpath + "/" + fdet.realfolder
          //console.log('EXTRAPATH = ', fileData.extrapath)
@@ -1204,6 +1217,9 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
       }
     },  
     filters:{ 
+       decimal(value) {
+            return value.toFixed(2);
+       },
        file : function (filename) {
          if (!filename) return ""
          const pieces =   filename.split('/') 

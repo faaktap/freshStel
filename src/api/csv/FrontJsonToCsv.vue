@@ -20,7 +20,7 @@
         </v-checkbox>
     </v-col>
     <v-col cols="12">
-         <v-text-field v-model="userHeader" label="Header" />
+         <v-text-field v-model="userHeader" label="ListName" />
     </v-col>
   </v-row>
   <v-row no-gutters class="mb-6" >
@@ -33,7 +33,7 @@
               :labels="finalHeading"
               :show-labels="true"
               class="d-print-none"
-              :csv-title="'Data List prepared by Kuilies Online'">
+              :csv-title="'Data List prepared by onRoute App'">
    <v-btn small class="pa-1 ma-1">
     Download this view for spreadsheet
    </v-btn> 
@@ -42,10 +42,10 @@
   </v-row>
   <v-row>
    <v-col cols="12">
-
     <v-card v-if="showMassagedData">
-     <zml-data-table :dataList="finalJsonData"
-                   :userHeader="userHeader"
+     <zml-data-table
+        :dataList="finalJsonData"
+        :userHeader="userHeader"
      />
     </v-card>
    </v-col>

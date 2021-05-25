@@ -13,7 +13,7 @@
   >  
     <v-flex v-for="item in itemList" :key="item.contentid" class="ma-1" align-self-start>
      <v-card color="grey lighten-3" min-width="150" class="pa-2">
-       <v-icon :color="chipColor(item.type)" 
+       <v-icon :color="iconColor(item.icon)" 
                 class ="mx-2"
                 title="Click to Preview"
                @click="iconClick(item);" >
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { getIconColor } from '@/api/fileUtils.js'
 export default {
     name:"GoogleDriveItems",
     props:['folderObj', 'itemList'],
@@ -53,12 +54,9 @@ export default {
             //console.log('emitting iconClic',c)
             this.$emit('iconClick',c)
         },
-        chipColor(ctype) {
-            if (ctype == 'file') return "green lighten-2"
-            if (ctype == 'link') return "orange darken-4"
-            if (ctype == 'text') return "grey lighten-5"
-            return "deep-orange accent-4"
-        },
+        iconColor(iconname) {
+          return getIconColor(iconname)
+        }
     }
 }
 </script>

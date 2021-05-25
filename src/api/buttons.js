@@ -16,6 +16,9 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task)
         case "/login": 
             return zmlReRoute(tr, task)
+        case "/emailcheck": 
+            return zmlReRoute(tr, task)
+           
         case "/profile": 
             return zmlReRoute(tr, '/login')            
         case "/nested/dialog": 
@@ -27,6 +30,7 @@ export function doStuff(tr,task) {
         case "/personel": 
         case "/campaigns": 
         case "/userlist": 
+        case "/studentlist": 
         case "/subjects":         
             return zmlReRoute(tr, task)
 

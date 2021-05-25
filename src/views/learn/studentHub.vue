@@ -49,12 +49,14 @@
 
 
 
-  <v-row>
-    <v-col xs-12 lg-12 >
+    <v-row>
+     <v-col xs-12 lg-12 >
       <v-card v-if="filter.length > 2" class="text-xs-caption font-weight-light text-justify pa-1" > 
-      <v-btn small dense v-if="filter.length > 2" class="pa-2" @click="filter='*'"> Back to folders (<v-icon small >F</v-icon>)  </v-btn>
+       <v-btn small dense v-if="filter.length > 2" class="pa-2" @click="filter='*'"> 
+         Back to folders (<v-icon small >F</v-icon>)  
+       </v-btn>
       </v-card>
-    </v-col>
+     </v-col>
     </v-row>
 
     <v-container fluid class="ma-2 mt-3" >
@@ -69,7 +71,7 @@
             <student-folder-display @btn-click="showItem(item)" :item="item" />
           </template>
  
-          <template v-else>
+           <template v-else>
            <student-item-display :btnFace="item.name" :icon="item.icon" :item="item" />
           </template>
         </v-flex>

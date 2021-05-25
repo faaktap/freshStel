@@ -42,7 +42,7 @@
             Profile 
            </v-btn>
            <v-btn v-if="getZml.login.type != 'student'" 
-                  to="/log"
+                  to="/userlist"
                   small
                   class="white--text font-weight-black"
                   > 

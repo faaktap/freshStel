@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="dataList && dataHeader" id="printMe">
+  <v-container v-if="dataList && dataHeader">
     
     <v-row>
    <v-col cols="12">
@@ -15,6 +15,7 @@
     class="elevation-1"
     disable-pagination
     hide-default-footer
+    id="printMe"
    >
    </v-data-table>       
    </v-col>
@@ -25,6 +26,7 @@
 
 <script>
 import printJS from "print-js";
+import { zDate } from '@/api/zDate.js';
 export default {
     name:"zmlDataTable",
     props: ['dataList', 'userHeader'],
@@ -51,7 +53,7 @@ export default {
           printJS({
           printable: "printMe",
           type: "html",
-          header: this.name + " kuiliesonline.co.za " + '  yyyy/mm/dd hh:mm',
+          header: this.userHeader + " ( " + zDate.format(zDate.todayNoHours(),'yyyy-MM-dd') + " )",
           headerStyle: headerStyle,
           style: style,
           scanStyles: false,
