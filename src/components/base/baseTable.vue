@@ -29,11 +29,12 @@
                  v-if="tList && tHeader.length > 0"
                  :headers="tHeader"
                  :items="tList"
-                 :items-per-page="5"
+                 :items-per-page="itemsPerPage"
                  :search="search"
                   class="elevation-1"
                  color="purple lighten-3"
                  multi-sort
+                 @click:row="clickOnTableRow"
                 >
                 </v-data-table> 
                </div>
@@ -51,7 +52,12 @@
 <script>
 export default {
     name:"BaseTable",
-    props: ['tList', 'tHeading', 'bHeading'],
+    //props: ['tList', 'tHeading', 'bHeading'],
+    props: {tList:    {}
+          , tHeading: { default:'tHeading'}
+          , bHeading: {type:String, default:'bHeading'}
+          , itemsPerPage: {type:Number, default:20}
+    },
     data: () => ({
         curItem:{},
         search:null,
@@ -59,6 +65,10 @@ export default {
         tHeader: []      
     }),
     methods:{
+      clickOnTableRow(p1) {
+          let trow = this.tList.find(ele => ele.contentid == p1.contentid)
+          this.$emit('bonga',trow)
+      },
       buildHeaders() {
         if (!this.tList || this.tList.length == 0) {
             console.log('list not passed yet')

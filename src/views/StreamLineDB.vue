@@ -81,10 +81,21 @@ export default {
                      + "where log_dte > DATE_SUB(now(), INTERVAL 31 DAY)"
                      + "group by ip  "
                      + "ORDER BY lasttme desc, times"}
+                 ,{id:3
+                 , desc:"Onnies wat laai"
+                 , workDone:WAIT
+                 , response:{}
+                 , processor:this.fourthone
+                 , sql:"SELECT p.surname,c.persid,max(update_timestamp) , count(*) "
+                     + "  FROM dkhs_lcontent c,dkhs_lperstemp p "
+                     + "where p.persid = c.persid "
+                     + "group by p.surname,c.persid "
+                     + "order by count(*)"}                     
                 ],
         rfo:{},
         rso:{},
-        rto:{},        
+        rto:{}, 
+        ron:{},
        } 
        
    }, 
@@ -146,6 +157,13 @@ export default {
                  this.getData[2].processor(this.getData[2])
              }
            }
+           if (this.getData[3].workDone == READY) {
+             if (this.getData[2].workDone == DONE) {
+                 this.getData[3].workDone = BUSY
+                 this.getData[3].processor(this.getData[3])
+             }
+           }
+           
        }  
        //Check if all is done
        console.info('RC - middle ',this.getData[0].workDone,this.getData[1].workDone,this.getData[2].workDone)
@@ -184,6 +202,11 @@ export default {
        this.rto = e.response
        e.workDone = DONE
      },
+     fourthone(e) {
+       console.log('4thone------------------------')
+       this.ronn = e.response
+       e.workDone = DONE
+     },     
    }
 }
 </script>

@@ -8,12 +8,12 @@
          </v-row>
          <base-table-edit 
                      :tList="emailStatusList" 
-                     :tHeading="'EMail Status ' + emailStatusList.length" 
+                     :tHeading="'EMail Status - Records = ' + emailStatusList.length" 
                      bHeading="How are the email doin" 
                      @edit="tableEdit"
                      @select="tableSelect"
          />
-      <v-btn @click="loadAllData"> load Data </v-btn>
+      <v-btn @click="loadAllData"> Refresh Email List </v-btn>
   </div>
 </template>
 
@@ -63,7 +63,6 @@ export default {
          console.log(item.item.deliveryid)
 
      },
-
      loadAllData() {
        this.progress = true;
        console.info('fetching in zmlFetchArray......:',this.getData.id, this.getData.desc)
@@ -71,10 +70,8 @@ export default {
                 ,task: 'PlainSql'}
        zmlFetch(ts, this.processAllData, this.loadError, this.getData);
      },
-     processAllData(response,what,queue) {
-       console.log('process All Data ....qid' , queue.id)
-       console.log('process All Data ....tgd' , this.getData.workDone)
-       console.log('process All Data ....what' , what)
+     processAllData(response,notused,queue) {
+       console.log('emc',notused, queue)
        this.getData.workDone = READY
        this.getData.response = response
        if (!this.timerHandle) {
@@ -84,12 +81,12 @@ export default {
      startTimer(duration, funcToCall) {
        let loops = 5
           this.timerHandle = setInterval(function () {
-            let x = funcToCall('dummy')
-            console.log('feedback in timer after function -- from rollcall ' , x,loops)
+            let notused = funcToCall('dummy')
             loops = loops - 1
             if (loops < 0) {
               clearInterval(this.timerHandle)
             }
+            console.log('emc',notused)
           }, duration);
      },
      rollCall() {  

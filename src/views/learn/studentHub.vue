@@ -150,14 +150,6 @@ export default {
            }
            let ts = {};
            this.contents = []
-           /*
-           ts.sql = 'SELECT *, DATEDIFF(now(), update_timestamp) days '
-                  + 'FROM dkhs_lcontent WHERE grade = ' + this.getZml.grade
-                  + ' and subjectid = ' + this.getZml.subjectid
-                  + ' and sortorder != 0'
-                  + ' order by sortorder, name';
-           ts.task = 'PlainSql';
-           */
            ts.task = 'getlcontent'
            ts.data = {}
            ts.data.subjectid = this.getZml.subjectid
@@ -247,80 +239,6 @@ export default {
          if (days < 8)  return "deep-purple accent-"+days
          return "green"
        },
-       extIcon : function (filename) {
-         if (!filename ) return "mdi-hospital-building"
-         if (filename == 'link' || filename == 'file') return "mdi-hospital-building"
-         filename = filename.toString()
-         const i= [
-               {ext:'html' ,icon: 'mdi-language-html5'},
-               {ext:'htm'  ,icon: 'mdi-language-html5'},
-               {ext:'js:'   ,icon: 'mdi-nodejs'},
-               {ext:'json' ,icon: 'mdi-code-json'},
-               {ext:'md'   ,icon: 'mdi-language-markdown'},
-               {ext:'pdf'  ,icon: 'mdi-file-pdf'},
-               {ext:'txt'  ,icon: 'mdi-file-document'},
-               {ext:'xls'  ,icon: 'mdi-file-excel'},
-               {ext:'xlsx' ,icon: 'mdi-file-excel'},
-               {ext:'doc'  ,icon: 'mdi-file-document'},
-               {ext:'docx' ,icon: 'mdi-file-document'},
-               {ext:'mp4'  ,icon: 'mdi-movie'},
-               {ext:'mpeg' ,icon: 'mdi-movie'},
-               {ext:'mpg'  ,icon: 'mdi-movie'},
-               {ext:'jpg'  ,icon: 'mdi-image'},
-               {ext:'jpeg' ,icon: 'mdi-file-image'},
-               {ext:'png'  ,icon: 'mdi-file-image'},
-               {ext:'ppt'  ,icon: 'mdi-file-powerpoint'},
-               {ext:'pptx' ,icon: 'mdi-file-powerpoint'},
-               {ext:'zip'  ,icon: 'mdi-folder-zip'},
-               {ext:'mp3'  ,icon: 'mdi-music-note'},
-               {ext:'m4a'  ,icon: 'mdi-file-music'},
-               {ext:'sql'  ,icon: 'mdi-database'},
-               ]
-         const ext = filename.substr(5).split('.').pop().toLowerCase()
-         const index = i.findIndex(p => p.ext == ext)
-         if (index >= 0 ) {
-           return i[index].icon
-         } else {
-           return "mdi-hospital-building"
-         }
-       },
-       extColor : function (filename) {
-         if (!filename ) return "mdi-hospital-building"
-         if (filename == 'link' || filename == 'file') return "mdi-hospital-building"
-         filename = filename.toString()
-         const i= [
-               {ext:'html' ,icon: 'mdi-language-html5',    color:'blue'},
-               {ext:'htm'  ,icon: 'mdi-language-html5',    color:'blue'},
-               {ext:'js:'   ,icon: 'mdi-nodejs',           color:'blue'},
-               {ext:'json' ,icon: 'mdi-code-json',         color:'blue'},
-               {ext:'md'   ,icon: 'mdi-language-markdown', color:'blue'},
-               {ext:'pdf'  ,icon: 'mdi-file-pdf',          color:'red'},
-               {ext:'txt'  ,icon: 'mdi-file-document',     color:'blue'},
-               {ext:'xls'  ,icon: 'mdi-file-excel',        color:'green'},
-               {ext:'xlsx' ,icon: 'mdi-file-excel',        color:'green'},
-               {ext:'doc'  ,icon: 'mdi-file-document',     color:'blue'},
-               {ext:'docx' ,icon: 'mdi-file-document',     color:'blue'},
-               {ext:'mp4'  ,icon: 'mdi-movie',             color:'indigo lighten-1'},
-               {ext:'mpeg' ,icon: 'mdi-movie',             color:'indigo lighten-1'},
-               {ext:'mpg'  ,icon: 'mdi-movie',             color:'indigo lighten-1'},
-               {ext:'jpg'  ,icon: 'mdi-image',             color:'purple'},
-               {ext:'jpeg' ,icon: 'mdi-file-image',        color:'green'},
-               {ext:'png'  ,icon: 'mdi-file-image',        color:'purple'},
-               {ext:'ppt'  ,icon: 'mdi-file-powerpoint',   color:'black'},
-               {ext:'pptx' ,icon: 'mdi-file-powerpoint',   color:'black'},
-               {ext:'zip'  ,icon: 'mdi-folder-zip',        color:'brown'},
-               {ext:'mp3'  ,icon: 'mdi-music-note',        color:'orange'},
-               {ext:'m4a'  ,icon: 'mdi-file-music',        color:'indigo darken-1'},
-               {ext:'sql'  ,icon: 'mdi-database',          color:'green darken-3'},
-               ]
-         const ext = filename.substr(5).split('.').pop().toLowerCase()
-         const index = i.findIndex(p => p.ext == ext)
-         if (index > 0 ) {
-           return i[index].color
-         } else {
-           return "pink"
-         }
-       }
     },
     computed: {
         filterShow() {

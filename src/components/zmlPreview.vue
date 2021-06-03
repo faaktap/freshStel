@@ -1,12 +1,14 @@
 <template>
- <v-card height="640" xmax-width="400"  color="grey lighten-3" class="text-center">
-  <v-card-title>
+ <v-card xheight="640" xmax-width="400"  
+         color="grey lighten-3" 
+         class="text-center ma-0 pa-0">
+  <v-card-title class="text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
        <v-btn  @click="launchOutside" title="Open in Browser/Download">
         <v-icon> mdi-window-open </v-icon> Open
       </v-btn>
-      <span class="mx-2">
-      Preview {{ type }} 
-      </span>
+      <div class="mx-4 text-center">
+      Preview {{ type }}
+      </div>
       <slot />
   </v-card-title>
 
@@ -40,10 +42,12 @@
   </template>
 
   <template v-if="!['movie','picture','audio'].includes(type)">
-    
-        <iframe class="ma-1 pa-1" id="iframe" width="900" height="480" title="title"
+      <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title" 
                 ref="iframe" 
                 :src="src" />
+  </template>
+  <template v-else>
+      We cannot display this file - you need to download it
   </template>
 
   </v-card-text>

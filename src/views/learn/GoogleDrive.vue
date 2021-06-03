@@ -11,7 +11,7 @@
 <!-- MAIN MENU -->    
   <v-card class="ma-1 px-2">
    <v-row>
-    <v-col cols=4>
+    <v-col cols="12" md="4">
       <base-drop-down  
       :disabled="getZml.subjectid && getZml.grade"
       :items="mainMenuItems" 
@@ -22,7 +22,7 @@
      />
     
     </v-col>
-    <v-col cols=8>
+    <v-col cols="12" md="8">
 
 <!-- SHOW INTERFACE FOR FOLDER LIST and OTHER ITEMS like ADD FILES-->    
   <v-card v-if="mainMenuItemselected=='New File' || folderMenuItemselected=='New File'" 
@@ -486,6 +486,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
                    {title:'New File', icon:'mdi-file'},
                    {title:'New Link', icon:'mdi-link'},
                    {title:'New Text',icon:'mdi-note-text'},
+                   {title:'Folder Properties',icon:'mdi-folder-key'},
                    ],
                    /*
         fileMenuItemselected:null,                   
@@ -608,6 +609,9 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
             //console.log('folder menu Item = ', e)
             this.showFolderProperties = false
             this.folderMenuItemselected = e
+            if (this.folderMenuItemselected == "Folder Properties") {
+                 this.showFolderProperties = true
+            }
             if (this.folderMenuItemselected == "New File") {
               //console.log('activeate new file')
                 this.mainMenuItemselected = this.folderMenuItemselected
@@ -725,7 +729,7 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
         },
         updateFolderName() {
            //console.log('Start rename folder ' + this.folderObj.folderid + ' to ' + this.folderObj.foldername)
-           if (this.oldFolderName == this.folderObj.name) {
+           if (this.oldFolderName == this.folderObj.description) {
                infoSnackbar('the two names are the SAME!!!!')
                return
            }
@@ -741,8 +745,9 @@ import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
            let ts = {};
            ts.data = this.folderObj
            ts.data.persid = this.getZml.login.userid
-           ts.data.oldfoldername = this.oldFolderName
+           ts.data.oldfoldername = this.folderObj.description
            ts.api = zmlConfig.apiDKHS
+           console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
            ts.task = 'renameFolder';
            this.progress = true;
            

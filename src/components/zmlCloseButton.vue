@@ -3,7 +3,7 @@
          absolute top right
          title="Click here to close"
          v-on:click="clickedIt()"
-         ><v-icon color="white">mdi-close</v-icon>
+         ><v-icon color="indigo">mdi-close</v-icon>
  </v-btn>
 </template>
 <script>

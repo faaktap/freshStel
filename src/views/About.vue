@@ -11,7 +11,7 @@
       icon=""
       func=""
   />
-
+<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
 only werner:
 <base-tool :toolList="toolList" 
             toolbarName="Name of Toolbar a bit longer than usual"
@@ -132,6 +132,7 @@ only werner:
    <zmlCloseButton @btn-click="showPicture = !showPicture"/>
  </zml-preview>
 </v-dialog> 
+</v-container>
 </div>
 </template>
 
@@ -190,7 +191,11 @@ data: () => ({
     ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
     ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/test'    ,'/sview'
     ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards', '/va/123','/awardedit','/AKandidate'
-    ,'/werner','/flex','/streamline','/expand'],        
+    ,'/werner','/flex','/streamline','/sh','/latest'
+    ,'/sgrade','/sgrade1','/sgrade2','/sgrade3'
+    ,'/ws','/game','/emailcheck','/basetabandedit'
+    ,'/loadhomework', '/studentlist'
+    ],
     randomColors:[],     
     toolList:[{name:"Button1"},{name:"button2"},{name:"button3"}],
     baseColors:[],

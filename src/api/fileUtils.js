@@ -6,7 +6,7 @@ const i= [
     {ext:'js:'   ,icon: 'mdi-nodejs',           color:'blue'},
     {ext:'json' ,icon: 'mdi-code-json',         color:'blue'},
     {ext:'md'   ,icon: 'mdi-language-markdown', color:'blue'},
-    {ext:'pdf'  ,icon: 'mdi-file-pdf',          color:'red'},
+    {ext:'pdf'  ,icon: 'mdi-file-pdf',          color:'red darken-1'},
     {ext:'txt'  ,icon: 'mdi-file-document',     color:'blue'},
     {ext:'xls'  ,icon: 'mdi-file-excel',        color:'green'},
     {ext:'xlsx' ,icon: 'mdi-file-excel',        color:'green'},
@@ -18,8 +18,8 @@ const i= [
     {ext:'jpg'  ,icon: 'mdi-image',             color:'purple'},
     {ext:'jpeg' ,icon: 'mdi-file-image',        color:'green'},
     {ext:'png'  ,icon: 'mdi-file-image',        color:'purple'},
-    {ext:'ppt'  ,icon: 'mdi-file-powerpoint',   color:'black'},
-    {ext:'pptx' ,icon: 'mdi-file-powerpoint',   color:'black'},
+    {ext:'ppt'  ,icon: 'mdi-file-powerpoint',   color:'orange darken-2'},
+    {ext:'pptx' ,icon: 'mdi-file-powerpoint',   color:'orange darken-2'},
     {ext:'zip'  ,icon: 'mdi-folder-zip',        color:'brown'},
     {ext:'mp3'  ,icon: 'mdi-music-note',        color:'orange'},
     {ext:'wav'  ,icon: 'mdi-music-note',        color:'orange'},
@@ -28,43 +28,44 @@ const i= [
     {ext:'com'  ,icon: 'mdi-link-box',          color:'green darken-3'},
     ]
  export const getIconColor = ( iconName) => {
-   console.log('geticoncolor', iconName)
+   //console.log('geticoncolor', iconName)
      const index = i.findIndex(p => p.icon == iconName)
      if (index > 0 ) {
-       console.log('getcolor', i[index].color) 
+       //console.log('getcolor', i[index].color) 
        return i[index].color
      } else {
-      console.log('nocolor for ', iconName) 
+       //console.log('nocolor for ', iconName) 
        return "green lighten-1"
      }
  } 
  
  export const getIcon = ( fileName) => {
-   console.log('geticon', fileName)
+     //console.log('geticon', fileName)
      const ext = fileName.split('.').pop().toLowerCase()
-     console.log('geticon', ext)  
+     //console.log('geticon', ext)  
      const index = i.findIndex(p => p.ext == ext)
       
      if (index > 0 ) {
-       console.log('geticon', i[index].icon) 
+       //console.log('geticon', index, i[index].icon) 
        return i[index].icon
      } else {
-      console.log('geticon', 'hospital') 
+       //console.log('geticon', 'hospital') 
        return "mdi-hospital-building"
      }
  }  
  export const getFileType = ( iconName) => {
-  console.log('getFT')
+  //console.log('getFT')
   switch (iconName) {
     case 'mdi-image': return 'picture'
     case 'mdi-movie': return 'video'
     case 'mdi-file-music' : return 'sound'
-    default :  return 'unknown'
+    case 'mdi-file-pdf' : return 'pdf'
+    default :  return 'file'
   }
 }  
 
  export const getFilenameNoExtension = ( fileName ) => {
-  console.log('getFilename')
+  //console.log('getFilename')
   const pieces =   fileName.split('.') 
   const l = pieces.length - 2
   if (l >= 0) {

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
-import MyPageView from '@/views/MyPageView'
-import zmlDialog from '@/components/zmlDialog'
+//import MyPageView from '@/views/MyPageView'
+//import zmlDialog from '@/components/zmlDialog'
 import Hover from '@/components/Hover'
 import i18nTest from '@/components/i18nTest'
 import EmptyRouterView from '@/components/EmptyRouterView'
@@ -49,7 +49,7 @@ const routes = [
     path: '/studentawards',    name: 'studentawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/StudentAwardTable.vue'),
     meta: {layout: la[1], authentication: "public" }
-  },   {
+  },  {
     path: '/awardedit',
     name: 'awardedit',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardEdit.vue'),
@@ -115,80 +115,53 @@ const routes = [
   },  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewFunctions.vue'),
     path: '/viewfunctions',    name: 'ViewFunctions',    meta: {layout: la[3], authentication: "admin" }
-  },      
-  //test
-  {
-    path: '/nested',
-    component: EmptyRouterView,
-    children: [{
-        name: 'nested',
-        path: '',
-        component: MyPageView,
-        meta: {layout: la[3]}
-    }, {
-        name: 'nested.dialog',
-        path: 'dialog',
-        meta: {layout: la[3]},
-        components: {
-            default: MyPageView,
-            dialog: zmlDialog
-        }
-    }],
-  },
-  {
+  },  {
     component: i18nTest,path: '/translate', name: 'Translate',
     meta: {layout: la[3]}
-  },
-  {
+  },  {
     component: login,path: '/login', name: 'Login',
     meta: {layout: la[3], authentication: "public"}
-  },
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/Spens.vue')
-    ,name: 'SpensNoParm'
-    ,path: '/spens'
-    ,alias: '/pantry' 
+  },  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/student/ViewStudentTestGrid.vue')
+    ,name: 'sview'
+    ,path: '/sview'
     ,meta: {layout: la[3], authentication: "public"}
-  },
-  {
-     component: () => import(/* webpackChunkName: "test" */ '@/views/Spens.vue')
-    ,name: 'Spens'
-    ,path: '/spens/:id'
-    ,props: true 
-    ,params:{ id:33, post: "sadfpkpokepoer poker" }
+  },  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/learn/WernerTest.vue')
+    ,name: 'ws'
+    ,path: '/ws'
     ,meta: {layout: la[3], authentication: "public"}
-    ,alias: '/pantry/:id' 
-    ,children: [
-      // UserHome will be rendered inside User's <router-view>
-      // when /user/:id is matched
-      { path: 'route1/:rid'
-        , name: 'Route1'
-        , props: true
-        , component: () => import(/* webpackChunkName: "test" */ '@/views/Route1.vue') 
-        , meta: {layout: la[3], authentication: "public"}
-        , params:{ rid: 120, rpost: "sdfsdfsdfsdfsdf" }
-      },
-      { path: 'route1/studentlist'
-        , name: 'Route1'
-        , component: () => import(/* webpackChunkName: "homework" */ '@/views/student/StudentList.vue')
-        , meta: {layout: la[3], authentication: "teacher"}
-      },
-      
-      // ...other sub routes
-    ]
-  },
-  {
+  },  {
     component: () => import(/* webpackChunkName: "test" */ '@/components/FlexGridStuff.vue')
     ,name: 'flex'
     ,path: '/flex'
     ,meta: {layout: la[0], authentication: "public"}
+  },  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/learn/sh.vue')
+    ,name: 'sh'
+    ,path: '/sh/:propfolder'
+    ,props: true,    params: {propfolder: 585} 
+    ,meta: {layout: la[3], authentication: "student"}
+  },  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/learn/sh.vue')
+    ,name: 'sh-nofolder'
+    ,path: '/sh'
+    ,props: true,    params: {propfolder: 585} 
+    ,meta: {layout: la[3], authentication: "student"}
+  },  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/learn/Latest.vue')
+    ,name: 'latestNoPath'
+    ,path: '/latest'
+    ,props: true,    params: {days: 5} 
+    ,meta: {layout: la[3], authentication: "student"}
   },  
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/StreamLineDB.vue')
-    ,name: 'streamline'
-    ,path: '/streamline'
-    ,meta: {layout: la[0], authentication: "public"}
-  },    
+    component: () => import(/* webpackChunkName: "test" */ '@/views/learn/Latest.vue')
+    ,name: 'latest'
+    ,path: '/latest/:days'
+    ,props: true,    params: {days: 5} 
+    ,meta: {layout: la[3], authentication: "student"}
+  },  
   {
     component: () => import(/* webpackChunkName: "test" */ '@/components/base/WhackAMole.vue')
     ,name: 'game'
@@ -201,6 +174,13 @@ const routes = [
     ,path: '/basetabandedit'
     ,meta: {layout: la[0], authentication: "public"}
   },
+  {
+    //emailheck
+    component: () => import(/* webpackChunkName: "test" */ '@/views/StreamLineDB.vue')
+    ,name: 'streamline'
+    ,path: '/streamline'
+    ,meta: {layout: la[0], authentication: "public"}
+  },      
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/EmailCheck.vue')
     ,name: 'EmailCheck'
@@ -246,12 +226,6 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },  
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/student/ViewStudentTestGrid.vue')
-    ,name: 'sview'
-    ,path: '/sview'
-    ,meta: {layout: la[3], authentication: "public"}
-  },  
-  {
     component: () => import(/* webpackChunkName: "test" */ '@/components/TextColorPicker.vue')
     ,name: 'color' 
     ,path: '/color'
@@ -268,7 +242,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: "/virtual-school/",    //This works : /zmltest/  but ./ does not work for layouts
+  base: "/vschool/",    //This works : /zmltest/  but ./ does not work for layouts
   werner: 'werner',      //see if I can add my own stuff.
   routes
 })
