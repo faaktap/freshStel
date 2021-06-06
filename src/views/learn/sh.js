@@ -24,6 +24,14 @@ export const sh = {
         zmlFetch(ts, pcallback, errorLoading)
         return "done"
     },
+    findFolder: (someText , pcallback, dataObj) => {  
+        let ts = {}
+        ts.task = 'getLContentCurrentFolder' //same as in latest (finf folder closest to contentid)
+        ts.data = dataObj
+        ts.api = zmlConfig.apiDKHS
+        zmlFetch(ts, pcallback, errorLoading)
+        return "done"
+    },
   
 }
 function errorLoading (response) {

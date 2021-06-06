@@ -34,6 +34,7 @@ import { getters } from  "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch'
 import { getIconColor } from '@/api/fileUtils.js'
+import { sh } from "@/views/learn/sh.js"
 const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
 export default {
     components: {
@@ -60,7 +61,7 @@ export default {
                 ,{ text:'Subject', value: 'shortname'}
                 ,{ text:'Grade', value: 'grade'}
                 ,{ text:'icon', value: 'icon'}
-                ,{ text:'Folder', value: 'folder'}
+                ,{ text:'Folder', value: 'displayfolder'}
                 ,{ text:'File', value: 'name'}                
                 ,{ text:'Date', value: 'update_timestamp'}
                 ,{ text:'id', value: 'contentid'}
@@ -131,11 +132,12 @@ export default {
      clickOnTableRow(p1) {
        console.log(p1)
        //   let trow = this.tList.find(ele => ele.contentid == p1.contentid)
-          let ts = {}
+          /*let ts = {}
           ts.task = 'getLContentCurrentFolder'
           ts.data = p1
           ts.api = zmlConfig.apiDKHS
-          zmlFetch(ts, this.callSH)
+          zmlFetch(ts, this.callSH)*/
+          sh.contentData('findfolder', this.callSH, p1)    
      },
      callSH(response) {
         //console.log(response)
