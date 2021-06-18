@@ -123,9 +123,9 @@ export default {
     setImage(output) {
       this.hasImage = true;
       this.image = output;
-      //console.log('Info', output.info)
-      //console.log('Exif', output.exif)
-      //console.log('All', output)
+      ////this.$cs.l('Info', output.info)
+      ////this.$cs.l('Exif', output.exif)
+      ////this.$cs.l('All', output)
     },
     doit() {
       if (!this.currentPhoto) {
@@ -136,7 +136,7 @@ export default {
       this.startVideoUpload += 1
     },
     receiveResponse(response) {
-      console.log('RESPONSE FROM videoUploader:' , response)
+      //this.$cs.l('RESPONSE FROM videoUploader:' , response)
       if (response.fileName.length > 0) {
         this.doUpdate(response.fileName)
       } else {
@@ -172,12 +172,12 @@ export default {
                     ext: "jpg"};
 
         }
-        console.log('ApplicantRegister:stuff we pass to update or add',task)
+        //this.$cs.l('ApplicantRegister:stuff we pass to update or add',task)
         zmlFetch(task,this.resultFunc);
     },
     resultFunc(result) {
         if (result.error == null || result.error == 0) {
-           console.log('result',result);
+           //this.$cs.l('result',result);
            this.$router.go(-1)
         } else {
            alert('error on saving data:' + result.error);
@@ -220,7 +220,7 @@ export default {
     },
     loadID(result) {
       //then we read from rvlselect...
-      console.log('result on LoadID = ', result)
+      //this.$cs.l('result on LoadID = ', result)
       if (!Array.isArray(result)) {
           this.$router.go(-1)
       } 

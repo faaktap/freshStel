@@ -127,7 +127,7 @@ export default {
     },    
     showHideVideo() {
        this.showVideo = !this.showVideo;
-       console.log('Showvide dialog = ', this.showVideo);
+       //this.$cs.l('Showvide dialog = ', this.showVideo);
     }
    },
   filters: {   },

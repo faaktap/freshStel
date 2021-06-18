@@ -1,19 +1,16 @@
-
 // eslint-disable-next-line
 function makeAWait(milisecs,nextProc,parm1, parm2 ,parm3) {
 let openWin = new Promise((resolve) => {
   let wagbietjie = setTimeout(() => {
     clearTimeout(wagbietjie);
-    console.log('start resolve', openWin);
- 
     resolve( nextProc(parm1,parm2, parm3 )) ;
   }, milisecs)
 })
+console.log(openWin)
 }
 
 
 function addToQueue(receivedFiles,fileList) {
-  console.log('resolve 1 was launched')
   let problemFiles = 0
   receivedFiles.forEach(file => {
     if (file.size > 92*1024*1024)  {
@@ -46,17 +43,13 @@ function addToQueue(receivedFiles,fileList) {
 }
 
 function uploadFiles(fileUploader,files,updateProgress) {
-  console.log('2nd resolve....',files)
   files.forEach(file => {
    let fr = new FileReader()
    fr.onload = function(response) {
-     //console.log('start upload(read is finished) for ' , file.name)
-     //fileUploader(response,files,file)
      makeAWait(2000,fileUploader,response, file)
    };
    fr.onerror = function(response,file) {
      console.log('res - Some Error!' ,file,response);
-     console.log(files)
    };
    fr.onprogress = updateProgress;
    fr.readAsDataURL(file);

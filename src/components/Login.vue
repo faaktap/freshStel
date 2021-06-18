@@ -187,7 +187,6 @@ export default {
   }
   ,methods: {
     getData() {
-      console.log('start backgound loading')
       zData.initialData('Load Important Data')
       zData.calendarData('Load Holiday and Birthday Data') 
       zData.functionData('Load functions') 
@@ -206,38 +205,28 @@ export default {
       this.loadLearn()
     },
     loadLearn() {
-      zData.l('LOADLEARN')
       switch (this.getZml.login.type) {
         case 'student' :
         {
-           zData.l('student route')
            if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-             zData.l('student busy route')
-             this.$router.push({ name: 'SelectGrade' 
-                         , params:{heading:"Grade"
-                         , gradeno:this.getZml.gradeLastChosen}
-                         , meta: {layout: "AppLayoutGray" }});  
+             this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }})
            } else {
-             zData.l('student fresh route')
-             this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
+             this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }})
            }
            break;
         }
         case 'teacher':
         {
-          zData.l('teacher route')
           this.$router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
           break;
         }
         case 'admin' :
         {
-          zData.l('admin route')
           this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
           break;
         }
         default:
         {
-          zData.l('default route')
           this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});  
           break;
         }
@@ -254,12 +243,12 @@ export default {
     registrationMessage() {
         infoSnackbar("Sorry! No registration from Login Form. You are already registered.")
     },
-       logout() {
-          const bye = 'Thanks for using the system ' + this.getZml.login.name + '!'
+    logout() {
+          const bye = 'Thanks for using the system ' + this.getZml.login.fullname + '!'
           infoSnackbar(bye);         
           this.getZml.login.class = ''
           this.getZml.login.grade = ''
-          this.getZml.login.name = ''
+          this.getZml.login.fullname = ''
           this.getZml.login.password = ''
           this.getZml.login.studentid = ''
           this.getZml.login.type = ''
@@ -267,8 +256,8 @@ export default {
           this.getZml.login.isAuthenticated = false;
           localStorage.removeItem('login')
           this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
-       },
-       submit() {
+    },
+    submit() {
           if (this.$refs.loginForm.validate() && this.submitting == false) {
               this.getZml.login.isAuthenticated = 0;
               this.submitting = true;
@@ -283,16 +272,16 @@ export default {
               this.loginIcon = 'mdi-emoticon-wink-outline';
               infoSnackbar("Please enter better values!");
           }
-       },
-       loginFail(error) {
-          zData.l('Login FAIL:',error);
-          this.submitting = false;                 
-          infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
-       },
-       doneWithLogin(response) {
-          this.submitting = false;
-          if (response.error == '') {
-            infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
+    },
+    loginFail(error) {
+        this.submitting = false;                 
+        infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
+    },
+    doneWithLogin(response) {
+        console.log('doneWithLogin',response)
+        this.submitting = false;
+        if (response.error == '') {
+            this.getZml.login = response;
             this.getZml.login.isAuthenticated = true;
             this.getZml.login.grade = response.grade;
             this.getZml.login.fullname = response.fullname;
@@ -305,57 +294,66 @@ export default {
             this.getZml.login.userid = response.userid ? response.userid : 0;
             this.getZml.login.logins = response.logins;
             this.getZml.login.lastdate = response.lastdate;
-            console.info('fullResp', response)
+            if (this.getZml.login.grade.indexOf('A')) {
+              this.getZml.login.lang = 'A'
+            } else {
+              this.getZml.login.lang = 'E'
+            }
+            console.log('welcome',response.username, this.getZml.login.lang)
+            this.dropAnEmail()
             if (response.added == 1  || response.password == 'password') {
               infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
               this.showProfile = 1; 
             } else {
+              infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
               let loginDetails = JSON.stringify(this.getZml.login)
               localStorage.setItem('login', loginDetails)
-              zData.l('SAVED LOGIN:', loginDetails)
               this.startLearning()
             }
           } else {
-            zData.l('failed:',response)
             errorSnackbar('Auth Failed:' + response.error)
           }
-      },
-      saveDetails() {
+    },
+    saveDetails() {
         //we need to send the stuff for an update
         const login = {
             task: 'loginupdate',
             api: zmlConfig.apiDKHS,
             data: this.getZml.login}
-        zmlFetch(login,this.doneWithUpdate);
+        zmlFetch(login,this.doneWithUpdate, this.failUpdate)
       },
-      doneWithUpdate(response) {
+    doneWithUpdate(response) {
         if (response.errorcode == 0 ) {
            infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
         } else {
            errorSnackbar('We have a problem to update your details ' + response.error)
         }
       },
-      dropAnEmail(){
-        let email = {method : "advemail" ,subject  : "User has logged on" + this.getZml.login.fullname
-                 ,email_to :"faaktap@gmail.com"
-                 ,htmlmessage : this.getZml.companyTitle + ' logged on ' 
-                         + this.getZml.login.name + '<br> ' + this.getZml.login.username
-                 ,email_cc:"",email_replyto:"",test : "yes"
-                 ,email_from : "admin@zmlrekenaars.co.za"
-                 ,trusted_user : "werner@zmlrekenaars.co.za" };
-        let apiConfig = {method: 'POST', headers: {'Accept': 'application/json'
-                         , api: zmlConfig.apiDKHS
-                         , 'Content-Type': 'application/json;charset=UTF-8'},
-              body: JSON.stringify(email)};
-        fetch(zmlConfig.emailPath, apiConfig);
-      },
+    failUpdate(response) {
+      errorSnackbar('We have a problem to update your details ' + response.errorcode)
+    },
+    dropAnEmail() {
+      let email = 
+              { subject  : "Learn1 : User has logged on " + this.getZml.login.fullname
+               ,email_to :"faaktap@gmail.com"
+               ,htmlmessage : '<h2> LEARN1 - logged on ' + zmlConfig.projectID + '</h2>'
+                       + '<br>Username : ' + this.getZml.login.username 
+                       + '<br>Fullname : ' + this.getZml.login.fullname 
+                       + '<br>Language : ' + this.getZml.login.lang
+                       + '<br>Logins : ' + this.getZml.login.logins
+                       + '<br>Phone : ' + this.getZml.login.phone
+                       + '<br>Studentid : ' + this.getZml.login.studentid
+                       + '<br>Type : ' + this.getZml.login.type  
+                       + '<br>Username : ' + this.getZml.login.username 
+                       + '<br>Userid : ' + this.getZml.login.userid
+               ,email_from : "admin@kuiliesonline.co.za"};
+      zData.sendEmail(email)
+    },
   },
   created: function() {  
-     //zData.l('created - login');
   },
   mounted: function () {
     //Check localstorage...
-    zData.l('LOGIN _ MNT - Chk LocalStore', this.$route)
     if (localStorage.getItem('login')) {
       try { 
         this.getZml.login = JSON.parse(localStorage.getItem('login'));
@@ -363,8 +361,6 @@ export default {
         localStorage.removeItem('login')
       }
     }
-    zData.l('DONE FETCH LOGIN _ MNT Auth=', this.getZml.login.isAuthenticated)
   }
 }
-
 </script>

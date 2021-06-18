@@ -22,14 +22,13 @@ export const zmlConfig = {
   apiDKHS:    "https://kuiliesonline.co.za/api/dkhs/dkhs.php",
   localPath:  "https://kuiliesonline.co.za/",
   videoPath: "https://kuiliesonline.co.za/",
+  emailPath: "https://kuiliesonline.co.za/api/swiftmailer/genMailer.php",
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectID: PROJECT_ID,
   measurementID: MEASUREMENT_ID,
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
-  cl: function (...args) {  
-    console.log(...args); 
-  },
+  cl: function (...args) {      console.log(...args);   },
   randomColor: function() {
     return Math.floor(Math.random()*16777215).toString(16)
   },
@@ -89,7 +88,7 @@ export const getContrast = function (hexcolor){
 //import { zmlConfig } from '@/api/constants.js'
 
 //------------------------------------------
-//Anyplace you want to use my console.log...
+//Anyplace you want to use my zmlConfig.cl.
 //------------------------------------------
 //import { zmlConfig } from '@/api/constants';
 //zmlConfig.cl('mount : ', this.$options.name , 'c=',this.$children.length);

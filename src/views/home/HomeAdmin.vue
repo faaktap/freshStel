@@ -145,7 +145,7 @@ export default {
            zmlFetch(ts, this.showData, this.loadError)
         },
         loadError(response) {
-            console.log(response)
+            //this.$cs.l(response)
             alert(response)
         },
         showData(response) {
@@ -168,7 +168,7 @@ export default {
         }
     },
     mounted() {
-        console.log('MOUNT ADMINHME ITEMS=',this.today,this.tomorrow)
+        //this.$cs.l('MOUNT ADMINHME ITEMS=',this.today,this.tomorrow)
         this.CallAsyncFunction()
         
     }

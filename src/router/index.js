@@ -85,6 +85,14 @@ const routes = [
     params: {currentSubjectID:'2', grade:'12'},
     meta: {layout: la[3], authentication: "learner" }
   },  {
+    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub2.vue'),
+    path: '/hub/:grade/:currentSubjectID',    
+    name: 'StudentHub2',
+    props: true,
+    params: {currentSubjectID:'2', grade:'12'},
+    meta: {layout: la[3], authentication: "learner" }
+  },  {
+    
     component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/ViewSubjects.vue')
     ,name: 'ViewSubjects'    ,path: '/subjects'  ,meta: {layout: la[0], authentication: "public"}
   },  {
@@ -249,7 +257,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from,next) => {
   console.log('R - From.name, to.name |', from.name,'|', to.name,'|', from.path,'|', to.path);
-  console.log('Auth Meta:', to.params);
+  ////this.$cs.l('Auth Meta:', to.params);
   if (to.name == from.name) {
     if (to.params && to.params == from.params){
     //do nothing
@@ -260,7 +268,7 @@ router.beforeEach((to, from,next) => {
     /*
     if (to.name == 'Home' ) {
        if (getters.getState({ object:"gZml" }).login.isAuthenticated == true) {
-            console.log('Logged in : take hime to other home')
+            //this.$cs.l('Logged in : take hime to other home')
             next({name: 'About'})
         } else {
           next();

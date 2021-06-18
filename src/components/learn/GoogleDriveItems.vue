@@ -47,11 +47,9 @@ export default {
     props:['folderObj', 'itemList'],
     methods:{
         contentProperties(c) {
-            //console.log('emitting contentP',c)
             this.$emit('contentProperties',c)
         },
         iconClick(c) {
-            //console.log('emitting iconClic',c)
             this.$emit('iconClick',c)
         },
         iconColor(iconname) {

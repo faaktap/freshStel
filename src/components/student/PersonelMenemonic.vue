@@ -57,12 +57,10 @@ export default {
         this.personelList = response
       },
       loadError(response) {
-        console.log('error on fetch', response)
         alert('P.M.' + response)
       },        
      },
     mounted() { 
-        console.log('MNT PM')
         if (this.personelList.length == 0) {
            let ts = {}
            ts.task = 'PlainSql'
@@ -74,8 +72,7 @@ export default {
     },
     watch: {
       personelList() {
-        console.log('Watch pList', this.personelList)
-       }
+      }
     }
 }
 </script>

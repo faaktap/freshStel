@@ -143,7 +143,7 @@ import snackBarTest from '@/components/snackBarTest';
 import ContactForm from "@/components/ContactForm";
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection.vue"
-import {halloWorld,test} from "./About.js"
+import {halloWorld} from "./About.js"
 import zmlPreview from '@/components/zmlPreview.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
 import zmlContentButton from '@/components/zmlContentButton.vue'
@@ -208,7 +208,6 @@ computed: {
 },
 methods: {
   listenToToolbar(e) {
-    console.log(e)
     alert(e)
   },
   addTopDeleteBottom() {
@@ -224,10 +223,8 @@ methods: {
   },
   shuffle() {
       //this.menuItems = _.shuffle(this.menuItems);
-      console.log(this.menuItems)
       this.menuItems = this.shuffledArr(this.menuItems);
       this.menuItems.push({title:"New Title " +  Math.floor(Math.random() * (100 + 1)), icon: "mdi-delete"})
-      console.log(this.menuItems)
     },
   shuffledArr(arr){
     const newArr = arr.slice()
@@ -247,18 +244,15 @@ methods: {
 
   IDs(value) {
     if (value.data == 'undefined') return;
-    console.log('ID = ' , value);
     this.studentIDs = value;
   },
   studentFound(value) {
     if (value.data == 'undefined') return;
-    console.log(value.data);
     this.studentList = value;
   },
   ss() {
      infoSnackbar('Hello from snackbar in About.vue!','cyan');
      alert( halloWorld)
-     console.log( test )
   },
   confirm() {
     this.$root.$confirm("Heading for User to Read"
@@ -274,7 +268,6 @@ mounted: function() {
   for (let i=0 ; i<40 ; i++) {
      this.randomColors[i] = this.anyColor()
   }
-  console.log(this.randomColors)
 }
 
 }

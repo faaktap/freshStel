@@ -1,15 +1,14 @@
 <template>
 <div>
-<v-row  justify="center" class="fill-height" align="stretch">
-   <v-col>
-    <v-hover v-slot:default="{ hover }">
+ <v-row  justify="center" class="fill-height" align="stretch">
+  <v-col>
+   <v-hover v-slot:default="{ hover }">
     <v-card max-width=300 max-height="200"
             :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
             class= "ma-2"
             color="deep-purple lighten-5"
             >
-
       <v-card-title class="text-h3-md wordbreak" align="center" > 
           {{ item.name }} 
       </v-card-title> 
@@ -52,7 +51,6 @@ export default {
     },
     methods:{
         subject(xx) {
-          console.log('selected item :' ,xx)
           this.getZml.grade = xx.gid
           this.getZml.subject = xx.name
           this.getZml.subjectid = xx.id

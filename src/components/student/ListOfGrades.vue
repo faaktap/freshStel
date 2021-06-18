@@ -66,7 +66,6 @@ export default {
             return "light-blue darken-2"
         },
         doit(e) {
-            console.log('doit - data received: e=', e)
             this.$emit('input', {g: e.grade,c: e.gclass} )  //send it into v-model on parent...
             this.$emit('chosen') //tell parent something was selected
         },        
@@ -90,7 +89,6 @@ export default {
         },
     },
     mounted: function() {
-        console.log('MNT L.O.G : ',this.gradeList.length)
         if (this.gradeList.length == 0) {
             this.initiateLoad()
         }

@@ -11,7 +11,6 @@
        flat
        :loading="loading"
     >
-        <v-btn icon @click="checkChange"> R </v-btn>
         <v-btn
         icon
         class="ma-2"
@@ -29,16 +28,10 @@
             Today
           </v-btn>
 
-          <v-toolbar-title v-if="$refs.calendar">
-            {{ $refs.calendar.title }}
-          </v-toolbar-title>
+          <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title>
           <v-spacer />
-   {{ studentGradeClass }}
-        <v-spacer />
-        <v-btn icon
-               class="ma-2"
-              @click="$refs.calendar.next()"
-        >
+          <v-spacer />
+        <v-btn icon class="ma-2"  @click="$refs.calendar.next()" >
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
     </v-toolbar>
@@ -99,21 +92,6 @@
               <span v-if="selectedEvent" v-html="selectedEvent.details"></span>
               <v-text-field v-model="pStudentGradeClass" label="Student Class" />
             </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="loadRooster"
-              > load </v-btn>
-
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-menu>
 
@@ -158,15 +136,11 @@ export default {
       pStudentGradeClass: ''
   }),
   methods:{
-      checkChange() {
-        if (this.$refs.calendar)  this.$refs.calendar.checkChange()
-      },
       updateRange(whatweget) {
          console.info('Range Check', whatweget)
          
       },
       loadCalendar() {
-        //console.log('Load getZml.calendar to our event array')
         this.getZml.calendar.forEach(ele => {
           if (ele.start) {
              const evt= {name: ele.name
@@ -184,7 +158,6 @@ export default {
         return "done"
       },
       loadRooster(){
-        //console.log('ShowLoadRooster')
         this.selectedOpen = false
         this.pStudentGradeClass = this.studentGradeClass
         if (this.pStudentGradeClass == '') this.pStudentGradeClass = 'GR10A1';
@@ -204,9 +177,6 @@ export default {
 
         }
 
-        
-
-        //console.log('fetch for:', this.pStudentGradeClass)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = "SELECT * FROM rooster WHERE " 
@@ -221,7 +191,6 @@ export default {
                + "or day9 like '%" + this.pStudentGradeClass + "%'"
                + "or day10 like '%" + this.pStudentGradeClass + "%'"
                + "or day11 like '%" + this.pStudentGradeClass + "%'";
-        //console.log(ts.sql)       
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
         zmlFetch(ts, this.afterRoosterSelect);   
@@ -234,11 +203,9 @@ export default {
       },
       subjectColor(subjectShortName) {
         let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )  
-        //console.log('SubColor=', colorObj , subjectShortName)
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
-          //console.log('we have a problem with : ', subjectShortName)
           return "amber darken-2"
         }
       },
@@ -247,24 +214,18 @@ export default {
         //Get this week's first "day", monday is 1.
         if (this.getZml.calendar.length==0) {
           alert('our calendar seem to be empty?')
-        } else {
-          console.log(`we have ${this.getZml.calendar.length} entries in our calendar`)
         }
         let template = zDate.todayNoHours()
         template = zDate.gotoMonday(template)
-        //console.log('monday is : ' , template)
         //Go back one more day (to Sunday)
         template.setDate(template.getDate() - 1);
-        //console.log('sunday is : ' , template)
         for (let t=0; t < 7; t++) {
            template = zDate.addOneDay(template)
-           //console.log('day to work with is : ' , template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal => 
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
            )
            if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
-           //console.log('Found calendar entry ', sday)
            response.forEach(ele => {
              let n = ''
              
@@ -281,7 +242,6 @@ export default {
                case 'day10':n = ele.day10; break
              }
              if (n && n.includes(this.pStudentGradeClass)) {
-               //console.log(n.includes(this.pStudentGradeClass) , ele)
                let hm = {}
                this.getPeriodStartTime(hm,ele,template)
                let lines = n.split(/\n/);
@@ -296,8 +256,6 @@ export default {
                      , details: n
                  }
                this.events.push( evt )
-             } else {
-                 console.log('ignored:' , n)
              }
            })
         }
@@ -309,16 +267,13 @@ export default {
 
       },
       showEvent ({ nativeEvent, event }) {
-        //console.log('start show event')
         const open = () => {
           this.selectedEvent = event
           this.selectedElement = nativeEvent.target
-          console.log('ShowEventbef:',this.selectedEvent, this.selectedElement, this.selectedOpen)
           setTimeout(() => {
             this.selectedOpen = true
           }, 10)
         }
-        //console.log('ShowEvent:',this.selectedEvent, this.selectedElement, this.selectedOpen)
         if (this.selectedOpen) {
           this.selectedOpen = false
           setTimeout(open, 10)
@@ -358,7 +313,6 @@ export default {
        rinseRepeat() {
          this.activateCalendar()
          if (!this.calReady) {
-          console.log('hanging around for cal..calReady=',this.calReady)
           setTimeout(() => { this.rinseRepeat() }, 4000)
          }
       }       
@@ -372,7 +326,6 @@ export default {
       },
     },     
   mounted () {
-      console.log('MOUNT Test Cal')
       zData.initialData('Load Subject Data')
       zData.calendarData('Load Calendar Data')
       //this.events = [] //let's keep old events for now...
@@ -388,7 +341,6 @@ export default {
   watch: {
     pStudentGradeClass() {
         /*
-      console.log('new one : ', this.studentGradeClass)
       zData.calendarData('Load Calendar Data')
       this.loadRooster()
       */

@@ -28,33 +28,24 @@ const i= [
     {ext:'com'  ,icon: 'mdi-link-box',          color:'green darken-3'},
     ]
  export const getIconColor = ( iconName) => {
-   //console.log('geticoncolor', iconName)
      const index = i.findIndex(p => p.icon == iconName)
      if (index > 0 ) {
-       //console.log('getcolor', i[index].color) 
        return i[index].color
      } else {
-       //console.log('nocolor for ', iconName) 
        return "green lighten-1"
      }
  } 
  
  export const getIcon = ( fileName) => {
-     //console.log('geticon', fileName)
      const ext = fileName.split('.').pop().toLowerCase()
-     //console.log('geticon', ext)  
      const index = i.findIndex(p => p.ext == ext)
-      
      if (index > 0 ) {
-       //console.log('geticon', index, i[index].icon) 
        return i[index].icon
      } else {
-       //console.log('geticon', 'hospital') 
        return "mdi-hospital-building"
      }
  }  
  export const getFileType = ( iconName) => {
-  //console.log('getFT')
   switch (iconName) {
     case 'mdi-image': return 'picture'
     case 'mdi-movie': return 'video'
@@ -65,7 +56,6 @@ const i= [
 }  
 
  export const getFilenameNoExtension = ( fileName ) => {
-  //console.log('getFilename')
   const pieces =   fileName.split('.') 
   const l = pieces.length - 2
   if (l >= 0) {

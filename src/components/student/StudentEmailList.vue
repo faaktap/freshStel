@@ -46,7 +46,6 @@ export default {
         zmlFetch(sl, this.processAfterFetch); 
       },
       processAfterFetch(response) {
-          console.log(response)
           if (!response.error) {
              this.emailList = response
           }
@@ -54,12 +53,8 @@ export default {
 
     },
     mounted: function() {
-        console.log('SEL : Mount')
         if (this.studentList) {
-           console.log('SEL : ', this.studentList.data.studentid)
            this.getEmails()
-        } else {
-           console.log('SEL : NoName')
         }
     },
     watch: {

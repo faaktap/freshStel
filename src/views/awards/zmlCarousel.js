@@ -2,7 +2,7 @@ const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
 let timerHandle = null
 
 function loadAllData(getData) {
-       console.log('loadAllData')
+       //this.$cs.l('loadAllData')
        getData.forEach(ele => {
          let ts = {sql: ele.sql, task: 'PlainSql'}
          zmlFetch(ts, processAllData, loadError, ele);
@@ -10,7 +10,7 @@ function loadAllData(getData) {
 }
 
 function processAllData(response,task,queue) {
-       console.log('process data got called for ', task, queue.id)
+       //this.$cs.l('process data got called for ', task, queue.id)
        getData[queue.id].workDone = READY
        getData[queue.id].response = response
        if (!timerHandle) {
@@ -51,10 +51,10 @@ function rollCall() {
 function startTimer(duration, funcToCall) {
        let loops = 3
           this.timerHandle = setInterval(function () {
-            //console.log('timer ropecall started')
+            ////this.$cs.l('timer ropecall started')
             //display.textContent = minutes + ":" + seconds;
             let x = funcToCall('dummy')
-            console.log('feedback after function -- from rollcall ' , x, loops)
+            //this.$cs.l('feedback after function -- from rollcall ' , x, loops)
             if (--loops < 0) {
               clearInterval(this.timerHandle)
             }

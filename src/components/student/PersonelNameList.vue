@@ -149,7 +149,6 @@ export default {
         
       },
       afterUpload(response) {
-        console.log('Finished with staff Update, you could do a refresh?',response)
         if (response.error) {
            alert(response.error)  
         } else {
@@ -162,7 +161,6 @@ export default {
     },
    watch:{
       staffList: function() {
-          console.log('WATCHWATCHWATCHWATCHWATCHWATCHWATCHWATCH - staffList')
           this.jsonList = []
           this.staffList.forEach(ele => {
               this.jsonList.push(ele.data)
@@ -170,7 +168,6 @@ export default {
       }
    },
     mounted: function() {
-      console.log('PNL : Mounted')
       if (this.staffList) {
           this.jsonList = []
           this.staffList.forEach(ele => {

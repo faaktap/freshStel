@@ -48,15 +48,12 @@ export default {
    },
    mounted: function () {
     if (this.cols.length < 4) {  this.buildIt() }
-    console.log('size of cols = ', this.cols)
     this.what = this.cols.find(item => item == this.initialValue)
-    console.log('found: ', this.what)
    },
    watch: { 
     initialValue() {
        if (this.cols.length < 4) {  this.buildIt() }
        this.what = this.cols.find(item => item.id == this.initialValue)
-       console.log('found in watch : ', this.what)
     }
    }
 }

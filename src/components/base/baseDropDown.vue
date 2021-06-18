@@ -48,28 +48,23 @@
           //Note, it is IMPORTANT to know what is emitted by your dropdown.
           //In this case, "change" worked - but it might be different for other components.
           doClick(e) {
-              this.$cs.l('do click',e)
               this.$emit('input', e)
           },
           doFocus(e) {
-              this.$cs.l('do focus',e)
               this.$emit('input', e)
           },
           doInput(e) {
-              this.$cs.l('do input',e)
               this.$emit('input', e)
           },
           doChange(selectedItem,$event) {
-             console.log(this.$cs);
+              console.log(selectedItem)
               if ($event > -1) {
                 selectedItem = $event
-                this.$cs.l('emit Input from baseDropDown ', selectedItem, $event, this.items[$event].title)
                 this.$emit('input', this.items[$event].title)
                 this.prevSel = $event
                 this.selectedItem = null
                 selectedItem = null
               } else {
-                this.$cs.l('not emitting ', $event)
                 this.$emit('input', this.items[this.prevSel].title)
               }
           }
@@ -80,7 +75,7 @@
       /*
       watch:{
           selectedItem(n,o){
-              console.log('wath: new=', o, 'old=',n)
+              //this.$cs.l('wath: new=', o, 'old=',n)
               if (o != n && this.items[n].title) {
                   this.$emit('input', this.items[n].title)
               }

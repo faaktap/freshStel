@@ -136,12 +136,10 @@ export default {
     methods: {
       IDs(value) {
         if (value.data == 'undefined') return;
-        console.log('IDs = ' , value);
         alert('ids' + this.currentListID)
       },
       studentFound(value) {
          if (value.data == 'undefined') return;
-         console.log('SF (student id received) = ', value.data.studentid);
          this.saveStudentinList(value.data.studentid, this.currentListID)
       },
       activateAddStudent(listID) {
@@ -208,7 +206,6 @@ export default {
         zmlFetch(ts, this.loadData, this.errorLoading);
       },
       showListData(listID) {
-        console.log('Show List Data ', listID)
         this.currentListID = listID
         this.loadListData()
       },
@@ -228,12 +225,10 @@ export default {
                + "   AND l.classlistid = " + this.currentListID
                + " ORDER BY s.surname, s.firstname"
         ts.api = zmlConfig.apiDKHS
-        console.log(ts.sql)
         zmlFetch(ts, this.displayListData, this.errorLoading);          
       },
       displayListData(response) {
         this.studentClassList = response
-        console.log('We are DONE loading a list', this.currentListID, this.studentClassList.length)
       },
       loadData() {
         let ts = {}
@@ -254,27 +249,22 @@ export default {
         zmlFetch(ts, this.showData, this.errorLoading);          
       },
       showData(payload) {
-         console.log(payload)
          this.classList = []
          if (payload.error && payload.error.substr(0, 7) == 'no rows') {
-             console.log('no data found')
              return
          }
          this.classList = payload
       },
       errorLoading(response) {
         alert('We had an error loading your data!' + response)
-        console.log('We had an error loading your data!',response)
       }
     },
     mounted() {
-        console.log('start ons class lists creations')
         this.loadData();
 
     },
     watch: {
-      currentOne(i,b) {
-        console.log(i,b,this.currentOne)
+      currentOne() {
         this.currentListID = null
         this.studentClassList.length = 0
       }

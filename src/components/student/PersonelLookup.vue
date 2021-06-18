@@ -31,12 +31,10 @@ export default {
   }),
   mounted() { 
       //this.list = this.somedefaults;
-      console.log('PL MOUNTED')
    },
 
   computed: {
     searchText() {
-      //console.log('method:searchText');
       return this.list[0] || ''
     },
     itemDisplay() {
@@ -53,7 +51,6 @@ export default {
          if (this.list.length > 0) {
              found = this.list.findIndex(elem => elem.desc.substring(0,pSrch.length) === pSrch);
          }
-         console.log('loadnew : ', pSrch, found);
          if (found < 1) {
            this.loadingItems = true;
            this.loadOurListWithNewValues(pSrch);

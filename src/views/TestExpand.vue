@@ -61,37 +61,27 @@ export default {
     filters:{ },
     methods: {
         test() {
-          console.log('clicked on TEST : ')
           alert('test')
         },
         blur(b) {
-            console.log('blur')
            if (b.expand) b.expand[0] = false
         },
         doSomething() {
             this.expandStatus = []
         },
         expandAll(value) {
-           console.log('expand/contractAll', value, this.expandStatus)
            if (value == 'expand') {
                this.expandStatus = [...Array(this.buttons).keys()].map((k, i) => i)
            } else {
                this.expandStatus = []
            }
-           console.log('DONE expand/contractAll', value, this.expandStatus)
         },
 
     },
     mounted: function () {
-        console.log('EXP Mounted')
 
     },
     watch: {
-        /*
-        buttons:function(o,n) {
-            console.log(o,n, this.buttons)
-        }
-        */
     }
 
 }

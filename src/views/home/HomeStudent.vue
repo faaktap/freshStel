@@ -1,43 +1,35 @@
 <template>
 <div>
-
 <v-toolbar color="primary">
-    <v-toolbar-title> 
-      <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
-       <div>
-         Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
-       </div>
-       <div>
-        <v-btn   small 
-         absolute top right
-         color="blue-grey"
-         class="ma-2 white--text"
-         title="Click here to refresh"  @click="loadFunctions"> Refresh </v-btn>
-       </div>
-      </div>
-    </v-toolbar-title>
+    <v-card color="primary" width="100%" class="pa-3">
+    <div class="float-left">
+         Available options for :
+    </div>
+    <div class="float-right">
+         {{ getZml.login.fullname}} / G{{ getZml.login.grade }}{{ getZml.login.gclass }}
+    </div>
+    </v-card>
 </v-toolbar>
- 
-<v-row> <v-col cols="12">
+<v-row> 
+ <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
     <v-expansion-panel>
-     <v-expansion-panel-header>
+     <v-expansion-panel-header expand-icon="mdi-calendar">
         Calendar (Click here to view your day!)
      </v-expansion-panel-header>
     <v-expansion-panel-content>
-        <v-row><v-col cols="12">
-        <!--student-grade v-model="gradeToShow" @click="showCal=true" /-->
-        </v-col><!--v-col cols="2">
-        <v-btn small @click="showCal = !showCal"> 
-          <template v-if="!showCal">Show Calendar</template>
-          <template v-else>Hide Calendar </template>
-        </v-btn>
-        </v-col-->
-        </v-row>
       <calendar-student v-if="gradeToShow.c" v-show="showCal" 
                :weekOrDay="weekOrDay" 
                :studentGradeClass="gradeToShow.g + gradeToShow.c" />
     </v-expansion-panel-content>
+    </v-expansion-panel>
+    <v-expansion-panel>
+        <v-expansion-panel-header expand-icon="mdi-menu">
+            Menu Option
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+            some content
+        </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
 </v-col>
@@ -66,14 +58,13 @@ import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList';
 import MenuList from '@/components/MenuList';
 import CalendarStudent from '@/components/CalendarStudent';
-//import StudentGrade from '@/components/student/StudentGrade';
 export default {
     name:"StudentHome",
     components:{
           EmailList
         , MenuList
         , CalendarStudent
-//        , StudentGrade
+        //, StudentGrade
         },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -130,7 +121,7 @@ export default {
            zmlFetch(ts, this.showData, this.loadError)
         },
         loadError(response) {
-            console.log(response)
+            //this.$cs.l(response)
             alert(response)
         },
         showData(response) {
@@ -138,10 +129,12 @@ export default {
         }
     },
     mounted: function() {
-        console.log('MOUNT ADMINHME', this.getZml)
-        this.gradeToShow.g = this.getZml.login.grade.substr(0,3)
-        this.gradeToShow.c = this.getZml.login.grade.substr(3,2)
-        this.loadFunctions();
+        //this.$cs.l('MOUNT STUDENTHME', this.getZml)
+        this.gradeToShow.g = 'G' + this.getZml.login.grade
+        this.gradeToShow.c = this.getZml.login.gclass
+        this.showCal = true;
+        this.loadFunctions()
+        
     }
 }
 </script>

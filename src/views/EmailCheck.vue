@@ -56,11 +56,9 @@ export default {
    methods: {
      tableEdit(evt,item) {
          console.log('back at base - Edit:',item.item, evt)
-         console.log(item.item.deliveryid)
      },
      tableSelect(evt,item) {
          console.log('back at base - select:',item.item, evt)
-         console.log(item.item.deliveryid)
 
      },
      loadAllData() {
@@ -81,12 +79,11 @@ export default {
      startTimer(duration, funcToCall) {
        let loops = 5
           this.timerHandle = setInterval(function () {
-            let notused = funcToCall('dummy')
+            funcToCall('dummy')
             loops = loops - 1
             if (loops < 0) {
               clearInterval(this.timerHandle)
             }
-            console.log('emc',notused)
           }, duration);
      },
      rollCall() {  
@@ -98,9 +95,7 @@ export default {
         }
        //Check if all is done
        if (this.getData.workDone == DONE)  {
-           console.log('We are done with all, reset back to wait, and clear response')
            this.getData.workDone = WAIT 
-           console.log('Stop the timer interval:', this.timerHandle)
            if (this.timerHandle) {
                clearInterval(this.timerHandle) 
                this.timerHandle = null
@@ -111,10 +106,8 @@ export default {
         return "not used here"
      },
      loadEmailStatus(e) {
-       console.log('firstone------------------------', e)
        this.emailStatusList = e.response
        e.workDone = DONE
-       console.log('firstone------------------------end', e)
      },
    }
 }

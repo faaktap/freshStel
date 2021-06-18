@@ -282,7 +282,7 @@ import { zData } from "@/api/zGetBackgroundData.js"
       folderFilter() {
         let tempT = []
         if (this.getZml.folders.length == 0) {
-          console.log('folders are ZERO LENGTH')
+          //this.$cs.l('folders are ZERO LENGTH')
           return ['temp']
         }
         let ignore = false
@@ -330,14 +330,14 @@ import { zData } from "@/api/zGetBackgroundData.js"
         this.getZml.folders = response
       },
       errorAddFolder(response){
-          console.log('AddFolderError:',response);
+          //this.$cs.l('AddFolderError:',response);
           errorSnackbar('On Add Folder Error: ' + response)
       },
       
 
 //Upload a file - and then save the data      
       upload(nextProc,curItem) {
-         console.log('file0 = ' , this.files[0])
+         //this.$cs.l('file0 = ' , this.files[0])
          this.loadStatus = true;
          let fr = new FileReader()
          fr.onload = function(response) {
@@ -362,7 +362,7 @@ import { zData } from "@/api/zGetBackgroundData.js"
          fileData.base64 = fileData.target.result.split(',')[1];
          fileData.size = fileData.total
          fileData.api = zmlConfig.apiUpload; 
-         console.log('start upload with ', fileData);
+         //this.$cs.l('start upload with ', fileData);
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
       },    
       doneWithUpload(response) {
@@ -387,7 +387,7 @@ import { zData } from "@/api/zGetBackgroundData.js"
            this.$root.$confirm("Delete previous file?", "If you press YES,the old file will be <b>unlinked (gone)</b>", { color: 'red' })
               .then((confirm) => {
                 if (confirm) { 
-                  console.log('old file will be overwritten')
+                  //this.$cs.l('old file will be overwritten')
                 } else {
                   this.files = []
                   return
@@ -396,7 +396,7 @@ import { zData } from "@/api/zGetBackgroundData.js"
         }
         [...lfiles].forEach(file => {
             this.files.push(file);
-            console.log(this.files)
+            //this.$cs.l(this.files)
         });
         if (this.files.length > 1) {
           infoSnackbar ('we only want one file! - try again...')
@@ -573,7 +573,7 @@ import { zData } from "@/api/zGetBackgroundData.js"
     mounted: function () {
         zmlConfig.cl('Mount:Edit-2-package');
         //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
-        console.log('MOUNT VL : ', this.getZml.login)
+        //this.$cs.l('MOUNT VL : ', this.getZml.login)
         if (this.getZml.login.type != 'student' && this.getZml.login.isAuthenticated) {
           if (this.getZml.subjects.length == 0) {
              zData.initialData('hallo')

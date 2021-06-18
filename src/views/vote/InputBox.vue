@@ -40,8 +40,7 @@ export default {
         }            
     },
     watch: {
-      value: function(newValue, oldValue) {
-         console.log('watcher-dialog1 new,old MODAL',newValue, oldValue);
+      value: function() {
        },
   }          
 };

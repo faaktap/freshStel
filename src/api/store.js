@@ -9,11 +9,23 @@ import Vue from 'vue';
 //getZml.subjects = id,name, subjectid,sortorder,shortname,path,description,beskrywing,linksubjectid,picture
 const state = Vue.observable({
     gZml: {login: {isAuthenticated: 0
-                  , grade:8, type:'guest'
-                  , fullname:'', phone:'', email:''
-                  , username:''  , userid:'', persid:''
+                  , grade:8
+                  , type:'guest'
+                  , class:2
+                  , gclass:'E7'
+                  , schoolno:0
+                  , lang:'E'
+                  , fullname:''
+                  , surname:''
+                  , firstname:''
+                  , phone:''
+                  , email:''
+                  , username:''
+                  , userid:''
+                  , persid:''
                   , menemonic:''
-                  , lastdate:'', login:''},
+                  , lastdate:''
+                  , login:''},
            store: {totalItems: 0},
            grade: '',
            grades:[{id:8 ,text: "G08",name: 'Grade 8'} ,{id:9 ,text: "G09",name: 'Grade 9'}
@@ -34,7 +46,6 @@ const state = Vue.observable({
 
 const mutations = {
   setState({ object, objectPath, value, upsert = false } = {}) {
-    console.log("setState args: ", { object, objectPath, value, upsert });
     if (state[object] === undefined || value === undefined)
       console.error("setState: Invalid Object or Value");
     if (objectPath === undefined) state[object] = value;

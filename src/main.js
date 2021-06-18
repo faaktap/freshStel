@@ -14,6 +14,12 @@ Vue.config.productionTip = false
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
 
+
+window.onerror = function(message, url, lineNumber) {  
+  alert(message + lineNumber + url)
+  return true;
+}; 
+
 import VueHtmlToPaper from 'vue-html-to-paper';
 const paperOptions = {
   name: '_blank',
@@ -40,7 +46,7 @@ Vue.prototype.$playSound = (path, volume = .5) => {
 export const cs = {
   // eslint-disable-next-line
   l: (...args) => {   
-    // console.log(...args);   
+     console.log(...args);   
     }
 }
 

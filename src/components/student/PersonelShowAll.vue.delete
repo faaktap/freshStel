@@ -42,7 +42,7 @@ methods: {
 
 },
 mounted: function () {
-    console.log('PSA MOUNTED Max=')
+
 }
 
 }

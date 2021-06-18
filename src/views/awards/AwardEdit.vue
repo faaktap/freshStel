@@ -165,7 +165,7 @@ import StudentLookup from '@/components/student/StudentLookup'
     },
     methods: {
       test(info){
-        console.log('test', info)
+        //this.$cs.l('test', info)
         this.studentFound = info.data
       },
         getSubject(i)  {
@@ -257,7 +257,7 @@ import StudentLookup from '@/components/student/StudentLookup'
           this.allStories = response;
         },
         storyFilter(storymainid){
-          console.log('set storyFilter to : ', storymainid)
+          //this.$cs.l('set storyFilter to : ', storymainid)
           this.chapterFilter = storymainid
         },
 

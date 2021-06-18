@@ -49,7 +49,6 @@ export default {
     },
     methods:{
         subject(xx) {
-          console.log('selected item :' ,xx)
           this.getZml.grade = xx.gid
           this.getZml.subject = xx.name
           this.getZml.subjectid = xx.id

@@ -1,10 +1,13 @@
 <template>
   <v-app id="app">
+  
    <AppLayout> 
     <v-container fluid>
+    
       <!--transition name="fade" mode="out-in"-->
         <router-view/> 
       <!--/transition-->
+      
     <v-snackbar
       top centered
       :color="snackbarColor"
@@ -18,11 +21,11 @@
           v-bind="attrs"  @click="snackbar = false"
         >Close</v-btn>
       </template>
-
     </v-snackbar>
-    <!-- color="deep-purple accent-4" -->
+    
     </v-container>
-   </AppLayout>     
+   </AppLayout>   
+   
     <confirm ref="confirm"></confirm>   
   </v-app>
 </template>
@@ -56,12 +59,10 @@ export default {
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open
-    console.log(this.$root.$confirm);
 
     EventBus.$on(ACTIONS.SNACKBAR, (message, color) => {
         this.snackbarMessage = message;
         if (color) {
-           console.log('kleur = ', color);
            this.snackbarColor = color
         }
         this.snackbar = true;

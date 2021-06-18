@@ -252,7 +252,7 @@ import { getters } from "@/api/store";
         fileMethod(fileItem,operation) {
            if (operation == 1) {
              //Update filename on server...
-             console.log(fileItem);
+             //this.$cs.l(fileItem);
              if (fileItem.name != fileItem.sameName) {
                //There was a change
                //alert('changeing filename to ' + fileItem.sameName);
@@ -270,11 +270,11 @@ import { getters } from "@/api/store";
 
         },
         operationDone(response) {
-          console.log('operationDone:' , response);
+          //this.$cs.l('operationDone:' , response);
           alert('operationDone:' + response);
         },
         operationError(response) {
-          console.log('operationError:' , response);
+          //this.$cs.l('operationError:' , response);
           alert('operationError:' + response);
         },        
         onItemClick(item) {
@@ -286,18 +286,17 @@ import { getters } from "@/api/store";
         },
         viewCurrent() {
           this.someHref = this.curItem.href;
-          console.log('viewCurrent : ' ,this.curItem.name, this.someHref);
+          //this.$cs.l('viewCurrent : ' ,this.curItem.name, this.someHref);
         },
         viewCurrentMaximize() {
           this.maximizeRoute = this.curItem.href;  
         },
         openMe(p) {
-            //alert('poem ' + p.name);
-            console.log('OpenMe : ', p.name, p.file, p.iets);
+            this.$cs.l('OpenMe : ', p.name, p.file, p.iets);
             this.localShowFile = true;
         },
         showSubjects(item) {
-          console.log('showSubjects : ' , item.subjectdesc);
+          //this.$cs.l('showSubjects : ' , item.subjectdesc);
           if (item.subjectdesc == 'Imported') { 
             alert('Nothing loaded here yet');
             return;
@@ -339,15 +338,15 @@ import { getters } from "@/api/store";
           */
          this.folderItems = response;
           this.folderItems.sort((a,b) => a.name.localeCompare(b.name));
-          console.log(this.folderItems);
+          //this.$cs.l(this.folderItems);
         },
         loadSubjects(response) {
-          console.log('Subjects : ', response)
+          //this.$cs.l('Subjects : ', response)
           this.getZml.subjects = response
           this.loadFresh()
         },
         loadError(error) {
-          console.log(error);
+          //this.$cs.l(error);
           alert('Nothing loaded yet (possibly) - error : ' + error);
         },
         onOpen(items) {
@@ -396,7 +395,7 @@ import { getters } from "@/api/store";
       },      
     },
     mounted: function () {
-      console.log('TR:mounted - zml:');
+      //this.$cs.l('TR:mounted - zml:');
       if (this.getZml.subjects.length > 2) {
         this.loadFresh
       } else {
@@ -407,7 +406,7 @@ import { getters } from "@/api/store";
     /*folderItems: {
       handler: function (n,o) {
         if (n.length == o.length) {
-          console.log('folderItems Changed : ', n.length, o.length);
+          //this.$cs.l('folderItems Changed : ', n.length, o.length);
           this.nameChanges += 1;
           }
       },

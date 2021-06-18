@@ -35,7 +35,6 @@ name: "PlatformEdit",
       mes(s) { console.log(s) }
     },
     mounted:  function () {
-        console.log ('WE MOUNTED COMPEDUT')
     }
 }
 </script>

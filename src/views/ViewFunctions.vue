@@ -153,7 +153,6 @@ export default {
         zmlFetch(ts, this.loadFunctions, this.loadError)
       },
       editFunc(value) {
-        console.log(value)
         this.f = value
         this.showFunctionUpdate = !this.showFunctionUpdate
       },
@@ -188,7 +187,6 @@ export default {
            zmlFetch(ts, this.showData, this.loadError)
       },
       loadError(response) {
-            console.log(response)
             alert(response)
       },
       showData(response) {
@@ -196,10 +194,8 @@ export default {
       }
     },
     activated:function() {
-        console.log('ACTVI ADMINHME')
     },
     mounted: function() {
-        console.log('MOUNT ADMINHME ITEMS=')
         this.loadFunctions()
     }
 }

@@ -34,10 +34,6 @@ export default {
     name:"StudentNameCard",
     props: ['studentList'],
     mounted: function() {
-        console.log('SNC : Mounted')
-        if (this.studentList) {   
-           console.log('SNC : ', this.studentList.data.studentid)
-        }
     }
 }
 </script>

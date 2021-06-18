@@ -112,12 +112,7 @@ export default {
       workarea:['Finance','Admin','Teacher','Support','Graadhoof','Ontvangs','Sport'],
    }),
     mounted: function() {
-    //    console.log('PNC : Mounted')
-        if (this.personelRecord) {   
-    //       console.log('PNC : ', this.personelRecord)
-        } else {
-    //       console.log('PNC : NoName')
-        }
+      
     },
     methods:{
       updatePersonel() {

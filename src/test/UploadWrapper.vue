@@ -165,7 +165,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
       }
     },
     mounted: function() {
-      console.log('Mount UploadWrapper')
+      
     },
     watch:{
      inputFiles(n) {

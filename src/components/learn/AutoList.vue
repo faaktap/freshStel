@@ -43,12 +43,10 @@ export default {
   methods: {
   },
   watch: {
-    what(v) {
-      console.log("watch what", v);  
-        this.$emit("dataEntered", this.what);
+    what() {
+       this.$emit("dataEntered", this.what);
     },
     search(n, o) {
-      console.log("watch search", n, o);
       // at some point search is set to null
       // reset it to the old value
       if (n === null) this.search = o;

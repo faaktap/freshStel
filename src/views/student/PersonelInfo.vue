@@ -120,17 +120,17 @@ export default {
     this.showAddPhoto = true
   },
   personelFound(value) {
-    console.log('personel found and emitted : ', value)
+    //this.$cs.l('personel found and emitted : ', value)
     if (!value) return;
     if (!value.data) return;
-    console.log('pList = ' , value.data);
+    //this.$cs.l('pList = ' , value.data);
     this.personelRec = value;
   },
   ss() {
     infoSnackbar('hallo')
   },
   uploadedFilename(filename) {
-    console.log(filename)
+    //this.$cs.l(filename)
     //Update dkhs_personel with new name...
     let ts = {};
     ts.task = 'PlainSql';
@@ -164,7 +164,7 @@ export default {
 
  },
  mounted: function () {
-    console.log('PINF MOUNTED Max=', zmlConfig.maxUploadSize)
+    //this.$cs.l('PINF MOUNTED Max=', zmlConfig.maxUploadSize)
     this.loadPersonelList()
  }
 }

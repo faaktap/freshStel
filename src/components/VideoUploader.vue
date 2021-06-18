@@ -127,7 +127,6 @@ import { infoSnackbar } from '@/api/GlobalActions';
         await makeAWait(1000,uploadFiles,this.startUpload, this.files, this.progressProg)
       },
       progressProg(data) {
-          //console.log('received data from progress : ', data)
           if (data.lengthComputable) {    
                 this.sofarSize += data.loaded
                 this.progressBar = parseInt( ((this.sofarSize / this.totalSize) * 100), 10 );
@@ -145,12 +144,10 @@ import { infoSnackbar } from '@/api/GlobalActions';
          trans.size = fileData.total
          trans.api = zmlConfig.apiUpload; 
          trans.task = 'upload'; 
-         console.log('start ZmlFetch:',trans)
          zmlFetch(trans,this.doneWithUpload, this.errorWithUpload)
       },
       doneWithUpload(response) {
         if (response.filename == 'undefined') {
-           console.log('Done with upload - but filename is missing?' , response  )
            return
         }
         this.$emit('fileUploaded', response)
@@ -160,14 +157,12 @@ import { infoSnackbar } from '@/api/GlobalActions';
         for (let i = this.files.length - 1; i >= 0 ; i--) {
             if (response.filename == this.files[i].name)  {
               this.files.splice(i,1);
-              console.log('Done with ',  response.filename)
             }
         }
         if (this.files.length == 0) {
            this.busy = false
            this.progressItems = []
         }
-        console.log('files left ', this.files.length)
       },
       errorWithUpload(response){
           console.log("UPLOAD ERROR : ", response)

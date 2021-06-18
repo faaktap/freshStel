@@ -20,22 +20,25 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
         fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
         .then(response => {
             if (!response.ok) {
+                zmlConfig.cl('FETCH--------------: thow response not ok error ',task.task,response.statusText)
                 throw Error(response.statusText)
             }
             return response.json()
         })  
         .then(responseAsJson => { 
-           //console.log('here we can decompress if return is gzipped, or we can do local callback to save globals?')
+           //here we can decompress if return is gzipped, or we can do local callback to save globals?
+           zmlConfig.cl('FETCH--------------: after fetch callback for ',task.task)
            if (callback) callback(responseAsJson,task,extraParameter ?? 'none')
-           //console.log('ZF: after fetch callback for ',task.task)
         })
         .catch(err => {
             if ( typeof errcallback === 'undefined') {
-                console.log('we have no error callback on this call', err, task.task)
+                //('we have no error callback on this call', err, task.task)
+                zmlConfig.cl('FETCH--------------catch with no callback',task.task,err)
             } else {
+                zmlConfig.cl('FETCH--------------catch with errcallback',task.task,err)
                 errcallback(err)                
             }
-            console.log('ZF: Errorname : ',task.task , 'Error:' , err);
+            //('ZF: Errorname : ',task.task , 'Error:' , err);
         });
     }
 

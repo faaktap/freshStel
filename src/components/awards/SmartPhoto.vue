@@ -100,7 +100,6 @@ export default {
                 this.title.substr(0,3).toUpperCase() == 'HOO') {
               let s = this.randomSound()
               this.$playSound(s,0.15)
-              console.log('SmartPhoto - observer alert & play sound...', this.title , entry )
             }
           }
         },      
@@ -114,7 +113,6 @@ export default {
     watch: {
     },
     mounted: function() {
-      console.log('SmartPhotoA : ')
       if (this.photoPath === undefined) {
         this.photoPath = null 
       }

@@ -104,7 +104,7 @@ export default {
     },
     computed: {
       subjectsFilter() {
-        this.$cs.l('subjectFilter',this.kies, this.latest.length, this.content.length)
+        //this.$cs.l('subjectFilter',this.kies, this.latest.length, this.content.length)
          if (this.kies == '') {
            if (this.search.length > 2 ) {
              //do the search
@@ -125,7 +125,7 @@ export default {
          let selectedData = [...this.content].filter(o => {
            return o.gid == filterObj.gid;
             });     
-         this.$cs.l('size now..', selectedData.length)
+         //this.$cs.l('size now..', selectedData.length)
          if (this.search.length < 2 ) {
            //make it only updated here...
            return(selectedData)
@@ -154,12 +154,12 @@ export default {
         response.forEach(ele => {
           this.latest.push(ele)
         })
-        this.$cs.l('Done with latest', this.latest.length, response)
+        //this.$cs.l('Done with latest', this.latest.length, response)
         this.doLoadSubjects()
       },
       goTo(where) {
         this.kies = where;
-        this.$cs.l('GO----TO',where)
+        //this.$cs.l('GO----TO',where)
         this.getZml.grade = where
         router.push({ name: 'SelectGrade'  
                     , params:{heading:"Grade", gradeno:where }
@@ -171,7 +171,7 @@ export default {
                      , meta: {layout: "AppLayoutGray" }})
       },
       doLoadSubjects() {
-        this.$cs.l('loading subjects', this.latest.length)
+        //this.$cs.l('loading subjects', this.latest.length)
         this.getZml.grades.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
              if (sub.subjectid > 0 && sub.subjectid < 400) {
@@ -184,9 +184,9 @@ export default {
                   if (this.latest.length) {
                     let idx = this.latest.findIndex(x => 
                     x.id == obj.id && grp.id == x.grade
-                    //console.log(`xx = $(x.id) == $(obj.id) && $(grp.id) == $(x.grade)`)
+                    ////this.$cs.l(`xx = $(x.id) == $(obj.id) && $(grp.id) == $(x.grade)`)
                     )
-                    this.$cs.l(idx)
+                    //this.$cs.l(idx)
                     if (idx != -1) this.content.push(obj)
                   } else {
                     this.content.push(obj)
@@ -202,16 +202,16 @@ export default {
           infoSnackbar("No Data to display - Have you logged in?");
           return;
         }
-        this.$cs.l('What is heading????', this.heading)
+        //this.$cs.l('What is heading????', this.heading)
         if (this.heading == "Grade") {
-            this.$cs.l('We have a grade!')
-            this.$cs.l('load latest changes and subjects..')
+            //this.$cs.l('We have a grade!')
+            //this.$cs.l('load latest changes and subjects..')
             this.loadLatestChangesOnSubjects()
         } else {
             this.getZml.login.gradeLastChosen = this.getZml.grade;
             let loginDetails = JSON.stringify(this.getZml.login)
             localStorage.setItem('login', loginDetails);
-            this.$cs.l('PUSH FOR PLATFORM!!!')
+            //this.$cs.l('PUSH FOR PLATFORM!!!')
             router.push({name:'StudentHub' 
                        ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                        ,meta: {layout: "AppLayoutGray" }})
@@ -223,7 +223,7 @@ export default {
                        ,meta: {layout: "AppLayoutGray" }})
             */
         }
-        this.$cs.l('MAT: Mounted')
+        //this.$cs.l('MAT: Mounted')
     },
     watch: { 
     }

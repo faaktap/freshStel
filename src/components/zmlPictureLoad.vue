@@ -66,16 +66,13 @@ export default {
          fileData.base64 = fileData.dataUrl.split(',')[1];
          fileData.size = fileData.dataUrl.length
          fileData.api = zmlConfig.apiUpload; 
-         console.log('start upload with ', fileData);
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
       }, 
       errorWithUpload(error) {
-         console.log('Error on upload ' , error)
-         alert('an error happened on upload of file')
+         alert('an error happened on upload of file' + error.error)
          this.loadStatus = false;
       },
       doneWithUpload(response) {
-         console.log('Done with upload ' , response.filename  )
          this.$emit('file-saved',response.filename)
          this.loadStatus = false;
       },

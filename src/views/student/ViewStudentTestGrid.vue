@@ -1,23 +1,19 @@
 <template>
 <div ref="myref">
+<v-container fluid>
 <v-row>
- <v-col cols="6">    
-  <v-text-field v-model="getZml.subjectid" label="subjectid" />
+ <v-col cols="12" sm="6">
+  <grade-display-short displaySize="medium" />
  </v-col>
- <v-col cols="6">
-   <h3> Subject Display Short </h3>
-   <subject-display-short /> Subject : {{ getZml.subjectid}}
+ <v-col cols="12" sm="6">
+   <subject-display-short />
 </v-col>
-<v-col cols="6">
-    <h3>Subject Display 2 </h3>
-</v-col>
-<v-col cols="6">
-    <h3>Subject Display 3 </h3>
-</v-col>
+</v-row>
+</v-container>
+
+
+<v-row>
 <v-col>
-  <h3> Grade Display Short </h3>
-  <grade-display-short displaySize="medium" /> Grade : {{ getZml.grade}} 
-</v-col><v-col>
   <h4>Folder Select </h4>
     <folder-select grade=8 
                    subjectid=10 
@@ -27,12 +23,14 @@
 </v-col>
 </v-row>
 
-<v-btn @click="showFolders = !showFolders"    > Show Folders </v-btn>
-
-<v-row>
- <v-col cols=12>
-  <h1> Showing Folder List (v-dialog) front-json-to-csv</h1>
-  <v-dialog v-model="showFolders" color="light-blue">
+<v-expansion-panels>
+ <v-expansion-panel>    
+  <v-expansion-panel-header>
+     <v-btn @click="showFolders = !showFolders"    > Show Folders </v-btn>
+  </v-expansion-panel-header>
+  <v-expansion-panel-content>
+   <h1> Showing Folder List (v-dialog)</h1>
+   <v-window v-show="showFolders==true" color="light-blue">
     <front-json-to-csv v-if="folders"
                    :json-data="contentFolders"
                    :csv-title="'My Test csv title'">
@@ -40,9 +38,11 @@
       Download with custom title
      </v-btn> 
     </front-json-to-csv>
-  </v-dialog>
- </v-col>
-</v-row>
+   </v-window>
+  </v-expansion-panel-content>
+ </v-expansion-panel>
+</v-expansion-panels>
+
 <v-row>
  <v-col cols="12">
  <h1> Display Student Content </h1>
@@ -96,6 +96,7 @@ import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import FolderSelect from '@/components/learn/FolderSelect.vue'
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort.vue'
 import GradeDisplayShort from '@/components/learn/GradeDisplayShort.vue'
+import { zData } from "@/api/zGetBackgroundData.js"
 export default {
 name: "ViewStudentTestGrid",
 props:{},
@@ -127,10 +128,10 @@ methods:{
         alert('select folder ' + f)
     },
     showRefs() {
-        console.log(this.$refs)
+        //this.$cs.l(this.$refs)
         let componentHTML = this.$el.innerHTML
         console.log(componentHTML)
-        console.log(this.$refs.myref.innerHTML)
+        //this.$cs.l(this.$refs.myref.innerHTML)
     },
     loadContent() {
           zmlFetch({task: 'getfolders',api: zmlConfig.apiDKHS}, this.afterFolders);
@@ -169,6 +170,7 @@ computed:{
       },
 },
 mounted: function() {
+       zData.initialData('Load Subject Data')
        this.getZml.grade = 8
        this.getZml.subjectid = 10    
        this.loadContent()

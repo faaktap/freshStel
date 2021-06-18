@@ -89,10 +89,8 @@ export default {
       },
       buildHeaders() {
         if (!this.tList || this.tList.length == 0) {
-            console.log('list not passed yet')
             return
         }
-        console.log('bTable = BuildHeaders')
         this.tableLoading = true
         this.tHeader = []
         Object.keys(this.tList[0]).forEach(name => {
@@ -100,12 +98,10 @@ export default {
                  { text:name.charAt(0).toUpperCase() + name.slice(1)
                  , value: name} )
         })
-        console.log('HEADERS : ', this.tHeader)
         this.tableLoading = false
       },
     },
     mounted: function() {
-        console.log('BTable : Mount')
         this.buildHeaders()
     },
     watch: {

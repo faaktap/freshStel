@@ -38,9 +38,7 @@ export default {
         }
     },
     mounted: function() {
-        console.log('SSC : Mounted')
         if (this.studentList && this.studentList.data.studentid) {   
-           console.log('SNC : ', this.studentList.data.studentid)
            this.loadStudentSubject()
         }
     }

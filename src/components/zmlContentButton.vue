@@ -57,7 +57,6 @@ export default {
     }),    
     filters:{
         repl(value) { 
-            console.log(value)
             if (value == '') {
                 return "mdi-coffee"
             }

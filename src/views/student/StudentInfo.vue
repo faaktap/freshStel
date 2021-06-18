@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
+//import { zmlConfig } from '@/api/constants';
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection"
@@ -87,12 +87,12 @@ data: () => ({
 methods: {
   IDs(value) {
     if (value.data == 'undefined') return;
-    console.log('ID = ' , value);
+    //this.$cs.l('ID = ' , value);
     this.studentIDs = value;
   },
   studentFound(value) {
     if (value.data == 'undefined') return;
-    console.log(value.data);
+    //this.$cs.l(value.data);
     this.studentList = value;
   },
   ss() {
@@ -100,7 +100,7 @@ methods: {
   }
 },
 mounted: function () {
-    console.log('SINF MOUNTED', zmlConfig.maxUploadSize)
+    //this.$cs.l('SINF MOUNTED', zmlConfig.maxUploadSize)
 }
 
 }

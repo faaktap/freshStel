@@ -1,26 +1,26 @@
 <template>
-  <v-container v-if="dataList && dataHeader">
-    
-    <v-row>
-   <v-col cols="12">
-     
-     <div class="heading text-center"> 
-       <v-btn small class="pa-1 ma-1" @click="printIt"> print </v-btn> {{ userHeader }}   </div>
-   </v-col>
-   <v-col cols="12">
+ <div v-if="dataList && dataHeader">
+   <v-row no-gutters class="mb-6" >
+    <v-col cols="12" class="heading-2 text-center"> 
+      <v-card class="pa-2"  color="blue" >
+          VIEWER :  {{ userHeader }}  
+      </v-card>
+    </v-col>
+   </v-row>
+
+  <v-card class="ma-2">
    <v-data-table
     :headers="dataHeader"
     :items="dataList"
     :items-per-page="45"
-    class="elevation-1"
+    class="elevation-2"
     disable-pagination
     hide-default-footer
     id="printMe"
    >
    </v-data-table>       
-   </v-col>
-   </v-row>
-  </v-container>   
+ </v-card>
+ </div>   
 </template>
 
 
@@ -29,7 +29,7 @@ import printJS from "print-js";
 import { zDate } from '@/api/zDate.js';
 export default {
     name:"zmlDataTable",
-    props: ['dataList', 'userHeader'],
+    props: ['dataList', 'userHeader','doPrint'],
     data: () => ({
         dataHeader: [
           {text: 'User',             value: 'user_name' },
@@ -51,19 +51,19 @@ export default {
           "@page { margin-top: 10px } @media print { h1 { color: blue },heading { color: blue } }";
         const headerStyle = "align:center;";
           printJS({
-          printable: "printMe",
-          type: "html",
-          header: this.userHeader + " ( " + zDate.format(zDate.todayNoHours(),'yyyy-MM-dd') + " )",
-          headerStyle: headerStyle,
-          style: style,
-          scanStyles: false,
-          onPrintDialogClose: () => console.log("The print dialog was closed"),
-          onError: e => console.log(e)
+           printable: "printMe",
+           type: "html",
+           header: this.userHeader + " ( " + zDate.format(zDate.todayNoHours(),'yyyy-MM-dd') + " )",
+           headerStyle: headerStyle,
+           style: style,
+           scanStyles: false,
+           onPrintDialogClose: () => console.log("The print dialog was closed"),
+           onError: e => console.log(e)
           });
 
 /*  Other way of printing the data....        
             // Get HTML to print from element
-            console.log(this.$refs)
+            (this.$refs)
             let prtHtml = '<table style="border-collapse: collapse">'
 
             prtHtml += '<tr>'
@@ -80,13 +80,11 @@ export default {
                 prtHtml += '</tr>'
             })
             prtHtml += '</table>'
-            console.log(prtHtml)
             // Get all stylesheets HTML
             let stylesHtml = ''
             for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
               stylesHtml += node.outerHTML;
             }
-            console.log(stylesHtml)
             // Open the print window
             const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
             
@@ -115,16 +113,28 @@ export default {
             } else {
                 return 0
             }
+        },
+        objectLength() {
+            if (this.dataList && this.dataList.length) {
+                return Object.entries(this.dataList[0])
+            } else {
+                return 0
+            }
         }
+
     },
     mounted: function() {
-        console.log('LOG : Mount')
         this.reBuildHeaders()
     },
     watch: {
-        listLength (val, oldVal) {
-            console.log(val,oldVal)
-            this.reBuildHeaders()
+        listLength () {
+          this.reBuildHeaders()
+        },
+        objectLength () {
+          this.reBuildHeaders()
+        },
+        doPrint () {
+          if (this.doPrint > 0) this.printIt()
         }
     }
 }

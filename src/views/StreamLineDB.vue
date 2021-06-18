@@ -111,7 +111,7 @@ export default {
        })
      },
      processAllData(response,what,queue) {
-       console.log('process All Data ....' , queue.id,this.getData[queue.id].workDone,what)
+       console.log(what)
        this.getData[queue.id].workDone = READY
        this.getData[queue.id].response = response
        if (!this.timerHandle) {
@@ -121,8 +121,7 @@ export default {
      startTimer(duration, funcToCall) {
        let loops = 5
           this.timerHandle = setInterval(function () {
-            let x = funcToCall('dummy')
-            console.log('feedback in timer after function -- from rollcall ' , x,loops)
+            funcToCall('dummy')
             loops = loops - 1
             if (loops < 0) {
               clearInterval(this.timerHandle)
@@ -132,7 +131,6 @@ export default {
      rollCall() {  
        console.info('Start of RC ',this.getData[0].workDone,this.getData[1].workDone,this.getData[2].workDone)
        if (this.dataSequence == false) {
-           console.log('RC Any Sequence')
             this.getData.forEach(work => {
               if (work.workDone == READY) {
                   work.workDone = BUSY
@@ -140,7 +138,6 @@ export default {
                }
            })
        } else {
-           console.log('RC SPECIFIC Sequence')
            if (this.getData[0].workDone == READY) {
               this.getData[0].workDone = BUSY
               this.getData[0].processor(this.getData[0])
@@ -171,13 +168,11 @@ export default {
        if (this.getData[0].workDone == DONE 
         && this.getData[1].workDone == DONE  
         && this.getData[2].workDone == DONE )  {
-           console.log('We are done with all, reset back to wait, and clear response')
            this.getData.forEach(ele => {
              ele.workDone = WAIT 
              // do not delte response, we should be able to use it from here...
              //ele.response = ''
            })
-           console.log('Stop the timer interval:', this.timerHandle)
            if (this.timerHandle) {
                clearInterval(this.timerHandle) 
                this.timerHandle = null
@@ -188,22 +183,18 @@ export default {
         return "not used here"
      },
      firstone(e) {
-         console.log('firstone------------------------')
        this.rfo = e.response
        e.workDone = DONE
      },
      secondone(e) {
-         console.log('secondone---------------------')
        this.rso = e.response
        e.workDone = DONE
      },
      thirdone(e) {
-         console.log('thirdone------------------------')
        this.rto = e.response
        e.workDone = DONE
      },
      fourthone(e) {
-       console.log('4thone------------------------')
        this.ronn = e.response
        e.workDone = DONE
      },     

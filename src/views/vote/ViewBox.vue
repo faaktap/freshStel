@@ -62,8 +62,7 @@ export default {
         }            
     },
     watch: {
-      vCardTitle: function(newValue, oldValue) {
-         console.log('ViewBox:new,old',newValue, oldValue);
+      vCardTitle: function() {
        },
   }          
 };

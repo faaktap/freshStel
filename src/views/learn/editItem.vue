@@ -148,7 +148,7 @@ import { getters } from "@/api/store";
             }
         },
         loadSubjects(response) {
-            console.log(response);
+            //this.$cs.l(response);
             this.getZml.subjects = response;
         },
         loadData() {
@@ -160,7 +160,7 @@ import { getters } from "@/api/store";
            zmlFetch(ts, this.showData);
         },
         showSubjects(item) {
-          console.log('showSubjects : ' , item);
+          this.$cs.l('showSubjects : ' , item);
         }
 
     },

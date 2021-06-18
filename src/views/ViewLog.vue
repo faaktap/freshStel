@@ -128,7 +128,7 @@ export default {
       onButtonClick(todo,data) {
         this.showPasswordChange = true
         this.curItem = data
-        console.log(data)
+        //this.$cs.l(data)
       },
       getLogs() {
         this.tableLoading = true
@@ -177,7 +177,7 @@ group by u.userid,u.user_name, l.user, u.user_fullname, user_type, user_grade, u
 
     },
     mounted: function() {
-        console.log('LOG : Mount')
+        //this.$cs.l('LOG : Mount')
         this.getLogs()
     },
     watch: {

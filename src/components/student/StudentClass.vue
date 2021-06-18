@@ -118,7 +118,6 @@ export default {
         this.studentList.push(obj)
       },
       loadError(response) {
-        console.log('error on fetch', response)
         alert('S.C.' + response)
       },  
       classListLoad(gc) {
@@ -140,11 +139,10 @@ export default {
         alert('show the full student info for ' + sid)
       }
      },
-    mounted() { console.log('MNT StCL') 
+    mounted() {
     },
     watch: {
       gradeClass() {
-        console.log('Watch gradeclass', this.gradeClass)
         if (this.gradeClass) {
           this.classListLoad(this.gradeClass)
         }

@@ -396,7 +396,7 @@ function getImageData(img, callback) {
     fileReader = new FileReader()
     fileReader.onload = function(e) {
       // eslint-disable-next-line
-      if (debug) console.log('Got file of length ' + e.target.result.byteLength)
+      if (debug) //this.$cs.l('Got file of length ' , e.target.result.byteLength)
       handleBinaryFile(e.target.result)
     }
 
@@ -408,10 +408,10 @@ function findEXIFinJPEG(file) {
   var dataView = new DataView(file)
 
   // eslint-disable-next-line
-  if (debug) console.log('Got file of length ' + file.byteLength)
+  if (debug) //this.$cs.l('Got file of length ' , file.byteLength)
   if (dataView.getUint8(0) != 0xff || dataView.getUint8(1) != 0xd8) {
     // eslint-disable-next-line
-    if (debug) console.log('Not a valid JPEG')
+    if (debug) //this.$cs.l('Not a valid JPEG')
     return false // not a valid jpeg
   }
 
@@ -422,20 +422,20 @@ function findEXIFinJPEG(file) {
   while (offset < length) {
     if (dataView.getUint8(offset) != 0xff) {
       // eslint-disable-next-line
-      if (debug) console.log('Not a valid marker at offset ' + offset + ', found: ' + dataView.getUint8(offset))
+      if (debug) //this.$cs.l('Not a valid marker at offset ' , offset , ', found: ' , dataView.getUint8(offset))
       return false // not a valid marker, something is wrong
     }
 
     marker = dataView.getUint8(offset + 1)
     // eslint-disable-next-line
-    if (debug) console.log(marker)
+    if (debug) //this.$cs.l(marker)
 
     // we could implement handling for other markers here,
     // but we're only looking for 0xFFE1 for EXIF data
 
     if (marker == 225) {
       // eslint-disable-next-line
-      if (debug) console.log('Found 0xFFE1 marker')
+      if (debug) //this.$cs.l('Found 0xFFE1 marker')
 
       return readEXIFData(dataView, offset + 4, dataView.getUint16(offset + 2) - 2)
 
@@ -449,10 +449,10 @@ function findEXIFinJPEG(file) {
 function findIPTCinJPEG(file) {
   var dataView = new DataView(file)
   // eslint-disable-next-line
-  if (debug) console.log('Got file of length ' + file.byteLength)
+  if (debug) //this.$cs.l('Got file of length ' , file.byteLength)
   if (dataView.getUint8(0) != 0xff || dataView.getUint8(1) != 0xd8) {
     // eslint-disable-next-line
-    if (debug) console.log('Not a valid JPEG')
+    if (debug) //this.$cs.l('Not a valid JPEG')
     return false // not a valid jpeg
   }
 
@@ -534,7 +534,7 @@ function readTags(file, tiffStart, dirStart, strings, bigEnd) {
     entryOffset = dirStart + i * 12 + 2
     tag = strings[file.getUint16(entryOffset, !bigEnd)]
     // eslint-disable-next-line
-    if (!tag && debug) console.log('Unknown tag: ' + file.getUint16(entryOffset, !bigEnd))
+    if (!tag && debug) //this.$cs.l('Unknown tag: ' , file.getUint16(entryOffset, !bigEnd))
     tags[tag] = readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd)
   }
   return tags
@@ -656,14 +656,14 @@ function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd) {
   var IFD1OffsetPointer = getNextIFDOffset(dataView, tiffStart + firstIFDOffset, bigEnd)
 
   if (!IFD1OffsetPointer) {
-    // console.log('******** IFD1Offset is empty, image thumb not found ********');
+    // //this.$cs.l('******** IFD1Offset is empty, image thumb not found ********');
     return {}
   } else if (IFD1OffsetPointer > dataView.byteLength) {
     // this should not happen
-    // console.log('******** IFD1Offset is outside the bounds of the DataView ********');
+    // //this.$cs.l('******** IFD1Offset is outside the bounds of the DataView ********');
     return {}
   }
-  // console.log('*******  thumbnail IFD offset (IFD1) is: %s', IFD1OffsetPointer);
+  // //this.$cs.l('*******  thumbnail IFD offset (IFD1) is: %s', IFD1OffsetPointer);
 
   var thumbTags = readTags(dataView, tiffStart, tiffStart + IFD1OffsetPointer, IFD1Tags, bigEnd)
 
@@ -676,11 +676,11 @@ function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd) {
   // JPEG format and 160x120pixels of size are recommended thumbnail format for Exif2.1 or later.
 
   if (thumbTags['Compression']) {
-    // console.log('Thumbnail image found!');
+    // //this.$cs.l('Thumbnail image found!');
 
     switch (thumbTags['Compression']) {
       case 6:
-        // console.log('Thumbnail image format is JPEG');
+        // //this.$cs.l('Thumbnail image format is JPEG');
         if (thumbTags.JpegIFOffset && thumbTags.JpegIFByteCount) {
           // extract the thumbnail
           var tOffset = tiffStart + thumbTags.JpegIFOffset
@@ -714,7 +714,7 @@ function getStringFromDB(buffer, start, length) {
 function readEXIFData(file, start) {
   if (getStringFromDB(file, start, 4) != 'Exif') {
     // eslint-disable-next-line
-    if (debug) console.log('Not valid EXIF data! ' + getStringFromDB(file, start, 4))
+    if (debug) //this.$cs.l('Not valid EXIF data! ' , getStringFromDB(file, start, 4))
     return false
   }
 
@@ -732,13 +732,13 @@ function readEXIFData(file, start) {
     bigEnd = true
   } else {
     // eslint-disable-next-line
-    if (debug) console.log('Not valid TIFF data! (no 0x4949 or 0x4D4D)')
+    if (debug) //this.$cs.l('Not valid TIFF data! (no 0x4949 or 0x4D4D)')
     return false
   }
 
   if (file.getUint16(tiffOffset + 2, !bigEnd) != 0x002a) {
     // eslint-disable-next-line
-    if (debug) console.log('Not valid TIFF data! (no 0x002A)')
+    if (debug) //this.$cs.l('Not valid TIFF data! (no 0x002A)')
     return false
   }
 
@@ -746,7 +746,7 @@ function readEXIFData(file, start) {
 
   if (firstIFDOffset < 0x00000008) {
     // eslint-disable-next-line
-    if (debug) console.log('Not valid TIFF data! (First offset less than 8)', file.getUint32(tiffOffset + 4, !bigEnd))
+    if (debug) //this.$cs.l('Not valid TIFF data! (First offset less than 8)', file.getUint32(tiffOffset + 4, !bigEnd))
     return false
   }
 

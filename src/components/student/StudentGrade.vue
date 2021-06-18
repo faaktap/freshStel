@@ -37,9 +37,7 @@ export default {
       }
      },
     mounted() {
-      console.log('MNT StGr', this.getZml.grade)
       if (this.getZml.login.grade && this.getZml.login.grade.length > 2) {
-         console.log('grade=',this.getZml.login.grade)
          this.gradeClass.g = this.getZml.login.grade.substr(0,3)
          this.gradeClass.c = this.getZml.login.grade.substr(3,2)        
       }

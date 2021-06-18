@@ -155,9 +155,9 @@ export default {
    }
  },
  mounted: function () {
-   console.log('MNT TBB')
+   //MNT TBB
    /*
-   console.log('mounting :', this.$options.name
+   ('mounting :', this.$options.name
                            , 'c=', this.$children.length
                            , this.menuDisplay
                            , this.buttonGroup

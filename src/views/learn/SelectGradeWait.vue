@@ -107,7 +107,7 @@ export default {
         return this.x
       },
       filterByGroup() {
-        console.log('filtergrp',this.kies, this.latest.length, this.content.length)
+        //this.$cs.l('filtergrp',this.kies, this.latest.length, this.content.length)
          if (this.kies == '') {
            if (this.search.length > 2 ) {
              //do the search
@@ -128,7 +128,7 @@ export default {
          let selectedData = [...this.content].filter(o => {
            return o.gid == filterObj.gid;
             });     
-         console.log('size now..', selectedData.length)
+         //this.$cs.l('size now..', selectedData.length)
          if (this.search.length < 2 ) {
            //Delete all with no activity here...
            let selData = []
@@ -160,11 +160,11 @@ export default {
       },
       latestSubjects(response) {
           this.latests = response
-          console.log('Done with latest', this.latest.length, response)
+          //this.$cs.l('Done with latest', this.latest.length, response)
       },
       goTo(where) {
         this.kies = where;
-        console.log('GO----TO',where)
+        //this.$cs.l('GO----TO',where)
         this.getZml.grade = where
         router.push({ name: 'SelectGrade'  
                     , params:{heading:"Grade", gradeno:where }
@@ -176,14 +176,14 @@ export default {
                      , meta: {layout: "AppLayoutGray" }})
       },
       doLoadGrades() {
-        console.log('loading grades', this.content.length)
+        //this.$cs.l('loading grades', this.content.length)
         this.grades = [{id:8,name: 'Grade 8'}
                           ,{id:9,name: 'Grade 9'}
                           ,{id:10,name: 'Grade 10'}
                           ,{id:11,name: 'Grade 11'}
                           ,{id:12,name: 'Grade 12'}
                           ]
-        console.log('loading subjects', this.content.length)
+        //this.$cs.l('loading subjects', this.content.length)
         this.grades.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
              if (sub.subjectid > 0 && sub.subjectid < 400) {
@@ -205,11 +205,11 @@ export default {
           return;
         }
         if (this.heading == "Grade") {
-            console.log('load latest...')
+            //this.$cs.l('load latest...')
             this.loadLatestChangesOnSubjects()
-            console.log('load grades...', this.latest.length)
+            //this.$cs.l('load grades...', this.latest.length)
             //let promise = timeoutPromise('wauit a bit',500)
-            //promise(e => console.log('dswdfsdfsdfsdfsdfsdf',e))
+            //promise(e => //this.$cs.l('dswdfsdfsdfsdfsdfsdf',e))
             setTimeout(() => { this.doLoadGrades() }, 1500)
 
             
@@ -217,7 +217,7 @@ export default {
             this.getZml.login.gradeLastChosen = this.getZml.grade;
             let loginDetails = JSON.stringify(this.getZml.login)
             localStorage.setItem('login', loginDetails);
-            console.log('PUSH FOR PLATFORM!!!')
+            //this.$cs.l('PUSH FOR PLATFORM!!!')
             router.push({name:'StudentHub' 
                        ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                        ,meta: {layout: "AppLayoutGray" }})
@@ -229,7 +229,7 @@ export default {
                        ,meta: {layout: "AppLayoutGray" }})
             */
         }
-        console.log('MAT: Mounted')
+        //this.$cs.l('MAT: Mounted')
     },
     watch: { 
     }

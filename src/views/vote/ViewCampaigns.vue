@@ -195,16 +195,16 @@ export default {
     },
     methods:{
       onButtonClick(task, item){
-        console.log(task, item)
+        //this.$cs.l(task, item)
         this.$router.push({ path: '/candidates/'+ item.campaignid
                           , params: {campaignid: item.campaignid}
                           } )
       },
       onComplete(){
-        console.log('toure complete')
+        //this.$cs.l('toure complete')
       },
       onAbort(){
-        console.log('toure abirte')
+        //this.$cs.l('toure abirte')
       },
       saveCampaign() {
         let ts = {}
@@ -250,7 +250,7 @@ export default {
            zmlFetch(ts, this.showData, this.loadError)
       },
       loadError(response) {
-            console.log(response)
+            //this.$cs.l(response)
             alert(response)
       },
       showData(response) {
@@ -259,16 +259,16 @@ export default {
       }
     },
     activated:function() {
-        console.log('ACTVI CAMPAIGN')
+        //this.$cs.l('ACTVI CAMPAIGN')
     },
     beforeupdate:function() {
-        console.log('BEFOREUPDATE CAMPAIGN')
+        //this.$cs.l('BEFOREUPDATE CAMPAIGN')
     },
     updated:function() {
-       // console.log('UPDATE CAMPAIGN')
+       // //this.$cs.l('UPDATE CAMPAIGN')
     },
     mounted: function() {
-        console.log('MOUNT CAMPAIGN')
+        //this.$cs.l('MOUNT CAMPAIGN')
         this.loadCampaigns()
         saveRoute(this.getZml.login.isAuthenticated, this.$route.path)
     }

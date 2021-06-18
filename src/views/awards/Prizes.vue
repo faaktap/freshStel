@@ -214,7 +214,7 @@ export default {
         let diplomaSubjectArr = [];
         for (let i=0; i<incoming.length; i++) {
            const row = incoming[i];
-           //console.log(i,row);
+           ////this.$cs.l(i,row);
            //Skip all type 2's (since we added students below it as type 3)
            if (row.type == 2) { 
             continue;
@@ -257,7 +257,7 @@ export default {
                                  ,type: row.type
                                  ,extraNote: row.extranote                                 
                                  });
-           //console.log('note1:',row.extranote);
+           ////this.$cs.l('note1:',row.extranote);
            }
            if (row.type != 3) {
              this.awardList.push({storyid: row.storyid
@@ -272,13 +272,13 @@ export default {
                                  ,type: row.type
                                  ,extraNote: row.extranote
                                  });
-           //console.log('note2:',row.extranote);                                 
+           ////this.$cs.l('note2:',row.extranote);                                 
            }
         }
         this.progress = false;
      },
      loadError(error) {
-        console.log(error);
+        //this.$cs.l(error);
         alert('Nothing loaded yet (possibly) - error : ' + error);
         this.progress = false;
      },   
@@ -297,11 +297,11 @@ export default {
         //this.carouselSound.volume = this.carouselSound.volume - 0.2;
      }, 
      playSound(response) {
-        console.log(response);
+        //this.$cs.l(response);
      },
      doCommand(e) {
        let cmd = String.fromCharCode(e.keyCode).toLowerCase();
-       //console.log(cmd,e);
+       ////this.$cs.l(cmd,e);
        switch (cmd) {
        case ",":
        case "<":

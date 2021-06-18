@@ -6,7 +6,7 @@ import { zmlFetch } from '@/api/zmlFetch';
 export const sh = {
     someGlobals :  'hallo',
     l: (...args) => {   
-       console.log(...args);   
+       zmlConfig.l(...args);   
     },
     contentData: (someText , pcallback, dataObj = {folderid: 585, grade:null, subjectid:null}) => {  
         let ts = {}
@@ -35,5 +35,5 @@ export const sh = {
   
 }
 function errorLoading (response) {
-    console.log('We had an SH error loading your data!',response)
+    zmlConfig.l('We had an SH error loading your data!',response)
 }

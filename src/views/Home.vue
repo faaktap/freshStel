@@ -32,8 +32,6 @@
   <hero-section name="forDB" 
                bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg" 
                title="Student's Home" 
-               text="Here you can..."
-               color="deep-purple lighten-2"               
                />
   <hr />
   <student-home />
@@ -73,9 +71,9 @@
 import { getters } from "@/api/store"
 import { doStuff,buttons } from '@/api/buttons'
 import HeroSection from "@/views/sections/HeroSection.vue"
-import TeacherHome from "@/views/home/TeacherHome"
-import StudentHome from "@/views/home/StudentHome"
-import AdminHome from "@/views/home/AdminHome"
+import TeacherHome from "@/views/home/HomeTeacher"
+import StudentHome from "@/views/home/HomeStudent"
+import AdminHome from "@/views/home/HomeAdmin"
 export default {
   name: 'Home',
   components: {
@@ -101,9 +99,7 @@ export default {
   },
   methods: {
     setAuth() {
-      console.log('Auth:',this.getZml.login.isAuthenticated)
        this.getZml.login.isAuthenticated = !this.getZml.login.isAuthenticated 
-       console.log('Auth:',this.getZml.login.isAuthenticated)
     },
     doTask(task) {
       /* Boring tasks about router, done in buttons.js */

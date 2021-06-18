@@ -2,7 +2,6 @@ import jButtons from './buttons.json'
 export const buttons = jButtons
 
 export function doStuff(tr,task) {
-    console.log('doStuff asked to do', task)
     switch (task) {
         case "/": 
             return zmlReRoute(tr, task)

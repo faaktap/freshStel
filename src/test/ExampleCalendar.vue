@@ -167,7 +167,6 @@
       if (this.$refs.calendar == undefined) {
         console.log('still undefined')
       } else {
-        console.log('GOOD ! Check Change')
         this.$refs.calendar.checkChange()
       }
     },
@@ -203,7 +202,6 @@
         const open = () => {
           this.selectedEvent = event
           this.selectedElement = nativeEvent.target
-          console.log("SHOWEVENT:", this.selectedEvent, this.selectedElement)
           setTimeout(() => {
             this.selectedOpen = true
           }, 10)
@@ -219,9 +217,7 @@
         nativeEvent.stopPropagation()
       },
       updateRange ({ start, end }) {
-         console.log('UPDATE RANGE:::', start,end)
         const events = []
-
         const min = new Date(`${start.date}T00:00:00`)
         const max = new Date(`${end.date}T23:59:59`)
         const days = (max.getTime() - min.getTime()) / 86400000

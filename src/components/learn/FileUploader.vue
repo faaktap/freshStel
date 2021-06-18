@@ -100,7 +100,7 @@ export default {
         this.registryDocFile.forEach(element => { 
           if (!element.done) element.done = false; 
           if (element.done == false)  this.uploads++; 
-          console.log('checking : ', element);
+          //this.$cs.l('checking : ', element);
         }); */
         this.uploads = 0;
         for (let i = 0; i < this.registryDocFile.length; i++) {
@@ -111,7 +111,6 @@ export default {
             this.registryDocFile.splice(i,1);
           }
         }
-        console.log('uploads to be done = ', this.uploads, this.registryDocFile.length);
         this.uploadToServerBtn = 'Upload to Server (' + this.uploads + ')';
       },
       loadThem() {
@@ -136,7 +135,6 @@ export default {
          fileData.done = item.done;
          fileData.extrapath = this.extrapath;
          fileData.realname = fileData.name; 
-         console.log('start upload with ', fileData);
          let apiConfig = {method: 'POST',
                          headers: {'Accept': 'application/json'
                                 , 'Content-Type': 'application/json;charset=UTF-8'},
@@ -147,7 +145,6 @@ export default {
            if (response.result == 'ok' && response.size > 0) {
               this.registryDocFile.forEach(element => {
                   if (element.file.name == fileData.name) {
-                     console.log('set as done');
                      element.done = true;
                   }
               });

@@ -4,7 +4,7 @@ import { zmlFetch } from '@/api/zmlFetch';
 export const latest = {
     someGlobals :  'hallo',
     l: (...args) => {   
-       console.log(...args);   
+       //this.$cs.l(...args);   
     },
     contentData: (someText , pcallback, dataObj = {folderid: 585, grade:null, subjectid:null}) => {  
         let ts = {}
@@ -19,12 +19,12 @@ export const latest = {
         ts.task = 'getLContentPrevFolder'
         ts.data = dataObj
         ts.api = zmlConfig.apiDKHS
-        console.log('is this data good?', dataObj, pcallback)
+        //this.$cs.l('is this data good?', dataObj, pcallback)
         zmlFetch(ts, pcallback, errorLoading)
         return "done"
     },
   
 }
 function errorLoading (response) {
-    console.log('We had an SH error loading your data!',response)
+    //this.$cs.l('We had an SH error loading your data!',response)
 }

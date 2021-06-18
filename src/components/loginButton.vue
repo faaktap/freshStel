@@ -1,6 +1,6 @@
 <!--
  LoginButton is usally in the right hand side top of the menubar.
- It creates a complete menu, where alll login stuff happens, and also stuff we do not want on main toolbar.
+ It creates a complete menu, where all login stuff happens, and also stuff we do not want on main toolbar.
 -->
 <template>
  <div class="text-center">
@@ -64,6 +64,7 @@ import ToolbarButtons from '@/components/toolbarButtons'
 import { zmlConfig } from '@/api/constants.js'
 import { getters } from "@/api/store";
   export default {
+    name: "loginButton",
     components: {ToolbarButtons},
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),
@@ -82,9 +83,9 @@ import { getters } from "@/api/store";
     },
     mounted:function() {
         if (this.getZml.login.isAuthenticated == true) {
-          console.log('MNT LOGIN - Auth True',this.version)
+          //Login - Auth True',this.version)
         } else {
-          console.log('MNT LOGIN - Auth False',this.version)  
+          //Login - Auth False',this.version)  
         }
     }
   }

@@ -41,7 +41,7 @@ export default {
          this.studentList = response
       },
       loadError(response){
-          console.log("ERROR", response)
+          this.$cs.l("ERROR", response)
       }
     },
     mounted: function() {

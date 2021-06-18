@@ -66,9 +66,7 @@ export default {
         sendMail() {
           if (this.valid == false) {
             //alert('Some fields are not filled in properly!');
-            console.log('calling snack')
             errorSnackbar('Some fields are not filled in properly!');
-            console.log('done calling snack')
           } else {
             let heading = "<h2> Email Enquiry from KovsieWas Website</h2>";
             heading += "<div><table><tr><td>Phone:<td>" + this.phone;
@@ -112,8 +110,7 @@ export default {
         this.contactDialog = this.getZml.atester
       }
      },
-     contactDialog(to,from) {
-       console.log(from,to)
+     contactDialog() {
        this.getZml.atester = this.contactDialog
      }
     }

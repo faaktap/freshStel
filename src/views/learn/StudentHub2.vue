@@ -112,7 +112,7 @@ import StudentFolderDisplay from '@/components/learn/StudentFolderDisplay'
 export default {
     name: "StudentHub",
     components: {StudentItemDisplay, StudentFolderDisplay},
-    props: {  },
+    props: ['currentSubjectID','grade'   ],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         toggle_button_state:null,
@@ -136,25 +136,25 @@ export default {
     },
     methods:{
         loadSubjects(response) {
+          //this.$cs.l('ssssssssssssssssssssssssssssssssssssssssssss')
           this.loadStatus = false
           this.getZml.subjects = response
           this.loadData()
         },
         loadData() {
-           if (this.getZml.subjectid > 0 || this.getZml.grade > 0) {
-              zmlLog(this.getZml.login.username , "Platform", this.getZml.grade + ' ' + this.getZml.subjectid)
+           //this.$cs.l('............loadData - sub,grade', this.currentSubjectID , this.grade)
+           if (this.currentSubjectID > 0 && this.grade > 0) {
+              zmlLog(this.getZml.login.username , "Platform", this.grade + ' ' + this.currentSubjectID)
            } else {
               infoSnackbar('Grade or Subject is blank - Assume 8, 2')
-              this.getZml.grade = 8
-              this.getZml.subjectid = 2
            }
            let ts = {};
            this.contents = []
            ts.task = 'getlcontent'
            ts.data = {}
-           ts.data.subjectid = this.getZml.subjectid
-           ts.data.grade = this.getZml.grade
            ts.data.login = this.getZml.login
+           ts.data.subjectid = this.currentSubjectID
+           ts.data.grade = this.grade
            ts.api = zmlConfig.apiDKHS
            zmlConfig.cl(ts);
            this.loadStatus = true
@@ -166,8 +166,8 @@ export default {
                 if (response.error.substr(0,7) == 'no rows') {
                    this.showNoInfoDialog = true
                 } else {
-                  infoSnackbar('loading err ' + response.error.substr(0,10))
-                  this.$router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno: this.getZml.grade},meta: {layout: "AppLayoutGray" }});
+                  infoSnackbar('loading err ' + response.error.substr(0,30))
+                  //zml//this.$router.push({ name: 'SelectGrade' , params:{heading:"Grade", gradeno: this.getZml.grade},meta: {layout: "AppLayoutGray" }});
                 }
             } else {
                 this.contents = response;
@@ -175,13 +175,9 @@ export default {
                     item.img = ''
                     item.expand = false
                     if (item.type == 'file' && item.description.substr(0,4) == 'load') {
-                       // let ext = item.description.substr(5).split('.').pop().toLowerCase()
-                       // if ( ['gif','jpeg','png','jpg'].includes(ext)) {
                           item.img = 'https://www.kuiliesonline.co.za/' + item.description.substr(5)
-                       // }
                     }                     
                 })
-                 
             }
         },
 //------------------------------ShowItem and DisplayItem - one in window, one outside
@@ -249,7 +245,7 @@ export default {
             } 
         },
         filterByContent() {
-            //this.$cs.l('loading NEW DATA : ' , this.filter, this.search)
+            //this.$cs.l('FilterByContent : ' , this.filter, this.search)
             if (this.search.length < 3 ) {
               if (this.filter == '')   {
                 return this.contents 
@@ -290,8 +286,12 @@ export default {
         },
     },
     mounted: function () {
-      //this.$cs.l('We are in MOUNTPLAT',this.getZml.login.type)
-      if (this.getZml.login.type == 'student') {
+      //this.$cs.l('Start...........................',this.$options.name,this.getZml.login.type)
+      
+      this.getZml.subjectid  = this.currentSubjectID
+      this.getZml.grade = this.grade
+      infoSnackbar('Coming in with ', this.currentSubjectID, this.grade)
+      if (this.getZml.login.type == 'student' || this.getZml.login.type == 'guest') {
           this.allowEdit = false
       } else {
           this.allowEdit = true

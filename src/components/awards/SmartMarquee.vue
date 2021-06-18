@@ -120,7 +120,6 @@ export default {
           // After loading Cancel monitoring, optimise performance
           if (entry.isIntersecting) {
             unobserve()
-            console.log('entry - not observing anymore..', entry)
           }
           
         },
@@ -136,7 +135,7 @@ export default {
           if (this.list.length == this.passedList.length) {
             this.list.length = 0
             //Starting fresh
-            //console.log('we are done - but are continuing the display for effect')
+            ////this.$cs.l('we are done - but are continuing the display for effect')
             if (this.firstIteration == true) {
               this.$emit('wearedone')
               this.firstIteration = false
@@ -160,7 +159,6 @@ export default {
           }, 2000);
         },
         startTheProcess() {
-           console.log('We are activated = len:', this.list.length)
            this.pause = false
            if (this.passedList.length) {
               this.startTimer( 60 * 5, this.doSomething)
@@ -168,7 +166,6 @@ export default {
            }
         },
         stopTheProcess() {
-          console.log('We are DEactivated = len:', this.list.length)
           this.pause = true
         }
     },
@@ -200,12 +197,10 @@ export default {
       },
       propPassedList: {
         immediate: true,
-        handler(newval) { 
-          console.log('watch handler for propPassedLIST' , newval)
+        handler() { 
           if (this.propPassedList && this.propPassedList.length > 0) {
              this.passedList = this.propPassedList
           }
-          console.log('passedList = (from[])', this.passedList)
         }
       }
    },

@@ -61,7 +61,6 @@ export default {
     },
     methods: {
         sleep(ms) {
-           console.log(ms);
            return new Promise(resolve => setTimeout(resolve, ms));
         },
     },

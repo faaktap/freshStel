@@ -716,48 +716,6 @@
       this.registryDocFile= [];
     },
     methods: {
-      iconSelect(pFormat) {
-        //this does not want to work - seems like adding an icon this way is not good.
-        console.log('pFormat: ', pFormat);
-        return '';
-        /*
-        switch (pFormat) {
-          case 'pdf':
-              return '<v-icon color="red darken-1">mdi-file-pdf-outline</v-icon>';
-          case 'doc':
-          case 'docx':
-          case 'odt':
-              return '<v-icon size="30" color="blue darken-1">mdi-file-word-outline</v-icon>';
-          case 'jpg':           
-          case 'jpeg':
-          case 'png':
-          case 'tif':
-          case 'bmp':
-               return '<v-icon size="30" color="deep-purple darken-1">mdi-file-image-outline</v-icon>';
-          case 'xls':
-          case 'xlsx':
-               return '<v-icon size="30" color="teal darken-1">mdi-file-excel-outline</v-icon>';
-          case 'pptx':
-          case 'pptm':
-          case 'ppt':
-               return '<v-icon size="30" color="orange darken-3">mdi-file-powerpoint-outline</v-icon>';
-          case 'mp4':     
-          case 'mov':
-          case 'flv':
-          case 'wmv':
-          case 'avi':
-               return '<v-icon size="30" color="red lighten-1">mdi-file-video-outline</v-icon>';
-          case 'dwg':
-               return '<v-icon size="30" color="indigo lighten-2">mdi-file-cad</v-icon>';
-          case 'zip':
-          case 'rar':
-               return '<v-icon size="30" color="lime lighten-1">mdi-folder-zip-outline</v-icon>';
-          case 'txt':     
-               return '<v-icon size="30" color="light-green darken-3">mdi-script-text-outline</v-icon>';
-          default:     
-               return '<v-icon  v-else size="30" color="indigo lighten-1">mdi-file-question-outline</v-icon>';
-          }                      */
-      },
       setLang(){
       },
       changeRTL () {
@@ -875,7 +833,6 @@
               file.file=tempFile;
               this.registryDocFile.push(file);
               this.$emit('update:documentAttachment' , this.registryDocFile);
-              //console.log(JSON.stringify(this.registryDocFile));
             }
           }
           else {
@@ -956,10 +913,7 @@
           obj.base64= this.readerFile;
           //zml
           obj.ext= item.name.substr(item.name.lastIndexOf('.') + 1);
-          console.log('DID THIS WORL????', item.name);
-          console.log('DID THIS WORK REALL????' , obj.ext);
           this.tempAttachmentChanged.push(obj)
-          console.log('hele obj = ' , obj);
         }
       },
 
@@ -982,7 +936,6 @@
 
       getShowDetailState(index){
         this.showDetailState[index]= !this.showDetailState[index];
-        console.log('showDetailState' + JSON.stringify(this.showDetailState));
       },
 
       destroyFileUploader(){

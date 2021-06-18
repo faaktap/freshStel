@@ -6,46 +6,54 @@
   <pre>
     1. getFolder - php - getLContentByFolderNo (benonog 'n folderid)
     2. prevFolder - php getLContentPrevFolder (benodig 'n folderid)
-  </pre>
-  <v-row  >
-    <v-col cols="12">
-       <v-toolbar flat color="primary" dark class="mb-2">
-        <v-toolbar-title class="body-1">
-            Quick display item(s) from folder: {{ displayFolder }}
-        </v-toolbar-title>
-       </v-toolbar>
-    </v-col>
-   </v-row>
 
-<v-card color="blue" dark>
-  <v-row><v-col>
-    <v-text-field v-model="folderid" /> 
-  </v-col><v-col>
-    <v-btn @click="getFolder(folderid)"> load {{ folderid }} </v-btn>
-  </v-col></v-row>
-</v-card>
-<v-row>
-  <v-col>
-    <template v-if="contents && contents.length"> {{ topFolder }} </template>
-  </v-col>
-</v-row>
+    3.as folderid zero is, gebruik graad en subjectid
+    4. onthou "name" is onderwysers sin, en description is program sin.
+    5. As jy folder rename - NET name!! (description bly so!)
+  </pre>
 -->
-<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-FID:{{ folderid }} <br> TF:{{ topFolder }} <br> dpB:{{ displayFolderBack }}
-<br> dp:{{ displayFolder }}
+
+
+<!-- SHOW THE GRADE AND SUBJECT SELECTION -->
+<v-container fluid>
+<v-row>
+ <v-col cols="12" sm="6">
+  <grade-display-short v-model="grade" displaySize="medium" /> 
+ </v-col>
+ <v-col cols="12" sm="6">
+  <subject-display-short v-model="subjectID"/> 
+ </v-col>
+</v-row>
 </v-container>
 
-<v-sheet color="grey lighten-5" class="ma-2">
- <v-container v-if="(contents && contents.length) || topFolder.displayfolder"
+<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+folderid:{{ folderid }} 
+<br> Topfolder:{{ topFolder }} 
+<br> displayFolderBack:{{ displayFolderBack }}
+<br> displayFolder:{{ displayFolder }}
+<br>g={{ grade }}s={{ subjectID }}
+<br>The one we are in{{ topFolder.name }}
+</v-container>
+
+<v-container v-if="(contents && contents.length) || topFolder.displayfolder"
                  fluid class="ma-2 mt-3" >
   <v-card color="blue lighten-2">
     <v-card-title>
+ 
       <template v-if="displayFolderBack != 'ROOT'">
-        <v-btn @click="prevFolder(topFolder)" :title="topFolder.contentid"> UP TO {{ displayFolderBack }}  </v-btn>
+        <v-btn @click="prevFolder(topFolder)" :title="topFolder.contentid">
+          <v-icon> mdi-arrow-up-bold-outline </v-icon>
+           UP TO {{ displayFolderBack }}  
+        </v-btn>
       </template>  
       <template v-else>
-        <v-btn v-if="folderid != 0" @click="getFolder(0)" :title="0"> UP .. {{ displayFolderBack }} </v-btn>
+        <v-btn v-if="folderid != 0" @click="getFolder(0)" :title="0"> 
+          <v-icon> mdi-arrow-up-bold-outline </v-icon>
+          UP .. {{ displayFolderBack }} 
+        </v-btn>
       </template>
+
+<!-- SHOW THE UP BUTTON OR IF Top SHOW SUBJECT/GRADE -->
       <v-row><v-col cols="12">
         <template v-if="displayFolder == 'Top'">
            <v-card class="text-center"
@@ -54,35 +62,54 @@ FID:{{ folderid }} <br> TF:{{ topFolder }} <br> dpB:{{ displayFolderBack }}
            </v-card>           
         </template>
         <template v-else>
-        <div class="text-center"> Folder {{ displayFolder }} </div>
+          <v-chip class="ma-2 float-md-right" 
+                  title="Current Folder"
+                  color="white">
+               <v-icon> mdi-folder </v-icon> 
+               {{ topFolder.name }} 
+          </v-chip>
         </template>
+
+<!-- SHOW THE STUDENT WHAT THE CURRENT FOLDER's GRADE AND SUJECT IS-->
         <v-chip class="ma-2 float-right" 
                :color="subjectColor()">
                 Grade {{ topFolder.grade }} Subject {{ subjectShortName() }} 
         </v-chip> 
-        </v-col></v-row>
+
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-card-text>           
+ 
+ <!-- ACTUAL FILES AND FOLDERS -->
       <v-layout v-if="contents.length > 0" row wrap>
         <v-flex 
          v-for="item in contents" :key="item.itemid"
          flex-row
          justify-space-around
-         xs-12
+         cols="12" 
          >
           <template v-if="item.type=='folder'" >
             <!-- sometime the folder to which the content belong is also in the contents list
                   so we stop them from displaying it as a folder.-->
-            <template v-if="item.displayfolder != displayFolder">
-             <student-folder-display @btn-click="getFolder(item.contentid)" :item="item" /> 
+            <template v-if="displayFolder == 'Top' || item.description != topFolder.description">
+              <student-folder-display @btn-click="getFolder(item.contentid)" :item="item" /> 
             </template>
           </template>
           <template v-else>
-           <student-item-display :btnFace="item.name" :icon="item.icon" :item="item" />
+            <student-item-display :btnFace="item.name" :icon="item.icon" :item="item" />
           </template>
-          <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-            {{ item }}
-          </div>
+           <v-card class="text-left mx-auto text-caption" max-width="600px" 
+                  v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+            <v-card-title> 
+              Debug: cid {{ item.contentid }} (<b> {{ item.type }}</b>) 
+            </v-card-title>
+            <v-card-text> pers={{ item.persid}} name={{ item.name }} 
+              Folder:<b>{{ item.folder }}</b>, {{ item.days}},
+              displayfolder={{ item.displayfolder }},
+              Desc={{ item.description }}, tff{{ topFolder.folder }}
+            </v-card-text>
+           </v-card>
         </v-flex>
       </v-layout>
       <v-layout v-else>
@@ -92,11 +119,10 @@ FID:{{ folderid }} <br> TF:{{ topFolder }} <br> dpB:{{ displayFolderBack }}
     </v-card-text>
   </v-card>
  </v-container>
-</v-sheet>
 
- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-<v-row >
-   <v-col cols="12" sm="6" v-show="contents.length > 0">
+<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+<v-row>
+   <v-col cols="12" v-show="contents.length > 0">
      <v-card color="deep-purple lighten-5">
        <base-table 
                   :tList="contents" 
@@ -113,6 +139,7 @@ FID:{{ folderid }} <br> TF:{{ topFolder }} <br> dpB:{{ displayFolderBack }}
         <v-card-title> We did not find any Information! </v-card-title>
         <v-card-text> 
             This information is not available at the moment. ({{ folderid }})
+            Please select a grade and a subject.
          </v-card-text>
         <v-card-actions> 
             <v-btn @click="showNoInfoDialog = !showNoInfoDialog" color="info"> close </v-btn>
@@ -135,14 +162,18 @@ import StudentItemDisplay from '@/components/learn/StudentItemDisplay'
 import StudentFolderDisplay from '@/components/learn/StudentFolderDisplay'
 import BaseTable from    '@/components/base/baseTable'
 
+import GradeDisplayShort from '@/components/learn/GradeDisplayShort'
+import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
 export default {
     name: "SH",
     components: {
           StudentItemDisplay
         , StudentFolderDisplay
         , BaseTable
+        , GradeDisplayShort
+        , SubjectDisplayShort
         },
-    props: { propfolder: {default: 1358} },  //419
+    props: { propfolder: {default: 0} },  //419, 1415
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         showTextDialog:false,
@@ -153,6 +184,8 @@ export default {
         topFolder: {grade:null, subjectid:null},  //this is the folder we requested, or the above folder if we request a file
         currentImage:'',  
         progress:false,
+        subjectID:null,
+        grade:null
     }),
     activated: function () {
     },
@@ -164,7 +197,7 @@ export default {
         return "NO FOLDER"
       },
       displayFolderBack() {
-        console.log(this.topFolder.description,this.topFolder.folder)
+        //this.$cs.l(this.topFolder.description,this.topFolder.folder)
         if (this.topFolder && this.topFolder.description != this.topFolder.folder) {
           //return [this.topFolder.folder , this.folderid].join()
           return [this.topFolder.displayfolder , this.folderid].join()
@@ -188,12 +221,14 @@ export default {
                                                     })
       },        
       loadData(response) {
-         //zmlLog('SH-FolderView' , "Platform", this.folderid)
-         console.log('loadData  folderid:', this.folderid, 'response:',response)
          this.contents.length = 0
          this.topFolder = {}
          if (!Array.isArray(response) || (response.errorcode && response.errorcode != 0) ) {
+           if (this.folderid != 0) {
            this.showNoInfoDialog = true
+           }
+           this.subjectID = null
+           this.getZml.subject = ''
            return
          }
          let topid = response.findIndex(ele => ele.contentid == this.folderid)
@@ -201,7 +236,7 @@ export default {
          if (topid < 0) { topid = 0 }
          //Here we can check if we came in with a file rather than a folder, and maybe get the folder
          // like we do at latest.vue
-         console.log('sLKJLKJLKJLKJLKJLKJLK', response[topid].displayfolder)
+         //this.$cs.l('sLKJLKJLKJLKJLKJLKJLK', response[topid].displayfolder)
          this.topFolder = { name:response[topid].name
                           , displayfolder:response[topid].displayfolder
                           , contentid:response[topid].contentid
@@ -233,15 +268,26 @@ export default {
          }
       },
       prevFolderData(response) {
-        //console.log('PrevFolderData : received items : ', response.length, response)
+        ////this.$cs.l('PrevFolderData : received items : ', response.length, response)
         this.getFolder(response[0].contentid)
       },
       stillMounting() {
           this.progress = false;
-          this.$cs.l('We are in MOUNTPLAT',this.getZml.login.type)
+          //this.$cs.l('We are in MOUNTPLAT',this.getZml.login.type)
           this.allowEdit = false
           this.getFolder(this.propfolder)
+      },
+      launchGradeSubjectChange() {
+        if (this.grade && this.subjectID) {
+          this.progress = false;
+          this.allowEdit = false
+          sh.contentData('folderdata', this.loadData, {folderid: 0
+                                                      ,grade:this.grade 
+                                                      ,subjectid:this.subjectID
+                                                    })
+        }
       }
+
     },
     filters: {},
     mounted: function () {
@@ -249,7 +295,23 @@ export default {
       zData.initialData('Load Subject Data')
       infoSnackbar(['Welcome ', this.getZml.login.fullname || 'Guest'].join(''))
       setTimeout(() => { this.stillMounting() }, 1100)
-     
+      if (!this.propfolder || this.propfolder < 1) {
+         this.getZml.grade = null
+         this.getZml.subjectid = null
+         this.getZml.subject = null
+      }
+    },
+    watch: {
+      grade(o,n) {
+        if (o != n) {
+          this.launchGradeSubjectChange()
+        }
+      },
+      subjectID(o,n) {
+        if (o != n) {
+          this.launchGradeSubjectChange()
+        }
+      },      
     }
   }
 </script>  

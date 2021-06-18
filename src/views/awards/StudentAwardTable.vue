@@ -42,7 +42,7 @@ import { zmlFetch } from '@/api/zmlFetch';
     },
     methods: {
       loadStudentAwardsDone(response) {
-        //console.log('Awards : ', response);
+        ////this.$cs.l('Awards : ', response);
         this.studentAwards = response.allInfo;
         this.studentList = response.studentlist;
         /*AllInfo ........
@@ -78,7 +78,7 @@ import { zmlFetch } from '@/api/zmlFetch';
           ];      
       },
       loadError(error) {
-        console.log(error);
+        //this.$cs.l(error);
         alert('Nothing loaded yet (possibly) - error : ' + error);
       },      
     },

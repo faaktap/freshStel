@@ -158,20 +158,19 @@ export default {
     viewVoteList: function() {
       this.showVoteList = !this.showVoteList; //alert('view the vote list');
     },
-    voteItem: function(id,status,grade) {
-       console.log('VI', id, status,grade,this.getZml.voteList);
+    voteItem: function(id) {
+       //this.$cs.l('VI', id, status,grade,this.getZml.voteList);
        let index = this.getZml.voteList.findIndex(p => p == id);
-       /// // //this.getZml.seniorList.includes(this.theItem.rvlselid)
        if (index == -1) {
           this.getZml.voteList.push(id);
        } else {
           this.getZml.voteList.splice(index);
        }
-       console.log('votes sofar:',this.getZml.voteList.length)
+       this.$cs.l('votes sofar:',this.getZml.voteList.length)
     },
-    seniorVoteItem: function(id,status,grade) {
+    seniorVoteItem: function(id) {
       //Check if the giu is logged in as a voter
-       console.log('SI',id, grade,status,this.getZml.seniorList);
+       //this.$cs.l('SI',id, grade,status,this.getZml.seniorList);
        let index = this.getZml.seniorList.findIndex(p => p == id);
        if (index == -1) {
           this.getZml.seniorList.push(id);
@@ -207,7 +206,7 @@ export default {
         this.getZml.voteList = [];
         this.getZml.seniorList = [];
       }
-      console.log('fetching candidates')
+      //this.$cs.l('fetching candidates')
       zmlFetch({task: 'getCandidates', data: {campaignid: this.campaignid} }
                , this.loadItems
                , this.loadItemError);
@@ -244,7 +243,7 @@ export default {
           this.curCam = this.campaigns[index]
         }
 
-        console.log('hozeit!', response)
+        //this.$cs.l('hozeit!', response)
         this.forceReload = false;
       } else {
           alert(response.error);
@@ -252,7 +251,7 @@ export default {
     },
     loadItemError(err) {
       this.forceReload = false;
-      console.log(err);
+      //this.$cs.l(err);
       alert(err);      
     },
     /* brougth from app */
@@ -276,12 +275,11 @@ export default {
          zmlFetch(task,this.afterSave, this.errorVoteSave);
       },
       afterSave(result) {
-        infoSnackbar('Your voting list has been submitted - Well Done!');
-        console.log(result);
+        infoSnackbar('Your voting list has been submitted - Well Done!' + result);
+        
         this.clearVoteList();
       },
       errorVoteSave(err) {
-        console.log(err);
         alert('Error saving ' + err);
       },
       displayLoginData(response) {
@@ -291,32 +289,30 @@ export default {
       },
   },
   updated: function () {
-    console.log('RC:updated');
+    
   },
   mounted: function () {
-    console.log('RC:mounted - zml:', zmlConfig);
     localStorage.setItem('lastpath', this.$route.path)
     this.loadOurCandidates();
   },
   created: function () {
-    console.log('RC:created');
+
   },
   beforeUpdate: function() {
-      //console.log("beforeUpdate")
+
   },
   watch: {
     getZml: {
       deep: true,
       handler() {
         if (this.getZml.login.isAuthenticated) {
-           console.log('Voting is active');
+           //this.$cs.l('Voting is active');
         } else {
-           console.log('Voting is NOT active');
+           //this.$cs.l('Voting is NOT active');
         }
       }
     },
-    campaignid(n,o) {
-      console.log('Whatch Campaignid',n,o)
+    campaignid() {
       this.loadOurCandidates();
     }
   }

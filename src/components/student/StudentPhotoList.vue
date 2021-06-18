@@ -56,7 +56,6 @@ export default {
         zmlFetch(sl, this.processAfterFetch); 
       },
       processAfterFetch(response) {
-          console.log(response)
           if (!response.error) {
              this.photoList = response
           } else {
@@ -66,12 +65,8 @@ export default {
 
     },
     mounted: function() {
-        console.log('SPL : Mount')
         if (this.studentList) {
-           console.log('SNC : ', this.studentList.data.studentid)
            this.getPhotos()
-        } else {
-           console.log('SNC : NoName')
         }
     },
     watch: {

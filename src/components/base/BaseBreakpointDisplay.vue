@@ -47,7 +47,7 @@ export default {
         w(){
           if (this.w !=  window.innerWidth) {
               this.recalc()
-               console.log(this.w, this.$vuetify.breakpoint.mobile)              
+              console.log(this.w, this.$vuetify.breakpoint.mobile)              
           }
         }
     }

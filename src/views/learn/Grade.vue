@@ -44,7 +44,7 @@ export default {
     methods:{
         goTo(id) {
             //this.getZml.grade = id;
-            console.log('did this work????', id)
+            this.$cs.l('Can we use the id?', id)
             this.$router.push({ name: 'SelectGrade' 
                               , params:{heading: "Grade", gradeno: this.getZml.grade}
                               , meta: {layout: "AppLayoutGray" }
@@ -64,7 +64,7 @@ export default {
     },
     filters: {},
     mounted: function () {
-        console.log('GRADE')
+        //this.$cs.l('GRADE')
     },
   }
 </script>

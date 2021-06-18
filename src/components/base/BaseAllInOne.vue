@@ -99,12 +99,10 @@ export default {
                }, this.activityDone, this.loadError);
     },
     loadError(response) {
-      console.log('ERROR on LOAD', response)
       errorSnackbar(response)
     },
     activityDone(response) {
       if (!response.constructor === Array) {
-          console.log('DbErr:',response)
           errorSnackbar(response)
           this.orDTTable = []
           return
@@ -148,7 +146,6 @@ export default {
     }
   },
   mounted() {
-      console.log('Start DT')
       if (!this.orDTTable.lenght) {
           this.getData()
       }

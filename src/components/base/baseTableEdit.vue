@@ -76,19 +76,15 @@ export default {
           alert('alloc')
       },
       clickOnTableRow(p1,p2) {
-          console.log('click = ', p1, p2)
           this.$emit('select', p1, p2)
       },
       doubleClickOnTableRow(p1,p2) {
-          console.log('dblclick = ', p1, p2)
           this.$emit('edit', p1, p2)
       },
       buildHeaders() {
         if (!this.tList || this.tList.length == 0) {
-            console.log('list not passed yet')
             return
         }
-        console.log('bTable = BuildHeaders')
         this.tableLoading = true
         this.tHeader = []
         Object.keys(this.tList[0]).forEach(name => {
@@ -96,12 +92,11 @@ export default {
                  { text:name.charAt(0).toUpperCase() + name.slice(1)
                  , value: name} )
         })
-        console.log('HEADERS : ', this.tHeader)
         this.tableLoading = false
       },
     },
     mounted: function() {
-        console.log('BTable : Mount')
+
     },
     watch: {
         tList: {

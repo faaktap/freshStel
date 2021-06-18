@@ -1,33 +1,54 @@
 <template>
 <div>
-    <v-btn @click="startAgain"> Start Again </v-btn>
-    <v-text-field v-model="someID" /> 
- <v-row> 
-  <v-col cols="12" md="6">
-      <v-card color="grey lighten-1" :loading="loadStatus">BaseTable content
+ <v-btn @click="startAgain"> Start Again (getFolders) </v-btn>
+
+<v-expansion-panels>
+ <v-expansion-panel>
+  <v-expansion-panel-header :loading="loadStatus"> BaseTable (tcontent) </v-expansion-panel-header>
+    <v-expansion-panel-content> 
+      <v-card color="grey lighten-1" :loading="loadStatus">
        <baseTable :tList="content"
            tHeading="inside of content"
            :bHeading="'Recs = ' + content.length" 
            @bonga="clickReceived"
         />
       </v-card>
-  </v-col>
-  <v-col cols="12" md="6">  
+  </v-expansion-panel-content> 
+</v-expansion-panel>
+
+
+ <v-expansion-panel>
+  <v-expansion-panel-header> Google Drive Items </v-expansion-panel-header>
+    <v-expansion-panel-content> 
       <v-card color="grey lighten-2">google drive items
        <google-drive-items :itemList="filterContent" 
                    :folderObj="folderObj" 
                    @iconClick="iconClick"
                    @contentProperties="contentProperties" />
       </v-card>            
-  </v-col>
- </v-row>
+  </v-expansion-panel-content>       
+ </v-expansion-panel>
+  
+
+  <v-expansion-panel>
+    <v-expansion-panel-header> ZMLFolders </v-expansion-panel-header>
+    <v-expansion-panel-content> 
   <v-card color="blue"> zmlFolders {{  getZml.folders }} </v-card>
   <v-card color="grey lighten-3">
       folderObj= {{ folderObj}}
   </v-card>
+  </v-expansion-panel-content> 
+  </v-expansion-panel>
+  <v-expansion-panel>
+    <v-expansion-panel-header> FilterContent </v-expansion-panel-header>
+    <v-expansion-panel-content> 
    <v-card color="grey lighten-4"> 
        filtercontent {{ filterContent }} 
    </v-card>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
+</v-expansion-panels>
+
 </div>
 </template>
 
@@ -46,7 +67,6 @@ import baseTable from '@/components/base/baseTable'
         folderObj:{},
         loadStatus:false,
         content: [],
-        someID:null,
     }),
     methods: {
         startAgain() {
@@ -56,14 +76,13 @@ import baseTable from '@/components/base/baseTable'
 
         },
         clickReceived(value) {
-            console.log('received = ', value)
             this.folderObj = value
         },
         iconClick(info) {
-            console.log('ICONCLICK', info)
+            this.$cs.l('iconClick', info)
         },
         contentProperties(info){
-            console.log('CLICK GDrive', info)
+            this.$cs.l('contentProperties', info)
         },
         // Here we handle all the loading of lcontent, subjects and folders.
         loadFolders() {
@@ -71,13 +90,12 @@ import baseTable from '@/components/base/baseTable'
           zmlFetch({task: 'getfolders',api: zmlConfig.apiDKHS}, this.afterFolders);
         },
         afterFolders(response) {
-          //console.log('GD:AFTERFOLERS')
           this.getZml.folders = response;
           this.loadData();
           this.loadStatus = false
         },        
         loadSubjects(response) {
-            //console.log('GD:LOADSUBJECTS')
+            ////this.$cs.l('GD:LOADSUBJECTS')
             this.getZml.subjects = response;
             if (this.getZml.folders.length == 0) {
                this.getZml.folders.push({id:1, name:'default'})
@@ -87,7 +105,7 @@ import baseTable from '@/components/base/baseTable'
             }
         },
         loadData() {
-           //console.log('GD:LOADDATA')
+           ////this.$cs.l('GD:LOADDATA')
               this.loadStatus = true
               let ts = {};
               ts.sql = 'select * from dkhs_lcontent '
@@ -99,7 +117,7 @@ import baseTable from '@/components/base/baseTable'
               zmlFetch(ts, this.showData);
         },
         showData(response) {
-            //console.log('GD:SHOWDATA')
+            ////this.$cs.l('GD:SHOWDATA')
             zmlConfig.cl('content=' , response);
             this.progress = false;
             if (response == '') {
@@ -135,7 +153,7 @@ import baseTable from '@/components/base/baseTable'
         return tempT
       },
       filterContent() {
-        console.log('filtering for', this.folderObj.name)
+        //this.$cs.l('filtering for', this.folderObj.name)
         let g = this.folderObj.grade
         let s = this.folderObj.subjectid
         let res = []         
@@ -151,8 +169,8 @@ import baseTable from '@/components/base/baseTable'
         //return this.content;
         /*
         //c.folder == folderObj.foldername && c.type!='folder'
-        //console.log('GD:FILTERCONTENT')
-        //console.log('GD:FILTERCONTENT',this.folderObj)
+        ////this.$cs.l('GD:FILTERCONTENT')
+        ////this.$cs.l('GD:FILTERCONTENT',this.folderObj)
         let res = []         
         if (this.folderObj.name) {
             //take out all foldernames
@@ -167,14 +185,14 @@ import baseTable from '@/components/base/baseTable'
             if (this.SortName == true) { 
                // res.sort((a, b) => a.name.localeCompare(b.name));
                res.sort(function(a, b) {
-                 //console.log(a.name, b.name)
+                 ////this.$cs.l(a.name, b.name)
                  return (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0))
                })
             }
-            //console.log('Length : ', res.length)
+            ////this.$cs.l('Length : ', res.length)
             return res
         } else {
-           //console.log('wys alles Length : ', this.content.length)
+           ////this.$cs.l('wys alles Length : ', this.content.length)
            return this.content;
         }
         */
@@ -188,7 +206,7 @@ import baseTable from '@/components/base/baseTable'
     mounted: function () {
         zmlConfig.cl('Werner Test');
         //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
-        //console.log('MOUNT GDRV : ', this.getZml.login)
+        ////this.$cs.l('MOUNT GDRV : ', this.getZml.login)
           if (this.getZml.subjects.length == 0) {
              let ts = {}
              ts.api = zmlConfig.apiDKHS

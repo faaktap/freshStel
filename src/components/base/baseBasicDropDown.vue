@@ -48,21 +48,17 @@
           //Note, it is IMPORTANT to know what is emitted by your dropdown.
           //In this case, "change" worked - but it might be different for other components.
           doClick(e) {
-              console.log('do click',e)
               this.$emit('input', e)
           },
           doFocus(e) {
-              console.log('do focus',e)
               this.$emit('input', e)
           },
           doInput(e) {
-              console.log('do input',e)
               this.$emit('input', e)
           },
           doChange(selectedItem,$event) {
               if ($event > -1) {
                 selectedItem = $event
-                console.log('changeIT ', selectedItem)
                 this.$emit('input', this.items[$event].title)
               }
           }
@@ -70,7 +66,7 @@
       /*
       watch:{
           selectedItem(n,o){
-              console.log('wath: new=', o, 'old=',n)
+              tconsole.lg('wath: new=', o, 'old=',n)
               if (o != n && this.items[n].title) {
                   this.$emit('input', this.items[n].title)
               }

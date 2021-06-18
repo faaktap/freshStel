@@ -38,7 +38,6 @@ export default {
            infoSnackbar('Your file is too big - put on memory stick and leave at reception for Werner, please try again')                
            return
         }
-        console.log(e)
         e.done = false
         e.realname = "testtheName-" + this.makeid(5) + '.' + e.name.split('.').pop().toLowerCase()
         this.files.push(e);
@@ -49,38 +48,30 @@ export default {
         this.uploadFiles(this.upload1, this.files[0])
       },
       uploadFiles(nextProc,fdet) {
-        console.log('uploadfiles', this.files.length)
         this.files.forEach(file => {
           this.loadStatus = true;
           let fr = new FileReader()
           fr.onload = function(response) {
-           console.log('nextProc!')
            nextProc(response,fdet)
           };
           fr.onerror = function(response) {
             console.log('res - Some Error!' ,response);
           };
           fr.readAsDataURL(file);
-          console.log('file was read as URL')
         });
       },
       upload1(fileData,fdet) {
-         console.log('upload1')
          fileData.task = 'upload'; 
          fileData.extrapath =  "/bib/assets/staff/"
-         console.log('EXTRAPATH = ', fileData.extrapath)
          fileData.name = fdet.name
          fileData.realname = fdet.realname
          fileData.prebase64 = fileData.target.result.split(',')[0];
          fileData.base64 = fileData.target.result.split(',')[1];
          fileData.size = fileData.total
          fileData.api = zmlConfig.apiUpload; 
-         console.log('start upload with ', fileData);
-         console.log('show what we have in fdet ', fdet);
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
       }, 
       doneWithUpload(response) {
-         console.log('Done with upload ' , response.filename  )
          this.files.forEach(file => {
             if (response.filename == file.name)  {
               file.done = true

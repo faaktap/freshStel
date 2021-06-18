@@ -111,12 +111,11 @@ export default {
       onButtonClick(data) {
         this.showSubjectsChange = true
         this.curItem = data
-        console.log(data)
+        //this.$cs.l(data)
       },
       insertSubject() {
-        for (const [key, value] of Object.entries(this.curItem)) {
+        for (const key of Object.entries(this.curItem)) {
           this.curItem[key] = ''
-          console.log(value)
         }        
         this.showSubjectsChange = true
       },
@@ -145,7 +144,7 @@ export default {
           this.tableLoading = false
       },
       processError(response) {
-        console.log('ERROR on subject list : ' , response)
+        this.$cs.l('ERROR on subject list : ' , response)
       },
       updateSubject() {
         let sl = { task: 'plainSql'
@@ -166,7 +165,7 @@ export default {
 
     },
     mounted: function() {
-        console.log('LOG : Mount')
+        //this.$cs.l('LOG : Mount')
         this.getSubjects()
     },
     watch: {

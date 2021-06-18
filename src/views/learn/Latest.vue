@@ -34,7 +34,7 @@ import { getters } from  "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch'
 import { getIconColor } from '@/api/fileUtils.js'
-import { sh } from "@/views/learn/sh.js"
+//import { sh } from "@/views/learn/sh.js"
 const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
 export default {
     components: {
@@ -77,7 +77,7 @@ export default {
        this.previousDays = this.days || 4
        this.getData[0].data.days = this.previousDays
        this.loadAllData()
-       //console.log('icons',this.$vuetify.icons)
+       ////this.$cscs.l'icons',this.$vuetify.icons)
    },
    methods: {
      ic(i) {
@@ -130,23 +130,14 @@ export default {
        e.workDone = DONE
      },
      clickOnTableRow(p1) {
-       console.log(p1)
-       //   let trow = this.tList.find(ele => ele.contentid == p1.contentid)
-          /*let ts = {}
-          ts.task = 'getLContentCurrentFolder'
-          ts.data = p1
-          ts.api = zmlConfig.apiDKHS
-          zmlFetch(ts, this.callSH)*/
-          sh.contentData('findfolder', this.callSH, p1)    
+
+        //Take this findfolder out, since we understand file contentid in latest.vue
+        //sh.contentData('findfolder', this.callSH, p1)    
+        this.callSH(p1.contentid)
      },
-     callSH(response) {
-        //console.log(response)
-        if (!Array.isArray(response) || (response.errorcode && response.errorcode != 0) ) {
-         return
-        }
-        console.log(response[0].contentid)
+     callSH(cid) {
         this.$router.push({name: 'sh' 
-                           ,params:{propfolder:response[0].contentid}
+                           ,params:{propfolder:cid}
                            ,meta: {layout: "AppLayoutGray" }});  
 
      }

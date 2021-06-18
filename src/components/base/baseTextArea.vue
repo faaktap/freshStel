@@ -18,7 +18,6 @@ export default {
     }
   },
   data () {
-    console.log(this.value)
     return {
       editableValue: this.value
     }

@@ -29,7 +29,6 @@
       },
       openSnackbar() {
         let col="deep-purple accent-4"
-        console.log('snackmes', this.snackMessage,col)
         infoSnackbar(this.snackMessage,col)
       },
 

@@ -70,7 +70,6 @@ export default {
   }),
   mounted() { 
     //this.what = this.itemObj.find(item => item.id == this.initialValue)
-    //console.log('found: ', this.what)
      this.what = this.initialValue
    },
   computed: {
@@ -86,7 +85,6 @@ export default {
   watch: { 
     initialValue() {
        this.what = this.itemObj.find(item => item.id == this.initialValue)
-       console.log('found in watch : ', this.what)
     }
    }
 }

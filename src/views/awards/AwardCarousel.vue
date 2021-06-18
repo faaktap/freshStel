@@ -155,11 +155,11 @@ export default {
    }, 
    methods: {
      marqueeBusy() {
-       console.log('cycle stopped, marquee busy')
+       //this.$cs.l('cycle stopped, marquee busy')
        this.cycle=false
      },
      marqueeDone() {
-       console.log('cycle started, marquee done')
+       //this.$cs.l('cycle started, marquee done')
        this.cycle=true
      },
      carouselDataFilter() {
@@ -169,17 +169,17 @@ export default {
      loadData() {
         let ts = {chapterid: this.chapterid, task:'getFullStory'};
         this.progress = true;
-        console.log('fetching.. ' , ts)
+        //this.$cs.l('fetching.. ' , ts)
         zmlFetch(ts, this.processData, this.loadError);
      },
      processData(response) {
-       console.log(response)
+       //this.$cs.l(response)
         let incoming = response;
         incoming.sort((a, b) => a.sortid - b.sortid);
         let diplomaSubjectArr = [];
         for (let i=0; i<incoming.length; i++) {
            const row = incoming[i];
-           //console.log(i,row);
+           ////this.$cs.l(i,row);
            //Skip all type 2's (since we added students below it as type 3)
            if (row.type == 2) { 
             continue;
@@ -222,7 +222,7 @@ export default {
                                  ,type: row.type
                                  ,extraNote: row.extranote                                 
                                  });
-           //console.log('note1:',row.extranote);
+           ////this.$cs.l('note1:',row.extranote);
            }
            if (row.type != 3) {
              this.awardList.push({storyid: row.storyid
@@ -237,14 +237,14 @@ export default {
                                  ,type: row.type
                                  ,extraNote: row.extranote
                                  });
-           //console.log('note2:',row.extranote);                                 
+           ////this.$cs.l('note2:',row.extranote);                                 
            }
         }
         this.progress = false;
         this.startSlideShow = true
      },
      loadError(error) {
-        console.log(error)
+        //this.$cs.l(error)
         alert(error)
         this.progress = false;
      },   
@@ -264,7 +264,7 @@ export default {
      }, 
      doCommand(e) {
        let cmd = String.fromCharCode(e.keyCode).toLowerCase();
-       //console.log(cmd,e);
+       ////this.$cs.l(cmd,e);
        switch (cmd) {
        case ",":
        case "<":
@@ -284,7 +284,7 @@ export default {
    },
    mounted: function () {
      this.currentEditMode = (this.editmode === undefined) ? false : this.editmode;
-     console.log('Mount:Story', this.chapterid, this.currentEditMode, this.getZml.login.isAuthenticated);
+     //this.$cs.l('Mount:Story', this.chapterid, this.currentEditMode, this.getZml.login.isAuthenticated);
      //if (this.editmode == undefined) this.editmode = false
      this.loadData();
    },

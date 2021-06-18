@@ -16,18 +16,20 @@
     , "days": "1"
     , "img": "https://www.kuiliesonline.co.za//Subjects/GR08/Physical Sciences_Fisiese Wetenskappe/DATA FOR FWET/ChristelleWiegandEnMan.jpg" } 
     -->
-   <v-expansion-panels min-width="150" 
+   <v-expansion-panels xmin-width="150" 
                        rounded 
-                       class="ma-2 pa-2 xxlong-line"
+                       class="ma-2 mt-0 pa-2 xxlong-line"
                        v-model="expandStatus"
                        >
     <v-expansion-panel>
      <v-expansion-panel-header disable-icon-rotate 
-                               class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6"
+                               class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4"
                                color="deep-purple lighten-5" 
                                :title="item.days + ' day(s) ago'"
                                >
-         {{ btnFace }}
+         <div class="text-lg-subtitle-2 text-sm-caption">   
+          {{ btnFace }} 
+         </div>
          <template v-slot:actions>
            <v-btn :x-small="$vuetify.breakpoint.smAndDown == true"
                    icon 
@@ -51,7 +53,7 @@
          class= "ma-2 ma-sm-1 pr-sm-2"
          color="deep-purple lighten-3"                  
       >
-      <v-card-subtitle class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6"> 
+      <v-card-subtitle class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4"> 
 <!-- SHOW AMOUNT OF DAYS SINCE YOU EDIT -->        
         <v-badge 
                :value="bhover" 
@@ -63,7 +65,7 @@
           </v-hover>
 
         </v-badge>
-       <div class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
+       <div class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4">
         <template v-if="['text','link'].includes(item.type)">
            {{ item.description }}
         </template>
@@ -208,7 +210,6 @@ export default {
 
     },
     mounted: function () {
-        console.log('SID Mounted')
 
     }
 

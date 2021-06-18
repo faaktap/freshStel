@@ -10,7 +10,6 @@
 export default {
     methods:{
         clickedIt() {
-            console.log('zml close button was clicked')
             this.$emit('btn-click',1)
         }
     }

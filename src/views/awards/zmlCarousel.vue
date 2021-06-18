@@ -239,7 +239,9 @@ export default {
        let previousDone = true
        this.getData.forEach(ele => {
            if (ele.workDone == BUSY) return
-           if (ele.workDone == WAIT) {console.log('nada!');return;} //might cause problems if one in queue not fired at all.
+           if (ele.workDone == WAIT) {
+               console.log('nada!');return;
+             } //might cause problems if one in queue not fired at all.
            if (ele.workDone == DONE) previousDone = true
            if (ele.workDone == READY && previousDone == true) {
              ele.workDone = BUSY
@@ -281,7 +283,7 @@ export default {
        return this.uniqid
      },
      processTest(e) {
-       console.log('process data function - qNo = ', e.id)
+       //this.$cs.l('process data function - qNo = ', e.id)
        this.awardList.push(
              {storyid:this.uid()
              , chapterid:this.constantchapterid
@@ -295,7 +297,7 @@ export default {
        )
        let newGrade = 0
        e.response.forEach(ele => {
-         console.log('grade : ' , newGrade)
+         //this.$cs.l('grade : ' , newGrade)
            if (newGrade != ele.grade) {
              this.awardList.push(
                    {storyid:this.uid()
@@ -322,10 +324,10 @@ export default {
        e.workDone = DONE       
      },
      processData(e) {
-         console.log('process data function - qNo = ', e.id)
+         //this.$cs.l('process data function - qNo = ', e.id)
          let o = {storyid:0, chapterid:0, grade:0, type:'', winners:[], detail1:'', detail2:'', studentid:'', eletype:''}
          e.response.forEach(ele => {
-           //console.log(ele.grade, o.grade, ele.type, o.type, ele)
+           ////this.$cs.l(ele.grade, o.grade, ele.type, o.type, ele)
            if (o.grade == ele.grade && o.eletype == ele.type) {
                //Same grade and type winners, add them to queue list
                o.winners.push( {id:ele.id
@@ -372,7 +374,7 @@ export default {
         */
      },
      loadError(error) {
-        console.log(error)
+        this.$cs.l(error)
         this.progress = false;
      },   
      backgroundSound() {
@@ -392,11 +394,11 @@ export default {
         }
      }, 
      playSound(response) {
-        console.log(response);
+        this.$cs.l(response);
      },
      doCommand(e) {
        let cmd = String.fromCharCode(e.keyCode).toLowerCase();
-       console.log('keypress listener : ', cmd)
+       //this.$cs.l('keypress listener : ', cmd)
        switch (cmd) {
        case ",":
        case "<":
@@ -416,14 +418,13 @@ export default {
    },
    mounted: function () {
      this.currentEditMode = (this.editmode === undefined) ? false : this.editmode;
-     console.log('Mount:Story', this.chapterid, this.currentEditMode, this.getZml.login.isAuthenticated);
+     //this.$cs.l('Mount:Story', this.chapterid, this.currentEditMode, this.getZml.login.isAuthenticated);
      this.loadAllData()
    },
    watch: {
-     storyIndex: function(n) {
+     storyIndex: function() {
          //see what index of studIndex is in winnerNames...
          let ind = this.awardList.findIndex(e => e.detail1 == this.storyIndex);
-         console.log('ind & storyindex = ', ind, this.storyIndex, n)
          if (ind != -1) this.panelIndex = ind;
          
        },

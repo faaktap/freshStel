@@ -79,7 +79,7 @@ export default {
    }, 
    methods: {
      startCarousel() {
-       console.log('start carousel for : ', this.aw)
+       //this.$cs.l('start carousel for : ', this.aw)
        this.$router.push({ name: 'virtualawards'
                          , params:{chapterid: this.aw.storymainid
                                  , editmode: true}});
@@ -87,9 +87,9 @@ export default {
      showStory(s) {
          //get story from s (sotroyid)
          //and load it into aw for display
-         console.log ( 'lookup for storyid=',s)
+         //this.$cs.l ( 'lookup for storyid=',s)
          this.aw = this.allStories.filter(ele => ele.storymainid == s)[0]
-         console.log ( 'lookup for storyid=',s, this.aw)
+         //this.$cs.l ( 'lookup for storyid=',s, this.aw)
      },
      loadData() {
         let ts = {task:'getAllStories'};
@@ -101,7 +101,7 @@ export default {
         this.progress = false;
      },
      loadError(error) {
-        console.log(error);
+        //this.$cs.l(error);
         alert('Nothing loaded yet (possibly) - error : ' + error);
         this.progress = false;
      },   

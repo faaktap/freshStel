@@ -69,7 +69,7 @@ export default {
 
     },
     mounted: function() {
-        console.log('MOUNT ADMINHME ITEMS=')
+        //this.$cs.l('MOUNT ADMINHME ITEMS=')
     }
 }
 </script>
