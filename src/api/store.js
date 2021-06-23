@@ -40,6 +40,7 @@ const state = Vue.observable({
            voteList:[],          
            locale: 'af',
            calendar:[],  
+           persMenemonic:[],   //SELECT user_name, userid FROM `dkhs_learner` WHERE user_type = 'teacher'
            atester: false,
           }
     });

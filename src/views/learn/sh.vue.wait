@@ -23,22 +23,6 @@
  <v-col cols="12" sm="6">
   <subject-display-short v-model="subjectID"/> 
  </v-col>
-  <v-col cols="12" sm="4" md="4" lg="4" xl="2">
-  <v-switch v-if="getZml.login.isAuthenticated && getZml.login.type == 'teacher'" 
-            v-model="editMode" 
-            label="editMode"
-            title="If you are a teacher, then you can switch editmode one here."
-            > 
-  </v-switch>
-  </v-col>
-  <v-col  v-if="editMode" cols="12" sm="4" md="4" lg="4" xl="2" class="ma-2"> 
-    <v-btn small to="/subjects"> Edit Subject Names and Order </v-btn>
-    <v-btn small to="/studentlist"> studentlist </v-btn>
-<!--
-    <v-btn to="/loadhomework"> Homework </v-btn>
-    -->
-  </v-col>
-
 </v-row>
 </v-container>
 
@@ -112,12 +96,14 @@ folderid:{{ folderid }}
           <template v-if="item.type=='folder'" >
             <!-- sometime the folder to which the content belong is also in the contents list
                   so we stop them from displaying it as a folder.-->
+
+                  is hierdie selfde?{{ item.description }} <br>{{ topFolder.description}}
             <template v-if="displayFolder == 'Top' || item.description != topFolder.description">
-              <teacher-folder-display v-if="editMode && (getZml.login.type == 'teacher' || showDebug)"  
+              <teacher-folder-display v-if="getZml.login.type == 'teacher' || showDebug"  
                       @btn-click="getFolder(item.contentid)" 
                       :item="item" 
               />
-              <student-folder-display v-if="!editMode || (getZml.login.type == 'student' || showDebug)"  
+              <student-folder-display v-if="getZml.login.type != 'teacher' || showDebug"  
                       @btn-click="getFolder(item.contentid)" 
                       :item="item" 
               /> 
@@ -125,12 +111,12 @@ folderid:{{ folderid }}
           </template>
 
           <template v-else>
-            <teacher-item-display v-if="editMode && (getZml.login.type == 'teacher' || showDebug)" 
+            <teacher-item-display v-if="getZml.login.type == 'teacher' || showDebug" 
                                  :btnFace="item.name" 
                                  :icon="item.icon" 
                                  :item="item" 
             />
-            <student-item-display v-if="!editMode || (getZml.login.type != 'teacher' || showDebug)"  
+            <student-item-display v-if="getZml.login.type != 'teacher' || showDebug"  
                                  :btnFace="item.name" 
                                  :icon="item.icon" 
                                  :item="item" 
@@ -218,7 +204,6 @@ export default {
         progress:false,
         subjectID:null,
         grade:null,
-        editMode: false,
         showDebug:false,
     }),
     activated: function () {
@@ -253,7 +238,7 @@ export default {
                                                     ,grade:this.topFolder.grade || 0
                                                     ,subjectid:this.topFolder.subjectid || 0
                                                     })
-      },      
+      },        
       loadData(response) {
         console.log('LoadData', response.length , response)
         this.contents.length = 0
@@ -276,6 +261,10 @@ export default {
          if (topid < 0) { 
            topid = 0
          }
+         //If we did not come in with a propfolder, then we need to set topid = 0 as well...
+         if (topid != 0 && !this.isNumber(this.propfolder)) {
+           topid = 0
+         }
          //Here we can check if we came in with a file rather than a folder, and maybe get the folder
          // like we do at latest.vue
          this.topFolder = { name:response[topid].name
@@ -296,30 +285,7 @@ export default {
          })
          this.grade = this.contents[0].grade
          this.subjectID = this.contents[0].subjectid
-      },
-      loadRootData(response) {
-        console.log('LoadROOTData', response.length , response)
-        this.contents.length = 0
-        this.topFolder = {}
-        this.progress = false
-        if (!Array.isArray(response) || (response.errorcode && response.errorcode != 0) ) {
-          //We have an error, or no data was returned
-          infoSnackbar('We have no info in this subject folder, ' + this.getZml.subject)
-          this.subjectID = null
-          this.getZml.subject = ''
-          return
-        }
-        this.topFolder = {grade:response[0].grade, subjectid:response[0].subjectid,displayfolder:'Top'}
-        this.contents = response
-        this.contents.forEach(item =>{
-            item.img = ''
-            item.expand = false
-            if (item.type == 'file' && item.description.substr(0,4) == 'load') {
-                item.img = 'https://www.kuiliesonline.co.za/' + item.description.substr(5)
-            }                     
-         })
-         this.grade = this.contents[0].grade
-         this.subjectID = this.contents[0].subjectid
+         //Here we will know what the subjectid and grade is, if folder successfully read.
       },
       prevFolder(folderItem) {
         console.log('prevFolder', folderItem)
@@ -346,17 +312,20 @@ export default {
           console.log('We are busy..')
           return
         }
-        if (!( this.grade && this.subjectID)) {
+        if (this.grade || this.subjectID) {
           //One of them is filled - fill the other one
           if (this.grade == null) this.grade = this.getZml.grade
           if (this.subjectID == null) this.subjectID = this.getZml.subjectid
         }
         if (this.grade && this.subjectID) {
           this.allowEdit = false
+          this.progress = true          
           console.log('launchGradeSubjectChange Deeper = g,s?',this.grade , this.subjectID, this.getZml.grade, this.getZml.subjectid)        
           this.folderid = 0
-          this.progress = true                    
-          sh.contentData('folderdata', this.loadRootData, {folderid: 0,grade:this.grade ,subjectid:this.subjectID})
+          sh.contentData('folderdata', this.loadData, {folderid: 0
+                                                      ,grade:this.grade 
+                                                      ,subjectid:this.subjectID
+                        })
         }
       },
       isNumber(n) {
@@ -368,6 +337,9 @@ export default {
     mounted: function () {
       zData.initialData('Load Subject Data')
       if (!this.getZml.login.fullname) infoSnackbar('Welcome Guest!')
+      //infoSnackbar(['Welcome ', this.getZml.login.fullname || 'Guest'].join(''))
+      console.log('isNumber',this.propfolder, this.isNumber(this.propfolder))
+      console.log('isFinite',this.propfolder, isFinite(this.propfolder))
       if (!isFinite(this.propfolder)) {
          console.log('coming in with NO folderID',this.getZml.grade ,this.getZml.subjectid)
          if (this.getZml.grade && this.getZml.subjectid) {
@@ -392,13 +364,13 @@ export default {
       grade(o,n) {
         if (o != n) {
           console.log('watch = grade')
-          if (this.grade && this.subjectID) this.launchGradeSubjectChange()
+          this.launchGradeSubjectChange()
         }
       },
       subjectID(o,n) {
         if (o != n) {
           console.log('watch = subject')
-          if (this.grade && this.subjectID) this.launchGradeSubjectChange()
+          this.launchGradeSubjectChange()
         }
       },      
     }

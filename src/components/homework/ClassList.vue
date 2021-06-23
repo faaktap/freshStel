@@ -4,7 +4,7 @@
    <v-col cols="12">
      <v-toolbar flat color="primary" dark class="mb-4">
        <v-toolbar-title>
-           Student/Class Lists. <small>( Click on the button below to select a class )</small>
+           Homework/Individual Lists. <small>( Click on the button below to select a class )</small>
        </v-toolbar-title>
         <v-spacer />
        </v-toolbar>

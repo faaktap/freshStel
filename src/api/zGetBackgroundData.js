@@ -34,7 +34,10 @@ export const zData = {
             console.log(whatever)
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
-            let ts = { api: zmlConfig.apiDKHS, task: 'loadlearn' }
+            let ts = { api: zmlConfig.apiDKHS
+                     , task: 'loadlearn'
+                     , language: getters.getState({ object: "gZml" }).login.lang
+                    }
             zmlFetch(ts, finishedLoadingBasic, errorLoading)
         }
         return "something";
@@ -92,6 +95,7 @@ function finishedLoadingBasic (response) {
     getters.getState({ object: "gZml" }).subjects = response.subjects;
     getters.getState({ object: "gZml" }).folders = response.folders;
     getters.getState({ object: "gZml" }).functions = response.functions;    
+    getters.getState({ object: "gZml" }).persMenemonic = response.pers;    
 }
 
 //----------------------------------------------------------------

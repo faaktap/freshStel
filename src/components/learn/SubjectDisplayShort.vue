@@ -2,7 +2,7 @@
  <div class="text-left">
   <v-expansion-panels v-model="veps">
     <v-expansion-panel>
-      <v-expansion-panel-header> {{ this.getZml.subject || 'Click here to select a Subject' }}</v-expansion-panel-header>
+      <v-expansion-panel-header> {{ this.getZml.subject || inviteSelectASubject }}</v-expansion-panel-header>
       <v-expansion-panel-content>
        <v-btn v-for="s in subjectFilterContent" :key="s.subjectid" 
           @click="setSubject(s)" 
@@ -13,35 +13,17 @@
        >
         {{ s.shortname }} 
        </v-btn>
- <div v-if="!getZml.subjects.length"> There are no subjects to display - Login! </div>
+      <div v-if="!getZml.subjects.length"> There are no subjects to display - Login! </div>
+      <v-btn icon x-small @click="checkCount()"> CC </v-btn>
      </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
-
-  <!--v-container fluid>
-    <v-combobox
-      v-model="model"
-      :items="comboFilter"
-      :search-input.sync="search"
-      label="Subject"
-    >
-      <template v-slot:no-data>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>
-              No results matching "<strong>{{ search }}</strong>".
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-combobox>
-  </v-container-->
-
 </div>
 </template>
 
 <script>
 import { getters } from "@/api/store"
+import { zmlFetch } from '@/api/zmlFetch';
 export default {
     name: "SubjectDisplayShort",    
     components: {    },
@@ -51,12 +33,20 @@ export default {
         getZml: getters.getState({ object: "gZml" }),
         title:'',
         veps:null,
+        subCount:[],
     }),
     computed: { 
+      inviteSelectASubject() {
+         if (this.getZml.login.lang == "A") {
+           return "Kies jou onderwerp"
+         } else {
+           return "Click here to select a Subject"
+         }
+      },
       comboFilter() {
         let n = []
         this.getZml.subjects.forEach(e => {
-            n.push(e.description)
+          n.push(e.beskrywing)
         })
         n.sort((a, b) => a.localeCompare(b))
         return n
@@ -95,15 +85,34 @@ export default {
     methods:{
       subjectColor(sid){
         const idx = this.getZml.subjects.findIndex(item => item.subjectid == sid)
-        if (idx > -1 && this.getZml.subjects[idx].color) return this.getZml.subjects[idx].color
+        if (idx > -1 && this.getZml.subjects[idx].color) {
+           if (this.subCount.length && this.subCount.findIndex(item => item.subjectid == sid) == -1) {
+              return "light-gray"     
+           } 
+           return this.getZml.subjects[idx].color
+          }
         return "light-green"
       },
       setSubject(subject) {
         this.getZml.subjectid = subject.subjectid
-        this.getZml.subject = subject.description
+        if (this.getZml.login.lang == 'A') {
+          this.getZml.subject = subject.beskrywing
+        } else {
+          this.getZml.subject = subject.description
+        }
         this.$emit('clickedsubject') //Some components look for click
         this.$emit('input',this.getZml.subjectid) //Other components use v-model
         this.veps = null
+      },
+      checkCount(){
+        let ts = {}
+        ts.sql = 'SELECT subjectid, count(*) FROM dkhs_lcontent where grade = ' + this.getZml.grade 
+               + ' group by subjectid'
+        ts.task = 'plainSql'
+        zmlFetch(ts, this.finishedLoadingSubjectCount);
+      },
+      finishedLoadingSubjectCount(response) {
+        this.subCount = response
       },
     }
 }

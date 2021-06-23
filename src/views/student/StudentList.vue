@@ -4,7 +4,7 @@
    <v-col cols="12">
      <v-toolbar flat color="primary" dark class="mb-4">
        <v-toolbar-title>
-           Student/Class Lists. <small>( Click on the button below to select a class )</small>
+           SL - Lists and Stuff. - still testing
        </v-toolbar-title>
         <v-spacer />
        </v-toolbar>
@@ -14,10 +14,23 @@
     <class-list />
   </v-col></v-row>
 
-  <h2> General Class Lists </h2>
-  <student-class title="Click here to select a class"> 
-  </student-class>
 
+ <v-row>
+   <v-col cols="12">
+     <v-toolbar flat color="primary" dark class="mb-4">
+       <v-toolbar-title>
+           General Class Lists
+       </v-toolbar-title>
+        <v-spacer />
+       </v-toolbar>
+    </v-col> 
+  </v-row>
+ <v-row>
+   <v-col cols="12">
+     <student-class title="Click here to select a class"> 
+     </student-class>
+  </v-col>
+ </v-row>
 
 <v-dialog v-model="studentInfoShow" width="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
   <zml-close-button @btn-click="studentInfoShow = !studentInfoShow" />
@@ -195,8 +208,7 @@ export default {
       }
     },
     mounted() {
-        //this.$cs.l('start ons class lists creations')
-        this.loadData();
+      this.loadData();
 
     },
     watch: {

@@ -1,4 +1,5 @@
 <template>
+<div>
 <!--
     { "contentid": "185"
     , "sortorder": "1"
@@ -34,7 +35,7 @@
                    icon 
                   @click.stop="test" > 
              <v-icon :small="$vuetify.breakpoint.smAndDown == true"
-                     :color="iconColor(item.icon)"
+                     :color="getIconColor(item.icon)"
                      >
               {{ item.icon | repl}}
              </v-icon>
@@ -43,30 +44,40 @@
      </v-expansion-panel-header>
 
     <v-expansion-panel-content>
-     <v-hover v-slot:default="{ hover }">
-      <v-card  xmin-width="300" 
-               min-height="100"
-               :elevation="hover ? 12 : 2"
-               :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+      <v-card  min-height="100"
+              :elevation="12"
          dense
          class= "ma-2 ma-sm-1 pr-sm-2"
-         color="deep-purple lighten-3"                  
+         color="blue lighten-3"
       >
       <v-card-subtitle class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4"> 
-<!-- SHOW AMOUNT OF DAYS SINCE YOU EDIT -->        
-        <v-badge 
-               :value="bhover" 
-               :content="item.days + 'day(s) ago'"
-               transition="slide-x-transition"
-               > 
-         <v-hover v-model="bhover">
-            <v-icon :color="item.days | icn"> {{ item.icon | repl}} </v-icon> 
-          </v-hover>
-
-        </v-badge>
+       Edit Item(s) - {{ look.getZml.login.username }} - {{ look.getZml.login.fullname }}
+       <div class="text-caption row wrap d-flex justify-space-between ma-0 mb-2">
+           <sml head="Type" :val="item.type" />
+           <sml head="Updated" :val="item.update_timestamp" />
+           <sml head="Created" :val="item.create_timestamp" />
+           <sml head="Owner" :val="look.persMenemonic(item.persid)" />
+       <!--/div>
+       <div class="text-caption row wrap d-flex justify-space-between ma-0 mb-2"-->
+           <v-btn x-small class="mx-1"> 
+               <v-icon x-small>mdi-pencil</v-icon> 
+                Edit Name 
+           </v-btn>
+           <v-btn x-small class="mx-1"> 
+               <v-icon x-small>mdi-delete</v-icon> 
+                Delete {{ item.type }} 
+           </v-btn>
+           <v-btn x-small class="mx-1"> 
+               <v-icon x-small>mdi-folder-move</v-icon> 
+                Move {{ item.type }} 
+           </v-btn>
+           <!--template v-if="['folder'].includes(item.type)">
+             <v-btn x-small class="mx-1"> Add Files </v-btn>
+           </template-->
+       </div>
        <div class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4">
         <template v-if="['text','link'].includes(item.type)">
-           {{ item.description }}
+           text or link
         </template>
         <template v-else>
            {{ item.name }} 
@@ -74,32 +85,8 @@
        </div>
       </v-card-subtitle>        
       <v-card-text>
- 
-        <template v-if="['text'].includes(item.type)">
-           <!-- do not think we need to show something for text -->
-        </template>
-
-       <template v-if="!['text'].includes(item.type)">
-        <v-btn small 
-              :xxxtitle="actionlink(item.type)"
-              :title="item.days + 'day(s) ago'"
-              @click="doAttachment">
-          <v-icon> mdi-attachment </v-icon>
-          View 
-        </v-btn>
-        <v-dialog v-model="showAttachment"  
-                  xmax-width="400" 
-                  :fullscreen="$vuetify.breakpoint.smAndDown"
-                  height="90%"
-                  width="unset">
-          <zml-preview :src="item.img"   
-                      :type="attachment"  
-                      >
-          <zml-close-button @btn-click="showAttachment = !showAttachment"/>
-         </zml-preview>
-        </v-dialog>
-       </template>
-
+          <v-text-field solo v-model="item.name" />
+{{item}}
 <!--
             <br />  Last Edit : {{ item.days }}  days(s) ago
             <br />  Name : {{ item.name }}
@@ -112,30 +99,41 @@
 -->
       </v-card-text>
      </v-card>
-     </v-hover>
     </v-expansion-panel-content>
    </v-expansion-panel>
   </v-expansion-panels>
-    
 
+        <v-dialog v-model="showAttachment"  
+                  xmax-width="400" 
+                  :fullscreen="$vuetify.breakpoint.smAndDown"
+                  height="90%"
+                  width="unset">
+          <zml-preview :src="item.img"   
+                      :type="attachment"  
+                      >
+          <zml-close-button @btn-click="showAttachment = !showAttachment"/>
+         </zml-preview>
+        </v-dialog>
+    
+</div>
 </template>
 <script>
-import { getters } from "@/api/store";
+import { look } from "@/api/Lookups.js"
 import zmlPreview from '@/components/zmlPreview'
 import zmlCloseButton from '@/components/zmlCloseButton'
 import {getIconColor, getIcon, getFileType} from '@/api/fileUtils.js'
 import { infoSnackbar } from '@/api/GlobalActions';
-
+import sml from '@/components/base/BaseSmall'
 export default {
     name:"zmlContentButton",
-    components: {zmlPreview, zmlCloseButton},
+    components: {zmlPreview, zmlCloseButton,sml},
     props: ['icon','btnFace','item'],
     data: () => ({
-      getZml: getters.getState({ object: "gZml" }),      
+      look: look,
+      getIconColor:getIconColor,
       src : null,
       showAttachment : false,
       attachment: null,
-      bhover: false,
       expandStatus:[]
     }),    
     computed:{
@@ -164,9 +162,6 @@ export default {
 
     },
     methods: {
-        iconColor(iconname) {
-          return getIconColor(iconname)
-        },      
         actionlink(type)  {
             if (type == 'link') {
                 return this.item.name
@@ -175,7 +170,7 @@ export default {
             }
         },
         doAttachment() { 
-            if (!this.getZml.login.isAuthenticated) {
+            if (!look.isAuthenticated) {
                infoSnackbar('You need to login to access the material!');
                return
             }

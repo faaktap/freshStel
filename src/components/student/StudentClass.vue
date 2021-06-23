@@ -1,5 +1,6 @@
 <template>
 <v-container fluid>
+
   <student-grade v-model="gradeClass"> 
   </student-grade>
 
@@ -17,7 +18,7 @@
                   :key="s.studentid">
             <v-card color="light-pink" 
                     class="ma-1 pl-2"
-                    @click="showStudent(s.studentid)"
+                    @click="showStudent(index)"
                     @mouseout="hoverStart = null; hover = null" 
                     @mouseover="hoverStart = 'R' + s.studentid">  
              {{ index+1 }} {{ s.surname }}, {{ s.firstname}} 
@@ -51,29 +52,42 @@
 
   </v-card-actions>
     </v-card>
-
-  </v-col>
+    </v-col>
   </v-row>
+
+<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">  
+  (werner) studentList  :  
+  <div v-for="s in studentList" :key="s.studentid">
+  <br> {{ s }}
+  </div>
+</v-container>
 
 <v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
    <zml-close-button @btn-click="showListPrint = !showListPrint" />
   <front-json-to-csv v-if="studentList"
                     :jsonData="studentList"
-                    :csvTitle="classListHeader">
+                    :csvTitle="classListHeader"
+                    @hideModal="showListPrint=false">
    <v-btn>
       Download with custom title
    </v-btn> 
   </front-json-to-csv>
 </v-dialog>
  
+ <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
+   <zml-close-button @btn-click="showStudentCard = false" />
+   <student-name-card :studentList="singleStudent" />
+ </v-dialog>
 
 </v-container>
 </template>
 
 <script>
-import StudentGrade from '@/components/student/StudentGrade.vue'
+import { getters } from "@/api/store"
+import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
-import { zmlConfig } from '@/api/constants';
+import StudentGrade from '@/components/student/StudentGrade'
+import StudentNameCard from '@/components/student/StudentNameCard.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
 
@@ -83,10 +97,14 @@ export default {
         StudentGrade
        ,FrontJsonToCsv
        ,zmlCloseButton
+       ,StudentNameCard
        },
     data: () => ({
+        getZml: getters.getState({ object: "gZml" }),
         gradeClass:{},
         studentList:[],
+        singleStudent:{data:''},
+        showStudentCard:null,
         hover:null,
         hoverStart:null,
         showListPrint:false,
@@ -117,11 +135,10 @@ export default {
         })
         this.studentList.push(obj)
       },
-      loadError(response) {
-        alert('S.C.' + response)
+      loadError(error) {
+        alert('S.C.' + error)
       },  
-      classListLoad(gc) {
-        console.log(gc)
+      classListLoad() {
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = "SELECT studentid, surname, firstname, grade, gclass, idno, email"
@@ -132,11 +149,14 @@ export default {
                + "    and m.outid is null"
                + "  order by s.surname, s.firstname" 
         ts.api = zmlConfig.apiDKHS
+        ts.grade = this.gradeClass.g 
+        ts.class = this.gradeClass.c
         zmlFetch(ts, this.loadData, this.loadError);
 
       },
-      showStudent(sid) {
-        alert('show the full student info for ' + sid)
+      showStudent(idx) {
+        this.singleStudent.data = this.studentList[idx]
+        this.showStudentCard = true
       }
      },
     mounted() {
@@ -146,7 +166,7 @@ export default {
         if (this.gradeClass) {
           this.classListLoad(this.gradeClass)
         }
-       }
+      }
     }
 }
 </script>

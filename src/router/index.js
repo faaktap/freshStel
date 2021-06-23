@@ -140,6 +140,11 @@ const routes = [
     ,path: '/ws'
     ,meta: {layout: la[3], authentication: "public"}
   },  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/Bland.vue')
+    ,name: 'bland'
+    ,path: '/bland'
+    ,meta: {layout: la[3], authentication: "public"}
+  },  {
     component: () => import(/* webpackChunkName: "test" */ '@/components/FlexGridStuff.vue')
     ,name: 'flex'
     ,path: '/flex'

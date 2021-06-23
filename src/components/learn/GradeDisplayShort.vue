@@ -3,8 +3,12 @@
   <v-expansion-panels  v-model="veps">
    <v-expansion-panel>
     <v-expansion-panel-header> 
-     <template v-if="getZml.grade"> Grade {{getZml.grade}} </template>
-     <template v-else> Select A Grade </template>
+     <template v-if="getZml.grade"> 
+       {{ getZml.login.lang == 'A' ? 'Graad' : 'Grade' }} {{getZml.grade}} 
+     </template>
+     <template v-else> 
+       {{ getZml.login.lang == 'A' ? 'Kies jou graad' : 'Select A Grade ' }}
+     </template>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
      <v-btn v-for="grade in displayGroup" :key="grade.id" 
@@ -52,7 +56,7 @@ export default {
         switch (this.localDisplaySize) {
            case 'small': gDisplay = 'G'; break
            case 'medium': gDisplay = 'Gr'; break
-           default: gDisplay = 'Grade'; break
+           default: gDisplay = this.getZml.login.lang == 'A' ? 'Graad' : 'Grade'; break
         }
         this.displayGroup = []
         this.getZml.grades.forEach(ele => {
