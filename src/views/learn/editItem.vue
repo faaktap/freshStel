@@ -1,13 +1,13 @@
 <template>
 <div>
-{{this.$route.params.EditOrInsert}}
+<!-- {{this.$route.params.EditOrInsert}} -->
   <v-card>
     <v-card-title>
-      <span class="headline">Edit CONTENT</span>
+      <span class="headline">Edit CONTENT {{ contentid }} </span>
     </v-card-title>
     <v-card-text>
       <v-container grid-list-md>
-        <v-layout wrap>
+        <v-layout wrap v-model="edit.name">
           <v-flex xs12 sm6 md12>
             <v-text-field v-model="edit.name" label="Name"></v-text-field>
           </v-flex>
@@ -32,8 +32,6 @@
            <v-select
              v-model="edit.accesstype"
              :items="['student','pers','hidden']"
-             item-text="text"
-             item-value="id"
              label="Access"
            /> a={{ edit.accesstype }}=a {{ accesstypeitems }}
           </v-flex>
@@ -50,12 +48,13 @@
           <v-flex xs12 sm6 md4>
            <v-select
              v-model="edit.subjectid"
-             :hint="`id=${edit.subjectid}`"
+             :hint="`subjectid=${edit.subjectid}`"
              :items="getZml.subjects"
-             item-text="subjectafrname"
+             item-text="description"
              item-value="subjectid"
              label="Subject"
            />
+           
           </v-flex>
           <v-flex xs12 sm6 md4>
             <v-text-field v-model="edit.sortorder" label="SortOrder"></v-text-field>
@@ -79,19 +78,18 @@
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { getters } from "@/api/store";
-//import { infoSnackbar } from '@/api/GlobalActions';
-//import { zmlLog } from '@/api/zmlLog.js';
   export default {
-    name: "editItem",
-    props: ["id"],
+    name: "EditItem",
+    props: { contentid:{default:283} },
     components: {},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         edit: {},
         editMode: null,
+        editDialog: true,
         progress:false,
         search: '',
-        content: [],
+        accesstypeitems: ['all','grade','pers','hidden']
     }),
     methods: {
         allocate() { 
@@ -108,22 +106,13 @@ import { getters } from "@/api/store";
             this.editDialog = true;
             this.editMode = 'add';
         },
-        editCard(id) {
-            let idx = this.content.findIndex(ele => ele.contentid == id);
-            if (idx == -1) {
-                alert(id + ' not found');
-                return;
-            }
-            this.edit = this.content[idx];
-            zmlConfig.cl('edit',idx, this.edit);
-            this.editDialog = true;
-            this.editMode = 'update';
-        },
         saveData() {
            let ts = {};
            ts.data = this.edit;
            ts.mode = this.editMode;
            ts.api = zmlConfig.apiDKHS
+           alert('wait!!!') 
+           /*
            if (this.editMode == 'add')  {
               ts.task = 'insertLContent';
            } else {
@@ -131,6 +120,7 @@ import { getters } from "@/api/store";
            }
            this.progress = true;
            zmlFetch(ts, this.afterUpdate);   
+           */
         },
         afterUpdate(response) {
             zmlConfig.cl('AfterUpdate:',response);
@@ -139,35 +129,35 @@ import { getters } from "@/api/store";
             //zmlLog({task:"dolog",user:"None", pagename:"EditPackage", logdata: this.edit});
         },
         showData(response) {
-            zmlConfig.cl('content=' , response);
+            zmlConfig.cl(this.$options.name , 'showData : content = ' , response);
+            this.edit = response[0];            
             this.progress = false;
             if (response == '') {
               alert('no data received');
             } else {
-              this.content = response;
+              this.edit = response[0];
             }
         },
-        loadSubjects(response) {
-            //this.$cs.l(response);
-            this.getZml.subjects = response;
-        },
         loadData() {
+          if (!this.contentid) return;
            let ts = {};
-           ts.sql = 'select * from dkhs_lcontent order by sortorder, name';
+           ts.sql = 'select * from dkhs_lcontent where contentid = ' + this.contentid;
+           console.log('fetching...', ts.sql)
            ts.task = 'PlainSql';
            ts.api = zmlConfig.apiDKHS
-           zmlConfig.cl(ts);
+           this.progress = true;
            zmlFetch(ts, this.showData);
         },
-        showSubjects(item) {
-          this.$cs.l('showSubjects : ' , item);
-        }
-
     },
     mounted: function () {
-        zmlConfig.cl('Mount:Edit-2-package');
-        zmlFetch({task: 'getsubjects'}, this.loadSubjects);
+        zmlConfig.cl(this.$options.name, 'Mount:Edit-2-package');
         this.loadData();
+    },
+    watch:{
+      contentid: function() {
+        console.log(this.$options.name, 'wathc contentid', this.contentid)
+        this.loadData()
+      }
     }
   }
 </script>

@@ -1,12 +1,13 @@
 // eslint-disable-next-line
 function makeAWait(milisecs,nextProc,parm1, parm2 ,parm3) {
-let openWin = new Promise((resolve) => {
-  let wagbietjie = setTimeout(() => {
-    clearTimeout(wagbietjie);
-    resolve( nextProc(parm1,parm2, parm3 )) ;
-  }, milisecs)
-})
-console.log(openWin)
+ let openWin = new Promise((resolve) => {
+   let wagbietjie = setTimeout(() => {
+     clearTimeout(wagbietjie);
+     resolve( nextProc(parm1,parm2, parm3 )) ;
+     if (parm3 ) {console.log('sdfsdfsdfsdfsdfsdfsdfsdasda',parm3); parm3=false}
+   }, milisecs)
+ })
+ console.log(openWin)
 }
 
 

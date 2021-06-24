@@ -13,6 +13,12 @@
   </pre>
 -->
 
+<v-dialog v-model="showAddFolder" width="auto">
+    <edit-item-partitions contentid="0"
+                          mode="name"
+                          @close="showAddFolder = false"
+    />
+</v-dialog>    
 
 <!-- SHOW THE GRADE AND SUBJECT SELECTION -->
 <v-container fluid>
@@ -32,11 +38,9 @@
   </v-switch>
   </v-col>
   <v-col  v-if="editMode" cols="12" sm="4" md="4" lg="4" xl="2" class="ma-2"> 
+    <v-btn small @click="showAddFolder = true"> Add A Root Folder  </v-btn>
     <v-btn small to="/subjects"> Edit Subject Names and Order </v-btn>
     <v-btn small to="/studentlist"> studentlist </v-btn>
-<!--
-    <v-btn to="/loadhomework"> Homework </v-btn>
-    -->
   </v-col>
 
 </v-row>
@@ -53,7 +57,9 @@ folderid:{{ folderid }}
 <br> displayFolder:{{ displayFolder }}
 <br>g={{ grade }}s={{ subjectID }}
 <br>The one we are in{{ topFolder.name }}
+<br>showAddFolder = {{ showAddFolder }}
 <br>{{ getZml.login }}
+
 </v-container>
 
 <v-container v-if="(contents && contents.length) || topFolder.displayfolder"
@@ -169,11 +175,20 @@ folderid:{{ folderid }}
      <v-card color="deep-purple lighten-5">
        <zml-data-table
         :dataList="contents"
-        userHeader="dinges"
+        userHeader="view files in tabular form"
+        @clickOnRow="doEdit"
        />
       </v-card>
     </v-col>
 </v-row> 
+
+<v-row><v-col cols="8">
+<v-card elevation="4">
+<edit-item v-if="contentid" :contentid="contentid" />
+</v-card>
+</v-col>
+</v-row>
+
 </v-container>
 
 </div>
@@ -195,6 +210,8 @@ import zmlDataTable from '@/components/zmlDataTable.vue'
 
 import GradeDisplayShort from '@/components/learn/GradeDisplayShort'
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
+import EditItem from '@/views/learn/editItem'
+import EditItemPartitions from '@/views/learn/EditItemPartitions'
 export default {
     name: "SHub",
     components: {
@@ -205,6 +222,8 @@ export default {
         , GradeDisplayShort
         , SubjectDisplayShort
         , zmlDataTable
+        , EditItem
+        , EditItemPartitions
         },
     props: { propfolder: {default: 0} },  //419, 1415
     data: () => ({
@@ -220,6 +239,8 @@ export default {
         grade:null,
         editMode: false,
         showDebug:false,
+        contentid:null,
+        showAddFolder:false,
     }),
     activated: function () {
     },
@@ -238,6 +259,11 @@ export default {
       },
     },
     methods:{
+      doEdit(p1) {
+        console.log(this.$options.name, 'got it back', p1.contentid)
+        this.contentid = p1.contentid
+        alert(this.contentid)
+      },
       subjectShortName(sid = this.topFolder.subjectid) {
         return subject.shortName(sid)
       },

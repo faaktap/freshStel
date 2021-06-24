@@ -14,7 +14,11 @@
         {{ s.shortname }} 
        </v-btn>
       <div v-if="!getZml.subjects.length"> There are no subjects to display - Login! </div>
-      <v-btn icon x-small @click="checkCount()"> CC </v-btn>
+      <v-btn icon x-small 
+            title="Show subjects containing data"
+            @click="checkCount()"> 
+        CC
+      </v-btn>
      </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -57,6 +61,7 @@ export default {
            return this.getZml.subjects.filter(element => element.id < 200)
            //return this.getZml.subjects
         } else {
+          if (this.getZml.grade == "INFO") {
           return [ { "id": "201"
                    , "name": "TERS"
                    , "subjectid": "201"
@@ -79,7 +84,9 @@ export default {
                    , "linksubjectid": "200"
                    , "picture": null
                    , "color": "yellow darken-2" }] 
+          }
         }
+        return []
       }
     },
     methods:{

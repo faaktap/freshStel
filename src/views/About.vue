@@ -108,9 +108,6 @@ only werner:
     <contact-form>
     </contact-form>
   </v-col>
-  <v-col>
-    <snack-bar-test />  
-  </v-col>
   
 
  </v-row>
@@ -139,7 +136,6 @@ only werner:
 <script>
 import { zmlConfig } from '@/api/constants';
 import { infoSnackbar } from '@/api/GlobalActions';
-import snackBarTest from '@/components/snackBarTest';
 import ContactForm from "@/components/ContactForm";
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection.vue"
@@ -153,8 +149,7 @@ import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort.vue'
 export default {
 name: "about",
 props:{},
-components: {snackBarTest
-           , ContactForm
+components: {ContactForm
            , HeroSection
            , zmlPreview
            , zmlCloseButton
@@ -189,7 +184,7 @@ data: () => ({
    '/grade',   '/grade/8',   '/studenthub',   '/subjects',   '/student',
    '/personel',   '/viewfunctions',   '/nested',    'dialog',    '/werner'
     ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
-    ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/test'    ,'/sview'
+    ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/testupload'    ,'/sview'
     ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards', '/va/123','/awardedit','/AKandidate'
     ,'/werner','/flex','/streamline','/sh','/latest'
     ,'/sgrade','/sgrade1','/sgrade2','/sgrade3'
@@ -206,7 +201,7 @@ data: () => ({
 computed: {
 
 },
-methods: {
+methods: { 
   listenToToolbar(e) {
     alert(e)
   },

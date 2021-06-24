@@ -54,7 +54,7 @@ export default {
     components:{ TeacherFolderEdit },
     data: () => ({
         bhover:null,
-        expandStatus:null,
+        expandStatus:null,   //to force close expand component, assign null to exandStatus
     }),
     filter: {
     },
@@ -64,8 +64,8 @@ export default {
         }
     },
     watch: {
-       expandStatus(o,n) {
-           console.log(o,n)
+       expandStatus(newvalue) {
+           console.log(this.$options.name, 'ExpandStatus newvalue=', newvalue,'this=', this.expandStatus)
        }
     }
 }

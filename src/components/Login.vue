@@ -217,7 +217,7 @@ export default {
         }
         case 'teacher':
         {
-          this.$router.push({ name: 'ViewLearn' , meta: {layout: "AppLayoutGray" }});  
+          this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});  
           break;
         }
         case 'admin' :

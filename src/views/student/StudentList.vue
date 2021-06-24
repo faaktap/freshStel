@@ -1,19 +1,20 @@
 <template>
 <v-container fluid>
  <v-row>
-   <v-col cols="12">
-     <v-toolbar flat color="primary" dark class="mb-4">
-       <v-toolbar-title>
-           SL - Lists and Stuff. - still testing
-       </v-toolbar-title>
-        <v-spacer />
-       </v-toolbar>
-    </v-col> 
-  </v-row>
-  <v-row><v-col cols="12">
-    <class-list />
-  </v-col></v-row>
-
+  <v-col cols="12">
+   <v-toolbar flat color="primary" dark class="mb-4">
+    <v-toolbar-title>
+         SL - Lists and Stuff. - still testing
+    </v-toolbar-title>
+    <v-spacer />
+   </v-toolbar>
+  </v-col> 
+ </v-row>
+ <v-row>
+  <v-col cols="12">
+   <class-list />
+  </v-col>
+ </v-row>
 
  <v-row>
    <v-col cols="12">
@@ -21,12 +22,12 @@
        <v-toolbar-title>
            General Class Lists
        </v-toolbar-title>
-        <v-spacer />
-       </v-toolbar>
-    </v-col> 
-  </v-row>
+       <v-spacer />
+     </v-toolbar>
+  </v-col> 
+ </v-row>
  <v-row>
-   <v-col cols="12">
+  <v-col cols="12">
      <student-class title="Click here to select a class"> 
      </student-class>
   </v-col>

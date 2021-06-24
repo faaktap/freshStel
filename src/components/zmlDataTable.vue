@@ -17,6 +17,7 @@
     disable-pagination
     hide-default-footer
     id="printMe"
+    @click:row="clickOnRow"
    >
    </v-data-table>       
  </v-card>
@@ -37,6 +38,11 @@ export default {
         ]      
     }),
     methods:{
+      clickOnRow(p1,p2) {
+        console.log('p1 = ', p1)
+        console.log('p2 = ', p2)
+        this.$emit('clickOnRow',p1,p2)
+      },
       onButtonClick(todo,data) {
         console.log(todo, data)
       },

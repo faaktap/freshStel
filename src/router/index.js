@@ -58,42 +58,49 @@ const routes = [
     //award
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AKandidate.vue')
     ,name: 'AKandidate'    ,path: '/a'    ,meta: {layout: la[0], authentication: "public"}
-  },  {
-    component: () => import(/* webpackChunkName: "leer" */ '../views/learn/LearnTree.vue'),
-    path: '/learntree',     name: 'LearnTree',
-    meta: {layout: la[3], authentication: "learner" },    props: {default:true},
-    params: {currentSubjectID:'2', grade:'12'}
-  },  {
-    //learning stuff
-    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/viewLearn.vue'),
-    path: '/viewlearn', name: 'ViewLearn',    meta: {layout: la[3], authentication: "teacher" },
-    children: [
-           //editItem component is rendered when /user/:id is matched
-           { path: ':id'
-            , component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/editItem.vue')
-            , props: {default:true} }  ]
-  },  {
-    component: () => import(/* webpackChunkName: "leer" */ '../views/learn/Grade.vue'),
-    path: '/grade',    name: 'Grade',   props: true,    meta: {layout: la[3], authentication: "learner" }
-  },  {
-    component: () => import(/* webpackChunkName: "leer" */ '../views/learn/SelectGrade.vue'),
-    path: '/grade/:gradeno',    name: 'SelectGrade',
-    props: true,    params: {heading: 'Grade', gradeno:10},    meta: {layout: la[3], authentication: "learner" }
-  },  {
-    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub.vue'),
-    path: '/studenthub',    name: 'StudentHub',   props: true,
-    params: {currentSubjectID:'2', grade:'12'},
-    meta: {layout: la[3], authentication: "learner" }
-  },  {
-    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub2.vue'),
-    path: '/hub/:grade/:currentSubjectID',    
-    name: 'StudentHub2',
-    props: true,
-    params: {currentSubjectID:'2', grade:'12'},
-    meta: {layout: la[3], authentication: "learner" }
-  },  {
-    
-    component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/ViewSubjects.vue')
+  },
+  //  {
+  //  component: () => import(/* webpackChunkName: "leer" */ '../views/learn/LearnTree.vue'),
+  //  path: '/learntree',     name: 'LearnTree',
+  //  meta: {layout: la[3], authentication: "learner" },    props: {default:true},
+  //  params: {currentSubjectID:'2', grade:'12'}
+  //},
+  //learning stuff
+  //   was for teachers -not used anymore
+  // {
+  //  component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/viewLearn.vue'),
+  //  path: '/viewlearn', name: 'ViewLearn',    meta: {layout: la[3], authentication: "teacher" },
+  //  children: [
+  //         //editItem component is rendered when /user/:id is matched
+  //         { path: ':id'
+  //          , component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/editItem.vue')
+  //          , props: {default:true} }  ]
+  //  },
+  //  {
+  //  component: () => import(/* webpackChunkName: "leer" */ '../views/learn/Grade.vue'),
+  //  path: '/grade',    name: 'Grade',   props: true,    meta: {layout: la[3], authentication: "learner" }
+  //},
+  // {
+  //  component: () => import(/* webpackChunkName: "leer" */ '../views/learn/SelectGrade.vue'),
+  //  path: '/grade/:gradeno',    name: 'SelectGrade',
+  //  props: true,    params: {heading: 'Grade', gradeno:10},    meta: {layout: la[3], authentication: "learner" }
+  //},
+  //  {
+  //  component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub.vue'),
+  //  path: '/studenthub',    name: 'StudentHub',   props: true,
+  //  params: {currentSubjectID:'2', grade:'12'},
+  //  meta: {layout: la[3], authentication: "learner" }
+  //},
+  //  {
+  //  component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub2.vue'),
+  //  path: '/hub/:grade/:currentSubjectID',    
+  //  name: 'StudentHub2',
+  //  props: true,
+  //  params: {currentSubjectID:'2', grade:'12'},
+  //  meta: {layout: la[3], authentication: "learner" }
+  //},
+    {
+     component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/ViewSubjects.vue')
     ,name: 'ViewSubjects'    ,path: '/subjects'  ,meta: {layout: la[0], authentication: "public"}
   },  {
     component: () => import(/* webpackChunkName: "homework" */ '@/views/learn/LoadHomework.vue')
@@ -220,12 +227,12 @@ const routes = [
     ,props: true
     ,meta: {layout: la[3], authentication: "public"}
   },        
-  {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/TestExpand.vue')
-    ,name: 'TextExpand'
-    ,path: '/expand'
-    ,meta: {layout: la[0], authentication: "public"}
-  },      
+  //{
+  //  component: () => import(/* webpackChunkName: "test" */ '@/views/TestExpand.vue')
+  //  ,name: 'TextExpand'
+  //  ,path: '/expand'
+  //  ,meta: {layout: la[0], authentication: "public"}
+  //},      
   {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewLog.vue')
     ,name: 'ViewLog'
@@ -233,9 +240,9 @@ const routes = [
     ,meta: {layout: la[3], authentication: "public"}
   },
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/test/test.vue')
+    component: () => import(/* webpackChunkName: "test" */ '@/test/TestUpload.vue')
     ,name: 'testUpload'
-    ,path: '/test'
+    ,path: '/testupload'
     ,meta: {layout: la[0], authentication: "public"}
   },  
   {

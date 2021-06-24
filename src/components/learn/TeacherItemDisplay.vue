@@ -44,61 +44,7 @@
      </v-expansion-panel-header>
 
     <v-expansion-panel-content>
-      <v-card  min-height="100"
-              :elevation="12"
-         dense
-         class= "ma-2 ma-sm-1 pr-sm-2"
-         color="blue lighten-3"
-      >
-      <v-card-subtitle class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4"> 
-       Edit Item(s) - {{ look.getZml.login.username }} - {{ look.getZml.login.fullname }}
-       <div class="text-caption row wrap d-flex justify-space-between ma-0 mb-2">
-           <sml head="Type" :val="item.type" />
-           <sml head="Updated" :val="item.update_timestamp" />
-           <sml head="Created" :val="item.create_timestamp" />
-           <sml head="Owner" :val="look.persMenemonic(item.persid)" />
-       <!--/div>
-       <div class="text-caption row wrap d-flex justify-space-between ma-0 mb-2"-->
-           <v-btn x-small class="mx-1"> 
-               <v-icon x-small>mdi-pencil</v-icon> 
-                Edit Name 
-           </v-btn>
-           <v-btn x-small class="mx-1"> 
-               <v-icon x-small>mdi-delete</v-icon> 
-                Delete {{ item.type }} 
-           </v-btn>
-           <v-btn x-small class="mx-1"> 
-               <v-icon x-small>mdi-folder-move</v-icon> 
-                Move {{ item.type }} 
-           </v-btn>
-           <!--template v-if="['folder'].includes(item.type)">
-             <v-btn x-small class="mx-1"> Add Files </v-btn>
-           </template-->
-       </div>
-       <div class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4">
-        <template v-if="['text','link'].includes(item.type)">
-           text or link
-        </template>
-        <template v-else>
-           {{ item.name }} 
-        </template>
-       </div>
-      </v-card-subtitle>        
-      <v-card-text>
-          <v-text-field solo v-model="item.name" />
-{{item}}
-<!--
-            <br />  Last Edit : {{ item.days }}  days(s) ago
-            <br />  Name : {{ item.name }}
-            <br />  Description : {{ item.description }}
-            <br />  Img : {{ item.img }}
-            <br />  Created : {{ item.create_timestamp.substr(0,10) }}
-            <br />  icon : {{ item.img | icon }}
-            <br />  filetype : {{ item.img | fileType }}
-            {{ item }}
--->
-      </v-card-text>
-     </v-card>
+      <teacher-folder-edit :item="item" />
     </v-expansion-panel-content>
    </v-expansion-panel>
   </v-expansion-panels>
@@ -123,10 +69,10 @@ import zmlPreview from '@/components/zmlPreview'
 import zmlCloseButton from '@/components/zmlCloseButton'
 import {getIconColor, getIcon, getFileType} from '@/api/fileUtils.js'
 import { infoSnackbar } from '@/api/GlobalActions';
-import sml from '@/components/base/BaseSmall'
+import TeacherFolderEdit from '@/components/learn/TeacherFolderEdit'
 export default {
     name:"zmlContentButton",
-    components: {zmlPreview, zmlCloseButton,sml},
+    components: {zmlPreview, zmlCloseButton,TeacherFolderEdit},
     props: ['icon','btnFace','item'],
     data: () => ({
       look: look,

@@ -17,17 +17,6 @@
 </v-expansion-panel>
 
 
- <v-expansion-panel>
-  <v-expansion-panel-header> Google Drive Items </v-expansion-panel-header>
-    <v-expansion-panel-content> 
-      <v-card color="grey lighten-2">google drive items
-       <google-drive-items :itemList="filterContent" 
-                   :folderObj="folderObj" 
-                   @iconClick="iconClick"
-                   @contentProperties="contentProperties" />
-      </v-card>            
-  </v-expansion-panel-content>       
- </v-expansion-panel>
   
 
   <v-expansion-panel>
@@ -57,11 +46,10 @@ import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { getters } from "@/api/store";
 import { infoSnackbar } from '@/api/GlobalActions';
-import GoogleDriveItems from '@/components/learn/GoogleDriveItems.vue'
 import baseTable from '@/components/base/baseTable'
   export default {
     name: "viewContentWernerTest",
-    components: {GoogleDriveItems, baseTable},
+    components: {baseTable},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         folderObj:{},
