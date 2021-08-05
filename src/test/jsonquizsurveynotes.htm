@@ -1,0 +1,73 @@
+<html>
+
+<pre>
+DROP TABLE IF EXISTS dkhs_survey;
+
+CREATE TABLE IF NOT EXISTS dkhs_survey (
+  surveyid int(11) NOT NULL AUTO_INCREMENT,
+  ownerid int(11) NULL,
+  createdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  quizdata varchar(2048) NOT NULL,
+  PRIMARY KEY (surveyid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SHOW CREATE TABLE dkhs_quiz;
+
+DROP TABLE IF EXISTS dkhs_quiz;
+
+CREATE TABLE dkhs_quiz (
+ quizid int(11) NOT NULL AUTO_INCREMENT,
+ surveyid int(11) NOT NULL,
+ ownerid int(11) NULL,
+ createdate timestamp NOT NULL DEFAULT current_timestamp(),
+ station varchar(40) NULL,
+ quizkey varchar(20) NULL,
+ quizdata varchar(2048) NOT NULL,
+ PRIMARY KEY (quizid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+SELECT * FROM dkhs_quiz 
+WHERE JSON_CONTAINS(quizdata, '111111', '$.schoolno')
+
+SELECT json_extract(quizdata, '$.schoolno') schoolno
+     , json_extract(quizdata, '$.email') email 
+     , json_extract(quizdata, '$.surname') sname
+FROM dkhs_quiz 
+
+SELECT json_keys(quizdata) FROM dkhs_quiz
+--see all keys
+
+if it is deeper....
+SELECT JSON_EXTRACT(quizdata, '$.name.nickname') from dkhs_quiz
+
+update dkhs_quiz
+SET quizdata = JSON_REPLACE(quizdata, '$.surname', 'WONKA')
+
+</pre>
+
+<table style="width: 444.75pt; background: white; height: 341px;" border="0" width="593" cellspacing="0" cellpadding="0">
+<tbody>
+<tr style="height: 75px;">
+  <td style="width: 583px; background: #254721; padding: 3.75pt; height: 75px;" colspan="2" bgcolor="#254721">
+<table style="width: 100.0%;" border="0" width="100%" cellspacing="3" cellpadding="0" bgcolor="#254721">
+<tbody>
+<tr style="height: 4.8pt;">
+  <td style="padding: 5pt 0pt 5pt 0pt; height: 4.8pt; background: #254721;" colspan="2" bgcolor="#254721">
+<p style="text-align: center;" align="center"><span style="font-size: 16pt; color: yellow;">Ho&euml;rskool De Kuilen High School</span></p>
+</td></tr></tbody></table></td></tr>
+<tr style="height: 59px;"><td style="padding: 8pt 1pt 1pt 10pt; height: 59px; width: 578.341px;" colspan="2">
+<h3><em>Admin</em></h3></td></tr><tr style="height: 207px;"><td style="padding: 1pt 5pt 5pt; height: 207px; width: 85.7841px;">
+<span style="color: black;"> <a href="https://www.dekuilen.com/" target="_blank" rel="noopener"> <img src="https://www.kuiliesonline.co.za/img/dkhs.jpg" width="80" /> </a> </span></td>
+<td style="width: 465px; padding: 0cm; float: right; height: 207px;"><table border="0" cellspacing="0" cellpadding="0"><tbody>
+<tr><td style="padding: 0cm 0cm 0cm 11.25pt;"><table style="width: 337.5pt;" border="0" width="450" cellspacing="3" cellpadding="0">
+<tbody><tr><td style="padding: 0cm; width: 63.0341px;"><p><span style="font-size: 10.0pt;">Phone:</span></p>
+</td><td style="padding: 0cm; width: 378.239px;"><p><span style="font-size: 10.0pt;">021 903 5121/082 328 3321</span></p>
+</td></tr><tr><td style="padding: 0cm; width: 63.0341px;"><p><span style="font-size: 10.0pt;">Email:</span></p></td>
+<td style="padding: 0cm; width: 378.239px;">
+<p><span style="font-size: 10.0pt;"><a href="mailto:ontvangs@dekhs.co.za" target="_blank" rel="noopener">ontvangs@dekhs.co.za</a></span></p>
+</td></tr><tr><td style="padding: 0cm; width: 63.0341px;">&nbsp;</td><td style="padding: 0cm; width: 378.239px;">
+<p><span style="font-size: 10.0pt;">Kerk Straat, Kuilsrivier, 7580. Wes-Kaap</span></p></td></tr></tbody></table></td></tr><tr>
+<td style="padding: 0cm 0cm 0cm 11.25pt;">
+<p><a href="http://www.dekuilen.com/" target="_blank" rel="noopener" data-saferedirecturl="https://www.google.com/url?q=http://www.dekuilen.com/&amp;source=gmail&amp;ust=1595685505946000&amp;usg=AFQjCNEZa5RdRclqQXHfMw2UI6yS4Z1HLQ"> <span style="font-size: 9.0pt;">www.dekuilen.com</span></a> <span style="display: inline-block; height: 15px; float: right;"> <a href="https://www.facebook.com/dekuilen" target="_blank" rel="noopener"> <img style="border: 0; height: 15px; width: 15px;" src="https://codetwocdn.azureedge.net/images/mail-signatures/generator-dm/all-inclusive/fb.png" alt="Facebook icon" width="15" height="15" border="0" /></a> &nbsp;&nbsp; <a href="https://twitter.com/kuilies" target="_blank" rel="noopener"> <img style="border: 0; height: 15px; width: 15px color:green;" src="https://codetwocdn.azureedge.net/images/mail-signatures/generator-dm/all-inclusive/tt.png" alt="Twitter icon" width="15" height="15" border="0" /></a> &nbsp;&nbsp; <a href="https://www.instagram.com/dekuilenhighschool/" target="_blank" rel="noopener"> <img style="border: 0; height: 15px; width: 15px;" src="https://codetwocdn.azureedge.net/images/mail-signatures/generator-dm/all-inclusive/it.png" alt="Instagram icon" width="15" height="15" border="0" /></a> &nbsp;&nbsp; </span></p>
+</td></tr></tbody></table></td></tr></tbody></table>

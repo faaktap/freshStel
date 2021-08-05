@@ -205,14 +205,20 @@ export default {
       this.loadLearn()
     },
     loadLearn() {
+      
+      
       switch (this.getZml.login.type) {
         case 'student' :
         {
-           if (this.getZml.gradeLastChosen && this.getZml.gradeLastChosen > 0) {
-             this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }})
-           } else {
-             this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }})
-           }
+           //we have a grade value of 09E2 in login.grade, and we want to split it.
+           //slice(startIndex[, endIndex])
+           this.getZml.gradeLastChosen = 'G' + this.getZml.login.grade
+           this.getZml.login.class  = this.getZml.login.grade.slice(3,4)
+           this.getZml.login.gclass = this.getZml.login.grade.slice(2,4)
+           //alert(this.getZml.login.grade)
+           this.getZml.login.grade  = this.getZml.login.grade.slice(0,2).padStart(2,'0')
+           //alert(this.getZml.login.grade)
+           this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }})
            break;
         }
         case 'teacher':
@@ -247,7 +253,9 @@ export default {
           const bye = 'Thanks for using the system ' + this.getZml.login.fullname + '!'
           infoSnackbar(bye);         
           this.getZml.login.class = ''
+          this.getZml.login.gclass = ''
           this.getZml.login.grade = ''
+          this.getZml.login.lang = ''
           this.getZml.login.fullname = ''
           this.getZml.login.password = ''
           this.getZml.login.studentid = ''
@@ -294,12 +302,12 @@ export default {
             this.getZml.login.userid = response.userid ? response.userid : 0;
             this.getZml.login.logins = response.logins;
             this.getZml.login.lastdate = response.lastdate;
-            if (this.getZml.login.grade.indexOf('A')) {
-              this.getZml.login.lang = 'A'
-            } else {
+            if (this.getZml.login.grade.indexOf('A') == -1) {
               this.getZml.login.lang = 'E'
+            } else {
+              this.getZml.login.lang = 'A'
             }
-            console.log('welcome',response.username, this.getZml.login.lang)
+            console.log('welcome',response.username, this.getZml.login.lang, this.getZml.login.grade,'idx=',this.getZml.login.grade.indexOf('A'))
             this.dropAnEmail()
             if (response.added == 1  || response.password == 'password') {
               infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
@@ -333,19 +341,22 @@ export default {
       errorSnackbar('We have a problem to update your details ' + response.errorcode)
     },
     dropAnEmail() {
+      this.getZml.login.password = 'secret'
       let email = 
               { subject  : "Learn1 : User has logged on " + this.getZml.login.fullname
                ,email_to :"faaktap@gmail.com"
                ,htmlmessage : '<h2> LEARN1 - logged on ' + zmlConfig.projectID + '</h2>'
-                       + '<br>Username : ' + this.getZml.login.username 
-                       + '<br>Fullname : ' + this.getZml.login.fullname 
-                       + '<br>Language : ' + this.getZml.login.lang
-                       + '<br>Logins : ' + this.getZml.login.logins
-                       + '<br>Phone : ' + this.getZml.login.phone
+                       + '<br>Username : '  + this.getZml.login.username 
+                       + '<br>Fullname : '  + this.getZml.login.fullname 
+                       + '<br>Language : '  + this.getZml.login.lang
+                       + '<br>Logins : '    + this.getZml.login.logins
+                       + '<br>Phone : '     + this.getZml.login.phone
                        + '<br>Studentid : ' + this.getZml.login.studentid
-                       + '<br>Type : ' + this.getZml.login.type  
-                       + '<br>Username : ' + this.getZml.login.username 
-                       + '<br>Userid : ' + this.getZml.login.userid
+                       + '<br>Type : '      + this.getZml.login.type  
+                       + '<br>Username : '  + this.getZml.login.username 
+                       + '<br>Grade : '     + this.getZml.login.grade
+                       + '<br>GClass : '    + this.getZml.login.gclass
+                       + '<br>JSON'         + JSON.stringify( this.getZml.login )
                ,email_from : "admin@kuiliesonline.co.za"};
       zData.sendEmail(email)
     },

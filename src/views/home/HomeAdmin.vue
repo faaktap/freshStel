@@ -40,10 +40,28 @@
                :menemonic="wieOmTeWys" />
     </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-expansion-panel>
+        <v-expansion-panel-header>
+            All Functions
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+           <menu-list :list="getZml.functions.filter(element => element.functionaccess === 'admin')" displayType="2" />
+           <menu-list :list="getZml.functions.filter(element => element.functionaccess !== 'admin')" displayType="2" />
+        </v-expansion-panel-content>
+    </v-expansion-panel>
+    <v-expansion-panel>
+        <v-expansion-panel-header>
+            Admin Functions 
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+            <menu-list :list="menuFilterList" displayType="1" /> 
+        </v-expansion-panel-content>
+    </v-expansion-panel>
+
   </v-expansion-panels>
 </v-col>
 <v-col cols="12">
-  <menu-list :list="menuFilterList" /> 
+  
 </v-col>
 |</v-row>
 
@@ -83,6 +101,7 @@ import EmailList from '@/components/EmailList.vue';
 import MenuList from '@/components/MenuList.vue';
 import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/student/PersonelMenemonic.vue';
+
 export default {
     name:"AdminHome",
     components:{EmailList, MenuList, Calendar,PersonelMenemonic},
@@ -100,15 +119,16 @@ export default {
     computed:{
         menuFilterList() {
             if (!this.getZml) return 0;
-            return this.getZml.functions.filter(a => function()
+            return this.getZml.functions
+            /*.filter(a => function()
             {
-                if (a.accesstype == this.getZml.login.type)
+                if (a.accesstype == 'admin' || a.accesstype == 'teacher')
                     return 1
                 else
                     return 0
 
                 }
-            )
+            )*/
         },
     },
     methods:{

@@ -19,7 +19,7 @@
             @click="doTask(btn.func)" 
             v-show="!btn.optional == 1"> 
 
-        <v-icon :small="$vuetify.breakpoint.smAndDown == true">
+        <v-icon :small="$vuetify.breakpoint.smAndDown == true" class="ma-1">
           {{ btn.icon }}
         </v-icon>
         <div v-if="!$vuetify.breakpoint.smAndDown">

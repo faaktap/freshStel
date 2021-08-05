@@ -48,7 +48,7 @@
 
 
   <v-btn @click="showDebug = !showDebug"
-         xv-if="getZml.login.isAuthenticated && getZml.login.username=='werner'"> 
+         v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'"> 
     show Debug4Werner </v-btn>
 <v-container fluid v-if="showDebug">  
 folderid:{{ folderid }} 

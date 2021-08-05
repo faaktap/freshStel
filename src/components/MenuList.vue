@@ -1,7 +1,10 @@
 <template>
 <div>
-
+ <template v-if="displayType == 1">
     <v-row v-if="list.length > 0">
+      <!--v-col cols="12">
+        {{ list }}
+      </v-col-->
       <v-col
         v-for="item in list"
        :key="item.functionid"
@@ -12,9 +15,6 @@
             <v-card-title>
                 {{ item.functionname }}
             </v-card-title>
-            <v-card-text v-if="!$vuetify.breakpoint.smAndDown">
-               {{ item.tip }}
-            </v-card-text>
          <v-card-actions>
           <zml-button-tool 
              bottom 
@@ -24,6 +24,9 @@
             :icon="item.icon"
           @clicked="click(item)" /> 
          </v-card-actions>
+            <v-card-text v-if="!$vuetify.breakpoint.smAndDown">
+               {{ item.tip }}
+            </v-card-text>
         </v-card>
       </template>
       <template v-else>      
@@ -37,7 +40,41 @@
       </template>
       </v-col>
     </v-row>
-    
+ </template>
+ <template v-else>   
+  <v-row v-if="list.length > 0">
+    <v-col cols="12" class="d-flex flex-wrap justify-space-between pa-2"> <!-- justify-start -->
+      <v-btn v-for="btn in list" 
+               :color="btn.functionaccess | cc"
+               :key="btn.functionid"
+               class="ma-2"
+               :small="$vuetify.breakpoint.mobile == true"
+               :title="btn.functionname"
+               :tip="btn.tip"
+               @click="click(btn)"
+               @mouseover="theTip=btn.description"
+               @mouseleave="theTip=''"
+                dark>
+   
+            <v-icon :small="$vuetify.breakpoint.smAndDown == true" class="ma-1">
+             {{ btn.icon }}
+            </v-icon>
+            <template v-if="$vuetify.breakpoint.smAndUp">
+              {{ btn.shortname }} 
+            </template>
+            <template v-else>
+            ({{ btn.functionaccess }})
+            </template>
+      </v-btn>            
+    </v-col>
+    <v-col cols="12">
+           <v-card v-if="$vuetify.breakpoint.smAndUp && theTip" class="ma-2 pa-4">
+             <v-card-title>More..</v-card-title>
+             <v-card-text>{{ theTip }}</v-card-text>
+           </v-card>
+    </v-col>
+   </v-row>
+ </template>
 </div>
 
 </template>
@@ -50,17 +87,18 @@ import { getters } from "@/api/store";
 export default {
     name:"MenuList",
     components:{zmlButtonTool},
-    props:['list'],
+    props:['list', 'displayType','access'],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
+        theTip:''
     }),
     filters:{
         cc: function (value) {
            switch (value) {
-               case 'teacher' : return "light-blue lighten-3"
-               case 'student' : return "green lighten-2"
-               case 'admin' : return "red lighten-3"
-               default : return "orange lighten-4"
+               case 'teacher' : return "light-blue darken-3"
+               case 'student' : return "green darken-2"
+               case 'admin' : return "red darken-1"
+               default : return "blue darken-1"
            }
         }
     },

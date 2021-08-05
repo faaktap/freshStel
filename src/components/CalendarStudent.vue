@@ -172,10 +172,9 @@ export default {
         //Massage the grade if it is in G08A2 to be GR08A2 
         //Since rooster store them like that.
         if (this.pStudentGradeClass.substr(0,2) !== 'GR') {
-            
             this.pStudentGradeClass = this.pStudentGradeClass[0] + 'R' + this.pStudentGradeClass.substr(1)
-
         }
+        console.log('getting calendar data (rooster) for ',this.pStudentGradeClass)
 
         let ts = {}
         ts.task = 'PlainSql'

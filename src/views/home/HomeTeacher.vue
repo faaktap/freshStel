@@ -21,10 +21,23 @@
       <calendar weekOrDay="week" :menemonic="getZml.login.username" />
     </v-expansion-panel-content>
     </v-expansion-panel>
+    <v-expansion-panel>
+        <v-expansion-panel-header>
+            Functions
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+           <menu-list :list="getZml.functions" displayType="2" />      
+        </v-expansion-panel-content>
+    </v-expansion-panel>
+    <v-expansion-panel>
+        <v-expansion-panel-header>
+            Functions Same
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+            <menu-list :list="menuFilterList" displayType="1" /> 
+        </v-expansion-panel-content>
+    </v-expansion-panel>
   </v-expansion-panels>
-</v-col>
-<v-col cols="12">
-  <menu-list :list="menuFilterList" /> 
 </v-col>
 |</v-row>
 

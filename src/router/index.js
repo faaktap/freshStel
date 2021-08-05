@@ -25,7 +25,20 @@ const routes = [
     component: Home,     path: '/',  name: 'Home',    meta: {layout: la[3], authentication: "public"}
   },  {
     component: Home,     path: '/home',  name: 'RealHome',    meta: {layout: la[3], authentication: "public"}
-  },  {
+  },
+  {
+    path: '/ff',
+    name: 'ff',
+    component: () => import(/* webpackChunkName: "vfbasetest" */ '../components/vfbase/vfbasetest'),
+    meta: {layout: la[3], authentication: "public" }
+  },
+  {
+    path: '/choosesubjects',
+    name: 'skool',
+    component: () => import(/* webpackChunkName: "vfbasetest" */ '../components/vfbase/skool'),
+    meta: {layout: la[3], authentication: "public" }
+  },
+  {
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),    path: '/about', name: 'About',    meta: {layout: la[3], authentication: "public" }
   },  { 
     //test
@@ -210,7 +223,7 @@ const routes = [
     {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
     ,name: 'ViewCampaigns'
-    ,path: '/campaigns'
+    ,path: '/elections'
     ,meta: {layout: la[3], authentication: "public"}
   },        
   {

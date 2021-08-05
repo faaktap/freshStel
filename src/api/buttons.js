@@ -8,7 +8,8 @@ export function doStuff(tr,task) {
         case "/about": 
             return zmlReRoute(tr, task)
         case "/viewlearn":   //teacher start
-            return zmlReRoute(tr, task)
+            //return zmlReRoute(tr, task)
+            return zmlReRoute(tr, "/sh")
         case "/hover": 
             return zmlReRoute(tr, task)
         case "/translate": 
@@ -17,7 +18,8 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task)
         case "/emailcheck": 
             return zmlReRoute(tr, task)
-           
+        case "/choosesubjects": 
+            return zmlReRoute(tr, task)           
         case "/profile": 
             return zmlReRoute(tr, '/login')            
         case "/nested/dialog": 
@@ -26,12 +28,12 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task + "/Grade")
             
         case "/sh":    //student start 
-            return zmlReRoute(tr, task + "/sh")
+            return zmlReRoute(tr, "/sh")
 
         case "/grade":    //new student start
         case "/student": 
         case "/personel": 
-        case "/campaigns": 
+        case "/elections": 
         case "/userlist": 
         case "/studentlist": 
         case "/subjects":         

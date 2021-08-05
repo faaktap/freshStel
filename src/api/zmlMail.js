@@ -8,7 +8,7 @@ function zmlMail(task,callback,errcallback) {
                          , 'Content-Type': 'application/json;charset=UTF-8'},
                   body: JSON.stringify(task)};
      
-        fetch("https://zmlrekenaars.co.za/zml/api/massmail/genMailer.php", apiConfig)
+        fetch("https://kuiliesonline.co.za/api/massmail/genMailer.php", apiConfig)
         .then(response => response.json())  
         .then(response => { 
            if (callback) callback(response,task);

@@ -1,3 +1,12 @@
+/* Quick date functions - no need to include this. 
+    let d = new Date();
+    let year = d.getFullYear() + 1;
+    let month = d.getMonth();
+    let day = d.getDate();
+    let c = new Date(year + 1, month, day);
+    console.log(c);
+*/
+
 import { format 
         ,lastDayOfMonth
         ,addYears 

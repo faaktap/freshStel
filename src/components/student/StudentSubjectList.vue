@@ -1,9 +1,8 @@
 <template>
-  <v-container v-if="studentList">
-   <v-card v-if="subjectList" max-width="500" class="mx-auto pb-2" color="green darken-1">
-       <v-card-title class="headline ma-1"> Subjects and Teachers </v-card-title>
-       <div v-for="s in subjectList" :key="s.studsubid">
-        <v-card class="pa-2 ml-1 mr-2">
+   <v-card v-if="subjectList" xmax-width="500" class="mx-auto" :color="color" elevation="2">
+       <v-card-title class="headline ma-1"> Subjects </v-card-title>
+       <div v-for="s in subjectList" :key="s.studsubid" class="ma-2">
+        <v-card class="pa-2 ml-1 mr-2" :xcolor="color">
          {{ s.subjectname }} 
          <div class="float-right">
            {{ s.teachersurname }},
@@ -11,8 +10,12 @@
          </div>
         </v-card>
        </div>
+       <v-card-text>
+       </v-card-text>
     </v-card>
-  </v-container>   
+    <v-card v-else>
+        We could not find any subjects for {{ this.studentid }}
+    </v-card>
 </template>
 
 <script>
@@ -20,26 +23,35 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 export default {
     name:"StudentSubjectCard",
-    props: ['studentList'],
+    props: ['studentid', 'color'],
     data: () => ({
      subjectList:{},
     }),
     methods:{
         loadStudentSubject() {
-            let ts = {}
-            ts.task = 'PlainSql'
-            ts.sql = "select * "
-                   + " from dkhs_studsub where studentid = " + this.studentList.data.studentid
-            ts.api = zmlConfig.apiDKHS
-            zmlFetch(ts, this.assignData);
+            this.subjectList.length = 0
+            if (this.studentid) {
+               let ts = {}
+               ts.task = 'PlainSql'
+               ts.sql = "select *  from dkhs_studsub where studentid = " + this.studentid
+               ts.api = zmlConfig.apiDKHS
+               zmlFetch(ts, this.assignData);
+            }
         },
         assignData(response){
             this.subjectList = response
         }
     },
     mounted: function() {
-        if (this.studentList && this.studentList.data.studentid) {   
+        if (this.studentid) {   
            this.loadStudentSubject()
+        } else {
+           this.subjectList.length = 0 
+        }
+    },
+    watch: {
+        studentid(n,o) {
+            if (n != o) this.loadStudentSubject()
         }
     }
 }

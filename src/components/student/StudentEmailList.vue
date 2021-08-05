@@ -1,64 +1,66 @@
 <template>
-  <v-container v-if="emailList">
-   <v-row><v-col cols="12">
-    <v-card class="mx-auto">
-       <v-container>
-         <v-row dense>
-           <v-col cols="12">
-             <v-card color="purple lighten-3">
-  <v-data-table
-    :headers="emailHeader"
-    :items="emailList"
-    :items-per-page="5"
-    class="elevation-1"
-  ></v-data-table> 
-             </v-card>
-           </v-col>
-         </v-row>
-       </v-container>
-    </v-card>
-   </v-col></v-row>
-  </v-container>   
+ <v-card xmax-width="500" class="mx-auto" :color="color" elevation="2"> 
+   <v-card-title class="headline ma-1"> Emails </v-card-title>
+   <v-card-text v-if="emailList">
+   <v-data-table
+         :headers="emailHeader"
+         :items="emailList"
+         :items-per-page="15"
+         :hide-default-footer="true"
+         class="elevation-1"
+       ></v-data-table> 
+   </v-card-text>       
+   <v-card-text v-else>
+      Oops - no emails found for {{ studentid }}
+   </v-card-text>
+ </v-card>   
 </template>
 <script>
 import { zmlFetch } from "@/api/zmlFetch";
 export default {
     name:"StudentEmailList",
-    props: ['studentList'],
+    props: ['studentid','color'],
     data: () => ({
       emailList:null,
       emailHeader: [
-          //{text: 'id',            align: 'start',            value: 'subid' },
-          {text: 'email',         align: 'start',            value: 'email' },
-          //{text: 'impNumber',     align: 'start',            value: 'impnumber' },
-          {text: 'fullname',      align: 'start',            value: 'name' },
-          {text: 'OptOut',       align: 'start',            value: 'outid' },
-          {text: 'Inserted',       align: 'start',            value: 'insertdate' },
-          //{text: 'Changed',       align: 'start',            value: 'changedate' },
-          //{text: 'Extra',       align: 'start',            value: 'extra' },
+        //{text: 'id',       align: 'start',  value: 'subid' },
+          {text: 'email',    align: 'start',  value: 'email' },
+        //{text: 'impNumber',align: 'start',  value: 'impnumber' },
+        //{text: 'fullname', align: 'start',  value: 'name' },
+          {text: 'OptOut',   align: 'start',  value: 'description' },
+          {text: 'Inserted', align: 'start',  value: 'insertdate' },
+          {text: 'Changed',  align: 'start',  value: 'changedate' },
+          {text: 'Note',     align: 'start',  value: 'extra' },
         ]
-
     }),
     methods:{
       getEmails() {
-        let sl = { task: 'plainSql'
-                 , sql: 'SELECT * FROM m_subscriber where impnumber = ' + this.studentList.data.studentid}
-        zmlFetch(sl, this.processAfterFetch); 
+        if (this.studentid) {
+           let sl = { task: 'plainSql'
+                    , sql: 'SELECT * '
+                         + ' FROM m_subscriber s '
+                         + 'left join m_out m on s.outid = m.outid '
+                         + 'where impnumber = ' + this.studentid}
+           zmlFetch(sl, this.processAfterFetch); 
+        }
       },
       processAfterFetch(response) {
           if (!response.error) {
-             this.emailList = response
+             this.emailList= response
+          } else {
+              this.emailList = []
           }
       }
 
     },
     mounted: function() {
-        if (this.studentList) {
+        console.log(this.$options.name,  this.studentid)
+        if (this.studentid) {
            this.getEmails()
         }
     },
     watch: {
-        studentList(n,o) {
+        studentid(n,o) {
             if (n != o) this.getEmails()
         }
     }
