@@ -67,26 +67,32 @@
 
 
 
-      <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-        <v-layout class="ma-1" row wrap justify-space-between>
-            
-        <v-btn to="/viewfunctions"> functions </v-btn>
-        <v-btn to="/dkhsawards"> dkhs awards </v-btn>
-        <v-btn to="/studentawards"> student awards </v-btn>
-        <v-btn to="/about"> about </v-btn>
-        <v-btn to="/hover"> hover </v-btn>
-
-        {{ joke }}           
-        <div>
-        xs={{$vuetify.breakpoint.xs}} <br>
-        sm={{$vuetify.breakpoint.sm}}<br>
-        md={{$vuetify.breakpoint.md}}<br>
-        lg={{$vuetify.breakpoint.lg}}<br>
-        xl={{$vuetify.breakpoint.xl}}<br>
-        </div>
-        <email-list />
-            
-         </v-layout>
+  <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+     <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+              Stuff that only Werner should be able to see 
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-layout class="ma-1" row wrap justify-space-between>
+            <v-btn to="/viewfunctions"> functions </v-btn>
+            <v-btn to="/dkhsawards"> dkhs awards </v-btn>
+            <v-btn to="/studentawards"> student awards </v-btn>
+            <v-btn to="/about"> about </v-btn>
+            <v-btn to="/hover"> hover </v-btn>
+            {{ joke }}           
+            <v-window>
+            xs={{$vuetify.breakpoint.xs}} <br>
+            sm={{$vuetify.breakpoint.sm}}<br>
+            md={{$vuetify.breakpoint.md}}<br>
+            lg={{$vuetify.breakpoint.lg}}<br>
+            xl={{$vuetify.breakpoint.xl}}<br>
+            </v-window>
+             <email-list />
+            </v-layout>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+     </v-expansion-panels>
       </div>
 </div>
 </template>

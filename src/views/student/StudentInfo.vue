@@ -1,6 +1,5 @@
 <template>
 <div>
-
  <v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
   <hero-section name="forDB" 
                bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg" 
@@ -36,9 +35,9 @@
       <v-layout row wrap>
         <v-flex >
           <student-name-card :studentList="studentList" color="green darken-3" />
-          <student-subject-list :studentList="studentList" color="green darken-3" />
-          <student-email-list v-if="studentList" :studentList="studentList" color="green darken-3"/>            
-          <student-photo-list :studentList="studentList"  color="green darken-3" />
+          <student-subject-list :studentid="studentid" color="green darken-3" />
+          <student-email-list v-if="studentid" :studentid="studentid" color="green darken-3"/>            
+          <student-photo-list :studentid="studentid"  color="green darken-3" />
         </v-flex>
       </v-layout>
     </v-container>

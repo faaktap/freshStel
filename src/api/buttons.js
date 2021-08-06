@@ -8,32 +8,21 @@ export function doStuff(tr,task) {
         case "/about": 
             return zmlReRoute(tr, task)
         case "/viewlearn":   //teacher start
-            //return zmlReRoute(tr, task)
             return zmlReRoute(tr, "/sh")
-        case "/hover": 
-            return zmlReRoute(tr, task)
-        case "/translate": 
-            return zmlReRoute(tr, task)
-        case "/login": 
-            return zmlReRoute(tr, task)
-        case "/emailcheck": 
-            return zmlReRoute(tr, task)
-        case "/choosesubjects": 
-            return zmlReRoute(tr, task)           
         case "/profile": 
             return zmlReRoute(tr, '/login')            
-        case "/nested/dialog": 
-            return zmlReRoute(tr, task)
         case "/selectgrade": 
             return zmlReRoute(tr, task + "/Grade")
-            
+        case "/hover": 
+        case "/translate": 
+        case "/login": 
+        case "/emailcheck": 
+        case "/choosesubjects": 
+        case "/nested/dialog": 
         case "/sh":    //student start 
-            return zmlReRoute(tr, "/sh")
         case "/latest":    //newest files
-            return zmlReRoute(tr, "/latest")
-        case "/latest/7":    //newest files
-            return zmlReRoute(tr, "/latest/7")
-
+        case "/latest/7":   
+        case "/dkhsawards":  
         case "/grade":    //new student start
         case "/student": 
         case "/personel": 

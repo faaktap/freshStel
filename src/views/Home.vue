@@ -60,13 +60,11 @@
                text="Here you can..."/>
   <hr />
   <admin-home />
-  <teacher-home />
-  <student-home />
   </v-container>
 
 
  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-   <admin-home />
+   <h2> Welcome Werner! </h2>
  </v-container>
 
   </div>
