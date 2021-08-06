@@ -62,16 +62,16 @@
             <template v-if="$vuetify.breakpoint.smAndUp">
               {{ btn.shortname }} 
             </template>
-            <template v-else>
-            ({{ btn.functionaccess }})
-            </template>
       </v-btn>            
     </v-col>
     <v-col cols="12">
+      <fade-transition  mode="out-in" :duration="1200">
            <v-card v-if="$vuetify.breakpoint.smAndUp && theTip" class="ma-2 pa-4">
              <v-card-title>More..</v-card-title>
              <v-card-text>{{ theTip }}</v-card-text>
            </v-card>
+      </fade-transition>
+
     </v-col>
    </v-row>
  </template>
@@ -84,9 +84,11 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import zmlButtonTool from '@/components/zmlButtonTool'
 import { doStuff } from '@/api/buttons'
 import { getters } from "@/api/store";
+import FadeTransition from "@/components/transition/FadeTransition.vue";
+
 export default {
     name:"MenuList",
-    components:{zmlButtonTool},
+    components:{zmlButtonTool, FadeTransition},
     props:['list', 'displayType','access'],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),

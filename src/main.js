@@ -20,22 +20,6 @@ window.onerror = function(message, url, lineNumber) {
   return true;
 }; 
 
-import VueHtmlToPaper from 'vue-html-to-paper';
-const paperOptions = {
-  name: '_blank',
-  specs: [
-    'fullscreen=yes',
-    'titlebar=yes',
-    'scrollbars=yes'
-  ],
-  styles: [
-    'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-    'https://unpkg.com/kidlat-css/css/kidlat.css'
-  ]
-}
-Vue.use(VueHtmlToPaper, paperOptions);
-
-
 Vue.prototype.$playSound = (path, volume = .5) => {
   var audio = new Audio(path);
   audio.volume = volume

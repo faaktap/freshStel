@@ -22,7 +22,7 @@
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
     <v-expansion-panel>
      <v-expansion-panel-header>
-        Calendar (Click here to view your day!) {{ joke }} 
+        Calendar (Click here to view your day!) 
      </v-expansion-panel-header>
     <v-expansion-panel-content>
         <v-row><v-col cols="10">
@@ -75,7 +75,8 @@
         <v-btn to="/studentawards"> student awards </v-btn>
         <v-btn to="/about"> about </v-btn>
         <v-btn to="/hover"> hover </v-btn>
-                
+
+        {{ joke }}           
         <div>
         xs={{$vuetify.breakpoint.xs}} <br>
         sm={{$vuetify.breakpoint.sm}}<br>
@@ -113,7 +114,6 @@ export default {
         today: new Date(),
         tomorrow: new Date(),
         schoolday: null,
-        joke: null,
         weekOrDay:"day"
     }),
     computed:{

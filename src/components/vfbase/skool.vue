@@ -171,9 +171,9 @@ export default {
       subject1:null,
       subject2:null,
       subject3:null,
-      subject4:null,
       subject5:null,
       subject6:null,
+      subject7:null,
     },     
     /*
       schema:{ type:'text', hint:'myHint', prependIcon:'print'... } 
@@ -198,14 +198,14 @@ export default {
               , tooltip: "Admission number / Toelatingsnommer"
               },                   
            email: { type: 'email'
-              , label: 'Email'
+              , label: 'Parent/Guardian Email'
               , rules: [rules.requiredEmail, rules.validEmail]
               , prependInnerIcon:"mdi-email"
               , solo:true
               , col: { cols: 12, md: 6 } 
               , class:'xtitle pa-2 rounded col-md-6'
               , ripple:{ center:true, class: 'item blue--text' }
-              , tooltip: "Please enter your email address"
+              , tooltip: "Please enter a parent or guardian email address."
               , hint:'email'
               },
            surname: { type: 'text'
@@ -285,7 +285,7 @@ export default {
              , rules: [rules.requiredSel]
              , tooltip:"Leerders wat Fisiese Wetenskap kies, MOET ook Wiskunde kies"
              },
-    subject4: { type: 'radio'
+    subject5: { type: 'radio'
              , label: 'Subject Group 4 / Vak Groep 4'
              , options: ['Life Sciences / Lewenswetenskappe'
                         ,'Geography / Geografie'
@@ -300,7 +300,7 @@ export default {
              , rules: [ required('Kies asseblief een vak van elke groep') ]
              , tooltip:"Onthou: Jy kan nie dieselfde vak twee keer kies nie."
              },
-    subject5: { type: 'radio'
+    subject6: { type: 'radio'
              , label: 'Subject Group 5 / Vak Groep 5'
              , options: ['Life Sciences / Lewenswetenskappe'
                         ,'Physical Sciences / Fisiese wetenskappe'
@@ -316,7 +316,7 @@ export default {
              , rules: [ required('Please select one subject from each group') ]
              , tooltip:"EGD, IT and ART requires an aptitude test."
              },               
-    subject6: { type: 'radio'
+    subject7: { type: 'radio'
              , label: 'Subject Group 6 / Vak Groep 6'
              , options : ['History / Geskiedenis'
                          ,'Accounting / Rekeningkunde'
@@ -354,7 +354,6 @@ export default {
         console.log('TEST A = ',a)
         console.log('key = ', a.key)
         console.log('value = ', a.data.key)
-        console.log('RadioS2 = ', a.data.radioS2)
         console.log('on,id,index...', on, id, index, key, value, obj)
         */
         if (key == 'schoolno' && value) {
@@ -362,8 +361,8 @@ export default {
           this.tmpSchoolNo = value
           survey.getQuiz(this.tmpSchoolNo,this.loadModel)
         }
-        if (key == 'subject5' || key == 'subject6') this.check()
-        if (key == 'subject3' || key == 'subject5') {
+        if (key == 'subject6' || key == 'subject7') this.check()
+        if (key == 'subject3' || key == 'subject6') {
               //'Mathematics / Wiskunde'
               console.log("===================", key, value, this.myModel.subject3, this.myModel.subject5)
         }
@@ -420,13 +419,13 @@ export default {
       },
       validate () {
         this.valid = this.$refs.form.validate()
-        if (util.hasDuplicates([this.myModel.subject4,this.myModel.subject5,this.myModel.subject6])) {
+        if (util.hasDuplicates([this.myModel.subject5,this.myModel.subject6,this.myModel.subject7])) {
           this.valid = false
           errorSnackbar('Subjects are not unique!')  
           return
         }
         if (this.myModel.subject3 !== 'Mathematics / Wiskunde' 
-            && this.myModel.subject5 == 'Physical Sciences / Fisiese wetenskappe') {
+            && this.myModel.subject6 == 'Physical Sciences / Fisiese wetenskappe') {
             this.valid = false
             errorSnackbar('(Mathematics / Wiskunde) is needed if you select (Physical Sciences / Fisiese wetenskappe)')  
             return
@@ -474,9 +473,9 @@ export default {
             heading += "<tr><td>Group/Groep 1<td>" + Answer.subject1
             heading += "<tr><td>Group/Groep 2<td>" + Answer.subject2
             heading += "<tr><td>Group/Groep 3<td>" + Answer.subject3
-            heading += "<tr><td>Group/Groep 4<td>" + Answer.subject4
-            heading += "<tr><td>Group/Groep 5<td>" + Answer.subject5
-            heading += "<tr><td>Group/Groep 6<td>" + Answer.subject6
+            heading += "<tr><td>Group/Groep 4<td>" + Answer.subject5
+            heading += "<tr><td>Group/Groep 5<td>" + Answer.subject6
+            heading += "<tr><td>Group/Groep 6<td>" + Answer.subject7
             
             let ts = {method: "zmlsendmail"
                      ,htmlmessage: heading +  "</table></div><br><br><hr>" + JSON.stringify(Answer) 
@@ -491,11 +490,6 @@ export default {
             infoSnackbar('Sending email to ' + Answer.email)
             zmlMail(ts,this.emailGood, this.emailBad);
             return        
-     },
-     xxxx() {
-       console.log(this.$refs["includeInEmail"].$el.innerHTML)
-       alert(this.hasDuplicates([this.myModel.subject3,this.myModel.subject4 
-                               ,this.myModel.subject5,this.myModel.subject6]))
      },
      emailGood(response) {
        console.log('emailgood:', response) 

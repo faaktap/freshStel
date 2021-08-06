@@ -2,14 +2,25 @@
 <div>
 <v-toolbar color="primary">
     <v-card color="primary" width="100%" class="pa-3">
-    <div class="float-left">
+        <div class="d-flex flex-no-wrap justify-space-between">
+    <div class="float-left ma-2">
          AVAILABLE OPTIONS FOR
     </div>
-    <div class="float-right">
+    <div class="float-center ma-1">
+        <avatar :username="getZml.login.fullname"  
+               @clickAvatar="showPhoto" 
+               :src="photo" />
+    </div>
+    <div class="float-right ma-2">
          {{ getZml.login.fullname}} / G{{ getZml.login.grade }}{{ getZml.login.gclass }}
     </div>
+        </div>
     </v-card>
 </v-toolbar>
+<v-dialog v-model="showPhotos" width="300" :scrollable="false" :fullscreen="$vuetify.breakpoint.smAndDown">
+ <student-photo-list :studentid="studentid" @foundPhoto="weHaveIt" />
+</v-dialog>
+
 <v-row> 
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
@@ -45,10 +56,10 @@
   </v-expansion-panels>
 </v-col>
 <v-col cols="12">
-    <student-subject-list :studentid="studentList.data.studentid" color="primary" />
-    <student-email-list :studentid="studentList.data.studentid" color="primary" />
-    
+    <student-subject-list :studentid="studentid" color="primary" />
+    <student-email-list :studentid="studentid" color="primary" />
 </v-col>
+
 <!--
 { "functionid": "2", "sortorder": "50"
 , "functionname": "Display Student Content"
@@ -86,6 +97,8 @@ import MenuList from '@/components/MenuList';
 import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
+import StudentPhotoList from '@/components/student/StudentPhotoList'
+import Avatar from '@/components/base/Avatar'
 export default {
     name:"StudentHome",
     components:{
@@ -94,6 +107,8 @@ export default {
         , CalendarStudent
         , StudentEmailList
         , StudentSubjectList
+        , StudentPhotoList
+        , Avatar
         //, StudentGrade
      },
     data: () => ({
@@ -102,7 +117,9 @@ export default {
          cards: ['Today', 'Yesterday'],
          gradeToShow:{g:'', c:''},
          weekOrDay:"day",
-         studentList:{ data: { studentid: '' }}
+         photo:'',
+         studentid:'',
+         showPhotos:false,
     }),
     computed:{
        menuFilterList() {
@@ -113,12 +130,21 @@ export default {
                     return 1
                 else
                     return 0
-
                 }
             )
         }
     },
     methods:{
+        showPhoto(ev) {
+            //We only load the photo if he clicks on the avatar icon.
+            //Then we replace the "initialicon" with a actual photo - if we have one.
+            console.log('He clicked the icon - display photos if there are some', ev)
+            this.showPhotos = true
+        },
+        weHaveIt(ev) {
+            console.log('arrived!!', ev)
+            this.photo=ev
+        },
        weekOrDayChange() {
            if (this.weekOrDay == 'day') {
                this.weekOrDay = 'week'
@@ -160,20 +186,14 @@ export default {
         }
     },
     mounted: function() {
-        this.studentList.data =  { studentid: this.getZml.login.schoolno }
-        console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzz', this.studentList)
         console.log('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
+        this.studentid = this.getZml.login.schoolno
         if (this.getZml.login.grade.length == 2 ) {
            this.gradeToShow.g = 'G'.concat(this.getZml.login.grade)
         } else {
            this.gradeToShow.g = 'G0'.concat(this.getZml.login.grade)
         }
-        
-        
         console.log(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
-        
-
-
         this.gradeToShow.c = this.getZml.login.gclass
         console.log('home2:', this.gradeToShow.g + this.gradeToShow.c)
         this.showCal = true;

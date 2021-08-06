@@ -221,6 +221,9 @@ export default {
         if (this.getZml.calendar.length==0) {
           alert('our calendar seem to be empty?')
         }
+        if (response.error) {
+          return
+        }
         let template = zDate.todayNoHours()
         template = zDate.gotoMonday(template)
         //Go back one more day (to Sunday)
@@ -231,7 +234,10 @@ export default {
            const sday = this.getZml.calendar.find(cal => 
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
            )
-           if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
+           if (!sday) { 
+             console.log('no SDAY:', response)  
+             continue
+           }
            response.forEach(ele => {
              let n = ''
              switch (sday.name.substr(0,4)) {
@@ -311,7 +317,7 @@ export default {
             if (this.$refs.calendar) this.scrollToTime()
             if (this.$refs.calendar) this.updateTime()
           } else {
-           console.error('Calendar still not Ready!!: ' , this.calReady, this.$refs.calendar)
+           console.error('Calendar Ready: ' , this.calReady)
          }
 
        },

@@ -18,6 +18,7 @@ export const util = {
     },
     hasDuplicates: function (array) {
         //how to check if every value is unique javascript array
+        //We can also send a unique set back with [...new Set(array)]
         return (new Set(array)).size !== array.length;
     }, 
     zDate: function(p) { 

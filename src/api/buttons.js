@@ -29,6 +29,10 @@ export function doStuff(tr,task) {
             
         case "/sh":    //student start 
             return zmlReRoute(tr, "/sh")
+        case "/latest":    //newest files
+            return zmlReRoute(tr, "/latest")
+        case "/latest/7":    //newest files
+            return zmlReRoute(tr, "/latest/7")
 
         case "/grade":    //new student start
         case "/student": 

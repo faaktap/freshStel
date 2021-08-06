@@ -43,6 +43,7 @@ export default {
       processAfterFetch(response) {
           if (!response.error) {
              this.photoList = response
+             this.$emit('foundPhoto','https://kuiliesonline.co.za/' + response[0].photo)
           } else {
               this.photoList = []
           }
