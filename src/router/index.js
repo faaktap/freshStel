@@ -40,6 +40,9 @@ const routes = [
   },
   {
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),    path: '/about', name: 'About',    meta: {layout: la[3], authentication: "public" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "bates" */ '../views/bates/Outline.vue'),    path: '/bates', name: 'Bates',    meta: {layout: la[3], authentication: "public" }
   },  { 
     //test
     component:EmptyRouterView,   path: '/hover', 

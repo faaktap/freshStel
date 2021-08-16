@@ -2,7 +2,7 @@
   <div>
    <v-app-bar app color="primary" title="info about AppLayoutLinks">
     <zml-title :maintitle="test" />
-    <toolbar-buttons menuDisplay="horizontal" buttonGroup="toolbars"/>
+    <toolbar-buttons menuDisplay="horizontal" :buttonGroup="toolbars"/>
     <v-spacer />
     <login-button/>
    </v-app-bar>
