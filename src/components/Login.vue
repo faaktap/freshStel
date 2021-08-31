@@ -262,6 +262,11 @@ export default {
           this.getZml.login.type = ''
           this.getZml.login.username = ''
           this.getZml.login.isAuthenticated = false;
+          this.getZml.subjects = []
+          this.getZml.folders = []
+          this.getZml.functions = []
+          this.getZml.voteList = []          
+          this.getZml.calendar = []  
           localStorage.removeItem('login')
           this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
     },

@@ -44,6 +44,8 @@
   </v-col>
 
 </v-row>
+
+
 </v-container>
 
 
@@ -228,6 +230,7 @@ export default {
     props: { propfolder: {default: 0} },  //419, 1415
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
+        selection: [],
         showTextDialog:false,
         theItem:{},
         folderid:null,

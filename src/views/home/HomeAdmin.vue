@@ -45,6 +45,7 @@
             All Functions
         </v-expansion-panel-header>
         <v-expansion-panel-content>
+            {{ getZml.functions.length }}
            <menu-list :list="getZml.functions.filter(element => element.functionaccess === 'admin')" displayType="2" />
            <menu-list :list="getZml.functions.filter(element => element.functionaccess !== 'admin')" displayType="2" />
         </v-expansion-panel-content>
@@ -80,7 +81,7 @@
             <v-btn to="/studentawards"> student awards </v-btn>
             <v-btn to="/about"> about </v-btn>
             <v-btn to="/hover"> hover </v-btn>
-            {{ joke }}           
+            <!--{{ joke }}            -->
             <v-window>
             xs={{$vuetify.breakpoint.xs}} <br>
             sm={{$vuetify.breakpoint.sm}}<br>
@@ -103,7 +104,7 @@ import { zmlFetch } from '@/api/zmlFetch.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
-import { zData } from "@/api/zGetBackgroundData.js"
+//import { zData } from "@/api/zGetBackgroundData.js"
 import EmailList from '@/components/EmailList.vue';
 import MenuList from '@/components/MenuList.vue';
 import Calendar from '@/components/Calendar.vue';
@@ -120,7 +121,8 @@ export default {
         today: new Date(),
         tomorrow: new Date(),
         schoolday: null,
-        weekOrDay:"day"
+        weekOrDay:"day",
+        joke:''
     }),
     computed:{
         menuFilterList() {
@@ -178,6 +180,7 @@ export default {
            this.getZml.functions = response
         },
         async CallAsyncFunction() {
+            /*
            const joke = await zData.randomChuckNorris();
            this.joke = joke.value 
            if  (this.joke && ( this.joke.indexOf('sex') 
@@ -190,7 +193,7 @@ export default {
                             || this.joke.indexOf('bondag')  
                             || this.joke.indexOf('gay'))) {
                this.joke = await zData.randomChuckNorris().value;
-           }
+           } */
         }
     },
     mounted() {
