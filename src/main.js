@@ -39,6 +39,7 @@ export const cs = {
 Vue.prototype.$history = window.history;
 Vue.prototype.$cs = cs;
 
+
 import { af,en } from '@/api/translate'
 const messages = {
   en,

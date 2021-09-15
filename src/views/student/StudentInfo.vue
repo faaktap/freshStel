@@ -13,12 +13,12 @@
 
   <v-toolbar color="primary" class="my-toolbar">
     <v-toolbar-title> 
-      <v-template v-if="!searchMore">
+      <template v-if="!searchMore">
         Please enter a part of the student's surname
-      </v-template>
-      <v-template v-else>
+      </template>
+      <template v-else>
         Please enter a studentid, name or surname
-      </v-template>
+      </template>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>

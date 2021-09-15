@@ -1,6 +1,5 @@
 <template>
- <v-card xheight="640" xmax-width="400"  
-         color="grey lighten-3" 
+ <v-card color="grey lighten-3" 
          class="text-center ma-0 pa-0">
   <v-card-title class="text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
        <v-btn  @click="launchOutside" title="Open in Browser/Download">
@@ -13,7 +12,7 @@
   </v-card-title>
 
   <v-card-text>
-  <template v-if="type=='movie'">
+  <!--template v-if="type=='movie'">
     <video controls
            height="80%" width="70%"
            ref="video"
@@ -31,7 +30,7 @@
     >
 
     </audio>      
-  </template>
+  </template-->
 
   <template v-if="type=='picture'">
     <img ref="picture" 
@@ -40,14 +39,13 @@
         contain
     />
   </template>
-
-  <template v-if="!['movie','picture','audio'].includes(type)">
+  <template v-if="['movie','picture','audio'].includes(type)">
       <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title" 
                 ref="iframe" 
                 :src="src" />
   </template>
   <template v-else>
-      We cannot display this file - you need to download it
+      We cannot display this file - you need to download it {{ type }}
   </template>
 
   </v-card-text>

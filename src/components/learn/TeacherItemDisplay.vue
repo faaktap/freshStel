@@ -33,12 +33,12 @@
          <template v-slot:actions>
            <v-btn :x-small="$vuetify.breakpoint.smAndDown == true"
                    icon 
-                  @click.stop="test" > 
-             <v-icon :small="$vuetify.breakpoint.smAndDown == true"
-                     :color="getIconColor(item.icon)"
-                     >
-              {{ item.icon | repl}}
-             </v-icon>
+                  @click.stop="clicked" > 
+             <v-icon v-if="item.icon" 
+                     v-text="item.icon" 
+                     :color="getIconColor(item.icon)" 
+                     :small="$vuetify.breakpoint.smAndDown"
+                     />
            </v-btn>
          </template>
      </v-expansion-panel-header>
@@ -54,99 +54,55 @@
                   :fullscreen="$vuetify.breakpoint.smAndDown"
                   height="90%"
                   width="unset">
-          <zml-preview :src="item.img"   
+       <show-attachment-dialog :image="attachment.src" 
+                               :imagetype="attachment.srctype" 
+                               @close="showAttachment = !showAttachment" />                  
+          <!--zml-preview :src="item.img"   
                       :type="attachment"  
                       >
           <zml-close-button @btn-click="showAttachment = !showAttachment"/>
-         </zml-preview>
+         </zml-preview-->
         </v-dialog>
     
 </div>
 </template>
 <script>
-import { look } from "@/api/Lookups.js"
-import zmlPreview from '@/components/zmlPreview'
-import zmlCloseButton from '@/components/zmlCloseButton'
-import {getIconColor, getIcon, getFileType} from '@/api/fileUtils.js'
-import { infoSnackbar } from '@/api/GlobalActions';
+import { shFile } from '@/components/learn/ShFile.js'
 import TeacherFolderEdit from '@/components/learn/TeacherFolderEdit'
+import ShowAttachmentDialog from '@/components/ShowAttachmentDialog.vue'
 export default {
-    name:"zmlContentButton",
-    components: {zmlPreview, zmlCloseButton,TeacherFolderEdit},
+    name:"TeacherItemDisplay",
+    components: {TeacherFolderEdit,ShowAttachmentDialog},
     props: ['icon','btnFace','item'],
     data: () => ({
-      look: look,
-      getIconColor:getIconColor,
-      src : null,
       showAttachment : false,
-      attachment: null,
-      expandStatus:[]
+      expandStatus:[],
+      attachment:{src:'', srctype:''}
     }),    
     computed:{
     },
-    filters:{
-        repl(value) { 
-            if (value == '') {
-                return "mdi-coffee"
-            }
-            return value
-        },
-        icon(value) {
-            if (value) return getIcon(value)
-            return "mdi-link"
-
-        },
-        fileType(value) {
-            return getFileType(getIcon(value))
-        },
-        icn : function (days) {
-         //show color based on amount of days
-         if (days < 8)  return "blue darken-"+days
-         if (days < 30)  return "green"
-         return "indigo"
-       },
-
-    },
     methods: {
-        actionlink(type)  {
-            if (type == 'link') {
-                return this.item.name
-            } else {
-                return this.item.img
-            }
-        },
         doAttachment() { 
-            if (!look.isAuthenticated) {
-               infoSnackbar('You need to login to access the material!');
-               return
-            }
-            let whatever = this.actionlink(this.item.type)    //fullname
-            //whatever is something like https.../sdf/sdf/xyz.pdf 
-            let icon = getIcon(whatever)
-            this.attachment = getFileType(icon)  //ie. picture, pdf, movie
-            this.ext = getIcon(whatever)
-            this.src = whatever
-            if (this.src.length){
-              this.showAttachment = !this.showAttachment
-            } else {
-                alert('res is null')
-            }
-            this.expandStatus = []
+           this.attachment = shFile.doAttachment(this.item)
+           console.log('Atttt:::', this.attachment, 'item',this.item)
+           this.showAttachment = true
+           this.expandStatus = []
         },
-        test() {
+        clicked() {
           if (this.item.type == 'text' || this.item.type=='folder') {
             this.expandstatus = []
             return;
             }
           this.doAttachment()
+          this.expandstatus = []
+        },
+        getIconColor(xx) {
+           return shFile.getIconColor(xx)
+        },
+        icn(days) {
+           return shFile.icn(days)
+        },        
 
-        },
-        btnClick() {
-            console.log('zmlContentButton - Click')
-        },
-        iconClick() {
-            console.log('zmlIconButton - Click')
-        }
 
     },
     mounted: function () {

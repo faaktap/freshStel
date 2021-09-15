@@ -1,8 +1,7 @@
 <template>
 <div>
-<v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
+ <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
 <!--
-
   <pre>
     1. getFolder - php - getLContentByFolderNo (benonog 'n folderid)
     2. prevFolder - php getLContentPrevFolder (benodig 'n folderid)
@@ -22,30 +21,42 @@
 
 <!-- SHOW THE GRADE AND SUBJECT SELECTION -->
 <v-container fluid>
-<v-row>
- <v-col cols="12" sm="6">
-  <grade-display-short v-model="grade" displaySize="medium" /> 
- </v-col>
- <v-col cols="12" sm="6">
-  <subject-display-short v-model="subjectID"/> 
- </v-col>
+ <v-row>
+  <v-col cols="12" sm="6">
+    xxxxxxxxxxxxxxx {{ grade }} , {{ subjectID }}
+   <grade-display-short v-model="grade" displaySize="medium" /> 
+  </v-col>
+  <v-col cols="12" sm="6">
+   <subject-display-short v-model="subjectID"/> 
+  </v-col>
   <v-col cols="12" sm="4" md="4" lg="4" xl="2">
-  <v-switch v-if="getZml.login.isAuthenticated && getZml.login.type == 'teacher'" 
-            v-model="editMode" 
-            label="editMode"
-            title="If you are a teacher, then you can switch editmode one here."
-            > 
-  </v-switch>
+   <v-switch v-if="getZml.login.isAuthenticated && (getZml.login.type == 'teacher' || getZml.login.type == 'admin')" 
+             v-model="editMode" 
+             label="editMode"
+             title="If you are a teacher, then you can switch editmode one here."> 
+   </v-switch>
   </v-col>
+      <v-col xs12 md6>
+        <v-btn @click="showAs='list'"> 
+          <v-icon> mdi-view-list </v-icon>
+        </v-btn>
+        <v-btn @click="showAs='card'"> 
+          <v-icon> mdi-card </v-icon>
+        </v-btn>
+      </v-col>
   <v-col  v-if="editMode" cols="12" sm="4" md="4" lg="4" xl="2" class="ma-2"> 
-    <v-btn small @click="showAddFolder = true"> Add A Root Folder  </v-btn>
-    <v-btn small to="/subjects"> Edit Subject Names and Order </v-btn>
-    <v-btn small to="/studentlist"> studentlist </v-btn>
+   <v-expansion-panels>
+    <v-expansion-panel>
+     <v-expansion-panel-header>Info</v-expansion-panel-header>
+     <v-expansion-panel-content align="left">
+      <v-btn width="100%" small @click="showAddFolder = true"> Add A Root Folder  </v-btn>
+      <v-btn width="100%" small to="/subjects"> Edit Subject Names and Order </v-btn>
+      <v-btn width="100%" small to="/studentlist"> Student Class List </v-btn>
+     </v-expansion-panel-content>
+    </v-expansion-panel>
+   </v-expansion-panels>
   </v-col>
-
-</v-row>
-
-
+ </v-row>
 </v-container>
 
 
@@ -64,11 +75,11 @@ folderid:{{ folderid }}
 
 </v-container>
 
-<v-container v-if="(contents && contents.length) || topFolder.displayfolder"
+<!--v-container v-if="(contents && contents.length) || topFolder.displayfolder" -->
+   <v-container v-if="(contents && contents.length)"
              fluid class="ma-2 mt-3" >
   <v-card color="blue lighten-2">
     <v-card-title>
- 
       <template v-if="displayFolderBack != 'ROOT'">
         <v-btn @click="prevFolder(topFolder)" :title="topFolder.contentid">
           <v-icon> mdi-arrow-up-bold-outline </v-icon>
@@ -111,7 +122,8 @@ folderid:{{ folderid }}
     <v-card-text>           
  
  <!-- ACTUAL FILES AND FOLDERS -->
-      <v-layout v-if="contents.length > 0" row wrap>
+      <v-layout v-if="showAs == 'card'" row wrap>
+
         <v-flex v-for="item in contents" :key="item.itemid"
          flex-row
          justify-space-around
@@ -158,6 +170,15 @@ folderid:{{ folderid }}
 
         </v-flex>
       </v-layout>
+
+       <sh-file  v-if="showAs == 'list'"
+                @btn-click="testStuff" 
+                :contents="contents"
+                :editMode="editMode"
+                :displayFolder="displayFolder"
+                :topFolder="topFolder"
+       />
+
      <div class="ma-2 text-center"> --- end --- </div>
     </v-card-text>
   </v-card>
@@ -214,6 +235,8 @@ import GradeDisplayShort from '@/components/learn/GradeDisplayShort'
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
 import EditItem from '@/views/learn/editItem'
 import EditItemPartitions from '@/views/learn/EditItemPartitions'
+
+import ShFile from '@/components/learn/ShFile'
 export default {
     name: "SHub",
     components: {
@@ -226,6 +249,7 @@ export default {
         , zmlDataTable
         , EditItem
         , EditItemPartitions
+        , ShFile
         },
     props: { propfolder: {default: 0} },  //419, 1415
     data: () => ({
@@ -244,6 +268,7 @@ export default {
         showDebug:false,
         contentid:null,
         showAddFolder:false,
+        showAs:'card',        
     }),
     activated: function () {
     },
@@ -262,6 +287,9 @@ export default {
       },
     },
     methods:{
+      testStuff(e) {
+        this.getFolder(e)
+      },
       doEdit(p1) {
         console.log(this.$options.name, 'got it back', p1.contentid)
         this.contentid = p1.contentid
@@ -397,7 +425,8 @@ export default {
     mounted: function () {
       zData.initialData('Load Subject Data')
       if (!this.getZml.login.fullname) infoSnackbar('Welcome Guest!')
-      if (!isFinite(this.propfolder)) {
+      console.log('FINITE?', this.propfolder, isFinite(this.propfolder) )
+      if (isFinite(this.propfolder)) {
          console.log('coming in with NO folderID',this.getZml.grade ,this.getZml.subjectid)
          if (this.getZml.grade && this.getZml.subjectid) {
            setTimeout(() => { 

@@ -26,7 +26,7 @@
        />
            
       </v-col>
-      <v-col xs12 md6 xxxxv-if="getZml.login.username=='werner'">
+      <v-col xs12 md6>
         <v-btn @click="showAs='list'"> 
           <v-icon> mdi-view-list </v-icon>
         </v-btn>

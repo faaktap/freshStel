@@ -18,8 +18,20 @@
     </v-toolbar-title>
 </v-toolbar>
 
-<v-row> <v-col cols="12">
+<v-row> 
+ <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
+    <v-expansion-panel>
+        <v-expansion-panel-header>
+            All Functions
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+           <list-test functiongroup="admin" />
+           <list-test functiongroup="teacher" />
+           <list-test functiongroup="student" />
+        </v-expansion-panel-content>
+    </v-expansion-panel>
+
     <v-expansion-panel>
      <v-expansion-panel-header>
         Calendar (Click here to view your day!) 
@@ -40,24 +52,6 @@
                :menemonic="wieOmTeWys" />
     </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-expansion-panel>
-        <v-expansion-panel-header>
-            All Functions
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-            {{ getZml.functions.length }}
-           <menu-list :list="getZml.functions.filter(element => element.functionaccess === 'admin')" displayType="2" />
-           <menu-list :list="getZml.functions.filter(element => element.functionaccess !== 'admin')" displayType="2" />
-        </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
-        <v-expansion-panel-header>
-            Admin Functions 
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-            <menu-list :list="menuFilterList" displayType="1" /> 
-        </v-expansion-panel-content>
-    </v-expansion-panel>
 
   </v-expansion-panels>
 </v-col>
@@ -75,6 +69,7 @@
               Stuff that only Werner should be able to see 
           </v-expansion-panel-header>
           <v-expansion-panel-content>
+            <list-test functiongroup="all" />
             <v-layout class="ma-1" row wrap justify-space-between>
             <v-btn to="/viewfunctions"> functions </v-btn>
             <v-btn to="/dkhsawards"> dkhs awards </v-btn>
@@ -100,23 +95,25 @@
 
 <script>
 import { zmlConfig } from '@/api/constants';
-import { zmlFetch } from '@/api/zmlFetch.js';
+import { getters } from "@/api/store";
+import { zmlFetch } from '@/api/zmlFetch.js'
+import { zData } from '@/api/zGetBackgroundData.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
-import { getters } from "@/api/store";
 //import { zData } from "@/api/zGetBackgroundData.js"
 import EmailList from '@/components/EmailList.vue';
-import MenuList from '@/components/MenuList.vue';
 import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/student/PersonelMenemonic.vue';
 
+import ListTest from '@/components/ListTest.vue';
+
 export default {
     name:"AdminHome",
-    components:{EmailList, MenuList, Calendar,PersonelMenemonic},
+    components:{EmailList, Calendar,PersonelMenemonic, ListTest},
     data: () => ({
+        getZml: getters.getState({ object: "gZml" }),
         wieOmTeWys:'Teacher',
         showCal:false,
-        getZml: getters.getState({ object: "gZml" }),
         cards: ['Today', 'Yesterday'],
         today: new Date(),
         tomorrow: new Date(),
@@ -125,19 +122,6 @@ export default {
         joke:''
     }),
     computed:{
-        menuFilterList() {
-            if (!this.getZml) return 0;
-            return this.getZml.functions
-            /*.filter(a => function()
-            {
-                if (a.accesstype == 'admin' || a.accesstype == 'teacher')
-                    return 1
-                else
-                    return 0
-
-                }
-            )*/
-        },
     },
     methods:{
         weekOrDayChange() {
@@ -180,7 +164,8 @@ export default {
            this.getZml.functions = response
         },
         async CallAsyncFunction() {
-            /*
+          if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
+
            const joke = await zData.randomChuckNorris();
            this.joke = joke.value 
            if  (this.joke && ( this.joke.indexOf('sex') 
@@ -193,7 +178,8 @@ export default {
                             || this.joke.indexOf('bondag')  
                             || this.joke.indexOf('gay'))) {
                this.joke = await zData.randomChuckNorris().value;
-           } */
+           }
+          }
         }
     },
     mounted() {

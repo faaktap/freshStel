@@ -19,7 +19,7 @@
     >
     <template #slot-top-myform>
       <v-col cols="12">
-       <v-card class="slot ma-4 pa-4 xs-12" cols="12" color="green accent-3" align-content="center" align-content-lg="center">
+       <v-card class="slot ma-4 pa-4 xs-12" cols="12" color="green accent-4" align-content="center" align-content-lg="center">
            
            <v-card-title width="100%" class="text-center" color="blue">
                <v-img src="/img/logo.png" max-width=120 max-height=120 aspect-ratio="1"> </v-img>
@@ -75,8 +75,8 @@
                <li>	Leerders wat Fisiese Wetenskap kies, MOET ook Wiskunde kies.</li>
                <li>	Daar is beperkte spasie in die RTT en VERBRUIKERSTUDIE klasse.</li>
                <li>	Jy kan nie dieselfde vak twee keer kies nie.</li>
-               <li>	Leerders wat ‘n 8ste vak kies, MOET ‘n gemiddeld van 80% in die finale gr.9 eksamen behaal.
-                    Jy moet apart skriftelik aansoek doen.</li>
+               <li>	Leerders wat ‘n 8ste vak kies, MOET ‘n gemiddeld van 80% in daardie vak in die finale gr.9 eksamen behaal.
+                    <br>*Jy moet skriftelik aansoek doen om 'n agste vak te neem.</li>
               </ol>
                 </v-card>
             </v-col><v-col cols="12" md="6" class="mt-2">
@@ -88,7 +88,8 @@
                <li>	Learners who choose Physical Science MUST also choose Mathematics.</li>
                <li>	Limited space available in CAT and CONSUMER STUDIES classes.</li>
                <li>	You can not choose the same subject twice.</li>
-               <li>	Learners choosing an 8th subject MUST attain an average of 80% in the final gr.9 examination. You must apply separately in writing.</li>
+               <li>	Learners choosing an 8th subject MUST attain an average of 80% in that subject in the final gr.9 examination. 
+                 <br>*You must apply in writing to take an eighth subject.</li>
               </ul>
                 </v-card>
             </v-col>
@@ -119,21 +120,16 @@ import { zmlMail } from '@/api/zmlMail';
 import { survey } from './survey.js'
 import { util } from '@/api/util.js'
 // eslint-disable-next-line
-const langrelaas = "<h2>IMPORTANT INFORMATION AND INSTRUCTIONS</h2><ul>"+
-"<li>	A learner MUST choose one subject per group.</li>"+
-"<li>	EGD, IT and ART requires an aptitude test.</li>"+
-"<li>	Learners who choose Physical Science MUST also choose Mathematics.</li>"+
-"<li>	Limited space available in CAT and CONSUMER STUDIES classes.</li>"+
-"<li>	You can not choose the same subject twice.</li>"+
-"<li>	Learners choosing an 8th subject MUST attain an average of 80% in the final gr.9 examination. You must apply separately in writing.</li></ul>"
-"<h2>BELANGRIKE INLIGTING EN INSTRUKSIES</h2><ol>"+
-"<li>	‘n Leerder MOET een vak per groep kies.</li>"+
-"<li>	IGO, IT en KUNS vereis ‘n aanlegtoets.</li>"+
-"<li>	Leerders wat Fisiese Wetenskap kies, MOET ook Wiskunde kies.</li>"+
-"<li>	Daar is beperkte spasie in die RTT en VERBRUIKERSTUDIE klasse.</li>"+
-"<li>	Jy kan nie dieselfde vak twee keer kies nie.</li>"+
-"<li>	Leerders wat ‘n 8ste vak kies, MOET ‘n gemiddeld van 80% in die finale gr.9 eksamen behaal."+
-" Jy moet apart skriftelik aansoek doen.</li></ol>"
+const langrelaas = "              <h2>IMPORTANT INFORMATION AND INSTRUCTIONS</h2>"
+              +"<ul>"
+               +"<li>	A learner MUST choose one subject per group.</li>"
+               +"<li>	EGD, IT and ART requires an aptitude test.</li>"
+               +"<li>	Learners who choose Physical Science MUST also choose Mathematics.</li>"
+               +"<li>	Limited space available in CAT and CONSUMER STUDIES classes.</li>"
+               +"<li>	You can not choose the same subject twice.</li>"
+               +"<li>	Learners choosing an 8th subject MUST attain an average of 80% in that subject in the final gr.9 examination."
+               +"<br>*You must apply in writing to take an eighth subject.</li>"
+              +"</ul>"
 
 
 // Helper & Partial Functions & Rules
@@ -248,7 +244,7 @@ export default {
      schema:{
 
     subject1: { type: 'radio'
-             , label: 'Subject Group 1 / Vak Groep 1'
+             , label: 'Subject Group 1 / Vakgroep 1'
              , options: ['Afrikaans Huistaal'
                         ,'Afrikaans Eerste Addisionele Taal']
              , col:{ cols: 12, md: 6 }        
@@ -258,7 +254,7 @@ export default {
              , tooltip: "A learner MUST choose one subject per group."
              },
     subject2: { type: 'radio'
-             , label: 'Subject Group 2 / Vak Groep 2'
+             , label: 'Subject Group 2 / Vakgroep 2'
              , options: ['English Home Language'
                         ,'English First Additional Language']
              , color:"green"
@@ -276,22 +272,22 @@ export default {
             , class:'title pa-2 rounded elevation-4 col-md-12 ma-1', 
      schema:{
     subject3: { type: 'radio'
-             , label: 'Subject Group 3 / Vak Groep 3'
+             , label: 'Subject Group 3 / Vakgroep 3'
              , options: ['Mathematics / Wiskunde'
-                        ,'Mathematical Literacy /Wiskunde geletterdheid']
+                        ,'Mathematical Literacy / Wiskunde geletterdheid']
              , col:{ cols : 12 } 
              , row:false 
              , class:"gray lighten-3 rounded elevation-4 ma-1 pa-3"     
              , rules: [rules.requiredSel]
-             , tooltip:"Leerders wat Fisiese Wetenskap kies, MOET ook Wiskunde kies"
+             , tooltip:"Leerders wat Fisiese wetenskap kies, MOET ook Wiskunde kies"
              },
     subject5: { type: 'radio'
-             , label: 'Subject Group 4 / Vak Groep 4'
+             , label: 'Subject Group 4 / Vakgroep 4'
              , options: ['Life Sciences / Lewenswetenskappe'
                         ,'Geography / Geografie'
-                        ,'Business studies / Besigheidstudies'
+                        ,'Business Studies / Besigheidstudies'
                         ,'Consumer Studies / Verbruikerstudies'
-                        ,'Engineering Graphics and Design /Ingenieursgrafika & Ontwerp'
+                        ,'Engineering Graphics and Design / Ingenieursgrafika & Ontwerp'
                         ,'Music / Musiek'
                         ]
              , col:{ cols : 12, xs:12 } 
@@ -301,10 +297,10 @@ export default {
              , tooltip:"Onthou: Jy kan nie dieselfde vak twee keer kies nie."
              },
     subject6: { type: 'radio'
-             , label: 'Subject Group 5 / Vak Groep 5'
+             , label: 'Subject Group 5 / Vakgroep 5'
              , options: ['Life Sciences / Lewenswetenskappe'
                         ,'Physical Sciences / Fisiese wetenskappe'
-                        ,'Business studies / Besigheidstudies'
+                        ,'Business Studies / Besigheidstudies'
                         ,'Computer Applications Technology / Rekenaartoepassingstegnologie'
                         ,'Tourism / Toerisme'
                         ,'History / Geskiedenis'
@@ -317,11 +313,11 @@ export default {
              , tooltip:"EGD, IT and ART requires an aptitude test."
              },               
     subject7: { type: 'radio'
-             , label: 'Subject Group 6 / Vak Groep 6'
+             , label: 'Subject Group 6 / Vakgroep 6'
              , options : ['History / Geskiedenis'
                          ,'Accounting / Rekeningkunde'
                          ,'Consumer Studies / Verbruikerstudies'
-                         ,'Visual Arts / Visuele Kunste'
+                         ,'Visual Arts / Visuele Kuns'
                          ,'Tourism / Toerisme'
                          ,'IT'
                          ,'Music / Musiek'

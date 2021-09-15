@@ -38,19 +38,11 @@
     <v-expansion-panel>
         <v-expansion-panel-header
           title="A list of all the places you can go to on this webpage.">
-          Functions
+          Functions (Click here to see available functions)
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-           <menu-list :list="getZml.functions" displayType="2" />      
-        </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
-        <v-expansion-panel-header
-          title="A list of all the places you can go to on this webpage, presented in a different way.">
-            Functions Same
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-            <menu-list :list="menuFilterList" displayType="1" /> 
+           <list-test functiongroup="student" />      
+           <list-test functiongroup="other" />
         </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -93,7 +85,7 @@ import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList';
-import MenuList from '@/components/MenuList';
+import ListTest from '@/components/ListTest.vue';
 import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
@@ -103,7 +95,7 @@ export default {
     name:"StudentHome",
     components:{
           EmailList
-        , MenuList
+        , ListTest
         , CalendarStudent
         , StudentEmailList
         , StudentSubjectList

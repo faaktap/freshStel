@@ -1,14 +1,13 @@
 {
  "buttongroups": ["tool","login","test"],
- "wait": [{ "btn":"about"    ,"tip":"2"                  ,"func":"/about"      ,"icon":"mdi-coffee","optional":3,"acc":"none"}],
- "tool": [{ "btn":"home"     ,"tip":"1"                  ,"func":"/"           ,"icon":"mdi-home","optional":0,"acc":"all"}
-         
-         ,{ "btn":"teacher"  ,"tip":"4 teachers"         ,"func":"/sh"     ,"icon":"mdi-teach","optional":0,"acc":"teacher"}
+ "wait": [{ "btn":"about"       ,"tip":"2"                  ,"func":"/about"      ,"icon":"mdi-coffee","optional":3,"acc":"none"}],
+ "tool": [{ "btn":"home"        ,"tip":"1"                  ,"func":"/"           ,"icon":"mdi-home","optional":0,"acc":"all"}
+         ,{ "btn":"teacher"     ,"tip":"4 teachers"         ,"func":"/sh"     ,"icon":"mdi-teach","optional":0,"acc":"teacher"}
          ,{ "btn":"studentfiles" ,"tip":"Student Files and Folders"       ,"func":"/sh"   ,"icon":"mdi-school","optional":0,"acc":"all"}
-         ,{ "btn":"tHover"   ,"tip":"3"                  ,"func":"/hover"      ,"icon":"mdi-shovel","optional":1,"acc":"all"}
-         ,{ "btn":"translate","tip":"translation testers","func":"/translate"  ,"icon":"mdi-test-tube","optional":1,"acc":"all"}
-         ,{ "btn":"help"     ,"tip":"4"                  ,"func":"/help"       ,"icon":"mdi-help","optional":1,"acc":"all"}
-         ,{ "btn":"changeTo" ,"tip":"5"                  ,"func":"switchLocale","icon":"mdi-translate","optional":1,"acc":"all"}
+         ,{ "btn":"tHover"      ,"tip":"3"                  ,"func":"/hover"      ,"icon":"mdi-shovel","optional":1,"acc":"all"}
+         ,{ "btn":"translate"   ,"tip":"translation testers","func":"/translate"  ,"icon":"mdi-test-tube","optional":1,"acc":"all"}
+         ,{ "btn":"help"        ,"tip":"4"                  ,"func":"/help"       ,"icon":"mdi-help","optional":1,"acc":"all"}
+         ,{ "btn":"changeTo"    ,"tip":"5"                  ,"func":"switchLocale","icon":"mdi-translate","optional":1,"acc":"all"}
        ] ,
  "right": [{ "btn":"rightmenubutton"    ,"tip":"Click here to see menu","func":"drop","icon":"mdi-hamburger","optional":0,"acc":"all"}
         ],

@@ -23,21 +23,20 @@
     <v-expansion-panel>
      <v-expansion-panel-header disable-icon-rotate 
                                class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4"
-                               color="deep-purple lighten-5" 
                                :title="item.days + ' day(s) ago'"
                                >
          <div class="text-lg-subtitle-2 text-sm-caption">   
           {{ btnFace }} 
          </div>
          <template v-slot:actions>
-           <v-btn :x-small="$vuetify.breakpoint.smAndDown == true"
+           <v-btn :x-small="$vuetify.breakpoint.smAndDown"
                    icon 
-                  @click.stop="test" > 
-             <v-icon :small="$vuetify.breakpoint.smAndDown == true"
-                     :color="iconColor(item.icon)"
-                     >
-              {{ item.icon | repl}}
-             </v-icon>
+                  @click.stop="clicked" > 
+             <v-icon v-if="item.icon" 
+                     v-text="item.icon" 
+                     :color="getIconColor(item.icon)" 
+                     :small="$vuetify.breakpoint.smAndDown"
+                     />           
            </v-btn>
          </template>
      </v-expansion-panel-header>
@@ -50,7 +49,7 @@
                :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
          dense
          class= "ma-2 ma-sm-1 pr-sm-2"
-         color="deep-purple lighten-3"                  
+
       >
       <v-card-subtitle class="text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4"> 
 <!-- SHOW AMOUNT OF DAYS SINCE YOU EDIT -->        
@@ -60,9 +59,12 @@
                transition="slide-x-transition"
                > 
          <v-hover v-model="bhover">
-            <v-icon :color="item.days | icn"> {{ item.icon | repl}} </v-icon> 
+            <v-icon v-if="item.icon" 
+                     v-text="item.icon" 
+                     :color="getIconColor(item.icon)" 
+                     :small="$vuetify.breakpoint.smAndDown"
+                     /> 
           </v-hover>
-
         </v-badge>
        <div class="no-uppercase text-caption text-sm-body-2 text-md-body-1 text-lg-h6 text-xl-h4">
         <template v-if="['text','link'].includes(item.type)">
@@ -74,34 +76,22 @@
        </div>
       </v-card-subtitle>        
       <v-card-text>
- 
         <template v-if="['text'].includes(item.type)">
            <!-- do not think we need to show something for text -->
         </template>
 
        <template v-if="!['text'].includes(item.type)">
         <v-btn small 
-              :xxxtitle="actionlink(item.type)"
               :title="item.days + 'day(s) ago'"
               @click="doAttachment">
           <v-icon> mdi-attachment </v-icon>
           View 
         </v-btn>
-        <v-dialog v-model="showAttachment"  
-                  xmax-width="400" 
-                  :fullscreen="$vuetify.breakpoint.smAndDown"
-                  height="90%"
-                  width="unset">
-          <zml-preview :src="item.img"   
-                      :type="attachment"  
-                      >
-          <zml-close-button @btn-click="showAttachment = !showAttachment"/>
-         </zml-preview>
-        </v-dialog>
        </template>
 
-<!--
+
             <br />  Last Edit : {{ item.days }}  days(s) ago
+<!--            
             <br />  Name : {{ item.name }}
             <br />  Description : {{ item.description }}
             <br />  Img : {{ item.img }}
@@ -113,6 +103,17 @@
       </v-card-text>
      </v-card>
      </v-hover>
+        <v-dialog v-model="showAttachment"  
+                  v-if="attachment.src"
+                  xmax-width="400" 
+                  :fullscreen="$vuetify.breakpoint.smAndDown"
+                  height="90%"
+                  width="unset">
+       <show-attachment-dialog :image="attachment.src" 
+                               :imagetype="attachment.srctype" 
+                               @close="showAttachment = !showAttachment" />     
+        </v-dialog>
+
     </v-expansion-panel-content>
    </v-expansion-panel>
   </v-expansion-panels>
@@ -121,60 +122,42 @@
 </template>
 <script>
 import { getters } from "@/api/store";
-import zmlPreview from '@/components/zmlPreview'
-import zmlCloseButton from '@/components/zmlCloseButton'
-import {getIconColor, getIcon, getFileType} from '@/api/fileUtils.js'
-import { infoSnackbar } from '@/api/GlobalActions';
+import { shFile } from '@/components/learn/ShFile.js'
+import ShowAttachmentDialog from '@/components/ShowAttachmentDialog.vue'
 
 export default {
-    name:"zmlContentButton",
-    components: {zmlPreview, zmlCloseButton},
+    name:"StudentItemDisplay",
+    components: {ShowAttachmentDialog},
     props: ['icon','btnFace','item'],
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),      
-      src : null,
       showAttachment : false,
-      attachment: null,
+      attachment: {src:'', type:''},
       bhover: false,
       expandStatus:[]
     }),    
     computed:{
     },
-    filters:{
-        repl(value) { 
-            if (value == '') {
-                return "mdi-coffee"
-            }
-            return value
-        },
-        icon(value) {
-            if (value) return getIcon(value)
-            return "mdi-link"
-
-        },
-        fileType(value) {
-            return getFileType(getIcon(value))
-        },
-        icn : function (days) {
-         //show color based on amount of days
-         if (days < 8)  return "blue darken-"+days
-         if (days < 30)  return "green"
-         return "indigo"
-       },
-
-    },
     methods: {
-        iconColor(iconname) {
-          return getIconColor(iconname)
-        },      
-        actionlink(type)  {
-            if (type == 'link') {
-                return this.item.name
-            } else {
-                return this.item.img
-            }
+        getIconColor(xx) {
+           return shFile.getIconColor(xx)
         },
         doAttachment() { 
+           this.attachment = shFile.doAttachment(this.item)
+           console.log('Atttt:::', this.attachment, 'item',this.item)
+           this.showAttachment = true
+           this.expandStatus = []
+        },
+        clicked() {
+          if (this.item.type == 'text' || this.item.type=='folder') {
+            this.expandstatus = []
+            return;
+            }
+          this.doAttachment()
+          this.expandstatus = []
+        },
+
+/*
             if (!this.getZml.login.isAuthenticated) {
                infoSnackbar('You need to login to access the material!');
                return
@@ -192,20 +175,7 @@ export default {
             }
             this.expandStatus = []
         },
-        test() {
-          if (this.item.type == 'text' || this.item.type=='folder') {
-            this.expandstatus = []
-            return;
-            }
-          this.doAttachment()
-
-        },
-        btnClick() {
-            console.log('zmlContentButton - Click')
-        },
-        iconClick() {
-            console.log('zmlIconButton - Click')
-        }
+        */
 
     },
     mounted: function () {

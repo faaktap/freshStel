@@ -24,8 +24,13 @@
       </v-avatar>                 
       </div>
      </div>
-     <v-card-text><small>{{ studentList.data.note }},{{ studentList.data.grade }} 
-      {{ studentList.data.gclass }}, High school De Kuilen Hoërskool<br> {{new Date()}}</small> </v-card-text>
+     <v-card-text>
+      <small>
+        High school De Kuilen Hoërskool
+        <br> 
+       {{new Date()}}
+     </small> 
+    </v-card-text>
     </v-card>
 </template>
 

@@ -23,18 +23,13 @@
     </v-expansion-panel>
     <v-expansion-panel>
         <v-expansion-panel-header>
-            Functions
+            Functions (Click here to see all available tasks)
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-           <menu-list :list="getZml.functions" displayType="2" />      
-        </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
-        <v-expansion-panel-header>
-            Functions Same
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-            <menu-list :list="menuFilterList" displayType="1" /> 
+           <list-test functiongroup="teacher" />            
+           <list-test functiongroup="admin" />
+           <list-test functiongroup="student" />      
+           <list-test functiongroup="all" />
         </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -55,11 +50,11 @@
 <script>
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList.vue';
-import MenuList from '@/components/MenuList.vue';
 import Calendar from '@/components/Calendar.vue';
+import ListTest from '@/components/ListTest.vue';
 export default {
-    name:"AdminHome",
-    components:{EmailList, MenuList, Calendar},
+    name:"TeacherHome",
+    components:{EmailList, Calendar, ListTest},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          cards: ['Today', 'Yesterday'],

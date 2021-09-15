@@ -28,12 +28,13 @@
  </v-row>
  <v-row>
   <v-col cols="12">
-     <student-class title="Click here to select a class"> 
-     </student-class>
+     <student-class title="Click here for more information" /> 
   </v-col>
  </v-row>
 
-<v-dialog v-model="studentInfoShow" width="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
+<v-dialog v-model="studentInfoShow" 
+         width="auto" 
+        :fullscreen="$vuetify.breakpoint.smAndDown">
   <zml-close-button @btn-click="studentInfoShow = !studentInfoShow" />
   <student-subject-list :studentList="studentInfo" />
 </v-dialog> 

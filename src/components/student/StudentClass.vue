@@ -1,58 +1,55 @@
 <template>
 <v-container fluid>
 
-  <student-grade v-model="gradeClass"> 
-  </student-grade>
+ <student-grade v-model="gradeClass" /> 
 
  <v-row>
   <v-col cols="12" v-if="studentList.length">
-    <v-card color="blue" class="ma-2">
-     <v-card-title>
+   <v-card color="blue" class="ma-2">
+    <v-card-title>
      <hr>
      <div class="heading text-center">{{ classListHeader }}</div>
-     </v-card-title>
-     <v-card-text>
-         <v-row>
-           <v-col cols="6" md="4" lg="3" 
-                  v-for="(s,index) in studentList" 
-                  :key="s.studentid">
-            <v-card color="light-pink" 
-                    class="ma-1 pl-2"
-                    @click="showStudent(index)"
-                    @mouseout="hoverStart = null; hover = null" 
-                    @mouseover="hoverStart = 'R' + s.studentid">  
-             {{ index+1 }} {{ s.surname }}, {{ s.firstname}} 
-             <div class="float-right" 
-                  @mouseover="hover = s.studentid" 
-                  v-show="hoverStart == 'R' + s.studentid">
-                   <v-icon small color="green lighten-1" class="ma-1"> mdi-email </v-icon>
-             </div>
+    </v-card-title>
+    <v-card-text>
+      <v-row>
+        <v-col cols="6" md="4" lg="3" 
+               v-for="(s,index) in studentList" 
+              :key="s.studentid">
+          <v-card color="light-pink" 
+                  class="ma-1 pl-2"
+                  @click="showStudent(index)"
+                  @mouseout="hoverStart = null; hover = null" 
+                  @mouseover="hoverStart = 'R' + s.studentid">  
+           {{ index+1 }} {{ s.surname }}, {{ s.firstname}} 
+           <div class="float-right" 
+                @mouseover="hover = s.studentid" 
+                v-show="hoverStart == 'R' + s.studentid">
+                 <v-icon small color="green lighten-1" class="ma-1"> mdi-email </v-icon>
+           </div>
+          </v-card>
+          <div v-if="hover == s.studentid">
+            <v-card v-for="e in s.email" 
+                   :key="e" 
+                    color="green lighten-2">
+                {{ e }}
             </v-card>
-            <div v-if="hover == s.studentid">
-              <v-card v-for="e in s.email" 
-                     :key="e" 
-                      color="green lighten-2">
-                  {{ e }}
-              </v-card>
-            </div>
-            <div v-if="hover == s.studentid && s.email.length==0">
-              <v-card color="red"> No email! </v-card>
-            </div>
-         </v-col>
-         
-        </v-row>
+          </div>
+          <div v-if="hover == s.studentid && s.email.length==0">
+            <v-card color="red"> No email! </v-card>
+          </div>
+        </v-col>
+      </v-row>
      </v-card-text>
-  <!--   {{ studentList }} -->
-  <v-card-actions>
-     <v-btn v-if="studentList.length" 
+     <v-card-actions>
+       <v-btn v-if="studentList.length" 
            @click="showListPrint=true"
-           small> 
+           small
+           title="Click to build an export list."> 
            export 
-     </v-btn>
-
-  </v-card-actions>
+       </v-btn>
+     </v-card-actions>
     </v-card>
-    </v-col>
+   </v-col>
   </v-row>
 
 <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">  

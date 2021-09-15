@@ -2,9 +2,6 @@
 <div>
  <template v-if="displayType == 1">
     <v-row v-if="list.length > 0">
-      <!--v-col cols="12">
-        {{ list }}
-      </v-col-->
       <v-col
         v-for="item in list"
        :key="item.functionid"
@@ -48,7 +45,7 @@
                :color="btn.functionaccess | cc"
                :key="btn.functionid"
                class="ma-2"
-               :small="$vuetify.breakpoint.mobile == true"
+               :small="$vuetify.breakpoint.mobile"
                :title="btn.functionname"
                :tip="btn.tip"
                @click="click(btn)"
@@ -56,8 +53,8 @@
                @mouseleave="theTip=''"
                 dark>
    
-            <v-icon :small="$vuetify.breakpoint.smAndDown == true" class="ma-1">
-             {{ btn.icon }}
+            <v-icon :small="$vuetify.breakpoint.smAndDown" class="ma-1">
+              {{ btn.icon }}
             </v-icon>
             <template v-if="$vuetify.breakpoint.smAndUp">
               {{ btn.shortname }} 
