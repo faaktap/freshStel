@@ -1,7 +1,9 @@
 <template>
 <v-row>
   <!--v-btn @click="testDeStruct"> testDeStruct </v-btn-->
- <v-col cols="12" col-md="6" >
+ <v-col v-if="!closingDateIsInTheFuture()" cols="12" col-md="6">
+ </v-col>
+ <v-col v-else cols="12" col-md="6" >
    <!--v-btn @click="xxxx" class="test"> test </v-btn-->
   <v-card color="white" elevation="6" class="mx-6 pa-4" ref="includeInEmail">
    <v-form v-if="mySchema &&  Object.keys(mySchema).length > 1"
@@ -145,6 +147,8 @@ const rules = {
   min6: minLen(6),
   validEmail: v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
 }
+import { zData } from "@/api/zGetBackgroundData.js"
+import { zDate } from "@/api/zDate.js"
                                                
 export default {
   name: "vfbasetest",
@@ -154,8 +158,11 @@ export default {
               },
 
   data: () => ({
+    loading:false,
+    zData:zData,
     valid: false,
     year: 2021,
+    isOpen:true,
     resultStr: '',
     tmpSchoolNo :'',
     myModel: {
@@ -282,7 +289,7 @@ export default {
              , tooltip:"Leerders wat Fisiese wetenskap kies, MOET ook Wiskunde kies"
              },
     subject5: { type: 'radio'
-             , label: 'Subject Group 4 / Vakgroep 4'
+             , label: 'Subject Group 5 / Vakgroep 5'
              , options: ['Life Sciences / Lewenswetenskappe'
                         ,'Geography / Geografie'
                         ,'Business Studies / Besigheidstudies'
@@ -297,7 +304,7 @@ export default {
              , tooltip:"Onthou: Jy kan nie dieselfde vak twee keer kies nie."
              },
     subject6: { type: 'radio'
-             , label: 'Subject Group 5 / Vakgroep 5'
+             , label: 'Subject Group 6 / Vakgroep 6'
              , options: ['Life Sciences / Lewenswetenskappe'
                         ,'Physical Sciences / Fisiese wetenskappe'
                         ,'Business Studies / Besigheidstudies'
@@ -313,7 +320,7 @@ export default {
              , tooltip:"EGD, IT and ART requires an aptitude test."
              },               
     subject7: { type: 'radio'
-             , label: 'Subject Group 6 / Vakgroep 6'
+             , label: 'Subject Group 7 / Vakgroep 7'
              , options : ['History / Geskiedenis'
                          ,'Accounting / Rekeningkunde'
                          ,'Consumer Studies / Verbruikerstudies'
@@ -339,6 +346,22 @@ export default {
       }
   },
   methods:{
+
+      closingDateIsInTheFuture() {
+          if (!this.zData.closeDate) return false
+
+          let y = this.zData.closeDate.substr(0,4)
+          let m = this.zData.closeDate.substr(5,2)
+              m = m - 1
+          let d = this.zData.closeDate.substr(8,2)
+          let untilDate = new Date(y,m,d)
+         
+          console.log('Future? ',untilDate, zDate.isFuture(untilDate))
+          console.log('Future? ','29-9', zDate.isFuture( new Date(2021,9-1,29) ) )
+          console.log('Future? ','30-9', zDate.isFuture( new Date(2021,9-1,30 )) )
+          return zDate.isFuture(untilDate)
+      },
+
       // eslint-disable-next-line
       log(a) {
           //console.info('LOG A = ', a.value)
@@ -505,6 +528,7 @@ export default {
      },
   },
   mounted: function() {
+    zData.getSurveyCloseDate(this.loading)
     let d = new Date();
     this.year = d.getFullYear() + 1;
   }

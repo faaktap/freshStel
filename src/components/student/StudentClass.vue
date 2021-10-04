@@ -1,14 +1,19 @@
 <template>
-<v-container fluid>
+<div>
+<v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
+    You are not logged in, or you are not a teacher!
+</v-container>
+
+<v-container v-else fluid>
 
  <student-grade v-model="gradeClass" /> 
 
  <v-row>
   <v-col cols="12" v-if="studentList.length">
-   <v-card color="blue" class="ma-2">
+   <v-card color="gray lighten-3" class="ma-2">
     <v-card-title>
      <hr>
-     <div class="heading text-center">{{ classListHeader }}</div>
+     <div class="heading text-center">{{ classListHeader }} </div> {{ title }}
     </v-card-title>
     <v-card-text>
       <v-row>
@@ -77,6 +82,7 @@
  </v-dialog>
 
 </v-container>
+</div>
 </template>
 
 <script>
@@ -90,6 +96,7 @@ import zmlCloseButton from '@/components/zmlCloseButton.vue'
 
 export default {
     name:"StudentClass",
+    props:["title"],
     components:{
         StudentGrade
        ,FrontJsonToCsv
@@ -157,6 +164,7 @@ export default {
       }
      },
     mounted() {
+      console.log('start : ', this.$options.name)
     },
     watch: {
       gradeClass() {

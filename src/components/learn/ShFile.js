@@ -95,3 +95,5 @@ const i= [
     {ext:'sql'  ,icon: 'mdi-database',          color:'green darken-3'},
     {ext:'com'  ,icon: 'mdi-link-box',          color:'green darken-3'},
     ]
+
+export default {shFile}

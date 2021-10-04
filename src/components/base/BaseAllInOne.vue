@@ -43,7 +43,7 @@
 <v-dialog v-model="showPrint" xwidth="auto" :fullscreen="$vuetify.breakpoint.smAndDown">
   <front-json-to-csv v-if="orDTTable"
                    :json-data="orDTTable"
-                   :csv-title="'onRoute App - ' + entity"
+                   :csv-title="'DEKHS App - ' + entity"
                    @hideModal="showPrint = false">
    <v-btn>
       Download with custom title

@@ -10,9 +10,10 @@
    </v-toolbar>
   </v-col> 
  </v-row>
+
  <v-row>
   <v-col cols="12">
-   <class-list />
+   <class-list />  <!-- This is yo build your own list -->
   </v-col>
  </v-row>
 
@@ -20,7 +21,7 @@
    <v-col cols="12">
      <v-toolbar flat color="primary" dark class="mb-4">
        <v-toolbar-title>
-           General Class Lists
+           General Class Lists (click on below button to select a class)
        </v-toolbar-title>
        <v-spacer />
      </v-toolbar>
@@ -28,9 +29,26 @@
  </v-row>
  <v-row>
   <v-col cols="12">
-     <student-class title="Click here for more information" /> 
+     <student-class title="Not used anywhere, " /> 
   </v-col>
  </v-row>
+
+ <v-row>
+   <v-col cols="12">
+     <v-toolbar flat color="primary" dark class="mb-4">
+       <v-toolbar-title>
+           Grade 10 Subject Selection - 2022
+       </v-toolbar-title>
+       <v-spacer />
+     </v-toolbar>
+  </v-col> 
+ </v-row>
+ <v-row>
+  <v-col cols="12">
+     <grade-10-list title="Grade 10 Subject selection for 2022" /> 
+  </v-col>
+ </v-row>
+ 
 
 <v-dialog v-model="studentInfoShow" 
          width="auto" 
@@ -54,13 +72,15 @@ import { zmlFetch } from '@/api/zmlFetch';
 import { zmlConfig } from '@/api/constants';
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import { infoSnackbar } from '@/api/GlobalActions';
+import Grade10List from '../../components/vfbase/Grade10List.vue';
 
 export default {
     name:"StudentLists",
     components:{
         StudentClass,
         ClassList,
-        StudentSubjectList
+        StudentSubjectList,
+        Grade10List
        },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),        

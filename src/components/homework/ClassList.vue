@@ -1,10 +1,15 @@
 <template>
-<v-container fluid>
+<div>
+<v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
+    You are not logged in, or you are not a teacher!
+</v-container>
+
+<v-container v-else fluid>
  <v-row>
    <v-col cols="12">
      <v-toolbar flat color="primary" dark class="mb-4">
-       <v-toolbar-title>
-           Homework/Individual Lists. <small>( Click on the button below to select a class )</small>
+       <v-toolbar-title class="ma-2">
+           Homework/Individual Lists. <small>( Click on the button below to create a new list )</small>
        </v-toolbar-title>
         <v-spacer />
        </v-toolbar>
@@ -95,6 +100,7 @@
 </v-dialog> 
 
 </v-container>
+</div>
 </template>
 
 <script>
@@ -260,7 +266,8 @@ export default {
       }
     },
     mounted() {
-        this.loadData();
+      console.log('start : ', this.$options.name)
+      this.loadData();
 
     },
     watch: {

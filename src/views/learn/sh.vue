@@ -23,46 +23,71 @@
 <v-container fluid>
  <v-row>
   <v-col cols="12" sm="6">
-    xxxxxxxxxxxxxxx {{ grade }} , {{ subjectID }}
    <grade-display-short v-model="grade" displaySize="medium" /> 
   </v-col>
   <v-col cols="12" sm="6">
    <subject-display-short v-model="subjectID"/> 
   </v-col>
-  <v-col cols="12" sm="4" md="4" lg="4" xl="2">
-   <v-switch v-if="getZml.login.isAuthenticated && (getZml.login.type == 'teacher' || getZml.login.type == 'admin')" 
-             v-model="editMode" 
-             label="editMode"
-             title="If you are a teacher, then you can switch editmode one here."> 
-   </v-switch>
-  </v-col>
-      <v-col xs12 md6>
-        <v-btn @click="showAs='list'"> 
+ </v-row>
+ <v-card class="mt-2 pa-2" color="blue lighten-2">
+ <v-layout row wrap class="pa-3">
+   <v-flex>
+        <v-btn @click="changeEditMode"
+               small
+              :title="editMode ? 'Click here to go to VIEW mode' : 'Click here to EDIT or UPLOAD files'"
+              class="mx-1"
+        > 
+          <v-icon v-if="editMode==false"> mdi-glasses </v-icon>
+          <v-icon v-if="editMode==true"> mdi-circle-edit-outline </v-icon>
+        </v-btn>
+
+        <v-btn @click="showAs='list'" 
+               small
+               :depressed="showAs=='list'" 
+               title="View files as a list"
+               class="mx-1"
+        > 
           <v-icon> mdi-view-list </v-icon>
         </v-btn>
-        <v-btn @click="showAs='card'"> 
+        <v-btn @click="showAs='card'" 
+               small        
+              :depressed="showAs=='card'" 
+              title="View files as cards"
+              class="mx-1"
+        > 
+
           <v-icon> mdi-card </v-icon>
+        </v-btn> 
+        {{ showAs}}
+        <v-btn v-if="editMode" 
+               small @click="showAddFolder = true"
+               class="mx-1"
+        > 
+          Add A Root Folder  
         </v-btn>
-      </v-col>
-  <v-col  v-if="editMode" cols="12" sm="4" md="4" lg="4" xl="2" class="ma-2"> 
-   <v-expansion-panels>
-    <v-expansion-panel>
-     <v-expansion-panel-header>Info</v-expansion-panel-header>
-     <v-expansion-panel-content align="left">
-      <v-btn width="100%" small @click="showAddFolder = true"> Add A Root Folder  </v-btn>
-      <v-btn width="100%" small to="/subjects"> Edit Subject Names and Order </v-btn>
-      <v-btn width="100%" small to="/studentlist"> Student Class List </v-btn>
-     </v-expansion-panel-content>
-    </v-expansion-panel>
-   </v-expansion-panels>
-  </v-col>
- </v-row>
+        <v-btn v-if="editMode" 
+               small to="/subjects"
+               class="mx-1"
+        > 
+          Edit Subject Names and Order 
+        </v-btn>
+        <v-btn v-if="editMode" 
+               small to="/studentlist"
+               class="mx-1"
+        > 
+          Student Class List 
+        </v-btn>
+      
+   </v-flex>
+ </v-layout>
+    </v-card>
 </v-container>
 
 
-  <v-btn @click="showDebug = !showDebug"
-         v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'"> 
-    show Debug4Werner </v-btn>
+<v-btn @click="showDebug = !showDebug" class="pa-5 ma-3" small
+        v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'"> 
+    show Debug4Werner 
+</v-btn>
 <v-container fluid v-if="showDebug">  
 folderid:{{ folderid }} 
 <br> Topfolder:{{ topFolder }} 
@@ -172,7 +197,7 @@ folderid:{{ folderid }}
       </v-layout>
 
        <sh-file  v-if="showAs == 'list'"
-                @btn-click="testStuff" 
+                @btn-click="getFolder" 
                 :contents="contents"
                 :editMode="editMode"
                 :displayFolder="displayFolder"
@@ -287,6 +312,19 @@ export default {
       },
     },
     methods:{
+      changeEditMode() {
+
+        //Check if this person is allowed to change the mode.
+        if (this.editMode == false 
+         && this.getZml.login.isAuthenticated == false
+         && ['teacher','admin'].includes (this.getZml.login.type) == false )
+        {
+          infoSnackbar('Sorry, You are not allowed to change the data in this area. Try to login as a teacher!')
+          return
+        } 
+
+        this.editMode = !this.editMode
+      },
       testStuff(e) {
         this.getFolder(e)
       },
@@ -316,16 +354,17 @@ export default {
         this.contents.length = 0
         this.topFolder = {}
         this.progress = false
+        let topid = 0
         if (!Array.isArray(response) || (response.errorcode && response.errorcode != 0) ) {
+          console.log('aft LL error/empty sub,grade is', this.subjectID, this.grade)
           //We have an error, or no data was returned
           if (this.folderid != 0) {
              infoSnackbar('We have no info in this folder, ' + this.folderid)
           }
-          this.subjectID = null
-          this.getZml.subject = ''
+          //this.subjectID = null
+          //this.getZml.subject = ''
           return
         }
-        let topid = 0
         if (this.folderid) {
           topid = response.findIndex(ele => ele.contentid == this.folderid)
         }
@@ -361,9 +400,10 @@ export default {
         this.progress = false
         if (!Array.isArray(response) || (response.errorcode && response.errorcode != 0) ) {
           //We have an error, or no data was returned
+          console.log('aft LLR error/empty sub,grade is', this.subjectID, this.grade)
           infoSnackbar('We have no info in this subject folder, ' + this.getZml.subject)
-          this.subjectID = null
-          this.getZml.subject = ''
+          //this.subjectID = null
+          //this.getZml.subject = ''
           return
         }
         this.topFolder = {grade:response[0].grade, subjectid:response[0].subjectid,displayfolder:'Top'}

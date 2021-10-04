@@ -45,8 +45,8 @@
               :json-data="finalJsonData"
               :labels="finalHeading"
               :show-labels="true"
-              class="d-print-none float-right"
-              :csv-title="'Data List prepared by onRoute App'">
+               class="d-print-none float-right"
+              :csv-title="'Data List prepared by DEKHS App'">
       <v-btn small class="pa-1 ma-1">    Download    </v-btn>     
     </json-to-csv>
     

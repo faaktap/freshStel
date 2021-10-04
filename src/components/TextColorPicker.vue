@@ -3,7 +3,7 @@
 
    <v-container class="grey lighten-5" fluid>
      <v-row xno-gutters> 
-     <v-col cols="12" sm="7" lg="5" v-for="(c,i) in baseColors" 
+     <v-col cols="2" sm="2" lg="1" v-for="(c,i) in baseColors" 
             :key="i" 
      >
      <v-card color="yellow" class="text-center ma-0">

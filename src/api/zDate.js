@@ -17,6 +17,7 @@ import { format
         ,startOfMonth
         ,startOfYear
         ,compareAsc
+        ,isFuture        
         } from 'date-fns'
  import { maxTime } from 'date-fns/constants'
  import { minTime } from 'date-fns'
@@ -156,6 +157,10 @@ export const zDate = {
   isSameDay: function(...args) {
     return isSameDay(...args)
   },
+  isFuture: function(...args) {
+    //console.log(...args)
+    return isFuture(...args)
+  },  
   gotoMonday: function(date){
     //Monday is 1, Sunday is 7
     //If we are on 6 or 7, we want to advance to next week.

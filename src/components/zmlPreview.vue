@@ -1,12 +1,13 @@
 <template>
  <v-card color="grey lighten-3" 
          class="text-center ma-0 pa-0">
+  <zml-close-button @btn-click="closeIt" />
   <v-card-title class="text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
        <v-btn  @click="launchOutside" title="Open in Browser/Download">
         <v-icon> mdi-window-open </v-icon> Open
       </v-btn>
       <div class="mx-4 text-center">
-      Preview {{ type }}
+      Preview - {{ getFilenameNoExtension(src) }} 
       </div>
       <slot />
   </v-card-title>
@@ -50,17 +51,18 @@
 
   </v-card-text>
  </v-card>
-</template>
+ </template>
 
 <script>
 //import {getIcon, getFilename} from '@/api/fileUtils.js'
 //import { zmlFetch } from '@/api/zmlFetch';
+import zmlCloseButton from '@/components/zmlCloseButton'
 export default {
  name: "about",
  props:{  src:  {type: String,default:"https://kuiliesonline.co.za/Subjects/GR12/Accounting_Rekeningkunde/Gr 12 - Mrs Wiegand/Budgets/14.10 Part 2.mp4"} 
          ,type: {type: String, default:"movie"}
        }, 
- components: {},
+ components: { zmlCloseButton},
  data: () => ({
     icon: null,
     title: '',
@@ -78,7 +80,21 @@ export default {
       },
  },
  methods: {
+      getFilenameNoExtension( fileName ) {
+       const pieces =   fileName.split('/') 
+       console.log('pices:', pieces)
+       const l = pieces.length - 1
+       if (l >= 0) {
+          console.log('pices:', pieces[l])
+          return  pieces[l]
+       } else {
+         console.log('pices: nada')
+         return ""
+       }
+      },   
      launchOutside() {
+       console.log('launchOutside')
+       this.stopIT()
         window.open(this.src,'_' + this.type)
         /*
         const ts = {
@@ -88,12 +104,22 @@ export default {
         zmlFetch(ts, this.doneL, this.failL)
         */
      },
-     doneL(response) {
-       console.log(response)
+     closeIt() {
+       console.log('-------------------------closeIt')
+       this.$emit('close')
+       this.stopIT()
      },
-     failL(response) {
-       console.log(response)
-     }
+     stopIT() {
+       console.log('refs = ', this.$refs.iframe)
+       const xx = this.$refs.iframe;
+       xx.src  = '';
+
+      let iframes = this.$refs.iframe;
+      Array.prototype.forEach.call(iframes, iframe => {
+        console.log('iframe=')
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
+      });
+      }
  },
  mounted() {
         console.log('PRE Mounted')

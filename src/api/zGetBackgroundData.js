@@ -7,8 +7,17 @@ import { zDate } from '@/api/zDate.js'
 
 export const zData = {
     someGlobals :  'hallo',
+    closeDate : null,    
     l: (...args) => {   
        console.log(...args)
+    },
+    getSurveyCloseDate(loading) {
+        zData.loading = loading
+        let ts = {}
+        ts.task = 'PlainSql'
+        ts.sql = "select * from dkhs_constant where zmltype = 'SURVEY' and zmlname = 'CLOSEDATE'"
+        ts.api = zmlConfig.apiDKHS
+        zmlFetch(ts, finishedLoadingCloseDate, errorLoading)
     },
     sendEmail(emailInfo) {
         let email = emailInfo
@@ -140,4 +149,10 @@ function finishedLoadingFunctions (response) {
 function errorLoading (response) {
     alert('We had an error loading your data!')
     console.log('We had an error loading your data!',response)
+}
+
+//----------------------------------------------------------------
+function finishedLoadingCloseDate (response) {
+    zData.loading = false
+    zData.closeDate = response[0].zmlvalue   
 }

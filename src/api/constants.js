@@ -1,5 +1,7 @@
-const PROJECT_ID = "zml48.4"
-const MEASUREMENT_ID = "Z-ZML48.4"
+const PROJECT_NAME = "zmlVschool"
+const PROJECT_VERSION = "48.8"
+const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
+const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
 const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 
@@ -25,6 +27,7 @@ export const zmlConfig = {
   emailPath: "https://kuiliesonline.co.za/api/swiftmailer/genMailer.php",
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectID: PROJECT_ID,
+  projectName: PROJECT_NAME,  
   measurementID: MEASUREMENT_ID,
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
@@ -48,7 +51,6 @@ export const promiseTimeout = function(ms, promise){
     timeout
   ])
 }
-
 
 /*!
  * Get the contrasting color for any hex color
