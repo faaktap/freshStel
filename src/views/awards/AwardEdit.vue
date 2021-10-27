@@ -91,9 +91,10 @@
           </v-flex>
           <v-flex xs6 sm2 md2>
             <v-radio-group v-model="edit.type">
-              <v-radio label="Title" value="1" />
-              <v-radio label="Diploma" value="2" />
-              <v-radio label="Trophy" value="4" />
+              <v-radio label="Title(1)" value="1" />
+              <v-radio label="Diploma (2)" value="2" />
+              <v-radio label="Trophy (4)" value="4" />
+              <v-radio label="List Of Students(5)" value="5" />  
               <v-radio label="Something New" value="3" />  
             </v-radio-group>
             <!--v-text-field v-model="edit.type" label="Type"></v-text-field-->
@@ -136,7 +137,7 @@ import StudentLookup from '@/components/student/StudentLookup'
         editMode: null,
         progressShow:false,
         search: '',
-        etypes: ["nada","title","diploma","nothing","trophy"],
+        etypes: ["nada","title","diploma","nothing","trophy","list"],
         headers: [
           { text: 'ID', value: 'storyid' },
           { text: 'Chapter', value: 'chapterid' },

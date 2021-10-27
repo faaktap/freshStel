@@ -1,16 +1,18 @@
 <template>
   <v-autocomplete 
         v-model="searchResult"
-        :value="searchText" 
-        :search-input.sync="search" 
-        :items="list"
-        :item-text="itemDisplay" 
+       :value="searchText" 
+       :search-input.sync="search" 
+       :items="list"
+       :item-text="itemDisplay" 
+       :loading="loadingItems"
+       @click:append="clearSearch"       
         item-value="desc" 
         return-object 
         outlined
         dense
         label="Student Surname"
-        :loading="loadingItems"
+        append-icon="mdi-close"
         autofocus>
    <v-dialog v-model="loadids">
     <v-layout><v-card>
@@ -45,7 +47,15 @@ export default {
     IDList:"Add a list of ID's in here"
   }),
   mounted() { 
-      //this.list = this.somedefaults;
+    console.log('we was mounted - stuydent info')
+          // this.searchResult = "";
+          // this.searchText = "";
+          // this.search = ".";
+          // this.itemDisplay = ".";
+          // this.IDList = "";
+    this.list =  [{desc:"Type"}
+         ,{desc:"Student"}
+         ,{desc:"Surname"}]
 
    },
 
@@ -59,26 +69,34 @@ export default {
   },
 
   methods: {
-      submitIDList() {
-          this.$emit("idsEntered", this.IDList);
-          this.loadingItems = false;
-          this.loadids = false;
-      },
-      loadNew(pSrch) {
-         //Do we still have data to fullfill search criteria?
-         if (this.loadingItems) { console.log('already busy'); return;}
-         if (this.pSrch == '') { console.log('nothing here..'); return;}
-         let found = 0;
-         if (this.list.length > 0) {
-             found = this.list.findIndex(elem => elem.desc.substring(0,pSrch.length) === pSrch);
-         }
-         if (found < 1) {
-           this.loadingItems = true;
-           this.loadOurListWithNewValues(pSrch);
-         }
+    clearSearch() {
+      console.log('we where called to clear the sewarch')
+          this.list =  [{desc:"Type"}
+         ,{desc:"Student"}
+         ,{desc:"Surname"}]
+        this.searchResult = ''
+    },
+    submitIDList() {
+        this.$emit("idsEntered", this.IDList);
+        this.loadingItems = false;
+        this.loadids = false;
+    },
+    loadNew(pSrch) {
+       //Do we still have data to fullfill search criteria?
+       if (this.loadingItems) { console.log('already busy'); return;}
+       if (this.pSrch == '') { console.log('nothing here..'); return;}
+       let found = 0;
+       if (this.list.length > 0) {
+           found = this.list.findIndex(elem => elem.desc.substring(0,pSrch.length) === pSrch);
+       }
+       if (found < 1) {
+         this.loadingItems = true;
+         this.loadOurListWithNewValues(pSrch);
+       }
     },
     loadOurListWithNewValues(pSrch){
       let ts = {}
+      console.log('loadOurListWithNewValues',pSrch)
       if (this.searchMore) {
         ts = {task: 'getstudentother', like:pSrch};
       } else {
@@ -92,7 +110,7 @@ export default {
             let row = response[i];
             let obj = {}
             if (this.searchMore) {
-               obj = {desc: row.studentid + ' ' + row.grade + ' ' + row.gclass + ' ' + row.idno + ' ' + row.surname + ', ' + row.firstname, data: response[i]};
+               obj = {desc: row.surname + ', ' + row.firstname + ' ' + row.studentid + ' ' + row.grade + ' ' + row.gclass + ' ' + row.idno, data: response[i]};
             } else {
                obj = {desc: row.grade + ' ' + row.idno + ' ' + row.surname + ', ' + row.firstname, data: response[i]};
             }
@@ -122,7 +140,10 @@ export default {
 
   watch: {
     searchResult(v) {
-      if (this.searchResult.data) this.$emit("dataEntered", v);
+      if (this.searchResult.data) {
+        this.$emit("dataEntered", v)
+        this.clearSearch
+      }
     },
     search(n, o) {
       // at some point search is set to null

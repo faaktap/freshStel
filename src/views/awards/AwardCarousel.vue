@@ -33,7 +33,7 @@
          <smart-text v-if="page.type == 1" 
                     :title="page.detail1"
                     :atext="page.detail2" 
-                    maintitle="Prysuitdeling 2020 / Prizegiving 2020"
+                    maintitle="Prysuitdeling 2021 / Prizegiving 2021"
                     />
                     <!-- Type 2 is a group, and change to type 3 -->
 

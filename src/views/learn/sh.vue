@@ -88,14 +88,16 @@
         v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'"> 
     show Debug4Werner 
 </v-btn>
+
 <v-container fluid v-if="showDebug">  
 folderid:{{ folderid }} 
-<br> Topfolder:{{ topFolder }} 
-<br> displayFolderBack:{{ displayFolderBack }}
-<br> displayFolder:{{ displayFolder }}
+<br> Topfolder : {{ topFolder }} 
+<br> displayFolderBack : {{ displayFolderBack }}
+<br> displayFolder : {{ displayFolder }}
+<br> displayFolderTop : {{ displayFolderTop }}
 <br>g={{ grade }}s={{ subjectID }}
-<br>The one we are in{{ topFolder.name }}
-<br>showAddFolder = {{ showAddFolder }}
+<br>The one we are in {{ topFolder.name }}
+<br>showAddFolder : {{ showAddFolder }}
 <br>{{ getZml.login }}
 
 </v-container>
@@ -195,15 +197,15 @@ folderid:{{ folderid }}
 
         </v-flex>
       </v-layout>
-
-       <sh-file  v-if="showAs == 'list'"
-                @btn-click="getFolder" 
+      <v-layout v-else class="ma-2 pa-2" row>
+       <sh-file @btn-click="getFolder" 
                 :contents="contents"
                 :editMode="editMode"
                 :displayFolder="displayFolder"
                 :topFolder="topFolder"
+                class="justify-space-around"
        />
-
+     </v-layout>
      <div class="ma-2 text-center"> --- end --- </div>
     </v-card-text>
   </v-card>
@@ -250,18 +252,20 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import { sh } from "@/views/learn/sh.js"
 import { subject } from "@/api/subject.js"
 
+import GradeDisplayShort from '@/components/learn/GradeDisplayShort'
+import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
+
 import TeacherItemDisplay from '@/components/learn/TeacherItemDisplay'
 import StudentItemDisplay from '@/components/learn/StudentItemDisplay'
+
 import StudentFolderDisplay from '@/components/learn/StudentFolderDisplay'
 import TeacherFolderDisplay from '@/components/learn/TeacherFolderDisplay'
 import zmlDataTable from '@/components/zmlDataTable.vue'
 
-import GradeDisplayShort from '@/components/learn/GradeDisplayShort'
-import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
 import EditItem from '@/views/learn/editItem'
 import EditItemPartitions from '@/views/learn/EditItemPartitions'
 
-import ShFile from '@/components/learn/ShFile'
+import ShFile from '@/components/learn/ShFile.vue'
 export default {
     name: "SHub",
     components: {
@@ -342,7 +346,9 @@ export default {
       getFolder(folderid = this.folderid) {
         console.log('getFolder : Retrieve "folderdata" on ', folderid, ' or ', this.topFolder.grade, this.topFolder.subjectid)
         this.folderid = folderid
-        if (folderid < 1) { folderid = 0 }
+        if (folderid < 1) { 
+           folderid = 0
+         }
         if (folderid == 0 && (!this.topFolder.grade || !this.topFolder.subjectid)) { console.log('ABORT!!! - no good data'); return }
         sh.contentData('folderdata', this.loadData, {folderid: folderid
                                                     ,grade:this.topFolder.grade || 0

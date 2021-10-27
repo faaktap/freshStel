@@ -1,5 +1,8 @@
 <template>
 <div>
+  SHOW AS FILE = shfile.vue and js {{ contents.length }}
+  topfolder id = {{ topFolder.contentid }}
+  topfolder = {{ topFolder }}
  <v-layout v-if="contents.length > 0" row wrap align-center> 
    <v-flex>
    <v-data-table
@@ -7,7 +10,6 @@
     :items="filterContents"
     :items-per-page="50"
     class="elevation-1"
-    color="purple lighten-3"
     loading="tableLoading"
     loading-text="Loading... Please wait"
     multi-sort
@@ -99,7 +101,9 @@ export default {
     computed:{
        filterContents() {
            //Do not show the entry with topFolder in it.
-          return this.contents.filter(element => element.contentid !== this.topFolder.contentid)
+           // maar ons sien nie kodes nie in 12 fwet - haal die eers uit..
+           return this.contents.filter(element => element.contentid !== this.topFolder.contentid)
+           //return this.contents
        },
     },
     methods:{
