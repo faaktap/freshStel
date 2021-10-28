@@ -79,7 +79,7 @@ export default {
       assignData(response) {
         this.awardList = response
         this.awardList.forEach(e => {
-          e.image = this.imageDisplay(e)
+          e.image = awardStrFunc.imageDisplay(e)
           if (e.type == 2) {
              //check if detail2 start with the word DIPLOMA: and of it does, build a list
              e.detail2 = awardStrFunc.convertTextToArray(e.detail2)
@@ -92,29 +92,6 @@ export default {
       },
       onComplete(p1){ console.log('complete:', p1)},
       onAbort(p1){ console.log('complete:', p1)},
-      imageDisplay(page) {
-          console.log('imageDisplay : ', page.type)
-          let img = ''
-          switch (page.type) {
-              case '1':  {
-                  img = "https://www.kuiliesonline.co.za/img/logo60edit.svg"
-                  break
-              }
-              case '2': 
-              case '4': 
-              {
-                 if (page.otherid) {
-                     img = 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=' + page.otherid
-                 } else {
-                     img = ""
-                 }
-                 break
-              }
-              case '5': img = "/img/trophyback6.jpg"  ; break
-              default: img = "/img/trophyback5.jpg"  ; break
-          }
-          return img
-       },
     },
     mounted() {
         this.loading = true

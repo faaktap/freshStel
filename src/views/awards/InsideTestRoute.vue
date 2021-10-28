@@ -14,6 +14,14 @@
                  :yellowNote="page.extraNote"
         />
 
+        <page-text-left-small-pic v-if="page.type == 3"
+               :title="page.detail1"
+               :lefttext="page.detail2"
+               :maintitle="page.title"  
+               :image="page.image"
+        />
+
+
         <page-right-text  v-if="page.type == 4"
                :title="page.detail1"
                :righttext="page.detail2"
@@ -28,18 +36,20 @@
                        @wearedone="$emit('wearedone')"
         />
 
-        {{ page }}         
+        <!-- {{ page }}          -->
     </div>
 </template>
 
 <script>
 import PageTextLeft from './PageTextLeft.vue'
+import PageTextLeftSmallPic from './PageTextLeftSmallPic.vue'
 import PageRightText from './PageRightText.vue'
 import PageListRight from './PageListRight'
 import PageTextMarquee from './PageTextMarquee'
 export default {
     name:'InsideTestRoute',
     components:{ PageTextLeft
+               , PageTextLeftSmallPic
                , PageRightText
                , PageListRight
                , PageTextMarquee

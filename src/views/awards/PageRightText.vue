@@ -9,23 +9,17 @@
    <v-card-text class="pa-2 d-flex justify-center"> 
     <v-row>
      <v-col cols="12" md="6">
-      <v-sheet class="pa-8 ma-4 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
-          <transition name="fade">
+      <v-sheet class="pa-sm-1 pa-md-8 ma-sm-1  ma-md-4 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
+          
            <v-img class="rcorners1 ml-10 rounded-circle"
             :src="image"
             lazy-src="img/lazyload.png"
             max-width="562"
-            max-height="450"
+            :max-height="imageHeight"
             contain>
-              <template v-slot:placeholder>
-               <v-row class="fill-height ma-0"
-                      align="center"
-                      justify="center">
-               <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-              </v-row>
-             </template>             
+                         
            </v-img>
-          </transition>
+          
       </v-sheet>      
       <!--v-divider v-if="$vuetify.breakpoint.mdAndUp" class="mx-4" vertical /-->
      </v-col>
@@ -68,6 +62,16 @@ export default {
        } 
     },
     computed: {
+       imageHeight () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return '150'
+          case 'sm': return '200'
+          case 'md': return '500'
+          case 'lg': return '500'
+          case 'xl': return '500'
+        }
+        return '550'
+      },      
     },
     methods: {
       checkSize() {

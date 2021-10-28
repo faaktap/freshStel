@@ -9,15 +9,14 @@
      </v-card>
    </v-card-title>
 
-   <v-card-text> 
+   <v-card-text > 
     <v-row justify-lg="center">
       <v-col align="center" cols="12" md="6" lg="6">
-        <br><br><br>
-        <v-card color="rgba(10, 19, 61, 0.5)">
+        <v-card color="rgba(10, 19, 61, 0.5)" class="pa-sm-0 pa-lg-4 ma-sm-0 ma-lg-4">
                 
          <v-container fill-height fluid 
                       class="d-flex flex-row align-center mb-6">
-             <p v-html="lefttext" class="text-lg-h6 font-weight-light wordbreak text-justify ma-3">
+             <p v-html="lefttext" class="text-lg-h6 text-sm-caption font-weight-light wordbreak text-justify pa-sm-0 pa-lg-2 ma-sm-0 ma-lg-3">
 
              </p>
 

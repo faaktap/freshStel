@@ -5,45 +5,39 @@
 Ask some of the personel and students to help the photographer to identify the person in the photo.
 </base-title-expand>
 
-<base-title-expand heading="Current Student Photos">
  <v-container>
     <v-row class="text-center">
-      <v-col cols="12">
-        <v-card
-          v-for="j in 10"
-          :key="j"
-          class="d-flex justify-space-around mb-2"
+        <v-card cols="12" md="6" 
+          class="row wrap text-center d-flex justify-space-around ma-0 mb-2"
+          v-for="(item) in photoList"
+          :key="item.uniqno"
           color="grey lighten-2"
           flat
           tile>
-          <v-card v-for="n in 12" 
-                 :key="n" 
-                 class="pa-2 ma-2" 
-                 outlined xtile> d-flex item {{j}}</v-card>
+          <v-card class="pa-1 ma-1" 
+                  outlined tile> 
+            <v-card-text>
+                <v-img :src="'https://kuiliesonline.co.za/' + item.photo"
+                       max-height="100"
+                       max-width="100"
+                       lazy-src="img/lazyload.png"
+                       :title="'S:' + item.studentno + ' U:' + item.uniqno + ' ' + item.photo"
+                       contain rounded />     
+              {{item.surname}},<br> {{item.firstname}}
+              <br> {{item.grade}}{{item.gclass}}, {{item.type}} 
+              
+            </v-card-text>
+
+           </v-card>
         </v-card>
-      </v-col>
     </v-row>
   </v-container>
-</base-title-expand>
-
-<base-title-expand heading="Incoming Student Photos">
-<v-data-table
-    :headers="photoListHeader"
-    :items="photoList"
-    :items-per-page="20"
-    class="elevation-2"
-    @click:row="clickOnRow">
-    <!-- https://kuiliesonline.co.za/ -->
-    <template v-slot:[`item.filepath`]="{ item }">
-        <v-img :src="'https://kuiliesonline.co.za/' + item.filepath" height="300" contain/>
-    </template>
-</v-data-table>
-</base-title-expand>
 
 <!-- Show a lookuplist of studentinfo -->
 <v-btn @click="showResult = !showResult">
     Show Data for Export
 </v-btn> 
+
 
 <v-dialog v-model="showLookup" 
           max-width="400" 
@@ -90,8 +84,11 @@ import StudentLookup from '../components/student/StudentLookup.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import { zData } from "@/api/zGetBackgroundData.js"
 export default {
-    name:"IncomingPhotoLink",
-    components:{BaseTitleExpand, FrontJsonToCsv,StudentLookup},
+    name:"AllPhotos",
+    components:{
+          BaseTitleExpand
+        , FrontJsonToCsv
+        , StudentLookup},
     props:['myPropNameHere'],
     data: () => ({
        loading:false,
@@ -100,23 +97,17 @@ export default {
        showLookup:false,
        searchMore:true,
        photoList:[],
-       photoListHeader: [
-          {text: 'id',             value: 'photolinkid' },
-          {text: 'filename',       value: 'filename' },
-          //{text: 'load on',        value: 'dataloaded' },
-          {text: 'student',        value: 'student' },
-          {text: 'filepath',        value: 'filepath' },
-       ],
-       photolinkid:null,
        studentid:null,
        csvArray:[],
-       sqlStatement : "SELECT photolinkid,filepath,filename,p.studentid,linktype,dateloaded,description,userid " 
-                    + ", concat(s.firstname,' ', s.surname, ' ',s.grade) student"
-                    + "  from dkhs_photolink p "
-                    + "left join dkhs_student s on s.studentid = p.studentid "
-                    + "order by p.studentid desc, filename",
-       api:'https://kuiliesonline.co.za/api/dkhs/dkhs.php',
+       sqlStatement : "SELECT p.uniqno, p.type, p.photo, p.studentno, s.surname, s.firstname, s.grade"
+                    + " , s.gclass"
+                    + " FROM dkhs_photo p"
+                    + " LEFT JOIN dkhs_student s ON p.studentno=s.studentid",
+       api:"https://kuiliesonline.co.za/api/candid/candidates.php",
     }),
+    computed: {
+        
+    },
     methods:{
       executeSql() {
           zData.loadSql(this.loading, this.sqlStatement, this.assignData, this.api)
@@ -134,28 +125,24 @@ export default {
       clickOnRow(e) {
          console.log(e)
          this.showLookup = true
-         this.photolinkid = e.photolinkid
-         console.log('we are working with ', this.photolinkid)
+         ///this.photolinkid = e.photolinkid
+         //console.log('we are working with ', this.photolinkid)
       },
       studentFound(value) {
          this.showLookup = false
          this.studentid = null
          if (value.data == 'undefined') return;
          this.studentid = value.data.studentid
-         if (value.data.studentid && this.photolinkid) {
-            const idx = this.photoList.findIndex(e => e.photolinkid == this.photolinkid)
-            if (idx != -1) {
-              this.photoList[idx].student = this.studentid + ' ' + value.data.surname+ ' ' + value.data.firstname
-              this.updatePhotoLink(this.photolinkid, this.studentid)
-              //alert('do an update on ' + this.photolinkid + ' ' + value.data.studentid)
-            }
+         /*
+         if (value.data.studentid) {
          }
-         this.photolinkid = 0
          this.studentid = 0
+         */
       },
-      updatePhotoLink(linkid, studentid) {
-         let sql = 'update dkhs_photolink set studentid = ' + studentid + ' where photolinkid = ' + linkid
-         zData.loadSql(this.loading, sql, this.updateDone, this.api)
+      updatePhoto(linkid, studentid) {
+          console.log(linkid, studentid)
+         //let sql = 'update dkhs_photolink set studentid = ' + studentid + ' where photolinkid = ' + linkid
+         //zData.loadSql(this.loading, sql, this.updateDone, this.api)
       },
       updateDone(response) {
         console.log('update done - ', response)

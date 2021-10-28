@@ -49,12 +49,15 @@ const routes = [
     path: '/dkhsawards',   name: 'dkhsawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),    meta: {layout: la[0], authentication: "public" }
   }
-  //,{ 
-  //   //Actual award!
-  //   path: '/virtualawards/:chapterid',    name: 'virtualawards',
-  //   component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
-  //   props: true,    params: {chapterid: 4, editmode: false},    meta: {layout: la[0], authentication: "public" }
-  // }
+  ,{
+     path: '/virtualawards', redirect: '/virtualawards/25/0' 
+  }
+  ,{ 
+    //Actual award!
+    path: '/virtualawards/:chapterid/:orderid',    name: 'virtualawards',
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
+    props: true,    params: {chapterid: 25, orderid: 1, editmode: false},    meta: {layout: la[0], authentication: "public" }
+  }
   ,{ 
     //award
     path: '/va/:chapterid',    name: 'va',
@@ -271,6 +274,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "test" */ '@/views/IncomingPhotoLink.vue')
     ,name: 'IncomingPhotoLink'
     ,path: '/photohelp'
+    ,meta: {layout: la[3], authentication: "public"}
+  },      
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/AllPhotos.vue')
+    ,name: 'AllPhotos'
+    ,path: '/photos'
     ,meta: {layout: la[3], authentication: "public"}
   },      
   {
