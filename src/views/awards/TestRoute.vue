@@ -8,6 +8,12 @@
   </v-progress-circular>
  </v-overlay> 
 
+  <v-btn v-if="webShareApiSupported" 
+        @click="shareViaWebShare">
+    <v-icon>mdi-share</v-icon>
+  </v-btn>
+  <div v-else> Share not available </div>
+
   <v-parallax src="/img/boSkool.jpg" height="1300px">
   <!-- src="/img/vlaghys6842.jpg" -->
   <v-container fluid>
@@ -31,6 +37,8 @@
     </v-carousel>
    </v-layout>
   </v-container>
+
+
  </v-parallax>
 </div>
 </template>
@@ -90,8 +98,24 @@ export default {
       next() {
            this.localItem = parseFloat(this.localItem) + 1
       },
-      onComplete(p1){ console.log('complete:', p1)},
-      onAbort(p1){ console.log('complete:', p1)},
+      onComplete(p1){ 
+        console.log('complete:', p1)
+      },
+      onAbort(p1){ 
+        console.log('complete:', p1)
+      },
+      shareViaWebShare() {
+        navigator.share({
+          title: 'Title to be shared',
+          text: 'Text to be shared',
+          url: 'URL to be shared'
+        })
+      }
+    },
+    computed: {
+      webShareApiSupported() {
+        return navigator.share
+      } 
     },
     mounted() {
         this.loading = true

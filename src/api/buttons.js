@@ -24,12 +24,14 @@ export function doStuff(tr,task) {
         case "/latest/7":   
         case "/dkhsawards":  
         case "/grade":    //new student start
-        case "/student": 
-        case "/personel": 
-        case "/elections": 
-        case "/userlist": 
-        case "/studentlist": 
-        case "/subjects":         
+        case "/student":
+        case "/personel":
+        case "/elections":
+        case "/userlist":
+        case "/studentlist":
+        case "/subjects":
+        case "/photos":
+        case "/photohelp":
             return zmlReRoute(tr, task)
 
         default:

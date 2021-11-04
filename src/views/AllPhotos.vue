@@ -1,15 +1,18 @@
 <template>
 <v-container fluid>
 
-<base-title-expand heading="Incoming Student Photo Assignment">
-Ask some of the personel and students to help the photographer to identify the person in the photo.
+<base-title-expand heading="All the photos in the system is displayed here.">
+You can soon search by student or by photoname
 </base-title-expand>
+
+<base-search @clear="search=''" v-model="search" />
+
 
  <v-container>
     <v-row class="text-center">
         <v-card cols="12" md="6" 
           class="row wrap text-center d-flex justify-space-around ma-0 mb-2"
-          v-for="(item) in photoList"
+          v-for="item in filterPhotos"
           :key="item.uniqno"
           color="grey lighten-2"
           flat
@@ -83,14 +86,17 @@ import BaseTitleExpand from '../components/base/BaseTitleExpand.vue'
 import StudentLookup from '../components/student/StudentLookup.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import { zData } from "@/api/zGetBackgroundData.js"
+import BaseSearch from '@/components/base/BaseSearch';
 export default {
     name:"AllPhotos",
     components:{
           BaseTitleExpand
         , FrontJsonToCsv
-        , StudentLookup},
+        , StudentLookup
+        , BaseSearch},
     props:['myPropNameHere'],
     data: () => ({
+       search:'',
        loading:false,
        zData:zData,
        showResult:false,
@@ -106,7 +112,13 @@ export default {
        api:"https://kuiliesonline.co.za/api/candid/candidates.php",
     }),
     computed: {
-        
+       filterPhotos() {
+          if (!this.search) return this.photoList
+
+          let searchResult = this.photoList.filter(e => JSON.stringify(e).toLowerCase().indexOf(this.search) > -1);
+          return searchResult
+
+       } 
     },
     methods:{
       executeSql() {

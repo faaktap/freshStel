@@ -1,54 +1,33 @@
 <template>
 <v-container fluid>
- <v-row>
-  <v-col cols="12">
-   <v-toolbar flat color="primary" dark class="mb-4">
-    <v-toolbar-title>
-         SL - Lists and Stuff. - still testing
-    </v-toolbar-title>
-    <v-spacer />
-   </v-toolbar>
-  </v-col> 
- </v-row>
+<base-title-expand color="blue" heading="Student/Class Lists" >  
+<p>Here you can view current class lists, roll your own list, and at the bottom see results
+  of the Grade 10 survey for Subject Selection</p>
+</base-title-expand>
 
+<base-title-expand color="white" heading="Create your own list - still testing" >  
  <v-row>
   <v-col cols="12">
    <class-list />  <!-- This is yo build your own list -->
   </v-col>
  </v-row>
+</base-title-expand>
 
- <v-row>
-   <v-col cols="12">
-     <v-toolbar flat color="primary" dark class="mb-4">
-       <v-toolbar-title>
-           General Class Lists (click on below button to select a class)
-       </v-toolbar-title>
-       <v-spacer />
-     </v-toolbar>
-  </v-col> 
- </v-row>
+<base-title-expand color="white" heading="General Class Lists (click on below button to select a class)" >
  <v-row>
   <v-col cols="12">
-     <student-class title="Not used anywhere, " /> 
+     <student-class title="Not used anywhere" /> 
   </v-col>
  </v-row>
+</base-title-expand>
 
- <v-row>
-   <v-col cols="12">
-     <v-toolbar flat color="primary" dark class="mb-4">
-       <v-toolbar-title>
-           Grade 10 Subject Selection - 2022
-       </v-toolbar-title>
-       <v-spacer />
-     </v-toolbar>
-  </v-col> 
- </v-row>
+<base-title-expand color="white" heading="Grade 10 Subject Selection - 2022" >
  <v-row>
   <v-col cols="12">
      <grade-10-list title="Grade 10 Subject selection for 2022" /> 
   </v-col>
  </v-row>
- 
+</base-title-expand>
 
 <v-dialog v-model="studentInfoShow" 
          width="auto" 
@@ -64,7 +43,7 @@
 
 // We need a place where the teachers has access to lists of students.
 // want them to create their own lists, and to see typical lists 
-
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import StudentClass from '@/components/student/StudentClass.vue'
 import ClassList from '@/components/homework/ClassList.vue'
 import { getters } from "@/api/store";
@@ -80,7 +59,8 @@ export default {
         StudentClass,
         ClassList,
         StudentSubjectList,
-        Grade10List
+        Grade10List,
+        BaseTitleExpand
        },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),        

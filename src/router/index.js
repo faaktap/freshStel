@@ -44,7 +44,10 @@ const routes = [
   },  { 
     //test
     component:EmptyRouterView,   path: '/hover', 
-    children:[{ name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"} }]
+    children: [
+       { name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"}}, 
+       //{ name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"}} 
+    ]
   }, { 
     path: '/dkhsawards',   name: 'dkhsawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),    meta: {layout: la[0], authentication: "public" }

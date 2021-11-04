@@ -10,10 +10,10 @@
 
  <v-row>
   <v-col cols="12" v-if="studentList.length">
-   <v-card color="gray lighten-3" class="ma-2">
+   <v-card color="gray lighten-3" class="ma-2" id="x12345">
     <v-card-title>
      <hr>
-     <div class="heading text-center">{{ classListHeader }} </div> {{ title }}
+     <div class="heading text-center">{{ classListHeader }} - {{ title }} </div>
     </v-card-title>
     <v-card-text>
       <v-row>
@@ -25,7 +25,19 @@
                   @click="showStudent(index)"
                   @mouseout="hoverStart = null; hover = null" 
                   @mouseover="hoverStart = 'R' + s.studentid">  
-           {{ index+1 }} {{ s.surname }}, {{ s.firstname}} 
+            <v-layout>
+             <v-flex xs1 class="ml-2"> {{ index+1 }}  </v-flex>
+             <v-flex xs3 v-show="showPhotoList==true">
+              <v-img :src="'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=' + s.studentid" 
+                      height="100"
+                      contain
+                     :title="s.studentid"> 
+              </v-img>
+             </v-flex>
+             <v-flex xs8 class="ma-2">
+              {{ s.surname }}, {{ s.firstname}} 
+             </v-flex>
+            </v-layout>
            <div class="float-right" 
                 @mouseover="hover = s.studentid" 
                 v-show="hoverStart == 'R' + s.studentid">
@@ -48,19 +60,34 @@
      <v-card-actions>
        <v-btn v-if="studentList.length" 
            @click="showListPrint=true"
+           color="primary"
            small
            title="Click to build an export list."> 
            export 
        </v-btn>
+       <v-btn v-if="studentList.length" 
+           @click="showPhotoList=!showPhotoList"
+           color="primary"
+           small
+           title="Click to build a list of students with their photos."> 
+           Show Photos
+       </v-btn>
+       <v-btn v-if="studentList.length" 
+             @click="doPrint('x12345')">
+             serfwer
+       </v-btn>
+
      </v-card-actions>
     </v-card>
    </v-col>
   </v-row>
 
+
+
 <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">  
   (werner) studentList  :  
   <div v-for="s in studentList" :key="s.studentid">
-  <br> {{ s }}
+  <br><small>{{ s }}</small>
   </div>
 </v-container>
 
@@ -86,6 +113,7 @@
 </template>
 
 <script>
+import { doPrint } from "@/api/DoPrint"
 import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
@@ -102,13 +130,15 @@ export default {
        ,FrontJsonToCsv
        ,zmlCloseButton
        ,StudentNameCard
-       },
+    },
     data: () => ({
+        doPrint:doPrint,
         getZml: getters.getState({ object: "gZml" }),
         gradeClass:{},
         studentList:[],
         singleStudent:{data:''},
         showStudentCard:null,
+        showPhotoList:null,
         hover:null,
         hoverStart:null,
         showListPrint:false,

@@ -5,27 +5,6 @@
 Ask some of the personel and students to help the photographer to identify the person in the photo.
 </base-title-expand>
 
-<base-title-expand heading="Current Student Photos">
- <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-card
-          v-for="j in 10"
-          :key="j"
-          class="d-flex justify-space-around mb-2"
-          color="grey lighten-2"
-          flat
-          tile>
-          <v-card v-for="n in 12" 
-                 :key="n" 
-                 class="pa-2 ma-2" 
-                 outlined xtile> d-flex item {{j}}</v-card>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
-</base-title-expand>
-
 <base-title-expand heading="Incoming Student Photos">
 <v-data-table
     :headers="photoListHeader"

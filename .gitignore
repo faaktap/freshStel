@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+node_modules_wait/
 /dist
 
 #for more info - https://labs.consol.de/development/git/2017/02/22/gitignore.html
