@@ -22,12 +22,14 @@
                :cycle="cycle"
                :touch="{left: () => panelIndex--, right: () => panelIndex++}">
       <v-carousel-item v-for="page in awardList"
-                      color="rgba(255, 1, 7, 0.2)" contain :key="page.storyid"
-                      xxxxreverse-transition="fade-transition"
+                      :key="page.storyid"
+                       color="rgba(255, 1, 7, 0.2)" 
+                       contain 
                       :transition="page.transition"
-                      style="height: 100vh">   
-
+                       style="height: 100vh"
+                      >   
         <InsideTestRoute :page="page">
+           
         </InsideTestRoute>
 
      </v-carousel-item>

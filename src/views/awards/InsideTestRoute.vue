@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import PageTextLeft from './PageTextLeft.vue'
-import PageTextLeftSmallPic from './PageTextLeftSmallPic.vue'
-import PageRightText from './PageRightText.vue'
-import PageListRight from './PageListRight'
-import PageTextMarquee from './PageTextMarquee'
+import PageTextLeft from '@/components/awards/PageTextLeft.vue'
+import PageTextLeftSmallPic from '@/components/awards/PageTextLeftSmallPic.vue'
+import PageRightText from '@/components/awards/PageRightText.vue'
+import PageListRight from '@/components/awards/PageListRight'
+import PageTextMarquee from '@/components/awards/PageTextMarquee'
 export default {
     name:'InsideTestRoute',
     components:{ PageTextLeft
