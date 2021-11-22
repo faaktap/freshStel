@@ -293,6 +293,11 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
+    path: '/emailssent/:subid',    name: 'emailssent',
+    component: () => import(/* webpackChunkName: "email" */ '@/views/EmailsSent.vue'),
+    props: true,    params: {subid: 6229, editmode: false},    meta: {layout: la[3], authentication: "public" }
+
+  },{
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
     ,path: '*'

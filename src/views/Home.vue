@@ -44,7 +44,7 @@
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
                title="Teacher's Home" 
                color="indigo darken-2"
-               text="Here you can..."/>
+               />
   <hr />
   <teacher-home />
   </v-container>
@@ -56,8 +56,7 @@
   <hero-section name="forDB" 
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
                title="Admin's Home" 
-               color="indigo darken-2"
-               text="Here you can..."/>
+               color="indigo darken-2"/>
   <hr />
   <admin-home />
   </v-container>

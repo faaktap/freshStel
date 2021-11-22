@@ -3,13 +3,19 @@
 
 <base-title-expand heading="Incoming Student Photo Assignment">
 Ask some of the personel and students to help the photographer to identify the person in the photo.
+<br>
+Click on the "ALL" button to see all the photos and click on the "Not Linked" button to view
+those we are still looking to assign.
+<br>
+If you click anywhere on the picture, you can type in a name via a lookup
 </base-title-expand>
 
-<base-title-expand heading="Incoming Student Photos">
+<v-btn @click="show='all'" class="ma-2"> All </v-btn>
+<v-btn @click="show='notlinked'" class="ma-2"> Not Linked </v-btn>
 <v-data-table
     :headers="photoListHeader"
-    :items="photoList"
-    :items-per-page="20"
+    :items="photoListFilter"
+    :items-per-page="50"
     class="elevation-2"
     @click:row="clickOnRow">
     <!-- https://kuiliesonline.co.za/ -->
@@ -17,7 +23,7 @@ Ask some of the personel and students to help the photographer to identify the p
         <v-img :src="'https://kuiliesonline.co.za/' + item.filepath" height="300" contain/>
     </template>
 </v-data-table>
-</base-title-expand>
+
 
 <!-- Show a lookuplist of studentinfo -->
 <v-btn @click="showResult = !showResult">
@@ -95,7 +101,16 @@ export default {
                     + "left join dkhs_student s on s.studentid = p.studentid "
                     + "order by p.studentid desc, filename",
        api:'https://kuiliesonline.co.za/api/dkhs/dkhs.php',
+       show:'all',
     }),
+    computed: {
+       photoListFilter() {
+          if (this.show == 'all') 
+             return this.csvArray
+          else
+             return this.csvArray.filter(ele => ele.studentid == null) 
+       }
+    },
     methods:{
       executeSql() {
           zData.loadSql(this.loading, this.sqlStatement, this.assignData, this.api)

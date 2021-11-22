@@ -20,26 +20,21 @@
 
 <v-row> 
  <v-col cols="12">
-  <v-expansion-panels v-if="getZml.login.isAuthenticated">
-    <v-expansion-panel>
-        <v-expansion-panel-header>
-            All Functions
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
+     <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students">
+     <v-row><v-col cols="12" md="6" >
            <list-test functiongroup="admin" />
+           </v-col><v-col cols="12" md="6">
            <list-test functiongroup="teacher" />
+           </v-col><v-col cols="12" md="6">
            <list-test functiongroup="student" />
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+           </v-col>
+     </v-row>
+     </base-title-expand>
 
-    <v-expansion-panel>
-     <v-expansion-panel-header>
-        Calendar (Click here to view your day!) 
-     </v-expansion-panel-header>
-    <v-expansion-panel-content>
-        <v-row><v-col cols="10">
-        <!--v-text-field v-model="wieOmTeWys" /--> 
-        <personel-menemonic v-model="wieOmTeWys" @click="showCal=false" />
+     <base-title-expand heading="Calendar (Click here to view your day!) ">
+     <v-row>
+         <v-col cols="10">
+          <personel-menemonic v-model="wieOmTeWys" @click="showCal=false" />
         </v-col><v-col cols="2">
         <v-btn @click="weekOrDayChange">  {{ weekOrDay }} </v-btn>
         <v-btn @click="showCal = !showCal"> 
@@ -50,10 +45,8 @@
       <calendar v-show="showCal" 
                :weekOrDay="weekOrDay" 
                :menemonic="wieOmTeWys" />
-    </v-expansion-panel-content>
-    </v-expansion-panel>
+     </base-title-expand>
 
-  </v-expansion-panels>
 </v-col>
 <v-col cols="12">
   
@@ -106,10 +99,11 @@ import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/student/PersonelMenemonic.vue';
 
 import ListTest from '@/components/ListTest.vue';
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 
 export default {
     name:"AdminHome",
-    components:{EmailList, Calendar,PersonelMenemonic, ListTest},
+    components:{EmailList, Calendar,PersonelMenemonic, ListTest,BaseTitleExpand},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         wieOmTeWys:'Teacher',
@@ -180,7 +174,7 @@ export default {
                this.joke = await zData.randomChuckNorris().value;
            }
           }
-        }
+        },
     },
     mounted() {
         //this.$cs.l('MOUNT ADMINHME ITEMS=',this.today,this.tomorrow)

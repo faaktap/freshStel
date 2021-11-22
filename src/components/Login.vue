@@ -307,7 +307,7 @@ export default {
             this.getZml.login.userid = response.userid ? response.userid : 0;
             this.getZml.login.logins = response.logins;
             this.getZml.login.lastdate = response.lastdate;
-            if (this.getZml.login.grade.indexOf('A') == -1) {
+            if ('grade' in this.getZml.login && this.getZml.login.grade.indexOf('A') == -1) {
               this.getZml.login.lang = 'E'
             } else {
               this.getZml.login.lang = 'A'

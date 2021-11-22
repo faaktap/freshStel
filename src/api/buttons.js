@@ -32,6 +32,7 @@ export function doStuff(tr,task) {
         case "/subjects":
         case "/photos":
         case "/photohelp":
+        case "/emailssent/6582":
             return zmlReRoute(tr, task)
 
         default:

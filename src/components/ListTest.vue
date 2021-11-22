@@ -1,7 +1,7 @@
 <template>
- <v-row>
-  <v-col cols="12" lg="6">
-   <v-card class="mx-auto">
+ <!-- <v-row>
+  <v-col cols="12" lg="6"> -->
+   <v-card class="ma-2">
     <v-list subheader>
       <v-subheader :class="cardColor(functiongroup)">  Access: {{ functiongroup }} </v-subheader>
       <v-list-item-group >
@@ -19,8 +19,8 @@
     </v-list>
     <v-divider></v-divider>
       </v-card>
-    </v-col>
-  </v-row>
+    <!-- </v-col>
+  </v-row> -->
 </template>
 
 <script>

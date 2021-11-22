@@ -30,7 +30,7 @@
     </v-toolbar-items>
   </v-toolbar>
 
-<!--v-parallax src="img/public.jpg" height="100vh">
+<!-- <v-parallax src="img/public.jpg" height="100vh">
 <v-container grid-list-md text-xs-center>
       <v-layout row wrap>
         <v-flex >
@@ -41,28 +41,26 @@
         </v-flex>
       </v-layout>
     </v-container>
-</v-parallax-->
+</v-parallax> -->
 
-  <v-card>
-      <v-card-text>
+  <v-container>
+      
        <student-lookup @dataEntered="studentFound" :searchMore="searchMore" />
-       <v-row v-if="studentList">
-         <v-col cols="12" md="6">
-          <student-name-card :studentList="studentList" color="green darken-3" />
-         </v-col>
-         <v-col cols="12" md="6">
-          <student-subject-list :studentid="studentList.data.studentid" color="green darken-3" />
-         </v-col>
-         <v-col cols="12" md="6">
-          <student-email-list v-if="studentid" :studentid="studentList.data.studentid" color="green darken-3"/>            
-         </v-col>
-         <v-col cols="12" md="6">
-          <student-photo-list :studentid="studentList.data.studentid"  color="green darken-3" />
-         </v-col>
-        </v-row>
+      
+       <base-title-expand v-if="studentList" heading="Basic Student Info">
+          <student-name-card :studentList="studentList" color="blue lighten-2" />
+       </base-title-expand>
+       <base-title-expand v-if="studentList" heading="Student Subjects">
+           <student-subject-list :studentid="studentList.data.studentid" color="white darken-1" />
+       </base-title-expand>
+       <base-title-expand v-if="studentList" heading="Student Emails">
+          <student-email-list :studentid="studentList.data.studentid" color="white darken-1"/>            
+       </base-title-expand>
+       <base-title-expand v-if="studentList" heading="Student Photos">
+          <student-photo-list :studentid="studentList.data.studentid"  color="white darken-1" />
+       </base-title-expand>
   
-      </v-card-text>
-  </v-card>
+  </v-container>
 
 <!--
  <v-container grid-list-lg>
@@ -105,6 +103,7 @@
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection"
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import StudentLookup from '@/components/student/StudentLookup'
 import StudentNameCard from '@/components/student/StudentNameCard'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
@@ -120,6 +119,7 @@ components: {HeroSection
            , StudentPhotoList
            , StudentEmailList    
            , StudentSubjectList       
+           , BaseTitleExpand
            },
 data: () => ({
   studentList:null,

@@ -13,11 +13,11 @@ or
        color="purple" />
 -->
 <template>
- <v-expansion-panels rounded class="pa-0 mb-2">
+ <v-expansion-panels rounded class="pa-0 mb-2"  v-model="panel">
    <v-expansion-panel>
     <v-expansion-panel-header  :color="color">
         <slot name="header">
-         <h1 class="heading-1 text-center">{{ heading }}</h1>
+         <h1 :class="`${headingSize} text-center`">{{ heading }}</h1> 
          </slot>
      </v-expansion-panel-header>
      <v-expansion-panel-content class="ma-4">
@@ -38,10 +38,26 @@ export default {
     props:{heading: {default:"my heading"}
           ,explanation: {default:"Some explanation with <b>html</b> and maybe later pictures" }
           ,color: {default:"white"}
+          ,openOrClose: {default:""}
+          ,headsize: {default:1}
+    },
+    data () {
+      return {
+        panel: [],
+      }
+    },
+    computed:{
+        headingSize() { return "text-xd-h" + this.headsize + " subtitle-md-1" }
     },
     methods:{},
     mounted() {
         console.log('starting ', this.$options.name)
+        if (this.openOrClose == '') {
+            this.panel = []
+        } else {
+            this.panel = 0
+        }
+        console.log(this.$options.name, this.panel, this.openOrClose)
     }
 }
 </script>
