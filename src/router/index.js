@@ -81,12 +81,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AKandidate.vue')
     ,name: 'AKandidate'    ,path: '/a'    ,meta: {layout: la[0], authentication: "public"}
   },
-  //  {
-  //  component: () => import(/* webpackChunkName: "leer" */ '../views/learn/LearnTree.vue'),
-  //  path: '/learntree',     name: 'LearnTree',
-  //  meta: {layout: la[3], authentication: "learner" },    props: {default:true},
-  //  params: {currentSubjectID:'2', grade:'12'}
-  //},
+  {
+    component: () => import(/* webpackChunkName: "leer" */ '../test/LearnTree.vue'),
+    path: '/learntree',     name: 'LearnTree',
+    meta: {layout: la[3], authentication: "learner" },    props: {default:true},
+    params: {currentSubjectID:'2', grade:'12'}
+  },
   //learning stuff
   //   was for teachers -not used anymore
   // {

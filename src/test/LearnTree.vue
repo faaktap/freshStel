@@ -142,6 +142,9 @@
 </v-row>
 </v-container>
 
+    Tree:{{ tree }}<br>
+    TreeSearch:{{ treesearch }} <br>
+    folderItems: {{ folderItems }} <br>
 <v-dialog v-model="localShowFile" v-on:keyup.esc="byebye"
           width="auto" :fullscreen="$vuetify.breakpoint.xsOnly">
   <v-card>
@@ -188,7 +191,7 @@
 <script>
 import { zmlFetch } from '@/api/zmlFetch';
 import AutoList from '@/components/learn/AutoList';
-import FileUploader from '@/components/learn/FileUploader';
+import FileUploader from '@/test/FileUploader';
 import { getters } from "@/api/store";
   export default {
     name: "dkhstree",

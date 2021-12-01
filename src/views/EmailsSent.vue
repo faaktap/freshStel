@@ -1,10 +1,10 @@
 <template>
     <v-container>
-     <base-title-expand :heading="subHeading" openOrClose="open">
+     <base-title-expand :heading="subHeading" openOrClose="open" color="gray lighten-2">
        <subscriber-edit :subid="localSubID" @subscriberChange="subscriberChange" />
      </base-title-expand>
 
-     <base-title-expand heading="Email Sent">
+     <base-title-expand heading="Email Sent" color="gray lighten-3">
       <email-delivery :subid="localSubID" />
 
      </base-title-expand>

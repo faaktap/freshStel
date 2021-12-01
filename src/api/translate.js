@@ -87,7 +87,7 @@ export const af = {
         programname: "DK Aanlyn Hulpbronne",
         titleButtonHeading: "DK Hulpbron Kortpaaie",
         titleButtonHeadingCloseButton: "Maak Toe",
-        herotitle: " De Kuilen Aanlys Hulpbronne - Hopelik nul data in 2021",
+        herotitle: " De Kuilen AANLYN HULPBRON",
         SubmityourEmail: "Stuur die brief",
         LoginHeading: "Meld Aan",
         hello: 'hallo wereld',

@@ -1,5 +1,5 @@
 const PROJECT_NAME = "zmlVschool"
-const PROJECT_VERSION = "49.2G"
+const PROJECT_VERSION = "49.4C"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -23,8 +23,8 @@ export const zmlConfig = {
   apiUpload:  "https://kuiliesonline.co.za/api/fileUpload/fileUpload.php",
   apiDKHS:    "https://kuiliesonline.co.za/api/dkhs/dkhs.php",
   localPath:  "https://kuiliesonline.co.za/",
-  videoPath: "https://kuiliesonline.co.za/",
-  emailPath: "https://kuiliesonline.co.za/api/swiftmailer/genMailer.php",
+  videoPath:  "https://kuiliesonline.co.za/",
+  emailPath:  "https://kuiliesonline.co.za/api/swiftmailer/genMailer.php",
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectID: PROJECT_ID,
   projectName: PROJECT_NAME,  

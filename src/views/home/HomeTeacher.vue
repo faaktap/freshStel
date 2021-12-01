@@ -14,14 +14,6 @@
  <v-row> <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
     <v-expansion-panel>
-     <v-expansion-panel-header>
-        Calendar (Click here to view your day!)
-     </v-expansion-panel-header>
-    <v-expansion-panel-content>
-      <calendar weekOrDay="week" :menemonic="getZml.login.username" />
-    </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
         <v-expansion-panel-header>
             Functions (Click here to see all available tasks)
         </v-expansion-panel-header>
@@ -31,6 +23,14 @@
            <list-test functiongroup="student" />      
            <list-test functiongroup="all" />
         </v-expansion-panel-content>
+    </v-expansion-panel>
+    <v-expansion-panel>
+     <v-expansion-panel-header>
+        Calendar (Click here to view your day!)
+     </v-expansion-panel-header>
+    <v-expansion-panel-content>
+      <calendar weekOrDay="week" :menemonic="getZml.login.username" />
+    </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
 </v-col>

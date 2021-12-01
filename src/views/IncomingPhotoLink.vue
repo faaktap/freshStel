@@ -101,7 +101,7 @@ export default {
                     + "left join dkhs_student s on s.studentid = p.studentid "
                     + "order by p.studentid desc, filename",
        api:'https://kuiliesonline.co.za/api/dkhs/dkhs.php',
-       show:'all',
+       show:'missing',
     }),
     computed: {
        photoListFilter() {

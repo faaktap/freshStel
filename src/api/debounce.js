@@ -20,6 +20,6 @@ methods() {
   saveAnyChanges: debounce(function() {
             infoSnackbar('Save any changes!')
             console.log(this.search)
-        }, 900),
+        }, 1000),  //one second
 }
 */

@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import handyUploader from  "@/components/learn/handyUploader"; 
+import handyUploader from  "@/test/handyUploader"; 
 export default {
   name: 'fileUploader',
   props: {extrapath:String},

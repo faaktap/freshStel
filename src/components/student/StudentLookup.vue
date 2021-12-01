@@ -70,7 +70,7 @@ export default {
 
   methods: {
     clearSearch() {
-      console.log('we where called to clear the sewarch')
+      console.log('we where called to clear the search')
           this.list =  [{desc:"Type"}
          ,{desc:"Student"}
          ,{desc:"Surname"}]

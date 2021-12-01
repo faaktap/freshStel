@@ -13,12 +13,12 @@
 2021/08/12  14:33    <DIR>          docs
 2021/09/13  21:03             1ÿ124 main.js
 2021/10/25  10:42    <DIR>          layouts
-2021/10/29  13:16    <DIR>          api
-2021/10/29  23:10    <DIR>          components
-2021/11/21  14:23    <DIR>          views
 2021/11/21  14:49    <DIR>          ..
 2021/11/21  14:49    <DIR>          .
-2021/11/21  14:49                 0 x.x
+2021/11/22  23:06    <DIR>          api
+2021/11/23  00:03    <DIR>          views
+2021/11/24  22:17    <DIR>          components
+2021/11/26  11:39                 0 x.x
                4 File(s)          5ÿ222 bytes
 
  Directory of E:\NodeModules\fresh\src\api
@@ -34,7 +34,6 @@
 2021/06/17  20:57            26ÿ269 exif.js
 2021/06/17  23:42             2ÿ410 zmlFetch.js
 2021/06/18  19:48    <DIR>          csv
-2021/06/21  23:21             3ÿ531 translate.js
 2021/06/22  00:49             3ÿ296 store.js
 2021/06/24  15:58             1ÿ523 fileUploadHelper.js
 2021/07/29  09:19               946 zmlMail.js
@@ -45,12 +44,15 @@
 2021/09/30  16:33             9ÿ075 zDate.js
 2021/09/30  16:35             6ÿ469 zGetBackgroundData.js.wait
 2021/10/22  17:57             6ÿ786 zGetBackgroundData.js
-2021/10/29  13:16    <DIR>          .
-2021/10/29  13:16    <DIR>          ..
 2021/10/29  17:48               874 DoPrint.js
-2021/11/02  17:33             1ÿ332 buttons.js
-2021/11/20  10:17             3ÿ087 constants.js
-              24 File(s)         84ÿ336 bytes
+2021/11/22  23:06               388 timer.js
+2021/11/22  23:06    <DIR>          ..
+2021/11/22  23:06    <DIR>          .
+2021/11/22  23:44             1ÿ365 buttons.js
+2021/11/24  22:15             3ÿ502 translate.js
+2021/11/25  11:53             3ÿ089 constants.js
+2021/11/25  11:54               592 debounce.js
+              26 File(s)         85ÿ322 bytes
 
  Directory of E:\NodeModules\fresh\src\api\csv
 
@@ -72,8 +74,8 @@
 
  Directory of E:\NodeModules\fresh\src\components
 
-2021/02/01  00:38               685 i18nTest.vue
 2021/02/01  00:38             1ÿ852 zmlDialog.vue
+2021/02/01  00:38               685 i18nTest.vue
 2021/02/01  00:38               178 EmptyRouterView.vue
 2021/02/08  16:22               642 AutocompleteDropdown.vue
 2021/02/08  17:58             1ÿ104 AutoSel.vue
@@ -104,9 +106,7 @@
 2021/08/06  17:31            11ÿ898 Calendar.vue
 2021/08/06  23:11             1ÿ275 EmailList.vue
 2021/08/16  08:53             8ÿ584 TableFilter.vue
-2021/08/24  11:25            14ÿ451 Login.vue
 2021/09/13  00:00             4ÿ012 MenuList.vue
-2021/09/13  23:08             2ÿ206 ListTest.vue
 2021/09/14  16:42    <DIR>          learn
 2021/09/15  19:14               257 zmlCloseButton.vue
 2021/09/15  19:18               516 ShowAttachmentDialog.vue
@@ -115,11 +115,15 @@
 2021/09/22  00:34             3ÿ866 TextColorPicker.vue
 2021/10/22  16:18    <DIR>          base
 2021/10/29  23:10            11ÿ374 ShareIt.vue
-2021/10/29  23:10    <DIR>          ..
-2021/10/29  23:10    <DIR>          .
 2021/10/29  23:11             1ÿ632 ShareButton.vue
 2021/11/16  15:49    <DIR>          awards
-              38 File(s)        179ÿ070 bytes
+2021/11/22  17:55            14ÿ483 Login.vue
+2021/11/22  18:00             2ÿ221 ListTest.vue
+2021/11/23  11:04    <DIR>          email
+2021/11/24  22:17    <DIR>          ..
+2021/11/24  22:17    <DIR>          .
+2021/11/24  22:50    <DIR>          image
+              38 File(s)        179ÿ117 bytes
 
  Directory of E:\NodeModules\fresh\src\components\awards
 
@@ -159,8 +163,18 @@
 2021/09/15  22:13             4ÿ652 BaseAllInOne.vue
 2021/10/22  16:18    <DIR>          ..
 2021/10/22  16:18    <DIR>          .
-2021/10/22  17:58             1ÿ302 BaseTitleExpand.vue
-              19 File(s)         38ÿ083 bytes
+2021/11/22  23:59             1ÿ769 BaseTitleExpand.vue
+              19 File(s)         38ÿ550 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\email
+
+2021/11/23  11:04    <DIR>          ..
+2021/11/23  11:04    <DIR>          .
+2021/11/23  12:28             3ÿ539 emlModel.js
+2021/11/24  17:56             6ÿ403 subscriberModel.js
+2021/11/24  22:11            16ÿ432 SubscriberEdit.vue
+2021/11/24  23:11             5ÿ480 EmailDelivery.vue
+               4 File(s)         31ÿ854 bytes
 
  Directory of E:\NodeModules\fresh\src\components\homework
 
@@ -168,6 +182,15 @@
 2021/05/25  12:51    <DIR>          .
 2021/09/16  00:01            10ÿ106 ClassList.vue
                1 File(s)         10ÿ106 bytes
+
+ Directory of E:\NodeModules\fresh\src\components\image
+
+2021/11/24  22:19             3ÿ150 DkhsLogo.vue
+2021/11/24  22:47             4ÿ374 DkhsR.vue
+2021/11/24  22:50    <DIR>          ..
+2021/11/24  22:50    <DIR>          .
+2021/11/24  22:57            10ÿ098 DkhsRegteLogo.vue
+               3 File(s)         17ÿ622 bytes
 
  Directory of E:\NodeModules\fresh\src\components\learn
 
@@ -206,10 +229,10 @@
 2021/08/06  00:56             1ÿ691 StudentSubjectList.vue
 2021/08/06  01:07             1ÿ884 StudentPhotoList.vue
 2021/09/13  23:23             1ÿ450 StudentNameCard.vue
-2021/10/22  23:11             4ÿ514 StudentLookup.vue
 2021/10/29  17:35             7ÿ005 StudentClass.vue
-2021/11/20  16:39             3ÿ165 StudentEmailList.vue
-              14 File(s)         50ÿ765 bytes
+2021/11/21  17:00             3ÿ372 StudentEmailList.vue
+2021/11/24  17:34             4ÿ513 StudentLookup.vue
+              14 File(s)         50ÿ971 bytes
 
  Directory of E:\NodeModules\fresh\src\components\transition
 
@@ -227,12 +250,12 @@
 2021/07/27  13:30             3ÿ961 test.json
 2021/07/27  13:30             6ÿ919 vfbasetest.vue
 2021/08/02  22:08             1ÿ449 survey.js
-2021/08/04  13:05            55ÿ763 vFormBase.vue
 2021/09/15  21:39    <DIR>          .
 2021/09/15  21:39    <DIR>          ..
 2021/09/15  21:48               773 Grade10List.js
 2021/09/28  00:18             4ÿ047 Grade10List.vue
 2021/09/30  16:45            22ÿ544 skool.vue
+2021/11/24  15:51            55ÿ763 vFormBase.vue
                9 File(s)        102ÿ718 bytes
 
  Directory of E:\NodeModules\fresh\src\docs
@@ -263,17 +286,17 @@
 
  Directory of E:\NodeModules\fresh\src\layouts
 
-2021/02/01  00:38             1ÿ679 AppLayoutBlue.vue
-2021/02/01  00:38               731 AppLayout.vue
 2021/02/01  00:38             1ÿ943 AppLayoutLaundry.vue
+2021/02/01  00:38               731 AppLayout.vue
+2021/02/01  00:38             1ÿ679 AppLayoutBlue.vue
 2021/02/01  00:38             2ÿ385 LaundryLinks.vue
-2021/02/22  14:43             2ÿ364 AppLayoutLinks.vue
 2021/03/03  21:07             2ÿ448 AppLayoutGray.vue
 2021/04/13  12:43               421 AppLayoutDefault.vue
 2021/08/16  18:08             1ÿ132 AppLayoutBasic.vue
 2021/10/25  10:42    <DIR>          .
 2021/10/25  10:42    <DIR>          ..
-               8 File(s)         13ÿ103 bytes
+2021/11/24  22:58             2ÿ802 AppLayoutLinks.vue
+               8 File(s)         13ÿ541 bytes
 
  Directory of E:\NodeModules\fresh\src\old
 
@@ -293,8 +316,8 @@
 
 2021/02/25  15:39    <DIR>          ..
 2021/02/25  15:39    <DIR>          .
-2021/11/21  14:47            13ÿ590 index.js
-               1 File(s)         13ÿ590 bytes
+2021/11/22  20:26            13ÿ589 index.js
+               1 File(s)         13ÿ589 bytes
 
  Directory of E:\NodeModules\fresh\src\test
 
@@ -339,15 +362,15 @@
 2021/06/19  22:31             2ÿ912 Bland.vue
 2021/06/23  19:58             9ÿ088 About.vue
 2021/08/04  13:45    <DIR>          learn
-2021/08/06  23:02             3ÿ207 Home.vue
 2021/08/16  08:53    <DIR>          bates
 2021/10/29  18:14             5ÿ268 AllPhotos.vue
 2021/11/16  15:49    <DIR>          awards
-2021/11/20  10:16             5ÿ701 IncomingPhotoLink.vue
-2021/11/21  14:23    <DIR>          .
-2021/11/21  14:23    <DIR>          ..
-2021/11/21  14:47               636 EmailsSent.vue
-              12 File(s)         51ÿ924 bytes
+2021/11/22  20:14             3ÿ147 Home.vue
+2021/11/23  00:03    <DIR>          .
+2021/11/23  00:03    <DIR>          ..
+2021/11/23  10:42             2ÿ927 EmailsSent.vue
+2021/11/25  11:52             5ÿ705 IncomingPhotoLink.vue
+              12 File(s)         54ÿ159 bytes
 
  Directory of E:\NodeModules\fresh\src\views\awards
 
@@ -378,10 +401,10 @@
 
 2021/06/07  15:56    <DIR>          ..
 2021/06/07  15:56    <DIR>          .
-2021/09/13  23:06             6ÿ593 HomeAdmin.vue
-2021/09/13  23:07             2ÿ559 HomeTeacher.vue
 2021/09/13  23:09             7ÿ441 HomeStudent.vue
-               3 File(s)         16ÿ593 bytes
+2021/11/22  20:15             6ÿ482 HomeAdmin.vue
+2021/11/24  09:26             2ÿ559 HomeTeacher.vue
+               3 File(s)         16ÿ482 bytes
 
  Directory of E:\NodeModules\fresh\src\views\learn
 
@@ -436,5 +459,5 @@
                6 File(s)         37ÿ344 bytes
 
      Total Files Listed:
-             253 File(s)      1ÿ322ÿ393 bytes
-              77 Dir(s)  149ÿ526ÿ843ÿ392 bytes free
+             262 File(s)      1ÿ376ÿ136 bytes
+              83 Dir(s)  143ÿ735ÿ971ÿ840 bytes free
