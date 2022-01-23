@@ -71,7 +71,7 @@ Amen ”<br></div>
 
 <!-- ------------------------------------------------------------------------------------ -->
   </v-container>
-   <v-parallax 
+   <v-parallax src="/img/logo.png">
     v-if="startSlideShow"
     src="/img/vlaghys6842.jpg"
     height="1300px"

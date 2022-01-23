@@ -1,12 +1,12 @@
 <template>
  <div>
  <AppLayoutLinks />
-  <v-parallax height=800 src="img/public.jpg">  
+  <v-parallax height=800 src="img/public.jpg">
     <v-main>
     <header v-if="demo == 1" class="header white--text"> APPLAYOUT BLUE </header>
     <div v-if="demo == 1" class="info4"> AppLayoutBlue Slot Start </div>
     <transition name="fade" mode="out-in">
-    <slot /> 
+    <slot />
     </transition>
     <small>About - Blue Layout</small>
     <div  v-if="demo == 1" class="info4"> AppLayoutBlue Slot End</div>

@@ -297,8 +297,8 @@ export default {
       if (updateString) {
         // console.log("updating with : ", updateString)
         let sqlStatement = `\
-        UPDATE m_subscriber  
-         |SET ${updateString}
+        UPDATE m_subscriber  \
+           SET ${updateString}\
         WHERE subid = ${subscriberModel.subModel.subid}`
         zData.loadSql(this.loading, sqlStatement, this.doneSubUpdate, this.api)
       } else {

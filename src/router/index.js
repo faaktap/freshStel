@@ -41,27 +41,27 @@ const routes = [
   },
   {
     component: () => import(/* webpackChunkName: "bates" */ '../views/bates/Outline.vue'),    path: '/bates', name: 'Bates',    meta: {layout: la[3], authentication: "public" }
-  },  { 
+  },  {
     //test
-    component:EmptyRouterView,   path: '/hover', 
+    component:EmptyRouterView,   path: '/hover',
     children: [
-       { name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"}}, 
-       //{ name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"}} 
+       { name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"}},
+       //{ name: 'Hover',   path: '',    component: Hover,   meta: {layout: la[3], authentication: "learner"}}
     ]
-  }, { 
+  }, {
     path: '/dkhsawards',   name: 'dkhsawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),    meta: {layout: la[0], authentication: "public" }
   }
   ,{
-     path: '/virtualawards', redirect: '/virtualawards/25/0' 
+     path: '/virtualawards', redirect: '/virtualawards/25/0'
   }
-  ,{ 
+  ,{
     //Actual award!
     path: '/virtualawards/:chapterid/:orderid',    name: 'virtualawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
     props: true,    params: {chapterid: 25, orderid: 1, editmode: false},    meta: {layout: la[0], authentication: "public" }
   }
-  ,{ 
+  ,{
     //award
     path: '/va/:chapterid',    name: 'va',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/zmlCarousel.vue'),
@@ -115,7 +115,7 @@ const routes = [
   //},
   //  {
   //  component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/StudentHub2.vue'),
-  //  path: '/hub/:grade/:currentSubjectID',    
+  //  path: '/hub/:grade/:currentSubjectID',
   //  name: 'StudentHub2',
   //  props: true,
   //  params: {currentSubjectID:'2', grade:'12'},
@@ -182,28 +182,28 @@ const routes = [
     component: () => import(/* webpackChunkName: "test" */ '@/views/learn/sh.vue')
     ,name: 'sh'
     ,path: '/sh/:propfolder'
-    ,props: true,    params: {propfolder: 585} 
+    ,props: true,    params: {propfolder: 585}
     ,meta: {layout: la[3], authentication: "student"}
   },  {
     component: () => import(/* webpackChunkName: "test" */ '@/views/learn/sh.vue')
     ,name: 'sh-nofolder'
     ,path: '/sh'
-    ,props: true,    params: {propfolder: 585} 
+    ,props: true,    params: {propfolder: 585}
     ,meta: {layout: la[3], authentication: "student"}
   },  {
     component: () => import(/* webpackChunkName: "test" */ '@/views/learn/Latest.vue')
     ,name: 'latestNoPath'
     ,path: '/latest'
-    ,props: true,    params: {days: 5} 
+    ,props: true,    params: {days: 5}
     ,meta: {layout: la[3], authentication: "student"}
-  },  
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/learn/Latest.vue')
     ,name: 'latest'
     ,path: '/latest/:days'
-    ,props: true,    params: {days: 5} 
+    ,props: true,    params: {days: 5}
     ,meta: {layout: la[3], authentication: "student"}
-  },  
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/components/base/WhackAMole.vue')
     ,name: 'game'
@@ -222,7 +222,7 @@ const routes = [
     ,name: 'streamline'
     ,path: '/streamline'
     ,meta: {layout: la[0], authentication: "public"}
-  },      
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/EmailCheck.vue')
     ,name: 'EmailCheck'
@@ -234,27 +234,27 @@ const routes = [
     ,name: 'ViewCampaigns'
     ,path: '/elections'
     ,meta: {layout: la[3], authentication: "public"}
-  },        
+  },
   {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewVote.vue')
     ,name: 'ViewVote'
     ,path: '/candidates/:campaignid'
     ,props: true
     ,meta: {layout: la[3], authentication: "public"}
-  },        
+  },
   {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ApplicantRegister.vue')
     ,name: 'ApplicantRegister'
     ,path: '/applicant/:campaignid'
     ,props: true
     ,meta: {layout: la[3], authentication: "public"}
-  },        
+  },
   //{
   //  component: () => import(/* webpackChunkName: "test" */ '@/views/TestExpand.vue')
   //  ,name: 'TextExpand'
   //  ,path: '/expand'
   //  ,meta: {layout: la[0], authentication: "public"}
-  //},      
+  //},
   {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewLog.vue')
     ,name: 'ViewLog'
@@ -266,25 +266,25 @@ const routes = [
     ,name: 'testUpload'
     ,path: '/testupload'
     ,meta: {layout: la[0], authentication: "public"}
-  },  
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/components/TextColorPicker.vue')
-    ,name: 'color' 
+    ,name: 'color'
     ,path: '/color'
     ,meta: {layout: la[3], authentication: "public"}
-  },      
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/IncomingPhotoLink.vue')
     ,name: 'IncomingPhotoLink'
     ,path: '/photohelp'
     ,meta: {layout: la[3], authentication: "public"}
-  },      
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/AllPhotos.vue')
     ,name: 'AllPhotos'
     ,path: '/photos'
     ,meta: {layout: la[3], authentication: "public"}
-  },      
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/awards/TestRoute.vue')
     ,name: 'TestRoute'
@@ -302,7 +302,7 @@ const routes = [
     ,name: 'ErrorPage'
     ,path: '*'
     ,meta: {layout: la[3], authentication: "public"}
-  },  
+  },
 ]
 
 

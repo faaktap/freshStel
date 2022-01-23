@@ -2,36 +2,23 @@
 <div class="home">
  <v-container v-if="getZml.login.isAuthenticated==false">
 
-    <!--img alt="DKHS" src="img/zmlrekenaars.png">
-    <v-btn @click="setAuth"> Login </v-btn-->
+    <hero-section name="forDB"
+       bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
+       title="Virtual School Gateway"
+    >
+    </hero-section>
+    <v-card class="text-center ma-3 pa-3">
+    <!-- <v-btn color="success" @click="setAuth"> Login </v-btn> -->
+    <login />
+    </v-card>
 
-     <div v-for="hero in heroButtons" 
-              :key="hero.name">
-        <hero-section 
-            :bgpicture="hero.bgpicture" 
-            :title="hero.title" 
-            :text="hero.text" 
-            :moretext="hero.more" 
-            :color="hero.color"
-            :button="hero.btn"
-            :icon="hero.icon"
-            :func="hero.func"
-        />
-        <!--v-card color="#45516b" class="ma-8">
-          <v-card-subtitle> Parents </v-card-subtitle>
-          <v-card-text>
-          <p>here we will read from buttons.json and show all the information pertainong to this section
-          and we will have a nice button as well</p>
-          </v-card-text>
-        </v-card-->
-    </div>
  </v-container>
 
 
-  <v-container v-if="getZml.login.type=='student'">
-  <hero-section name="forDB" 
-               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg" 
-               title="Student's Home" 
+ <v-container v-if="getZml.login.type=='student'">
+  <hero-section name="forDB"
+               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
+               title="Student's Home"
                />
   <hr />
   <student-home />
@@ -40,9 +27,9 @@
 
 
   <v-container v-show="getZml.login.type=='teacher'">
-  <hero-section name="forDB" 
-               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
-               title="Teacher's Home" 
+  <hero-section name="forDB"
+               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
+               title="Teacher's Home"
                color="indigo darken-2"
                />
   <hr />
@@ -53,9 +40,9 @@
 
 
   <v-container v-show="getZml.login.type=='admin'">
-  <hero-section name="forDB" 
-               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg" 
-               title="Admin's Home" 
+  <hero-section name="forDB"
+               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
+               title="Admin's Home"
                color="indigo darken-2"/>
   <hr />
   <admin-home />
@@ -76,13 +63,15 @@ import HeroSection from "@/views/sections/HeroSection.vue"
 import TeacherHome from "@/views/home/HomeTeacher"
 import StudentHome from "@/views/home/HomeStudent"
 import AdminHome from "@/views/home/HomeAdmin"
+import Login from '@/components/Login'
 export default {
   name: 'Home',
   components: {
              HeroSection
            , AdminHome
            , TeacherHome
-           , StudentHome    
+           , StudentHome
+           , Login
   },
   data: () => ({
     buttons: buttons,
@@ -92,7 +81,7 @@ export default {
     hb() { return this.buttons['heroes'] },
     //we need to copy the array with ..., otherwise we mutate original array - rather sort it before..
     heroButtons() {
-     return [...this.buttons['heroes']].sort(function(a, b) { 
+     return [...this.buttons['heroes']].sort(function(a, b) {
        if (a.name < b.name) {         return -1;      }
        if (a.name > b.name) {         return 1;       }
        return 0
@@ -101,7 +90,7 @@ export default {
   },
   methods: {
     setAuth() {
-       this.getZml.login.isAuthenticated = !this.getZml.login.isAuthenticated 
+       this.getZml.login.isAuthenticated = !this.getZml.login.isAuthenticated
     },
     doTask(task) {
       /* Boring tasks about router, done in buttons.js */
