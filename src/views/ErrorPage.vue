@@ -12,7 +12,7 @@
             <div class="paragraph-text mt-2 ma-2">
               <br />
               <br />Try going back to home page and repeating your action. Or,
-              contact helpdesk for support. 
+              contact helpdesk for support.
             </div>
           </v-card>
         </v-flex>
@@ -24,7 +24,6 @@
 <script>
 export default {
     name:"ErrorPage",
-
 }
 </script>
 

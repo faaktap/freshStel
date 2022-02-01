@@ -2,7 +2,7 @@
 <div>
 
 <v-toolbar color="primary">
-    <v-toolbar-title> 
+    <v-toolbar-title>
       <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
        <div>
          Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
@@ -10,7 +10,7 @@
       </div>
     </v-toolbar-title>
 </v-toolbar>
- 
+
  <v-row> <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
     <v-expansion-panel>
@@ -18,9 +18,9 @@
             Functions (Click here to see all available tasks)
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-           <list-test functiongroup="teacher" />            
+           <list-test functiongroup="teacher" />
            <list-test functiongroup="admin" />
-           <list-test functiongroup="student" />      
+           <list-test functiongroup="student" />
            <list-test functiongroup="all" />
         </v-expansion-panel-content>
     </v-expansion-panel>
@@ -40,8 +40,10 @@
        <v-btn href="http://kuiliesonline.co.za/cw-mail/"> Online Mass Mail </v-btn>
     </div>
     <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+        HT
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>
+        <v-btn to="/loadhomework"> loadhomework </v-btn>
         <email-list />
     </div>
 </div>

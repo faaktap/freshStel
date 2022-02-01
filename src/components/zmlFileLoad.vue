@@ -9,7 +9,7 @@
              append-outer-icon="mdi-file-upload"
              ref="file"
              @click:append-outer="addFile(inputFiles)"
-         ></v-file-input> 
+         ></v-file-input>
 <br />
 </v-card>
 </template>
@@ -25,7 +25,7 @@ export default {
     data: () => ({
         fileRules: [
           value => !value || value.size < 4000000 || 'File size should be quite small!',
-        ],    
+        ],
         files: [],
         inputFiles: null,
         loadStatus:false,
@@ -35,14 +35,14 @@ export default {
       addFile(e) {
         if (!e) { infoSnackbar('no file is selected, click the paperclip'); return   }
         if (e.size > zmlConfig.maxUploadSize || e.size == 0)  {
-           infoSnackbar('Your file is too big - put on memory stick and leave at reception for Werner, please try again')                
+           infoSnackbar('Your file is too big - put on memory stick and leave at reception for Werner, please try again')
            return
         }
         e.done = false
         e.realname = "testtheName-" + this.makeid(5) + '.' + e.name.split('.').pop().toLowerCase()
         this.files.push(e);
         this.inputFiles = []
-        this.uploadTheFilesCheck() 
+        this.uploadTheFilesCheck()
       },
       uploadTheFilesCheck() {
         this.uploadFiles(this.upload1, this.files[0])
@@ -61,16 +61,16 @@ export default {
         });
       },
       upload1(fileData,fdet) {
-         fileData.task = 'upload'; 
+         fileData.task = 'upload';
          fileData.extrapath =  "/bib/assets/staff/"
          fileData.name = fdet.name
          fileData.realname = fdet.realname
          fileData.prebase64 = fileData.target.result.split(',')[0];
          fileData.base64 = fileData.target.result.split(',')[1];
          fileData.size = fileData.total
-         fileData.api = zmlConfig.apiUpload; 
+         fileData.api = zmlConfig.apiUpload;
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
-      }, 
+      },
       doneWithUpload(response) {
          this.files.forEach(file => {
             if (response.filename == file.name)  {
@@ -78,7 +78,7 @@ export default {
             }
          })
          this.$emit('file-saved',response.filename)
-         this.files = [];         
+         this.files = [];
          this.loadStatus = false;
       },
       makeid(idlen) {
@@ -91,6 +91,9 @@ export default {
          return result;
       },
     },
-}      
+    mounted() {
+      console.log('zFL : Mounted')
+    }
+}
 
 </script>

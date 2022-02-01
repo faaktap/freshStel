@@ -14,6 +14,7 @@
       <v-btn v-for="btn in buttons[ buttonGroup[0] ]" 
             :key="btn.btn" 
             class="ma-2"
+            :small="$vuetify.breakpoint.lgAndDown == true"
             :x-small="$vuetify.breakpoint.smAndDown == true"
             :title="btnTip(btn)" 
             @click="doTask(btn.func)" 
@@ -27,6 +28,7 @@
         </div>
 
       </v-btn>
+      
       <!--/div-->
     </template>
     <template v-if="menuDisplay == 'vertical'">
@@ -79,6 +81,7 @@
            <v-icon small>{{ btn.icon }}</v-icon>
            {{ btnText(btn.btn) }} 
          </v-btn>
+         
         </v-card-title>         
        </v-card>
       </v-flex>       
@@ -127,32 +130,15 @@ export default {
                                                   }
                                  })
              break
-          case "switchLocale": 
-            return this.switchLocale ()
           default:      
             alert('we do not understand : ' + task)
         }
      }
    },
-   switchLocale () {
-     if (this.$i18n.locale === 'af') {
-         this.$i18n.locale = 'en'
-     } else {
-         this.$i18n.locale = 'af'
-     }
-     localStorage.setItem('currentLocale',this.$i18n.locale)
-   }
  },
  computed: {
    AreYouSure()    { return this.$t('message.AreYouSure') },
    Delete()        { return this.$t('message.Delete') },
-   displayLocale() {
-      let other = 'af'
-      if (this.$i18n.locale === 'af') {
-        other = 'en'
-      }
-      return other
-   }
  },
  mounted: function () {
    //MNT TBB

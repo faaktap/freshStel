@@ -1,6 +1,9 @@
 <template>
     <div>
-        Hallo World
+        Hallo World {{ $route.name }} {{ $route.params }}
+
+        {{ getZml.login.menemonic || this.getZml.login.username }}
+
         <v-btn @click="doSomething"> do something </v-btn>
         <h1> Homework Assigments(main) </h1>
         <p>List of homework assigments as created by teachers...</p>
@@ -43,13 +46,18 @@ export default {
     components:{
        },
     data: () => ({
-        getZml: getters.getState({ object: "gZml" }),        
+        getZml: getters.getState({ object: "gZml" }),
         currentOne:null,
     }),
     methods: {
       doSomething() {
           infoSnackbar('Hallow world')
       }
+    },
+    mounted() {
+        infoSnackbar(this.$route.meta)
+        infoSnackbar( this.$route.meta.authentication )
+        // this.$router.push({ path: '/login'})
     }
 }
 

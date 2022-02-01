@@ -8,9 +8,9 @@
             Personel (click on a photo to load a new one)
         </v-toolbar-title>
         <v-spacer />
-        <v-btn small @click="loadPersonelList"> 
-           <v-icon> mdi-refresh </v-icon> 
-           refresh 
+        <v-btn small @click="loadPersonelList">
+           <v-icon> mdi-refresh </v-icon>
+           refresh
         </v-btn>
        </v-toolbar>
     </v-col>
@@ -24,13 +24,13 @@
             v-model="searchInfo" solo clearable
             @click:clear="searchInfo = ''"
        />
-           
+
       </v-col>
       <v-col xs12 md6>
-        <v-btn @click="showAs='list'"> 
+        <v-btn @click="showAs='list'">
           <v-icon> mdi-view-list </v-icon>
         </v-btn>
-        <v-btn @click="showAs='card'"> 
+        <v-btn @click="showAs='card'">
           <v-icon> mdi-card </v-icon>
         </v-btn>
       </v-col>
@@ -40,40 +40,46 @@
 
 <v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
   <template v-if="showAs == 'list'">
-       <personel-name-list :staffList="filteredItems" 
+       <personel-name-list :staffList="filteredItems"
                            @pictureUpload="loadAPicture"
                            :allowEdit="['admin','teacher'].includes(getZml.login.type)"
-                           :showAs="showAs" 
-        />                    
+                           :showAs="showAs"
+        />
   </template>
   <template v-if="showAs == 'card'">
   <v-layout row wrap align-content-start justify-start class="ma-1">
     <v-flex xs12 md6 lg4  v-for="stf in filteredItems" :key="stf.persid">
-       <personel-name-card :personelRecord="stf" 
+       <personel-name-card :personelRecord="stf"
                            @pictureUpload="loadAPicture"
-                           :allowEdit="['admin','teacher'].includes(getZml.login.type)" 
-                           :showAs="showAs" 
-       />                    
+                           :allowEdit="['admin','teacher'].includes(getZml.login.type)"
+                           :showAs="showAs"
+       />
     </v-flex>
   </v-layout>
   </template>
 
 
-<v-dialog v-if="personelRec" v-model="showAddPhoto" :scrollable="false" persistent color="light-grey">
+<v-dialog v-if="personelRec"
+          v-model="showAddPhoto"
+          :scrollable="false"
+          width="400"
+          persistent color="light-grey">
    <v-card class="ma-4" >
      <v-card-title>
        Select a picture for {{personelRec.data.name}}  {{personelRec.data.surname}}
      </v-card-title>
-                    <zml-picture-load v-if="personelRec" 
-                                    @file-saved="uploadedFilename" 
+     <v-card-text>
+                    <zml-picture-load v-if="personelRec"
+                                    @file-saved="uploadedFilename"
                                     :partOfFilename="personelRec.data.name+personelRec.data.surname"
                                      extrapath="/bib/assets/staff/"
-                    /> 
+                    />
+     </v-card-text>
    <v-card-actions>
      <v-btn @click="showAddPhoto = false"> Close </v-btn>
-   </v-card-actions>                 
+   </v-card-actions>
    </v-card>
-</v-dialog>              
+</v-dialog>
 
 </v-container>
 </div>
@@ -84,8 +90,8 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
-import PersonelNameCard from '@/components/student/PersonelNameCard.vue'
-import PersonelNameList from '@/components/student/PersonelNameList.vue'
+import PersonelNameCard from '@/components/staff/PersonelNameCard.vue'
+import PersonelNameList from '@/components/staff/PersonelNameList.vue'
 import zmlPictureLoad from '@/components/zmlPictureLoad.vue'
 
 export default {
@@ -93,7 +99,7 @@ export default {
  props:{},
  components: {PersonelNameCard
            , PersonelNameList
-           , zmlPictureLoad           
+           , zmlPictureLoad
            },
  data: () => ({
   personelRec:null,
@@ -137,7 +143,7 @@ export default {
     ts.sql = 'update dkhs_personel set photo = "' + filename + '"'
            + ' where persid = ' + this.personelRec.data.persid
     ts.api = zmlConfig.apiDKHS
-    zmlFetch(ts, this.afterUpload);       
+    zmlFetch(ts, this.afterUpload);
     this.showAddPhoto = false
   },
   afterUpload(response) {

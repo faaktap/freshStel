@@ -1,0 +1,19 @@
+https://kuiliesonline.co.za/api/candid/candidates.php,
+https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=' + s.studentid 
+https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=aw&studentno='+studentid
+https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=award&studentno=
+https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=trophy&studentno=
+https://kuiliesonline.co.za/api/dkhs/dkhs.php
+https://kuiliesonline.co.za/api/dkhs/dkhs.php  
+https://kuiliesonline.co.za/api/dkhs/dkhs.php  
+https://kuiliesonline.co.za/api/dkhs/dkhs.php
+https://kuiliesonline.co.za/api/dkhs/dkhs.php
+https://kuiliesonline.co.za/api/file/actions.php
+https://kuiliesonline.co.za/api/file/file.php
+https://kuiliesonline.co.za/api/file/fileDir.php
+https://kuiliesonline.co.za/api/fileUpload/fileUpload.php
+https://kuiliesonline.co.za/api/massmail/genMailer.php
+https://kuiliesonline.co.za/api/swiftmailer/genMailer.php
+https://localhost:81/api/dkhs/dkhs.php
+https://localhost:81/api/fileUpload/fileUpload.php
+https://zmlrekenaars.co.za/zml/api/general/api.php

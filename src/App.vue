@@ -1,13 +1,13 @@
 <template>
   <v-app id="app">
-  
-   <AppLayout> 
+
+   <AppLayout :key="projectID" >
     <v-container fluid>
-    
+
       <!--transition name="fade" mode="out-in"-->
-        <router-view/> 
+        <router-view/>
       <!--/transition-->
-      
+
     <v-snackbar
       top centered
       :color="snackbarColor"
@@ -22,17 +22,18 @@
         >Close</v-btn>
       </template>
     </v-snackbar>
-    
+
     </v-container>
-   </AppLayout>   
-   
-    <confirm ref="confirm"></confirm>   
+   </AppLayout>
+
+    <confirm ref="confirm"></confirm>
   </v-app>
 </template>
 
 
 <script>
 import { getters } from "@/api/store";
+import { zmlConfig } from '@/api/constants';
 import confirm from "@/api/DialogConfirm";
 import EventBus, { ACTIONS } from '@/api/event-bus';
 export default {
@@ -43,13 +44,15 @@ export default {
     snackbarMessage: "",
     snackbarColor: "red accent-4",
     snackbar: false,
+    projectID: zmlConfig.projectID
   }),
-  methods: { 
+  methods: {
     locStore(item) {
       return localStorage.getItem(item)
     },
   },
   mounted: function () {
+    console.log('StartApp : ',this.projectID)
     //Step thru our localstorage, and load all declared variables?
     const lval = this.locStore('currentLocale')
     if (lval) {
@@ -67,7 +70,7 @@ export default {
         }
         this.snackbar = true;
       });
-/* END External Programs that uses app.vue to make use of global stuff.    */      
+/* END External Programs that uses app.vue to make use of global stuff.    */
   },
   destroyed () {
     EventBus.$off(ACTIONS.SNACKBAR)

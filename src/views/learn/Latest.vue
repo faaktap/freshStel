@@ -1,10 +1,9 @@
 <template>
   <div>
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
-
-
       <h1> File activity in the past {{ previousDays }} days. </h1>
-            <v-data-table 
+      <h2> New one coming soon.... </h2>
+            <v-data-table
                  v-if="getData[0].workDone == 3"
                  :headers="tHeader"
                  :items="getData[0].response"
@@ -34,7 +33,6 @@ import { getters } from  "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch'
 import { getIconColor } from '@/api/fileUtils.js'
-//import { sh } from "@/views/learn/sh.js"
 const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
 export default {
     components: {
@@ -62,15 +60,15 @@ export default {
                 ,{ text:'Grade', value: 'grade'}
                 ,{ text:'icon', value: 'icon'}
                 ,{ text:'Folder', value: 'displayfolder'}
-                ,{ text:'File', value: 'name'}                
+                ,{ text:'File', value: 'name'}
                 ,{ text:'Date', value: 'update_timestamp'}
                 ,{ text:'id', value: 'contentid'}
                 ],
         previousDays:null,
        }
-   }, 
-   computed: {   
-   }, 
+   },
+   computed: {
+   },
    mounted() {
        //we pass the days as a parameter on route ie: /latest/5
        //If no param is passed, we default to 4
@@ -110,7 +108,7 @@ export default {
             }
           }, duration);
      },
-     rollCall() {  
+     rollCall() {
         this.getData.forEach(work => {
             if (work.workDone == READY) {
                 work.workDone = BUSY
@@ -120,7 +118,7 @@ export default {
        //Check if all is done
        this.getData.forEach(e => e.workDone == 'DONE')
        if (this.timerHandle) {
-               clearInterval(this.timerHandle) 
+               clearInterval(this.timerHandle)
                this.timerHandle = null
        }
        this.progress = false;
@@ -132,13 +130,13 @@ export default {
      clickOnTableRow(p1) {
 
         //Take this findfolder out, since we understand file contentid in latest.vue
-        //sh.contentData('findfolder', this.callSH, p1)    
+        //sh.contentData('findfolder', this.callSH, p1)
         this.callSH(p1.contentid)
      },
      callSH(cid) {
-        this.$router.push({name: 'sh' 
+        this.$router.push({name: 'sh'
                            ,params:{propfolder:cid}
-                           ,meta: {layout: "AppLayoutGray" }});  
+                           ,meta: {layout: "AppLayoutGray" }});
 
      }
    }

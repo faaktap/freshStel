@@ -7,8 +7,8 @@
          AVAILABLE OPTIONS FOR
     </div>
     <div class="float-center ma-1">
-        <avatar :username="getZml.login.fullname"  
-               @clickAvatar="showPhoto" 
+        <avatar :username="getZml.login.fullname"
+               @clickAvatar="showPhoto"
                :src="photo" />
     </div>
     <div class="float-right ma-2">
@@ -21,36 +21,36 @@
  <student-photo-list :studentid="studentid" @foundPhoto="weHaveIt" />
 </v-dialog>
 
-<v-row> 
+<v-row>
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
-    <v-expansion-panel>
-     <v-expansion-panel-header expand-icon="mdi-calendar" 
-        title="A calendar for your current day. If you notice the day is wrong, please inform Werner or ms. Wiegand">
-        Calendar - ({{ gradeToShow.g }} {{ gradeToShow.c }} / {{ weekOrDay }})
-     </v-expansion-panel-header>
-    <v-expansion-panel-content>
-      <calendar-student v-if="gradeToShow.c" v-show="showCal" 
-               :weekOrDay="weekOrDay" 
-               :studentGradeClass="gradeToShow.g +  gradeToShow.c" />
-    </v-expansion-panel-content>
-    </v-expansion-panel>
-    <v-expansion-panel>
-        <v-expansion-panel-header
-          title="A list of all the places you can go to on this webpage.">
-          Functions (Click here to see available functions)
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-           <list-test functiongroup="student" />      
-           <list-test functiongroup="other" />
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+   <!-- <v-expansion-panel>
+    <v-expansion-panel-header expand-icon="mdi-calendar"
+       title="A calendar for your current day. If you notice the day is wrong, please inform Werner or ms. Wiegand">
+       Calendar - ({{ gradeToShow.g }} {{ gradeToShow.c }} / {{ weekOrDay }})
+    </v-expansion-panel-header>
+   <v-expansion-panel-content>
+     <calendar-student v-if="gradeToShow.c" v-show="showCal"
+              :weekOrDay="weekOrDay"
+              :studentGradeClass="gradeToShow.g +  gradeToShow.c" />
+   </v-expansion-panel-content>
+   </v-expansion-panel> -->
+   <v-expansion-panel>
+       <v-expansion-panel-header
+         title="A list of all the places you can go to on this webpage.">
+         Functions (Click here to see available functions)
+       </v-expansion-panel-header>
+       <v-expansion-panel-content>
+          <list-test functiongroup="student" />
+          <list-test functiongroup="other" />
+       </v-expansion-panel-content>
+   </v-expansion-panel>
   </v-expansion-panels>
-</v-col>
-<v-col cols="12">
-    <student-subject-list :studentid="studentid" color="primary" />
-    <student-email-list :studentid="studentid" color="primary" />
-</v-col>
+ </v-col>
+ <v-col cols="12">
+  <student-subject-list :studentid="studentid" color="primary" />
+  <student-email-list :studentid="studentid" color="primary" />
+ </v-col>
 
 <!--
 { "functionid": "2", "sortorder": "50"
@@ -65,10 +65,10 @@
 , "description": null}
 { "functionid": "10", "sortorder": "55", "functionname": "RCL Campaigns", "shortname": "Sign Up", "payload": "/campaigns", "functiontype": "local", "functionaccess": "student", "tip": "DKHS Candidates Register and Voting System", "grade": null, "icon": "mdi-vote", "description": "De Kuilen Candidates Register and Voting System", "create_timestamp": "2021-03-01 15:24:45", "update_timestamp": "2021-03-18 15:49:57" }
     -->
-|</v-row> 
+|</v-row>
 
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
- 
+
     <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>
@@ -86,7 +86,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import EmailList from '@/components/EmailList';
 import ListTest from '@/components/ListTest.vue';
-import CalendarStudent from '@/components/CalendarStudent';
+//import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
@@ -96,7 +96,7 @@ export default {
     components:{
           EmailList
         , ListTest
-        , CalendarStudent
+        //, CalendarStudent
         , StudentEmailList
         , StudentSubjectList
         , StudentPhotoList
@@ -105,7 +105,7 @@ export default {
      },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-         showCal:true,        
+         showCal:true,
          cards: ['Today', 'Yesterday'],
          gradeToShow:{g:'', c:''},
          weekOrDay:"day",
@@ -143,7 +143,7 @@ export default {
            } else {
                this.weekOrDay = 'day'
            }
-       },        
+       },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "light-green lighten-3"
@@ -151,7 +151,7 @@ export default {
                case 'admin' : return "green accent-3"
                default : return "orange lighten-4"
            }
-       },        
+       },
         click(what) {
             if (doStuff(this.$router,what.payload) == 0) {
                 if (what.payload.substr(0,4).toLowerCase() == 'http') {
@@ -160,7 +160,7 @@ export default {
                     infoSnackbar('Sorry, we do not handle ' + what.payload + ' yet!' )
                 }
             }
-              
+
         },
         loadFunctions() {
            let ts = {};
@@ -190,7 +190,7 @@ export default {
         console.log('home2:', this.gradeToShow.g + this.gradeToShow.c)
         this.showCal = true;
         this.loadFunctions()
-        
+
     }
 }
 </script>

@@ -1,17 +1,23 @@
 <template>
 <v-card color="light-grey accent-4" width="300" :loading="loadStatus">
-  <image-uploader :debug="1" 
-        :preview="false"
-        :className="['fileinput', { 'fileinput--loaded': hasImage }]"
-        capture="environment"
-        doNotResize="gif"
-        :autoRotate="true"
-        :quality="0.8"
-        maxWidth=200
-        outputFormat="verbose"
-        @input="setImage"
-      > <!--maxWidth=150, in image-uplaoder, will force the size to 150x??? -->
-        <v-label for="fileInput" slot="upload-label">
+  loadstatus : {{ loadStatus }}
+  <br>hasImage : {{ hasImage }}
+  <br>partOfFilename : {{ partOfFilename }}
+  <br>extrapath : {{ extrapath }}
+  <v-card><v-btn @click="test"> test </v-btn>
+  <image-uploader
+    :debug="0"
+    :preview="false"
+    :className="['fileinput', { 'fileinput--loaded': hasImage }]"
+    capture="environment"
+    doNotResize="gif"
+    :autoRotate="true"
+    :quality="0.8"
+    maxWidth=200
+    outputFormat="verbose"
+    @input="setImage"
+      >
+        <!-- <v-label for="fileInput" slot="upload-label">
           <figure>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -23,9 +29,9 @@
             </svg>
           </figure>
           <span class="upload-caption">{{ "Click to select a photo"}}</span>
-        </v-label>
+        </v-label> -->
    </image-uploader>
-
+  </v-card>
 </v-card>
 </template>
 
@@ -40,15 +46,20 @@ export default {
     data: () => ({
         loadStatus:false,
         hasImage:false,
-
+        debug:true
     }),
     methods:{
+      test() {
+        console.log('you clicked test')
+      },
       setImage(output) {
+        if (this.debug) console.log('zpl : setImage', output);
         this.hasImage = true;
         this.addFile(output)
-      },  
-            
+      },
+
       addFile(e) {
+        if (this.debug) console.log('zpl : addFile', e);
         this.loadStatus = true
         /*
         e.info.name
@@ -60,23 +71,27 @@ export default {
         this.upload1(e)
       },
       upload1(fileData) {
-         fileData.task = 'upload'; 
+        if (this.debug) console.log('zpl : upload1', fileData);
+         fileData.task = 'upload';
          fileData.extrapath =  this.extrapath
          fileData.name = fileData.info.name
          fileData.base64 = fileData.dataUrl.split(',')[1];
          fileData.size = fileData.dataUrl.length
-         fileData.api = zmlConfig.apiUpload; 
+         fileData.api = zmlConfig.apiUpload;
          zmlFetch(fileData,this.doneWithUpload, this.errorWithUpload)
-      }, 
+      },
       errorWithUpload(error) {
+        if (this.debug) console.log('zpl : errorWithUpload', error);
          alert('an error happened on upload of file' + error.error)
          this.loadStatus = false;
       },
       doneWithUpload(response) {
-         this.$emit('file-saved',response.filename)
-         this.loadStatus = false;
+        if (this.debug) console.log('zpl : doneWithUpload', response);
+        this.$emit('file-saved',response.filename)
+        this.loadStatus = false;
       },
       makeid(idlen) {
+        if (this.debug) console.log('zpl : makeID', idlen);
          let result           = '';
          const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
          const charactersLength = characters.length;
@@ -86,7 +101,10 @@ export default {
          return result;
       },
     },
-}      
+    mounted() {
+      if (this.debug) console.log('zpl : mounted');
+    }
+}
 
 </script>
 

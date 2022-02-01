@@ -13,7 +13,7 @@
        </v-toolbar-title>
         <v-spacer />
        </v-toolbar>
-    </v-col> 
+    </v-col>
   </v-row>
 
   <v-row>
@@ -29,7 +29,7 @@
   </v-row>
   <v-row>
    <v-col cols="12">
-     <v-card class="pa-4 ma-2" color="green" v-if="!classList.length"> 
+     <v-card class="pa-4 ma-2" color="green" v-if="!classList.length">
         We have no classlists defined yet, click the button below to start
      </v-card>
    </v-col>
@@ -38,33 +38,33 @@
   <v-row>
    <v-col cols="12" sm="6">
      {{ currentOne }}
-    <v-expansion-panels min-width="150" 
-                       rounded 
+    <v-expansion-panels min-width="150"
+                       rounded
                        class="ma-2 pa-2 long-line"
                        v-model="currentOne"
                        >
-     <v-expansion-panel v-for="i in classList" :key="i.id" 
+     <v-expansion-panel v-for="i in classList" :key="i.id"
      >
-      <v-expansion-panel-header disable-icon-rotate 
+      <v-expansion-panel-header disable-icon-rotate
                                class="no-uppercase "
-                               color="deep-purple lighten-5"               
+                               color="deep-purple lighten-5"
                                >
-        {{ i.listname }}  - (Entries : {{ i.students }}) 
+        {{ i.listname }}  - (Entries : {{ i.students }})
       </v-expansion-panel-header>
       <v-expansion-panel-content class="gray lighten-3">
        <v-row>
        <v-col class="my-2">
-        <student-lookup v-if="showStudentLookup" 
+        <student-lookup v-if="showStudentLookup"
                        @dataEntered="studentFound"
-                       @idsEntered="IDs" 
+                       @idsEntered="IDs"
                        :searchMore="true" />
         </v-col>
        </v-row>
        <v-row><v-col>
         <v-card class="ma-2 px-3"> {{ i.listname }}</v-card>
         <v-btn class="ma-2" small @click="activateAddStudent(i.id)"> Add Student </v-btn>
-        <v-btn class="ma-2" small @click="showListData(i.id)"> Show Students </v-btn>            
-        <v-btn class="ma-2" small @click="editClassList(i.id)"> Change List Name </v-btn>              
+        <v-btn class="ma-2" small @click="showListData(i.id)"> Show Students </v-btn>
+        <v-btn class="ma-2" small @click="editClassList(i.id)"> Change List Name </v-btn>
         <v-card class="ma-2 px-3">{{ i.students }} Entries </v-card>
        </v-col>
        </v-row>
@@ -76,28 +76,28 @@
    <v-col cols="12" sm="6" v-show="studentClassList.length > 0">
      <!-- {{ classObj }} -- {{ studentClassList.length }} -->
      <v-card color="deep-purple lighten-5">
-       <base-table 
-                  :tList="studentClassList" 
-                   tHeading="" 
-                  :bHeading="classObj.listname" 
-       /> 
+       <base-table
+                  :tList="studentClassList"
+                   tHeading=""
+                  :bHeading="classObj.listname"
+       />
       </v-card>
     </v-col>
-  </v-row> 
-   
-<v-dialog v-model="showListUpdate" 
+  </v-row>
+
+<v-dialog v-model="showListUpdate"
          :fullscreen="$vuetify.breakpoint.smAndDown" >
         <class-list-edit @saveClassList="saveClassList"
                          @hideDialog="showListUpdate=false"
                          :classObj="classObj" />
 </v-dialog>
 
-<v-dialog v-model="studentInfoShow" 
-          width="auto " 
+<v-dialog v-model="studentInfoShow"
+          width="auto "
          :fullscreen="$vuetify.breakpoint.smAndDown">
   <zml-close-button @btn-click="studentInfoShow = !studentInfoShow" />
   <student-subject-list :studentList="studentInfo" />
-</v-dialog> 
+</v-dialog>
 
 </v-container>
 </div>
@@ -106,7 +106,7 @@
 <script>
 
 // We need a place where the teachers has access to lists of students.
-// want them to create their own lists, and to see typical lists 
+// want them to create their own lists, and to see typical lists
 
 import ClassListEdit from '@/components/student/ClassListEdit.vue'
 //import BaseBreakpointDisplay from '@/components/base/BaseBreakpointDisplay.vue'
@@ -127,7 +127,7 @@ export default {
         StudentSubjectList,
        },
     data: () => ({
-        getZml: getters.getState({ object: "gZml" }),        
+        getZml: getters.getState({ object: "gZml" }),
         gradeClass:{},
         classList:[],
         classObj:{},
@@ -136,7 +136,7 @@ export default {
         showStudentLookup:false,
         studentClassList:[],
         studentInfo:'',
-        studentInfoShow:false,        
+        studentInfoShow:false,
         currentOne:null,
     }),
     methods: {
@@ -154,17 +154,17 @@ export default {
       },
       createClassList() {
            this.classObj = { id:null
-                           , teacher:!this.getZml.login.menemonic ? this.getZml.login.username : this.getZml.login.menemonic
+                           , teacher:this.getZml.login.menemonic || this.getZml.login.username
                            , listname:'Please enter a listname in here!'
                            , share:'N' }
-           this.showListUpdate = true               
+           this.showListUpdate = true
            this.insertList = true
       },
       editClassList(listID) {
           this.classObj = this.classList.find(ele => ele.id == listID)
-          this.showListUpdate = true               
+          this.showListUpdate = true
           this.insertList = false
-      },      
+      },
       saveStudentinList(studentid, listid) {
         if (studentid == 0 || listid == 0) {
            alert('we need a student and a list')
@@ -177,7 +177,7 @@ export default {
                +  listid + ", "
                +  studentid + ")"
         ts.api = zmlConfig.apiDKHS
-        zmlFetch(ts, this.showInsertStudentResult, this.errorLoading);          
+        zmlFetch(ts, this.showInsertStudentResult, this.errorLoading);
       },
       showInsertStudentResult(response) {
         if (response.errorcode && response.errorcode != 0) {
@@ -192,10 +192,10 @@ export default {
           infoSnackbar('please enter a BETTER listname!!!')
           return
         }
-        this.showListUpdate = false 
+        this.showListUpdate = false
         let ts = {}
         ts.task = 'PlainSql'
-        if (this.insertList) {        
+        if (this.insertList) {
             ts.sql = "INSERT INTO hw_classlist "
                + " VALUES(null, "
                + "'" + this.classObj.teacher + "'" + ", "
@@ -205,9 +205,9 @@ export default {
         } else {
             ts.sql = "UPDATE hw_classlist SET "
                + "listname = '" + this.classObj.listname + "'" + ", "
-               + "share = '" + this.classObj.share + "'" 
+               + "share = '" + this.classObj.share + "'"
                + " where id = " + this.classObj.id
-        }               
+        }
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, this.loadData, this.errorLoading);
       },
@@ -231,7 +231,7 @@ export default {
                + "   AND l.classlistid = " + this.currentListID
                + " ORDER BY s.surname, s.firstname"
         ts.api = zmlConfig.apiDKHS
-        zmlFetch(ts, this.displayListData, this.errorLoading);          
+        zmlFetch(ts, this.displayListData, this.errorLoading);
       },
       displayListData(response) {
         this.studentClassList = response
@@ -252,7 +252,7 @@ export default {
                + where
                + " group by s.classlistid"
         ts.api = zmlConfig.apiDKHS
-        zmlFetch(ts, this.showData, this.errorLoading);          
+        zmlFetch(ts, this.showData, this.errorLoading);
       },
       showData(payload) {
          this.classList = []

@@ -100,7 +100,7 @@
 <script>
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
-import PersonelEdit from '@/components/student/PersonelEdit';
+import PersonelEdit from '@/components/staff/PersonelEdit';
 export default {
     name:"PersonelNameCard",
     components:{PersonelEdit},

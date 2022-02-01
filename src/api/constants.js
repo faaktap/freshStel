@@ -1,5 +1,5 @@
 const PROJECT_NAME = "zmlVschool"
-const PROJECT_VERSION = "49.4D"
+const PROJECT_VERSION = "50.5"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -27,7 +27,7 @@ export const zmlConfig = {
   emailPath:  "https://kuiliesonline.co.za/api/swiftmailer/genMailer.php",
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectID: PROJECT_ID,
-  projectName: PROJECT_NAME,  
+  projectName: PROJECT_NAME,
   measurementID: MEASUREMENT_ID,
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line

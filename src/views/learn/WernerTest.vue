@@ -1,222 +1,134 @@
 <template>
 <div>
- <v-btn @click="startAgain"> Start Again (getFolders) </v-btn>
+<base-title-expand heading="...">
+<v-toolbar color="primary">
+    <v-toolbar-title>
+      <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
+       <div>
+         Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
+       </div>
+       <div>
+        <v-btn   small
+         absolute top right
+         color="blue-grey"
+         class="ma-2 white--text"
+         title="Click here to refresh"  @click="loadFunctions"> Refresh </v-btn>
+       </div>
+      </div>
+    </v-toolbar-title>
+</v-toolbar>
 
-<v-expansion-panels>
- <v-expansion-panel>
-  <v-expansion-panel-header :loading="loadStatus"> BaseTable (tcontent) </v-expansion-panel-header>
-    <v-expansion-panel-content> 
-      <v-card color="grey lighten-1" :loading="loadStatus">
-       <baseTable :tList="content"
-           tHeading="inside of content"
-           :bHeading="'Recs = ' + content.length" 
-           @bonga="clickReceived"
-        />
-      </v-card>
-  </v-expansion-panel-content> 
-</v-expansion-panel>
 
-
-  
-
-  <v-expansion-panel>
-    <v-expansion-panel-header> ZMLFolders </v-expansion-panel-header>
-    <v-expansion-panel-content> 
-  <v-card color="blue"> zmlFolders {{  getZml.folders }} </v-card>
-  <v-card color="grey lighten-3">
-      folderObj= {{ folderObj}}
-  </v-card>
-  </v-expansion-panel-content> 
-  </v-expansion-panel>
-  <v-expansion-panel>
-    <v-expansion-panel-header> FilterContent </v-expansion-panel-header>
-    <v-expansion-panel-content> 
-   <v-card color="grey lighten-4"> 
-       filtercontent {{ filterContent }} 
-   </v-card>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
-</v-expansion-panels>
-
+<div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+     <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+              Stuff that only Werner should be able to see *Admin.vue
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <list-test functiongroup="all" />
+            <v-layout class="ma-1" row wrap justify-space-between>
+            <v-btn to="/viewfunctions"> functions </v-btn>
+            <v-btn to="/dkhsawards"> dkhs awards </v-btn>
+            <v-btn to="/studentawards"> student awards </v-btn>
+            <v-btn to="/about"> about </v-btn>
+            <v-btn to="/hover"> hover </v-btn>
+            <v-btn to="/loadhomework"> loadhomework </v-btn>
+            <v-btn to="/folder/GR08/Accounting_Rekeningkunde/"> FE Gr8 Rek </v-btn>
+            <v-btn @click="tryPushingIt"> Pushing .. via name => FE Gr8 Rek </v-btn>
+            {{ joke }}
+            <v-window>
+            xs={{$vuetify.breakpoint.xs}} <br>
+            sm={{$vuetify.breakpoint.sm}}<br>
+            md={{$vuetify.breakpoint.md}}<br>
+            lg={{$vuetify.breakpoint.lg}}<br>
+            xl={{$vuetify.breakpoint.xl}}<br>
+            </v-window>
+            </v-layout>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+     </v-expansion-panels>
+      </div>
+</base-title-expand>
 </div>
+
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants.js';
-import { zmlFetch } from '@/api/zmlFetch.js';
+import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
+import { zmlFetch } from '@/api/zmlFetch.js'
+import { zData } from '@/api/zGetBackgroundData.js';
+import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
-import baseTable from '@/components/base/baseTable'
-  export default {
-    name: "viewContentWernerTest",
-    components: {baseTable},
+
+import ListTest from '@/components/ListTest.vue';
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
+
+export default {
+    name:"WernerTest",
+    components:{ListTest,BaseTitleExpand},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        folderObj:{},
-        loadStatus:false,
-        content: [],
+        joke:''
     }),
-    methods: {
-        startAgain() {
+    computed:{
+    },
+    methods:{
+      tryPushingIt() {
+        this.$router.push({ name: 'FolderEdit'
+                          , meta: {layout: "AppLayoutDefault" }
+                          , params: {grade: 'Gr08', subject: 'Accounting_Rekeningkunde'}
+        })
+        //<v-btn to="/folderedit/GR08/Accounting_Rekeningkunde/"> FE Gr8 Rek </v-btn>
+      },
+       click(what) {
+          if (doStuff(this.$router,what.payload) == 0) {
+              if (what.payload.substr(0,4).toLowerCase() == 'http') {
+                  window.open(what.payload,'_' + 'ko_external')
+              } else {
+                  infoSnackbar('Sorry, we do not handle ' + what.payload + ' yet!' )
+              }
+          }
 
-           zmlFetch({task: 'getfolders',api:zmlConfig.apiDKHS}, this.afterFolders);
-           this.loadData();
-
         },
-        clickReceived(value) {
-            this.folderObj = value
+        loadFunctions() {
+          let ts = {};
+          ts.task = 'PlainSql';
+          ts.sql = 'select * from dkhs_lfunction order by sortorder'
+          ts.api = zmlConfig.apiDKHS
+          zmlFetch(ts, this.showData, this.loadError)
         },
-        iconClick(info) {
-            this.$cs.l('iconClick', info)
-        },
-        contentProperties(info){
-            this.$cs.l('contentProperties', info)
-        },
-        // Here we handle all the loading of lcontent, subjects and folders.
-        loadFolders() {
-          this.loadStatus = true
-          zmlFetch({task: 'getfolders',api: zmlConfig.apiDKHS}, this.afterFolders);
-        },
-        afterFolders(response) {
-          this.getZml.folders = response;
-          this.loadData();
-          this.loadStatus = false
-        },        
-        loadSubjects(response) {
-            ////this.$cs.l('GD:LOADSUBJECTS')
-            this.getZml.subjects = response;
-            if (this.getZml.folders.length == 0) {
-               this.getZml.folders.push({id:1, name:'default'})
-               this.loadFolders()
-            } else {
-               this.loadData();
-            }
-        },
-        loadData() {
-           ////this.$cs.l('GD:LOADDATA')
-              this.loadStatus = true
-              let ts = {};
-              ts.sql = 'select * from dkhs_lcontent '
-                     + ' where sortorder != 0 '
-                     + ' order by sortorder, name';
-              ts.task = 'PlainSql';
-              ts.api = zmlConfig.apiDKHS
-              zmlConfig.cl(ts);
-              zmlFetch(ts, this.showData);
+        loadError(response) {
+          // this.$cs.l(response)
+          alert(response)
         },
         showData(response) {
-            ////this.$cs.l('GD:SHOWDATA')
-            zmlConfig.cl('content=' , response);
-            this.progress = false;
-            if (response == '') {
-              alert('no data received');
-            } else if (response && response.error) {
-              alert('LoadError no data received '+ response.error);
-              this.content = []
-            } else {
-              this.content = response;
-            }
-            this.loadStatus = false
+          this.getZml.functions = response
         },
+        async CallAsyncFunction() {
+          if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
+           const joke = await zData.randomChuckNorris();
+           this.joke = joke.value
+           if  (this.joke && ( this.joke.indexOf('sex')
+                            || this.joke.indexOf('prince albert')
+                            || this.joke.indexOf('condom')
+                            || this.joke.indexOf('placen')
+                            || this.joke.indexOf('fuck')
+                            || this.joke.indexOf('anal')
+                            || this.joke.indexOf('pregna')
+                            || this.joke.indexOf('bondag')
+                            || this.joke.indexOf('gay'))) {
+              this.joke = await zData.randomChuckNorris().value;
+           }
+          }
+        },
+    },
+    mounted() {
+        this.CallAsyncFunction()
+        this.loadFunctions()
 
-    },
-    computed:{
-      //Display a list of folders on dropdown
-      folderFilter() {
-        let tempT = []
-        if (typeof this.getZml.folders === 'undefined' || this.getZml.folders.length == 0) {
-          return ['temp']
-        }
-        this.getZml.folders.filter(ele => ele.grade == this.getZml.grade && ele.subjectid == this.getZml.subjectid).forEach(item => {
-          if (this.showRootFolders) {
-              if (item.folder == item.description) {
-                  const newitem = item
-                  tempT.push(  newitem );
-              }
-          } else {
-             const newitem = item
-             tempT.push(  newitem );
-          }
-        })
-        return tempT
-      },
-      filterContent() {
-        //this.$cs.l('filtering for', this.folderObj.name)
-        let g = this.folderObj.grade
-        let s = this.folderObj.subjectid
-        let res = []         
-         //take out all foldernames
-         this.content.forEach(cont => {
-             if (cont.folder == this.folderObj.name && g == cont.grade && s == cont.subjectid) {
-                if (cont.name != this.folderObj.name) {
-                   res.push(cont)
-                }
-             }
-         })
-         return res
-        //return this.content;
-        /*
-        //c.folder == folderObj.foldername && c.type!='folder'
-        ////this.$cs.l('GD:FILTERCONTENT')
-        ////this.$cs.l('GD:FILTERCONTENT',this.folderObj)
-        let res = []         
-        if (this.folderObj.name) {
-            //take out all foldernames
-            this.content.forEach(ele => {
-                if (ele.folder == this.folderObj.name) {
-                   // if (ele.type != 'folder') {
-                      if (ele.name != this.folderObj.name) 
-                        res.push(ele);
-                   // }
-                }
-            })
-            if (this.SortName == true) { 
-               // res.sort((a, b) => a.name.localeCompare(b.name));
-               res.sort(function(a, b) {
-                 ////this.$cs.l(a.name, b.name)
-                 return (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0))
-               })
-            }
-            ////this.$cs.l('Length : ', res.length)
-            return res
-        } else {
-           ////this.$cs.l('wys alles Length : ', this.content.length)
-           return this.content;
-        }
-        */
-      }
-    },  
-    filters:{ 
-       subjectLookup: function(val) {
-         return "s " + val // this.getZml.subjects.find(a => a.subjectid == val).shortname
-       }
-    },      
-    mounted: function () {
-        zmlConfig.cl('Werner Test');
-        //If subjects is empty, load them , if folders empty, load them, and then loadData, else loadData
-        ////this.$cs.l('MOUNT GDRV : ', this.getZml.login)
-          if (this.getZml.subjects.length == 0) {
-             let ts = {}
-             ts.api = zmlConfig.apiDKHS
-             ts.task = 'getlsubjects'
-             zmlFetch(ts, this.loadSubjects);
-          } else if (this.getZml.folders.length == 0) {
-             zmlFetch({task: 'getfolders',api:zmlConfig.apiDKHS}, this.afterFolders);
-          } else {
-            this.loadData();
-          }
-          infoSnackbar('Mount')
-    },
-    watch: {
     }
-  }
+}
 </script>
 
-<style scoped>
-.no-uppercase {
-     text-transform: none;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  hyphens: auto;     
-}
-</style>

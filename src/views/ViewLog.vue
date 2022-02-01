@@ -3,7 +3,7 @@
    <v-row>
      <v-col cols="12">
      <h1> Registered Users  {{ logList.length}} </h1>
-        
+
     <v-card class="mx-auto">
        <v-container>
          <v-layout>
@@ -32,10 +32,11 @@
     loading="tableLoading"
     loading-text="Loading... Please wait"
     multi-sort
+    mobile-breakpoint="0"
   >
       <template v-slot:[`item.action`]="{ item }">
-        <v-btn class="mx-2" 
-               small 
+        <v-btn class="mx-2"
+               small
                title="Click here to reset password"
                @click="onButtonClick('reset password',item)">
           <v-icon dark>mdi-lock-reset</v-icon>
@@ -50,14 +51,14 @@
         <v-card color="green darken-1" align="center" class="ma-2 pa-2">
          <v-btn @click="getLogs"
                 title="Click here to refresh all users who have logged in"
-         ><v-icon>mdi-table-refresh</v-icon></v-btn> 
+         ><v-icon>mdi-table-refresh</v-icon></v-btn>
         </v-card>
       </template>
 
-  </v-data-table>       
+  </v-data-table>
 
                  </div>
-               
+
              </v-card>
            </v-col>
          </v-row>
@@ -70,31 +71,31 @@
     <v-card-title>
       PASSWORD RESET
     </v-card-title>
-    
+
     <v-card-text>
       <v-card color="green" class="ma-2 pa-2">
       User : {{ curItem.user_name }}
       <br>Name : {{ curItem.user_fullname }}
-      
+
       <br>CellPhone : {{ curItem.user_cell }}
       <br>Last Login : {{ curItem.last }}
       </v-card>
     </v-card-text>
     <v-card-actions>
       <v-btn title="Click here to reset password to the word 'password'"
-             @click="passwordReset"  
+             @click="passwordReset"
       > Reset password </v-btn>
       <v-spacer />
       <v-btn title="Close"
-             @click="showPasswordChange = false"  
+             @click="showPasswordChange = false"
       > Close </v-btn>
     </v-card-actions>
   </v-card>
-</v-dialog>   
+</v-dialog>
 
 
 
-  </v-container>   
+  </v-container>
 </template>
 
 
@@ -115,14 +116,14 @@ export default {
         tableLoading:false,
         logHeader: [
           {text: 'User',             value: 'user_name' },
-          {text: 'fullname',         value: 'user_fullname' },          
+          {text: 'fullname',         value: 'user_fullname' },
           {text: 'Type',             value: 'user_type' },
           {text: 'Grade',            value: 'user_grade' },
           {text: 'first use',        value: 'first' },
           {text: 'last use',         value: 'last' },
           {text: 'times used',       value: 'times' },
           {text: "reset",             value: "action", sortable: false }
-        ]      
+        ]
     }),
     methods:{
       onButtonClick(todo,data) {
@@ -144,7 +145,7 @@ SELECT u.userid,u.user_name,l.user, u.user_fullname, user_type, user_cell, user_
   FROM dkhs_learner u
 left outer join dkhs_log as l on l.user = u.user_name
 group by u.userid,u.user_name, l.user, u.user_fullname, user_type, user_grade, user_cell order by last DESC
-*/                 
+*/
         zmlFetch(sl, this.processAfterFetch, this.processError);
       },
       processAfterFetch(response) {

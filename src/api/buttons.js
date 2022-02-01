@@ -3,27 +3,29 @@ export const buttons = jButtons
 
 export function doStuff(tr,task) {
     switch (task) {
-        case "/": 
+        case "/":
             return zmlReRoute(tr, task)
-        case "/about": 
+        case "/about":
             return zmlReRoute(tr, task)
         case "/viewlearn":   //teacher start
-            return zmlReRoute(tr, "/sh")
-        case "/profile": 
-            return zmlReRoute(tr, '/login')            
-        case "/selectgrade": 
+            return zmlReRoute(tr, "/folderedit")
+        case "/profile":
+            return zmlReRoute(tr, '/login')
+        case "/selectgrade":
             return zmlReRoute(tr, task + "/Grade")
-        case "/hover": 
-        case "/translate": 
-        case "/login": 
-        case "/emailcheck": 
-        case "/choosesubjects": 
-        case "/nested/dialog": 
-        case "/sh":    //student start 
+        case "/hover":
+        case "/translate":
+        case "/login":
+        case "/att":
+        case "/admin":
+        case "/emailcheck":
+        case "/choosesubjects":
+        case "/nested/dialog":
+        case "/drive":    //student start
+        case "/folderedit":    //student start
         case "/latest":    //newest files
-        case "/latest/7":   
-        case "/dkhsawards":  
-        case "/grade":    //new student start
+        case "/latest/7":
+        case "/dkhsawards":
         case "/student":
         case "/personel":
         case "/elections":
@@ -43,7 +45,7 @@ export function doStuff(tr,task) {
 
 function zmlReRoute(tr, task) {
     if (tr.currentRoute.path !== task) {
-        return tr.push(task) 
+        return tr.push(task)
      } else {
         return 1
      }

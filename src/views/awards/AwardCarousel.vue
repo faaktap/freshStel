@@ -215,7 +215,7 @@ export default {
    },
    mounted: function () {
      this.currentEditMode = (this.editmode === undefined) ? false : this.editmode;
-     let sql = "select * from dkhs_storymain where activedate > NOW() - INTERVAL 30 DAY"
+     let sql = "select * from dkhs_storymain where activedate > NOW() - INTERVAL 90 DAY"
      this.loading = true
      zData.loadSql(this.loading, sql, this.processData)
    },

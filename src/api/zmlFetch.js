@@ -16,7 +16,7 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
                   headers: {'Accept': 'application/json'
                          , 'Content-Type': 'application/json;charset=UTF-8'},
                   body: JSON.stringify(task)}
-        zmlConfig.cl('FETCH-------------- : ', task.task)
+        zmlConfig.cl('FETCH-------------- : ', task.task, task)
         fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
         .then(response => {
             if (!response.ok) {
@@ -24,8 +24,8 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
                 throw Error(response.statusText)
             }
             return response.json()
-        })  
-        .then(responseAsJson => { 
+        })
+        .then(responseAsJson => {
            //here we can decompress if return is gzipped, or we can do local callback to save globals?
            zmlConfig.cl('FETCH--------------: after fetch callback for ',task.task)
            if (callback) callback(responseAsJson,task,extraParameter ?? 'none')
@@ -36,7 +36,7 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
                 zmlConfig.cl('FETCH--------------catch with no callback',task.task,err)
             } else {
                 zmlConfig.cl('FETCH--------------catch with errcallback',task.task,err)
-                errcallback(err)                
+                errcallback(err)
             }
             //('ZF: Errorname : ',task.task , 'Error:' , err);
         });
@@ -45,7 +45,7 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
 //https://www.codepanion.com/posts/2020-02-02-how-to-use-async-await-promises-with-fetch-in-vue-js-vuex/
 // eslint-disable-next-line
 /*
-async function http(url, 
+async function http(url,
     method = 'GET',
     data,
 ) {
@@ -54,7 +54,7 @@ async function http(url,
         method,
         data
       });
-    
+
       return await response.json();
     } catch (error) {
       throw error;
@@ -62,4 +62,4 @@ async function http(url,
 }
 */
 
-export {zmlFetch};    
+export {zmlFetch};

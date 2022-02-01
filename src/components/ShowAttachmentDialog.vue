@@ -1,10 +1,8 @@
 <template>
-          <zml-preview :src="image"   
-                      :type="imagetype"  
-                      @close="closeIt"
-                      >
-          
-         </zml-preview>
+    <zml-preview :src="image"   
+                 :type="imagetype"  
+                 @close="closeIt"
+    />
 </template>
 <script>
 import zmlPreview from '@/components/zmlPreview'
@@ -14,7 +12,6 @@ export default {
     props:["image","imagetype" ],
     components:{
           zmlPreview
-        
     },
     methods:{
         closeIt() {
