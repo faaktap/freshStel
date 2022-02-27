@@ -1,14 +1,14 @@
 <template>
-  <v-autocomplete 
+  <v-autocomplete
         v-model="searchResult"
-       :value="searchText" 
-       :search-input.sync="search" 
+       :value="searchText"
+       :search-input.sync="search"
        :items="list"
-       :item-text="itemDisplay" 
+       :item-text="itemDisplay"
        :loading="loadingItems"
-       @click:append="clearSearch"       
-        item-value="desc" 
-        return-object 
+       @click:append="clearSearch"
+        item-value="desc"
+        return-object
         outlined
         dense
         label="Student Surname"
@@ -46,7 +46,7 @@ export default {
     loadids:false,
     IDList:"Add a list of ID's in here"
   }),
-  mounted() { 
+  mounted() {
     console.log('we was mounted - stuydent info')
           // this.searchResult = "";
           // this.searchText = "";
@@ -116,6 +116,7 @@ export default {
             }
             this.list.push(obj);
         }
+        this.list.sort((a,b) => a.studentid - b.studentid)
         this.loadingItems = false;
     },
     listLoadError(response) {

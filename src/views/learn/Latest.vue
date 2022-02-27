@@ -1,41 +1,58 @@
 <template>
   <div>
+    <v-toolbar  dense  row  wrap>
+    <v-spacer></v-spacer>
+    <v-btn-toggle dense v-model="toggleDisplay">
+        <base-tool-button class="mr-2">
+           <template v-if="!$vuetify.breakpoint.smAndDown">Grade </template> 8
+        </base-tool-button>
+        <base-tool-button class="mr-2">
+         Grade 9
+        </base-tool-button>
+        <base-tool-button class="mr-2">
+        Grade 10
+        </base-tool-button>
+        <base-tool-button class="mr-2">
+        Grade 11
+        </base-tool-button>
+        <base-tool-button class="mr-2">
+        Grade 12
+        </base-tool-button>
+      </v-btn-toggle>
+
+         </v-toolbar>
+
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
-      <h1> File activity in the past {{ previousDays }} days. </h1>
-      <h2> New one coming soon.... </h2>
+      <h1> File activity in the past month </h1>
+            <v-text-field filled dense
+                    class="ma-2"
+                    v-model="search"
+                    append-icon="mdi-close"
+                   @click:append="search = ''"
+                    placeholder="search"/>
+
             <v-data-table
-                 v-if="getData[0].workDone == 3"
                  :headers="tHeader"
-                 :items="getData[0].response"
+                 :items="tableFilter"
                  :items-per-page="120"
-                  group-by="grade"
+                 :search="search"
+                  xxxgroup-by="grade"
                   hide-default-footer
-                  hide-default-header
+                  xxxhide-default-header
                   class="elevation-2"
                   color="purple lighten-3"
                   @click:row="clickOnTableRow"
             >
-             <template v-slot:item.icon="{ item }">
-              <v-icon :color="ic(item.icon)" > {{ item.icon }}</v-icon>
-             </template>
-             <template v-slot:item.folder="{ item }">
-              <v-chip :color="ic(item.icon)" > {{ item.folder }}</v-chip>
-             </template>
-             <template v-slot:item.shortname="{ item }">
-              <v-chip :color="ic(item.icon)" > {{ item.shortname }}</v-chip>
-             </template>
             </v-data-table>
   </div>
 </template>
 
 <script>
 import { getters } from  "@/api/store"
-import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch'
-import { getIconColor } from '@/api/fileUtils.js'
-const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 export default {
-    components: {
+    components: {BaseToolButton
 
     },
     props: ['days'],
@@ -46,99 +63,91 @@ export default {
         progress:false,
         timerHandle:null,
         dataSequence:false,
-        getData:[{id:0
-                 , desc: "Latest Content"
-                 , workDone: WAIT
-                 , response: {}
-                 , processor: this.doneLoading
-                 , task:"latestContent"
-                 , data:{days:4}
-                 }
-                ],
-        tHeader:[{ text:'Teacher', value: 'surname'}
-                ,{ text:'Subject', value: 'shortname'}
-                ,{ text:'Grade', value: 'grade'}
-                ,{ text:'icon', value: 'icon'}
-                ,{ text:'Folder', value: 'displayfolder'}
-                ,{ text:'File', value: 'name'}
-                ,{ text:'Date', value: 'update_timestamp'}
-                ,{ text:'id', value: 'contentid'}
+        tData:[],
+        tHeader:[{ text:'Grade',value:'grade'}
+                ,{ text:'Subject', value: 'subject'}
+                ,{ text:'Name', value: 'name'}
+                //,{ text:'PPAth', value: 'ppath'}
+                //,{ text:'Size', value: 'size'}
+                //,{ text:'ext', value: 'ext'}
+                ,{ text:'Date', value: 'date'}
+                //,{ text:'Type', value: 'type'}
+                //,{ text:'Path', value: 'path'}
                 ],
         previousDays:null,
+        search:'',
+        toggleDisplay:1
        }
    },
    computed: {
+     grade() {
+       let filterGrade = this.toggleDisplay + 8
+
+       filterGrade = ('0' + filterGrade).slice(-2)
+       return 'GR' + filterGrade.toString()
+     },
+     tableFilter() {
+       return this.tData.filter(e => e.grade == this.grade)
+     }
+   },
+   methods: {
+     loadData() {
+      this.progress = true;
+      let ts = {}
+      ts.api = 'https://kuiliesonline.co.za/api/file/zmlDir.php'
+      ts.task = 'read'
+      zmlFetch(ts, this.processData, this.loadError);
+     },
+     loadError(error) {
+       console.log('load files:', error)
+     },
+     processData(response) {
+      let filter = response.filter(function (e) {
+            return e.type != 'FOLDER' || e.size;
+      })
+      this.tData = filter.filter(function (e) {
+            return !e.path.includes('TEACHER');
+      })
+      filter = this.tData.filter(function (e) {
+            return !e.path.includes('.Trash');
+      })
+      console.log(filter.length)
+      this.tData = filter.filter(function (e) {
+            return !e.path.includes('WERNER');
+      })
+      console.log(this.tData.length)
+      this.progress = false
+      this.tData.forEach(e => {
+         let pos1 = e.ppath.indexOf("/");
+         let pos2 = e.ppath.indexOf("/", pos1 + 1);
+         e.grade = e.ppath.slice(0,pos1)
+         e.subject = e.ppath.slice(pos1+1,pos2)
+         console.log(e.grade, e.subject, pos1, pos2)
+      });
+      this.tData = filter
+      this.tData.sort((a,b) => b.date.localeCompare(a.date));
+      console.log('Latest Full Set - SORTED:',this.tData)
+      this.progress = false
+     },
+     clickOnTableRow(p1) {
+        //Take this findfolder out, since we understand file contentid in latest.vue
+        //sh.contentData('findfolder', this.callSH, p1)
+        this.callSH(p1.ppath)
+     },
+     callSH(cid) {
+        // this.$router.push({name: 'folder'
+        //                    ,params:{folder:cid}
+        //                    ,meta: {layout: "AppLayoutGray" }});
+       this.$router.push({path: '/folder/'+cid})
+     }
    },
    mounted() {
        //we pass the days as a parameter on route ie: /latest/5
        //If no param is passed, we default to 4
        this.previousDays = this.days || 4
-       this.getData[0].data.days = this.previousDays
-       this.loadAllData()
+       this.loadData()
        ////this.$cscs.l'icons',this.$vuetify.icons)
    },
-   methods: {
-     ic(i) {
-          return getIconColor(i)
-     },
-     loadAllData() {
-       this.progress = true;
-       this.getData.forEach(ele => {
-          let ts = {}
-          if (ele.task) ts.task = ele.task
-          if (ele.data) ts.data = ele.data
-          ts.api = zmlConfig.apiDKHS
-          zmlFetch(ts, this.processAllData, this.loadError, ele);
-       })
-     },
-     processAllData(response,what,queue) {
-       this.getData[queue.id].workDone = READY
-       this.getData[queue.id].response = response
-       if (!this.timerHandle) {
-          this.startTimer( 2000, this.rollCall)
-       }
-     },
-     startTimer(duration, funcToCall) {
-       let loops = 4
-          this.timerHandle = setInterval(function () {
-            funcToCall('dummy')
-            loops = loops - 1
-            if (loops < 0) {
-              clearInterval(this.timerHandle)
-            }
-          }, duration);
-     },
-     rollCall() {
-        this.getData.forEach(work => {
-            if (work.workDone == READY) {
-                work.workDone = BUSY
-                work.processor(work)
-            }
-        })
-       //Check if all is done
-       this.getData.forEach(e => e.workDone == 'DONE')
-       if (this.timerHandle) {
-               clearInterval(this.timerHandle)
-               this.timerHandle = null
-       }
-       this.progress = false;
-       return
-     },
-     doneLoading(e) {
-       e.workDone = DONE
-     },
-     clickOnTableRow(p1) {
 
-        //Take this findfolder out, since we understand file contentid in latest.vue
-        //sh.contentData('findfolder', this.callSH, p1)
-        this.callSH(p1.contentid)
-     },
-     callSH(cid) {
-        this.$router.push({name: 'sh'
-                           ,params:{propfolder:cid}
-                           ,meta: {layout: "AppLayoutGray" }});
-
-     }
-   }
 }
 </script>

@@ -96,7 +96,7 @@ import { zData } from '@/api/zGetBackgroundData.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 //import { zData } from "@/api/zGetBackgroundData.js"
-import EmailList from '@/components/EmailList.vue';
+import EmailList from '@/components/email/EmailList.vue';
 import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 

@@ -1,31 +1,41 @@
 <template>
 <!-- https://thewebdev.info/2020/08/15/vuetify%E2%80%8A-%E2%80%8Atable-footer-and-slots/
      https://thewebdev.info/2020/08/15/vuetify%e2%80%8a-%e2%80%8atable-checkbox-and-filtering/
-:footer-props="{showFirstLastPage: true,firstIcon: 'mdi-arrow-collapse-left',lastIcon: 'mdi-arrow-collapse-right',prevIcon: 'mdi-minus',nextIcon: 'mdi-plus'}"
+:footer-props="{showFirstLastPage: true,firstIcon: 'mdi-arrow-collapse-left',lastIcon: 'mdi-arrow-collapse-right',4con: 'mdi-minus',nextIcon: 'mdi-plus'}"
 
 :item-class="itemRowBackground" -> this does not want to work, should pass class back depending on an if statement
 https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-on-v-data-table-vuetify
  -->
-  <div>
+<div>
+ <v-row>
+  <v-col cols="6">
     <v-select
-      class="text-caption caption"
-      v-model="value"
+      v-if="headers"
+      class="text-caption caption blue--text"
+      v-model="headerValue"
       :items="headers"
-      label="Select Item"
+      dense
       multiple
       return-object
-    >
-      <template #selection="{ item, index }">
-        <v-chip v-if="index === 0">
-          <span class="text-caption">{{ item.text }}</span>
-        </v-chip>
-        <span
-          v-if="index === 1"
-          class="grey--text caption"
-        >(+{{ value.length - 1 }} others)</span>
-      </template>
-    </v-select>
-    <small class="text-caption"> {{ localData.filename }} </small>
+      deletable-chips
+      hide-selected
+      small-chips
+      filled
+    />
+  </v-col>
+  <v-col cols="6">
+    <small class="text-caption blue--text"> {{ localData.filename }} </small>
+  </v-col>
+  </v-row>
+
+      <!-- <template v-slot:[`item.checkbox`]="{ item }">  -- still need a value
+        <v-simple-checkbox v-model="item.size" disabled></v-simple-checkbox>
+      </template> -->
+      <!-- <template  v-slot:[`body.append`]="{ headers }">
+        <tr>
+          <td :colspan="headers.length">This is an appended row</td>
+        </tr>
+      </template> -->
 
     <v-data-table
       class="style-0"
@@ -36,14 +46,9 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
       :custom-sort="customSort"
       mobile-breakpoint="0"
       @click:row="rowClick"
+      @dblclick:row="rowDblClick"
       items-per-page-options="-1"
-      items-per-page-text="sss"
     >
-      <!-- <template v-slot:[`item.checkbox`]="{ item }">  -- still need a value
-        <v-simple-checkbox v-model="item.size" disabled></v-simple-checkbox>
-      </template>      -->
-      <!-- <template #items="props">
-      </template> -->
       <template #[`item.icon`]="{ item }">
         <v-icon
           title="Click on icon to 'play' the file"
@@ -68,11 +73,6 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
         NO FILES HERE - See folders on lefthand side!
       </template>
 
-      <!-- <template  v-slot:[`body.append`]="{ headers }">
-        <tr>
-          <td :colspan="headers.length">This is an appended row</td>
-        </tr>
-      </template>       -->
     </v-data-table>
 
   </div>
@@ -89,7 +89,7 @@ export default {
   props: ['fileDisplayRecords', 'curDir', 'ignoreDir', 'showFolders', 'moving', 'loading'],
   data: () => ({
     localData: '',
-    value: [],
+    headerValue: [],
     headers: [
       { text: 'type', value: 'icon', filterable: true },
       { text: 'Name', value: 'filename' },
@@ -104,11 +104,14 @@ export default {
   }),
   computed: {
     tableItems () {
+      console.log('computed - tableItems', this.showFolders, this.fileDisplayRecords)
+      let answer = []
       if (this.showFolders) {
         return this.fileDisplayRecords
       } else {
-        return this.fileDisplayRecords.filter(e => e.dir === false)
+        answer = this.fileDisplayRecords.filter(e => e.dir === false)
       }
+      return answer
     },
     comHeaders () {
       return this.headers
@@ -116,6 +119,7 @@ export default {
   },
   methods: {
     checkSelected (item) {
+      console.log('check selected')
       // Check if we should highlight or mark this in some other way
       if (this.moving.some(ele => ele.modtime === item.modtime && ele.filename === item.filename)) {
         item.icon = 'mdi-marker-check'
@@ -131,16 +135,25 @@ export default {
       return false
     },
     rowClick (e) {
+      console.log('click')
       // user clicked on a row, send it back to parent
       this.$emit('clickRow', e)
-      this.localData = e
       // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
     },
+    rowDblClick (e) {
+      console.log('dblclick icon')
+      // user dbl clicked on a row, send it back to parent
+      this.$emit('clickDblRow', this.localData,e)
+      // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
+    },
+
     clickIcon (e) {
+      console.log('click icon')
       // user clicked on a row icon , send it back to parent
       this.$emit('clickIcon', e)
     },
     customSort (items, index, isDesc) {
+      console.log('custom sort')
       // Date sort and size sort should be handled hear. Only datesort now fixed.
       // console.log(items, index, isDesc)
       items.sort((a, b) => {
@@ -156,18 +169,21 @@ export default {
           return b[index] < a[index] ? -1 : 1
         }
       })
+      console.log('custom sort', items)
       return items
     }
   },
   mounted () {
-    // this.selectedHeaders.push(this.headers[0])
-    // this.selectedHeaders.push(this.headers[1])
-    this.value.push(this.headers[0])
-    this.value.push(this.headers[1])
+    console.log('mounted:', this.$options.name, this.headers)
+    this.headerValue.push(this.headers[0])
+    this.headerValue.push(this.headers[1])
   },
   watch: {
-    value (val) {
+    headerValue (val) {
+      console.log('watch value', this.val)
       this.selectedHeaders = val
+
+
     }
   }
 }

@@ -9,7 +9,7 @@ export const zData = {
     someGlobals :  'hallo',
     loading : false,
     closeDate : null,
-    l: (...args) => {   
+    l: (...args) => {
        console.log(...args)
     },
     loadSql(loading, sqlStatement, assignDataProc, api){
@@ -52,28 +52,36 @@ export const zData = {
             console.log(whatever)
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
-            let ts = { api: zmlConfig.apiDKHS
-                     , task: 'loadlearn'
-                     , language: getters.getState({ object: "gZml" }).login.lang
-                    }
+            const ts = {}
+            ts.api = zmlConfig.apiDKHS
+            ts.task = 'loadlearn'
+            ts.data = {}
+            ts.data.language = getters.getState({ object: "gZml" }).login.lang
+            ts.data.studentid = getters.getState({ object: "gZml" }).login.studentid
+            ts.data.logintype = getters.getState({ object: "gZml" }).login.type
+
             zmlFetch(ts, finishedLoadingBasic, errorLoading)
         }
         return "something";
     },
-    calendarData: (whatever) => {  
+    calendarData: (whatever) => {
         if (whatever !== undefined) console.log(whatever)
+        let d = new Date();
+        let year = d.getFullYear()
         if (!getters.getState({ object: "gZml" }).calendar.length) {
             let ts = {}
             ts.task = 'PlainSql'
-            ts.sql = "select  menemonic, persid,public_preferredname "
-                   + ", concat('2021-', substr(IDNumber,3,2), '-', substr(IDNumber,5,2)) StartDate "
-                   + " from dkhs_personel where IDNumber > 0 and public_preferredname is not null"
+            ts.sql =
+`select  menemonic, persid,public_preferredname
+       , concat('${year}-', substr(IDNumber,3,2), '-', substr(IDNumber,5,2)) StartDate
+   from dkhs_personel where IDNumber > 0 and public_preferredname is not null
+   order by StartDate asc`
             ts.api = zmlConfig.apiDKHS
             zmlFetch(ts, finishedLoadingCalendar, errorLoading);
         }
         return "something"
     },
-    functionData: (whatever) => {  
+    functionData: (whatever) => {
         if (whatever !== undefined) console.log(whatever)
         if (!getters.getState({ object: "gZml" }).functions.length) {
             let ts = {}
@@ -89,7 +97,7 @@ export const zData = {
         let data = await response.json()
         return data
     }
-  
+
 }
 function finishedLoadingCalendar(response) {
     response.forEach(ele => {
@@ -102,18 +110,23 @@ function finishedLoadingCalendar(response) {
                  , detail: ele.menemonic
                    }
         getters.getState({ object: "gZml" }).calendar.push(evt)
-       })    
+       })
     loadSchoolsDays()
 }
 
 //----------------------------------------------------------------
 function finishedLoadingBasic (response) {
     //getZml = getters.getState({ object: "gZml" })
-    console.log('finishedLoadingBasic')
+    console.log('finishedLoadingBasic', response)
     getters.getState({ object: "gZml" }).subjects = response.subjects;
-    getters.getState({ object: "gZml" }).folders = response.folders;
-    getters.getState({ object: "gZml" }).functions = response.functions;    
-    getters.getState({ object: "gZml" }).persMenemonic = response.pers;    
+    // getters.getState({ object: "gZml" }).folders = response.folders;
+    getters.getState({ object: "gZml" }).functions = response.functions;
+    getters.getState({ object: "gZml" }).persMenemonic = response.pers;
+    // will be empty when not a student
+    if (response.student.length) {
+      getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;
+      getters.getState({ object: "gZml" }).login.gclass = response.student[0].gclass;
+    }
 }
 
 //----------------------------------------------------------------
@@ -131,15 +144,15 @@ function loadSchoolsDays() {
    const startOfMonth = zDate.startOfMonth(startDate)
    let dayCnt = zDate.curDay(startOfMonth)
    let Group = 'A'
-   //Kan jy my sê watter skooldag is vandag? (11/03/2021) - Dag 10 sir.      
-   
+   //Kan jy my sê watter skooldag is vandag? (11/03/2021) - Dag 10 sir.
+
    for (let i=0; i< 232; i++) {
       const dayX = zDate.add( startOfMonth, {days:i} )
-      if (zDate.isWeekend(dayX))       {       continue   } 
-      if (zDate.isPublicHoliday(dayX)) {       continue   } 
+      if (zDate.isWeekend(dayX))       {       continue   }
+      if (zDate.isPublicHoliday(dayX)) {       continue   }
       const evt= {name: 'day' + dayCnt + ' ' + Group
                , start: zDate.format(dayX,'yyyy-MM-dd') //dayX
-               , end: zDate.format(dayX,'yyyy-MM-dd') //dayX   
+               , end: zDate.format(dayX,'yyyy-MM-dd') //dayX
                , color: 'light-blue'
                , type: 'School'
                , timed: false
@@ -164,5 +177,5 @@ function errorLoading (response) {
 //----------------------------------------------------------------
 function finishedLoadingQuery (response) {
      zData.loading = false
-     zData.closeDate = response[0].zmlvalue   
+     zData.closeDate = response[0].zmlvalue
 }

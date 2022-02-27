@@ -1,7 +1,11 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
-
-Vue.use(Vuetify);
+//import Vuetify from 'vuetify/lib/framework';
+import Vuetify, { VLayout, VCheckbox, VSelect,VTextarea } from "vuetify/lib";
+import { Ripple, Intersect, Touch, Resize } from 'vuetify/lib/directives'
+Vue.use(Vuetify, {
+    components: { VLayout, VCheckbox, VSelect,VTextarea },
+    directives: { Ripple, Intersect, Touch, Resize }
+});
 
 
 //export default new Vuetify({});

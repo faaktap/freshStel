@@ -5,10 +5,10 @@
  <v-card v-if="allowEdit=='true'">
   <v-layout row wrap align-content-start justify-space-between>
     <v-flex>
-      <v-card color="blue accent-1" class="ma-2 pa-5"> 
+      <v-card color="blue accent-1" class="ma-2 pa-5">
         Actions
         <v-btn small class="float-right" @click="updatePersonel">
-         Edit 
+         Edit
         </v-btn>
       </v-card>
     </v-flex>
@@ -21,8 +21,8 @@
        @click="$emit('pictureUpload', personelRecord)"
    >
    <v-img v-if="personelRecord.data.photo"
-          :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelRecord.data.photo + '?'+Math.random()" 
-           max-width="220" 
+          :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelRecord.data.photo + '?'+Math.random()"
+           max-width="220"
            position="left left"
            class="ma-2"
            style="border-radius:50px">
@@ -31,51 +31,52 @@
   <div class="Surname headline">
     {{ personelRecord.data.surname }}
   </div>
+
   <div class="Firstname headline">
-    {{ personelRecord.data.name }} 
+   {{ personelRecord.data.name }}
   </div>
   <div class="Phone subtitle-1">
        {{ personelRecord.data.contactnumber }}
        <v-divider  />
   </div>
-  
+
   <div class="i1"><v-icon small>mdi-phone</v-icon></div>
   <div class="i2"><v-icon small>mdi-office-building</v-icon></div>
   <div class="i3"><v-icon small>mdi-function</v-icon></div>
   <div class="i4"><v-icon small>mdi-email</v-icon></div>
   <div class="i5"><v-icon small>mdi-update</v-icon></div>
-  
+
   <div class="detail1">  021 903 5121</div>
   <div class="detail2"> {{ personelRecord.data.room }}</div>
   <div class="detail3"> {{ personelRecord.data.workarea }}</div>
   <div class="detail4"> {{ personelRecord.data.email }}</div>
   <div class="detail5"> {{ personelRecord.data.changedate }}</div>
-  
+
   <div class="line"><v-divider
                        class="mx-4"
                        vertical
                       ></v-divider>
   </div>
-  <div class="logo text-center"> 
+  <div class="logo text-center">
       <!--small>DE KUILEN HS</small-->
-    <v-img class="text-center" src="/img/logo.png" 
+    <v-img class="text-center" src="/img/logo.png"
            max-width="100"
            contain
-    /> 
+    />
   </div>
-  
+
   </v-card-text>
  </v-card>
 
 
- <v-dialog v-model="showPersUpdate" 
-          v-if="showPersUpdate && pers" 
+ <v-dialog v-model="showPersUpdate"
+          v-if="showPersUpdate && pers"
           xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown" >
   <personel-edit @savePers="savePers" :pers="pers.data">   </personel-edit>
  </v-dialog>
 
 <!--
-{ "desc": "menemonic 151 Albertyn, undefined", 
+{ "desc": "menemonic 151 Albertyn, undefined",
 "data": { "persid": "151", "username": "username", "menemonic": "menemonic"
         , "staffid": "151", "heidiid": "151", "registergrade": null, "registerclass": null
         , "subjectid": null, "gender": "male"
@@ -92,9 +93,9 @@
 , "public_ander": "sport, ens..", "public_history": "geskiednis", "public_email": "KAlbertyn@dekhs.co.za"
 , "address": "14 Sonnemeisie Street, Kuilsriver, 7580"
 , "IDNumber": "7306165079082", "changedate": "2020-07-22 17:44:16" } }
--->  
+-->
 
- </v-container>   
+ </v-container>
 </template>
 
 <script>
@@ -112,7 +113,7 @@ export default {
       workarea:['Finance','Admin','Teacher','Support','Graadhoof','Ontvangs','Sport'],
    }),
     mounted: function() {
-      
+
     },
     methods:{
       updatePersonel() {
@@ -124,7 +125,7 @@ export default {
         ts.task = 'updateStaff';
         ts.data = this.pers
         ts.api = zmlConfig.apiDKHS
-        zmlFetch(ts, this.afterUpload);       
+        zmlFetch(ts, this.afterUpload);
         this.showPersUpdate = false
       },
       afterUpload(response) {

@@ -1,17 +1,24 @@
 <template>
-
+<!-- TYPE = 2 -->
  <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3)" max-height="1100">
   <v-card-title primary-title class="justify-center">
-    <v-card color="rgb(5, 101, 18, 0.4)" class="rounded pa-3">
-      <h1 class="wordbreak text-justify"> {{ title }}</h1>
+    <transition name="fade" mode="out-in" appear>
+    <v-card color="rgb(5, 101, 18, 0.9)" class="rounded pa-3">
+      <h1 class="wordbreak text-justify">
+
+        {{ title }}
+
+      </h1>
     </v-card>
+    </transition>
   </v-card-title>
-  <v-card-text> 
+  <v-card-text>
+    <!-- pagelistright:{{ diplomaList }} -->
      <v-row justify-lg="center">
        <v-col align="center" cols="12" lg="6" md="6">
          <v-sheet align-content-center  rounded
                   color="rgba(0, 0, 0, 0.1)">
-           <v-img class="ma-2"
+           <v-img class="ma-2 rounded"
                   :src="image"
                   lazy-src="img/lazyload.png"
                   :max-height="imageHeight"
@@ -24,32 +31,39 @@
                       justify="center">
                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-row>
-             </template>             
+             </template>
            </v-img>
-           
+
          </v-sheet>
          <!--v-divider v-if="$vuetify.breakpoint.mdAndUp" class="mx-4" vertical /-->
         </v-col>
-        <v-col align="center" cols="12" lg="6" md="6"> 
-           <v-card v-if="yellowNote.length > 0" 
-                   color="rgb(15, 1, 18, 0.8)"> 
+        <v-col align="center" cols="12" lg="6" md="6">
+           <v-card v-if="yellowNote.length > 0"
+                   color="rgb(15, 1, 18, 0.8)">
             <div class="koek1 yellow--text text--accent-2 text-center text-md-h1 text-bold">
               <v-icon class="float-left" left color="yellow"> mdi-star </v-icon>
-              <span v-html="yellowNote"> </span>
+               <span v-html="yellowNote"> </span>
               <v-icon class="float-right" right color="yellow"> mdi-star </v-icon>
             </div>
            </v-card>
 
-            <v-list color="rgb(15, 12, 18, 0.8)" rounded class="ma-2" max-height="500" style="overflow-y:auto">
+            <v-list color="rgb(15, 12, 18, 0.8)" rounded class="ma-2" max-height="500" style="position:sticky;overflow-y:auto">
              <v-list-item-group>
               <div v-for="awa in diplomaList" :key="awa.awardid">
                <v-list-item >
                <v-list-item-content class="grey--text">
                 <div v-if="awa.dip.length > 0" class="mb-1 koek1">
-                  <v-icon v-if="awa.dip.length > 0 && !$vuetify.breakpoint.smAndDown" left color="orange"> mdi-star-four-points-outline </v-icon>
-                   <span class="text-h6"> {{ awa.dip }} </span>
-                  <v-icon v-if="awa.dip.length > 0 && !$vuetify.breakpoint.smAndDown" right color="orange"> mdi-star-four-points-outline </v-icon>
-                 <v-divider  /> 
+                  <v-icon v-if="awa.dip.length > 0 && !$vuetify.breakpoint.smAndDown"
+                          left color="orange">
+                    mdi-star-four-points-outline
+                  </v-icon>
+                  <span class="text-h6">
+                    {{ awa.dip }}
+                  </span>
+                  <v-icon v-if="awa.dip.length > 0 && !$vuetify.breakpoint.smAndDown" right color="orange">
+                     mdi-star-four-points-outline
+                  </v-icon>
+                 <v-divider  />
                 </div>
                 <v-list-item-title align="center" class="mt-1 koek">
                     <h2 v-if="awa.sub.length < 40">{{ awa.sub }} </h2>
@@ -58,6 +72,7 @@
                </v-list-item-content>
                </v-list-item>
               </div>
+              <br><br>
              </v-list-item-group>
             </v-list>
       </v-col>
@@ -68,12 +83,12 @@
 
 
 <script>
-import {debounce, animateCss} from '@/api/externals'; 
+import {debounce, animateCss} from '@/api/externals';
 export default {
     name: "pagelistright",
     components: {},
     props: {image: {type:String, default:"https://www.kuiliesonline.co.za/img/CleanDKHS.png"}
-           ,title:String 
+           ,title:String
            ,diplomaList:Array
            ,yellowNote: {type: String, default: ""}
            },
@@ -82,7 +97,7 @@ export default {
       return {
         show:false,
         currentPanel:null,
-       } 
+       }
     },
     computed: {
        imageHeight () {
@@ -94,7 +109,7 @@ export default {
           case 'xl': return '550'
         }
         return '550'
-      },      
+      },
     },
     methods: {
         onKeyDown(){
@@ -103,7 +118,7 @@ export default {
                     document.querySelector('#searchboxui-wrapper').style.display = 'none';
                 });
             });
-        },      
+        },
         sleep(ms) {
            return new Promise(resolve => setTimeout(resolve, ms));
         },
@@ -158,4 +173,12 @@ text-decoration: underline wavy red
   top: 0;
   width: 100%;
 }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 </style>

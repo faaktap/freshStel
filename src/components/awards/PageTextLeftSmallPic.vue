@@ -1,22 +1,27 @@
 <template>
+<!-- Type = 3 -->
 <v-container fluid>
   <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3" v-show="show">
    <v-card-title primary-title class="justify-center">
      <v-card color="rgb(15, 101, 8, 0.4)" class="rounded koek1 pa-3">
-        <div class="text-md-h4 font-weight-medium wordbreak text-justify text--white"> 
-          {{ title }} 
+        <div class="text-md-h4 font-weight-medium wordbreak text-justify text--white">
+          {{ title }}
         </div>
      </v-card>
    </v-card-title>
 
-   <v-card-text > 
+   <v-card-text >
     <v-row justify-lg="center">
       <v-col align="center" cols="12" md="6" lg="6">
-        <v-card color="rgba(10, 19, 61, 0.5)" class="pa-sm-0 pa-lg-4 ma-sm-0 ma-lg-4">
-                
-         <v-container fill-height fluid 
+        <v-card color="rgba(10, 19, 61, 0.5)"
+                class="pa-sm-0 pa-lg-4 ma-sm-0 ma-lg-4"
+                max-height="500" style="position:sticky;overflow-y:auto"
+                >
+
+         <v-container fill-height fluid
                       class="d-flex flex-row align-center mb-6">
-             <p v-html="lefttext" class="lightgray--text text-lg-h6 text-sm-caption font-weight-light wordbreak text-justify pa-sm-0 pa-lg-2 ma-sm-0 ma-lg-3">
+             <p v-html="lefttext" class="lightgray--text text-lg-h6 text-sm-caption font-weight-light wordbreak text-justify pa-sm-0 pa-lg-2 ma-sm-0 ma-lg-3"
+                 >
 
              </p>
 
@@ -24,22 +29,22 @@
          </v-card>
          <v-divider v-if="$vuetify.breakpoint.mdAndUp"  vertical />
       </v-col>
-       
+
       <v-col align="center" cols="12" md="6">
-         
+
         <v-card color="rgba(15, 101, 8, 0.4)" class="rounded koek1 pa-3">
-            <v-img color="rgba(15, 101, 8, 0.9)" 
-                   elevation="4" 
-                  :src="image" 
+            <v-img color="rgba(15, 101, 8, 0.9)"
+                   elevation="4"
+                  :src="image"
                    class="swivelImage ma-3"
                    :max-height="imageHeight"
                    contain>
             </v-img>
             <br>
           <div class="text-md-h4  d-xs-none d-sm-block wordbreak text-center" v-html="maintitle">  </div>
-          
+
         </v-card>
-         
+
       </v-col>
       <!--v-col cols="1"></v-col-->
     </v-row>
@@ -62,7 +67,7 @@ export default {
       return {
         show:true,
         currentPanel:null
-       } 
+       }
     },
     computed: {
        imageHeight () {
@@ -74,7 +79,7 @@ export default {
           case 'xl': return '500'
         }
         return '550'
-      },      
+      },
     },
     methods: {
         sleep(ms) {

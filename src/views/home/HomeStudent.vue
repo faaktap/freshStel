@@ -12,7 +12,7 @@
                :src="photo" />
     </div>
     <div class="float-right ma-2">
-         {{ getZml.login.fullname}} / G{{ getZml.login.grade }}{{ getZml.login.gclass }}
+         {{ getZml.login.fullname}} / {{ getZml.login.grade }} - {{ getZml.login.gclass }}
     </div>
         </div>
     </v-card>
@@ -21,6 +21,24 @@
  <student-photo-list :studentid="studentid" @foundPhoto="weHaveIt" />
 </v-dialog>
 
+<v-row class="pa-5">
+    <v-col cols="12" class="text-center">
+        <v-btn @click="showAttendanceBadge"
+               class="ma-2 pa-2">
+            <v-icon>
+              mdi-qrcode-scan
+            </v-icon>
+          Attendance Badge
+        </v-btn>
+    </v-col>
+</v-row>
+<!-- <iframe src="https://en.wikipedia.org/wiki/HTML_element#Frames"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+            width="100%"
+            height="100%"
+            scrolling="auto" /> -->
 <v-row>
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
@@ -35,6 +53,8 @@
               :studentGradeClass="gradeToShow.g +  gradeToShow.c" />
    </v-expansion-panel-content>
    </v-expansion-panel> -->
+
+
    <v-expansion-panel>
        <v-expansion-panel-header
          title="A list of all the places you can go to on this webpage.">
@@ -45,11 +65,38 @@
           <list-test functiongroup="other" />
        </v-expansion-panel-content>
    </v-expansion-panel>
+   <v-expansion-panel>
+       <v-expansion-panel-header
+         title="Email Addresses for Newsletters.">
+         Email Addresses for Newsletters.
+       </v-expansion-panel-header>
+       <v-expansion-panel-content>
+         <student-email-list :studentid="studentid" color="primary" />
+       </v-expansion-panel-content>
+   </v-expansion-panel>
+   <v-expansion-panel>
+       <v-expansion-panel-header
+         title="Link to subjects">
+          Subjects
+       </v-expansion-panel-header>
+       <v-expansion-panel-content>
+        <student-subject-list :studentid="studentid" color="primary" />
+       </v-expansion-panel-content>
+   </v-expansion-panel>
+
+   <v-expansion-panel>
+       <v-expansion-panel-header
+         title="Show Email Bulletins">
+          Email Bulletins
+       </v-expansion-panel-header>
+       <v-expansion-panel-content>
+        <email-bulletins emailSearch="ebull" />
+       </v-expansion-panel-content>
+   </v-expansion-panel>
+
   </v-expansion-panels>
- </v-col>
- <v-col cols="12">
-  <student-subject-list :studentid="studentid" color="primary" />
-  <student-email-list :studentid="studentid" color="primary" />
+
+
  </v-col>
 
 <!--
@@ -72,7 +119,6 @@
     <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>
-        <email-list />
     </div>
 </div>
 </template>
@@ -84,23 +130,23 @@ import { doStuff } from '@/api/buttons'
 import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
-import EmailList from '@/components/EmailList';
 import ListTest from '@/components/ListTest.vue';
 //import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
+import EmailBulletins from '@/components/email/EmailBulletins'
 import Avatar from '@/components/base/Avatar'
 export default {
     name:"StudentHome",
     components:{
-          EmailList
-        , ListTest
+          ListTest
         //, CalendarStudent
         , StudentEmailList
         , StudentSubjectList
         , StudentPhotoList
         , Avatar
+        , EmailBulletins
         //, StudentGrade
      },
     data: () => ({
@@ -127,6 +173,9 @@ export default {
         }
     },
     methods:{
+        showAttendanceBadge(){
+             window.open(`https://kuiliesonline.co.za/att/badge/${this.studentid}`)
+        },
         showPhoto(ev) {
             //We only load the photo if he clicks on the avatar icon.
             //Then we replace the "initialicon" with a actual photo - if we have one.

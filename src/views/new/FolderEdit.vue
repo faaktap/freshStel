@@ -1,7 +1,8 @@
 <template>
   <!-- https://github.com/SortableJS/Sortable for draggable options this looks like the best. -->
   <v-container fluid>
-    <v-card color="silver" class="ma-2 pa-2">
+
+   <v-card color="silver" class="ma-2 pa-2">
       <v-card width="100%">
         <base-bread
           v-if="curDir"
@@ -96,7 +97,7 @@
          Rename Item
         </base-tool-button>
 
-        <v-checkbox
+        <v-switch
           v-model="showFoldersInFileList"
           class="ml-2 pt-5"
           label="Folders"
@@ -119,7 +120,7 @@
       </v-toolbar>
       <v-row  v-if="allowEdit">
         <v-col cols="12">
-          <v-card color="silver" class="ma-2 pa-2">
+          <v-card color="silver" class="ma-0 pa-1 text-caption">
             <v-card v-if="operation" class="ma-2 pa-2" color="green lighten-1">
               Our current operation is <code>select</code> and we have {{ moving.length }} files selected .
               <template v-if="operation == 'move'">
@@ -156,18 +157,36 @@
                   </template>
                   <template
                     v-if="moving.length>1"
-                  >
+                  > <v-card class="ma-0 pa-0 text-center">
                     Select even More Files - Click here to see/hide current file list
+                    </v-card>
                   </template>
                 </template>
-                <h3>Files selected so far ... {{ moving.length }} </h3>
+                <!-- <h3>Files selected so far ... {{ moving.length }} </h3>
                 <span v-for="(m,i) in moving" :key="m.filename">
                   {{ i }} {{ m.filename }},
-                </span>
+                </span> -->
+
+     <v-simple-table dense class="ma-0 pa-0" v-if="moving">
+     <tbody class="text-caption">
+     <th colspan="2">File</th><th>Extension</th>
+     <tr v-for="(m,i) in moving"  :key="m.filename"
+         color="blue lighten-4"
+         class="text-caption">
+     <td class="text-left ma-1 pa-1 text-caption"> {{i}} </td>
+     <td class="text-left ma-0 pa-0 text-caption">
+            {{ m.filename }}
+     </td>
+     <td> {{ m.ext }}   </td>
+     </tr>
+     </tbody>
+    </v-simple-table>
+
+
               </base-title-expand>
             </v-card>
             <div v-else>
-              <small> no operation active </small>
+              <small class="text-caption"> no operation active </small>
             </div>
           </v-card>
         </v-col>
@@ -175,14 +194,11 @@
 
       <v-row row wrap>
         <v-col cols="12" sm="6" md="4">
-          <!-- MOVE FOLDER DISPLAY -->
             <v-card
               class="ma-2 pa-2 overflow-y-auto"
             >
-              <v-card-title>
+              <v-card-actions class="ma-0 pa-0">
                 <base-tool-button
-                  color="blue lighten-1"
-                  class="text-caption"
                   title="go Back one folder"
                   @click="back"
                   icon="mdi-backspace"
@@ -192,22 +208,26 @@
                 <v-spacer />
                 <v-btn v-if="$vuetify.breakpoint.smAndDown || showMobile"
                        @click="showMobile = true"
-                       icon>
-                  <v-icon color="yellow"> mdi-folder </v-icon>
+                       small
+                       >
+                       folders
+                  <v-icon right color="yellow"> mdi-folder </v-icon>
                 </v-btn>
-              </v-card-title>
-
+              </v-card-actions>
+              <v-card-text>
+<!-- Show folders, either in a dialog for small, or standard display --->
               <v-dialog v-model="showMobile">
-              <folders
+               <folders
                 :directory-display-records="directoryDisplayRecords"
                 :folder-load-url="folderLoadUrl"
                 :current-path="curDir"
+                :accessTree="usertype"
                 @folder="loadFolder"
                 @moreFolder="checkPathBeforeLoadFolder"
                 @folderSelected="folderSelected = $event"
-              />
+               />
               </v-dialog>
-              <folders
+               <folders
                 class="hidden-sm-and-down"
                 :directory-display-records="directoryDisplayRecords"
                 :folder-load-url="folderLoadUrl"
@@ -215,11 +235,12 @@
                 @folder="loadFolder"
                 @moreFolder="checkPathBeforeLoadFolder"
                 @folderSelected="folderSelected = $event"
-              />
-
+               />
+             </v-card-text>
             </v-card>
         </v-col>
 
+<!-- Show the files --->
         <v-col cols="12" sm="6" md="8">
           <!-- FILES DISPLAY -->
           <v-card class="ma-2 pa-2">
@@ -232,6 +253,7 @@
               :moving="moving"
               :loading="loading"
               @clickRow="clickFile"
+              @clickDblRow="clickDblFile"
               @clickIcon="clickFileIcon"
             />
           </v-card>
@@ -239,6 +261,7 @@
       </v-row>
     </v-card>
 
+<!---------------- SHOW CREATE FOLDER --------------------------------------->
     <v-dialog
       v-model="showCreateFolder"
       width="auto"
@@ -259,6 +282,8 @@
      </v-card>
     </v-dialog>
 
+
+<!---------------- SHOW RENAME ITEM --------------------------------------->
     <v-dialog
       v-model="showRenameItem"
       width="auto"
@@ -279,6 +304,7 @@
      </v-card>
     </v-dialog>
 
+<!---------------- SHOW DELETE ITEM --------------------------------------->
     <v-dialog
       v-model="showDeleteItem"
       width="auto"
@@ -311,21 +337,19 @@
      </v-card>
     </v-dialog>
 
+<!---------------- FILE UPLOAD --------------------------------------->
     <v-dialog
       v-model="showUpload"
-      width="auto"
       :scrollable="false"
       :fullscreen="$vuetify.breakpoint.smAndDown"
     >
-     <v-card>
       <file-upload
-        class="ma-2"
         @filesUploaded="reportBack"
         @uploadFinished="closeAndRefresh"
         :uploadPath="curDir" />
-     </v-card>
     </v-dialog>
 
+<!---------------- SHOW FILE --------------------------------------->
     <v-dialog v-model="showAttachment"
                   xmax-width="400"
                   :fullscreen="$vuetify.breakpoint.smAndDown"
@@ -345,7 +369,10 @@
 <script>
 import { feh } from './FolderEdit.js'
 import { zmlFetch } from '@/api/zmlFetch'
+
 import { getters } from "@/api/store";
+const usertype = getters.getState({ object: "gZml" }).login.type;
+
 import BaseBread from '@/views/new/base/BaseBread.vue'
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 import BaseTitleExpand from '@//views/new/base/BaseTitleExpand.vue'
@@ -355,7 +382,7 @@ import FileUpload from '@/views/new/folder/FileUpload'
 
 import LoadingBall from '@//views/new/comp/LoadingBall.vue'
 import { infoSnackbar } from '@/api/GlobalActions'
-
+import { zmlLog } from '@/api/zmlLog.js';
 import ShowAttachmentDialog from '@/components/ShowAttachmentDialog.vue'
 
 export default {
@@ -371,6 +398,7 @@ export default {
     ShowAttachmentDialog
   },
   data: () => ({
+    usertype:usertype,
     getZml: getters.getState({ object:"gZml" }),
     fileDisplayRecords: [],
     directoryDisplayRecords: [],
@@ -406,6 +434,7 @@ export default {
     },
     reportBack(e1) {
       console.log('Report Back...........',e1)
+      zmlLog(this.getZml.login.username , "UploadContent", this.curDir + ':' + JSON.stringify(e1).substr(0,250))
     },
     closeAndRefresh() {
       this.showUpload = false
@@ -516,7 +545,9 @@ export default {
     },
     // create folder operation end here
     doneAction (result) {
-      if (result.error) {
+      if (result.errorcode && result.errorcode == true) {
+        this.snack('Action completed')
+      } else {
         this.snack('Action not completed : ' +  result.error)
       }
       this.loading = false
@@ -526,6 +557,11 @@ export default {
       this.moving = []
       this.operation = ''
       this.getFiles(this.curDir)
+    },
+    clickDblFile (fileObj) {
+      // Here we can assign an event like rename - so we have it automatic,
+      // Or we have some sort of small menu popup?
+      this.clickFileIcon (fileObj)
     },
     clickFile (fileObj) {
       //console.log('cccccclickFile : received an emit for rowclick on ', fileObj.filename , fileObj.dirpath)
@@ -569,8 +605,19 @@ export default {
         this.getFiles(fileObj.dirpath + '/' + fileObj.filename)
         return
       }
-      this.attachment.src = fileObj.dirpath + '/' + fileObj.filename
-      this.attachment.srctype =  fileObj.ext
+      this.prepareAttachment(fileObj)
+    },
+    prepareAttachment(fileObj) {
+      if (fileObj.ext == 'link') {
+        alert('this is a test for google drive links..')
+        console.log('We need to read (getfilecontents):' + fileObj.dirpath + '/' + fileObj.filename)
+        //Put this one in as a test..
+        this.attachment.src = 'https://docs.google.com/spreadsheets/d/1d3HciexwZQndqHULEILwk_g4F1RRwUMlQjVVPc80BsI/edit?usp=sharing'
+        this.attachment.srctype =  'link'
+      } else {
+        this.attachment.src = fileObj.dirpath + '/' + fileObj.filename
+        this.attachment.srctype =  fileObj.ext
+      }
       this.showAttachment = true
     },
     back () {
@@ -618,6 +665,7 @@ export default {
       this.loading = false
     },
     doneLoadingFiles (result) {
+      console.log('doneloading:1', result.error, result)
       if (result.error) {
         // console.log('doneloading:1')
         this.snack('Error on load:', result.error)
@@ -626,7 +674,6 @@ export default {
         // console.log('doneloading:2')
         this.snack('we found no files')
       } else {
-        // console.log('doneloading:3')
         [this.fileDisplayRecords, this.directoryDisplayRecords] = feh.processReadDirectoryResult(result)
         // console.log(result.length, this.fileDisplayRecords.length, this.directoryDisplayRecords.length)
         this.curDir = feh.fixSlash(result[0].dirpath)
@@ -640,37 +687,41 @@ export default {
     snack (txt) {
       //this.$notifier.showMessage({content: txt, color: 'info' })
       infoSnackbar(txt)
+    },
+    checkForANewRoute() {
+      if (this.$route.params.grade) {
+        if (this.$route.params.grade.toUpperCase() == 'ALL') {
+          this.getFiles(this.curDir)
+        } else {
+          if ( ["GR08","GR09","GR10","GR11","GR12","GRINFO","MUSIC_MUSIEK"].includes(this.$route.params.grade.toUpperCase()) ) {
+            this.curDir += '/' + this.$route.params.grade.toUpperCase()
+          } else {
+            if (this.$route.params.grade) {
+              this.curDir  += '/' + this.$route.params.grade.toUpperCase()
+            }
+          }
+          if (this.$route.params.subject) {
+            this.curDir  += '/' + this.$route.params.subject
+          }
+          if (this.$route.params.level1) {
+            this.curDir  += '/' + this.$route.params.level1
+          }
+          if (this.$route.params.level2) {
+            this.curDir  += '/' + this.$route.params.level2
+          }
+          this.getFiles(this.curDir)
+        }
+      } else {
+        this.getFiles(this.curDir)
+      }
     }
 
   },
   mounted () {
-    console.log('FolderEdit Start',this.$route.params, this.curDir)
-    if (this.$route.params.grade) {
-      // console.log('handle parameters')
-      if (this.$route.params.grade.toUpperCase() == 'ALL') {
-        this.getFiles(this.curDir)
-      } else {
-        if ( ["GR08","GR09","GR10","GR11","GR12","GRINFO","MUSIC_MUSIEK"].includes(this.$route.params.grade.toUpperCase()) ) {
-          this.curDir += '/' + this.$route.params.grade.toUpperCase()
-        } else {
-          if (this.$route.params.grade) {
-            this.curDir  += '/' + this.$route.params.grade.toUpperCase()
-          }
-        }
-        if (this.$route.params.subject) {
-          this.curDir  += '/' + this.$route.params.subject
-        }
-        console.log('mnt',this.$route.params, this.curDir)
-        this.getFiles(this.curDir)
-      }
-    } else {
-      console.log('come in clean')
-      this.getFiles(this.curDir)
-    }
+    this.checkForANewRoute()
     this.allowEdit = ['teacher','admin'].includes(this.getZml.login.type)
-    console.log('FolderEdit Mount End',this.$route.params, this.curDir)
+    console.log('access:', this.getZml.login.type)
   },
 
 }
-
 </script>

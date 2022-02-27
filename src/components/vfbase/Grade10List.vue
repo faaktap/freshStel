@@ -18,12 +18,12 @@
           <v-col cols="12">
               <v-text-field outlined filled v-model="studentListSearch" label="Search by Surname" />
           </v-col>
-        <v-col cols="6" md="4" lg="3" 
-               v-for="(s,index) in studentListFilter" 
+        <v-col cols="6" md="4" lg="3"
+               v-for="(s,index) in studentListFilter"
               :key="s.schoolno">
           <v-card class="ma-1 pl-2"
-                 @click="showStudent(index)">  
-           {{ index+1 }} {{ s.surname }}, {{ s.name}} 
+                 @click="showStudent(index)">
+           {{ index+1 }} {{ s.surname }}, {{ s.name}}
             <v-card class="ma-2 pa-2" xxcolor="green lighten-2">
                 {{ s.email }}
             </v-card>
@@ -34,19 +34,19 @@
       </v-row>
      </v-card-text>
      <v-card-actions>
-       <v-btn v-if="studentList.length" 
+       <v-btn v-if="studentList.length"
            @click="showListPrint=true"
            small
-           title="Click to build an export list."> 
-           export 
+           title="Click to build an export list.">
+           export
        </v-btn>
      </v-card-actions>
     </v-card>
    </v-col>
   </v-row>
 
-<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">  
-  (werner) studentList  :  
+<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+  (werner) studentList  :
   <div v-for="s in studentList" :key="s.studentid">
   <br> {{ s }}
   </div>
@@ -60,10 +60,10 @@
                     @hideModal="showListPrint=false">
    <v-btn>
       Download with custom title
-   </v-btn> 
+   </v-btn>
   </front-json-to-csv>
 </v-dialog>
- 
+
  <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
    <zml-close-button @btn-click="showStudentCard = false" />
    <student-name-card :studentList="singleStudent" />
@@ -104,18 +104,22 @@ export default {
             return this.studentList.filter(e => e.surname.toLowerCase().includes(this.studentListSearch.toLowerCase()) )
         },
     },
-    methods:{ 
+    methods:{
       classListLoad() {
          g10.getAllQuiz('all',this.loadData)
       },
       loadData(response) {
+        if (response == "[null]") {
+          alert('No Data Yet!')
+          return
+        }
         this.classListHeader = "Student List for Grade 10's in 2022"
         this.studentList.length = 0
         this.studentList = JSON.parse( response )
       },
       loadError(error) {
         alert('S.C.A.' + error)
-      },  
+      },
       showStudent(idx) {
         this.singleStudent.data = this.studentListFilter[idx]
         this.singleStudent.data.studentid = this.studentListFilter[idx].schoolno

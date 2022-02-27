@@ -63,6 +63,7 @@ module.exports = {
       }
     },
     $_downloadCsv (uid, csv, title) {
+      console.log('$_downloadCsv',uid,csv,title)
       try {
         let uri = 'data:text/csv;charset=utf-8,' + '\uFEFF' + encodeURIComponent(csv)
 

@@ -1,12 +1,12 @@
 <template>
  <v-container>
 
- <!-- TABLE HEADING AND DISPLAY -->   
+ <!-- TABLE HEADING AND DISPLAY -->
   <v-row >
    <v-col cols="12" v-if="tHeading">
     <h1 class="text-center grey--text"> {{ tHeading }} </h1>
    </v-col>
-   <v-col cols="12">   
+   <v-col cols="12">
     <v-card xcolor="deep-purple lighten-4">
      <v-container fluid color="gray--text text--lighten-5">
       <v-row >
@@ -38,9 +38,9 @@
                  @dblclick:row="doubleClickOnTableRow"
            >
             <template v-slot:footer>
-              <v-card class="ma-4"> 
+              <v-card class="ma-4">
                <v-card-text class="green lighten-4">
-               Kliek op die klein ronde dingetjie om data te verander, die op en af pyl om te skuif, en die 
+               Kliek op die klein ronde dingetjie om data te verander, die op en af pyl om te skuif, en die
                snaakse + teken onder regs om iets by te voeg.
                </v-card-text>
               </v-card>
@@ -56,11 +56,11 @@
       </v-container>
      </v-card>
    </v-col>
-  </v-row> 
+  </v-row>
 
 <v-dialog>
 </v-dialog>
- </v-container>   
+ </v-container>
 </template>
 
 <script>
@@ -75,7 +75,7 @@ export default {
         curItem:{},
         search:null,
         tableLoading:false,
-        tHeader: []      
+        tHeader: []
     }),
     methods:{
       doubleClickOnTableRow() {
@@ -88,9 +88,11 @@ export default {
           infoSnackbar('Add New Entry - Allocate')
       },
       buildHeaders() {
+        console.log('check building headers', this.$options.name)
         if (!this.tList || this.tList.length == 0) {
             return
         }
+        console.log('passed null check')
         this.tableLoading = true
         this.tHeader = []
         Object.keys(this.tList[0]).forEach(name => {
@@ -102,7 +104,8 @@ export default {
       },
     },
     mounted: function() {
-        this.buildHeaders()
+      console.log('Mount', this.$options.name)
+      this.buildHeaders()
     },
     watch: {
         tList: {

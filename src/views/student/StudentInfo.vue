@@ -1,18 +1,18 @@
 <template>
 <div>
  <v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
-  <hero-section name="forDB" 
-               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg" 
-               title="Student Information" 
+  <hero-section name="forDB"
+               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
+               title="Student Information"
                text=""
                breakup1="100"
                breakup2="20"
-               color="pink darken-3"               
+               color="pink darken-3"
                />
   <hr />
 
   <v-toolbar color="primary" class="my-toolbar">
-    <v-toolbar-title> 
+    <v-toolbar-title>
       <template v-if="!searchMore">
         Please enter a part of the student's surname
       </template>
@@ -22,31 +22,24 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-checkbox
+      <v-switch
           v-model="searchMore"
           color="secondary"
          :label="`Search more than Surname: ${searchMore}`"
-      ></v-checkbox>  
+      ></v-switch>
     </v-toolbar-items>
   </v-toolbar>
 
-<!-- <v-parallax src="img/public.jpg" height="100vh">
-<v-container grid-list-md text-xs-center>
-      <v-layout row wrap>
-        <v-flex >
-          <student-name-card :studentList="studentList" color="green darken-3" />
-          <student-subject-list :studentid="studentid" color="green darken-3" />
-          <student-email-list v-if="studentid" :studentid="studentid" color="green darken-3"/>            
-          <student-photo-list :studentid="studentid"  color="green darken-3" />
-        </v-flex>
-      </v-layout>
-    </v-container>
-</v-parallax> -->
 
   <v-container>
-      
-       <student-lookup @dataEntered="studentFound" :searchMore="searchMore" />
-      
+
+       <student-lookup
+          v-model="blahblah"
+          @dataEntered="studentFound"
+          :searchMore="searchMore" />
+       {{ blahblah }}
+       <div v-if="studentList"> Admin Number : {{ studentList.data.studentid }} </div>
+
        <base-title-expand v-if="studentList" heading="Basic Student Info">
           <student-name-card :studentList="studentList" color="blue lighten-2" />
        </base-title-expand>
@@ -54,15 +47,17 @@
            <student-subject-list :studentid="studentList.data.studentid" color="white darken-1" />
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Emails">
-          <student-email-list :studentid="studentList.data.studentid" color="white darken-1"/>            
+          <student-email-list :studentid="studentList.data.studentid" color="white darken-1"/>
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Photos">
           <student-photo-list :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
-  
+       <base-title-expand v-if="studentList" heading="Student Attendance">
+          <student-attendance :studentid="studentList.data.studentid"  color="white darken-1" />
+       </base-title-expand>
   </v-container>
 
-<!--
+<!--   another nice card layout we might use...
  <v-container grid-list-lg>
       <v-layout row wrap>
         <v-flex v-for="teacher in teachers" :key="teacher.firstName" xs12 sm6 md4>
@@ -94,7 +89,7 @@
  </v-container>
 
   <router-link :to="{ name: 'PersonelInfo'}" > <v-icon> mdi-nature-people </v-icon> </router-link>
-  
+
 </div>
 </template>
 
@@ -109,21 +104,24 @@ import StudentNameCard from '@/components/student/StudentNameCard'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
+import StudentAttendance from '@/components/student/StudentAttendance'
 
 export default {
 name: "StudentInfo",
-props:{},
+props:['studentid'],
 components: {HeroSection
            , StudentLookup
            , StudentNameCard
            , StudentPhotoList
-           , StudentEmailList    
-           , StudentSubjectList       
+           , StudentEmailList
+           , StudentSubjectList
+           , StudentAttendance
            , BaseTitleExpand
            },
 data: () => ({
   studentList:null,
   searchMore:false,
+  blahblah:'',
   getZml: getters.getState({ object:"gZml" }),
 teachers:[
         {firstName:'Jon', lastName:'Doe', specialty:'PE', ms:' University of Georgia',
@@ -137,26 +135,50 @@ teachers:[
          src:'https://randomuser.me/api/portraits/men/71.jpg'},
         {firstName:'Peter', lastName:'Miros', specialty:'Mathematics', ms:'University of Miami',
          msc:'Georgetown University', src:'https://randomuser.me/api/portraits/men/20.jpg'},
-      ]  
+      ]
 }),
 methods: {
   IDs(value) {
     if (value.data == 'undefined') return;
-    //this.$cs.l('ID = ' , value);
     this.studentIDs = value;
   },
   studentFound(value) {
     if (value.data == 'undefined') return;
-    //this.$cs.l(value.data);
     this.studentList = value;
-    console.log('zzzzzzzzzzzzzzzzzzzzzzzzzzzz', this.studentList)
   },
   ss() {
       infoSnackbar('hallo')
-  }
+  },
+  loadFromLocalStorage() {
+      //Check localstorage...
+    if (localStorage.getItem('lastStudent')) {
+        try {
+          this.getZml.login = JSON.parse(localStorage.getItem('login'));
+        } catch(e) {
+          localStorage.removeItem('login')
+        }
+        if (this.getZml.login.lang == 'A') {
+            this.$i18n.locale = 'af'
+        }
+      }
+  },
+  saveLocalStorage() {
+      let loginDetails = JSON.stringify(this.getZml.login)
+      localStorage.setItem('login', loginDetails)
+ }
+
 },
 mounted: function () {
     //this.$cs.l('SINF MOUNTED', zmlConfig.maxUploadSize)
+    // maybe call same function with adminnumber?
+
+    // need to work on this, move student retrieval to a js file, so we can  make a call on a studentnumber
+    // if (this.$route.params.studentid !== "undefined") {
+    //   alert(this.studentid)
+    //   this.searchMore = true
+    //   this.blahblah = this.$route.params.studentid
+    // }
+
 }
 
 }

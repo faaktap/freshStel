@@ -44,19 +44,17 @@
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>
         <v-btn to="/loadhomework"> loadhomework </v-btn>
-        <email-list />
     </div>
 </div>
 </template>
 
 <script>
 import { getters } from "@/api/store";
-import EmailList from '@/components/EmailList.vue';
 import Calendar from '@/components/Calendar.vue';
 import ListTest from '@/components/ListTest.vue';
 export default {
     name:"TeacherHome",
-    components:{EmailList, Calendar, ListTest},
+    components:{Calendar, ListTest},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          cards: ['Today', 'Yesterday'],

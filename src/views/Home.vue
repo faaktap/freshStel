@@ -21,6 +21,7 @@
                title="Student's Home"
                />
   <hr />
+
   <student-home />
 
   </v-container>

@@ -1,9 +1,9 @@
 <template>
-   <v-card v-if="subjectList" xmax-width="500" class="mx-auto" :color="color" elevation="2">
+   <v-card v-if="subjectList.length" xmax-width="500" class="mx-auto" :color="color" elevation="2">
        <v-card-title class="headline ma-1"> Subjects </v-card-title>
        <div v-for="s in subjectList" :key="s.studsubid" class="ma-2">
         <v-card class="pa-2 ml-1 mr-2" :xcolor="color">
-         {{ s.subjectname }} 
+         {{ s.subjectname }}
          <div class="float-right">
            {{ s.teachersurname }},
            {{ s.teacherinitial }}
@@ -43,10 +43,10 @@ export default {
         }
     },
     mounted: function() {
-        if (this.studentid) {   
+        if (this.studentid) {
            this.loadStudentSubject()
         } else {
-           this.subjectList.length = 0 
+           this.subjectList.length = 0
         }
     },
     watch: {

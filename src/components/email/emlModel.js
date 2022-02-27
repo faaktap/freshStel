@@ -1,7 +1,7 @@
 const required = ( msg ) => v => !!v || msg
 const minLen = l => v => (v && v.length >= l) || `min. ${l} Characters`
 const maxLen = l => v => (v && v.length <= l) || `max. ${l} Characters`
-const requiredArray = ( msg ) => v => (Array.isArray(v) && v.length>1) || msg                
+const requiredArray = ( msg ) => v => (Array.isArray(v) && v.length>1) || msg
  // eslint-disable-next-line
 const rules = {
   requiredEmail: required('E-mail is required'),
@@ -33,7 +33,7 @@ export const emailModel = {
               , prependInnerIcon:"mdi-email"
               , solo:true
               , readonly:true
-              , col: { cols: 12, md: 6 } 
+              , col: { cols: 12, md: 6 }
               , class:'xtitle pa-2 rounded col-md-6'
               , ripple:{ center:true, class: 'item blue--text' }
               , tooltip: "Parent or guardian's email address."
@@ -44,33 +44,33 @@ export const emailModel = {
               , prependInnerIcon:"mdi-text-subject"
               , solo:true
               , readonly:true
-              , col: { cols : 12, md: 6 } 
+              , col: { cols : 12, md: 6 }
               , class:'title pa-2 rounded col-md-6'
-              , tooltip: 'Email Subject' 
-            },      
+              , tooltip: 'Email Subject'
+            },
             sentdate: {
                type: 'text'
              , label: 'Sent Date'
              , prependInnerIcon:"mdi-calendar-today"
              , readonly:true
-             , col: { cols : 12, md: 6 } 
+             , col: { cols : 12, md: 6 }
              , class:'title pa-2 rounded col-md-6'
-             , tooltip: 'Date email was sent' 
+             , tooltip: 'Date email was sent'
              , hint: 'Date email was sent'
-            },      
+            },
             group: {
                 type: 'text'
               , label: 'Group Name'
               , prependInnerIcon:"mdi-group"
               , readonly:true
-              , col: { cols : 12, md: 6 } 
+              , col: { cols : 12, md: 6 }
               , class:'title pa-2 rounded col-md-6'
-              , tooltip: 'Group the email was sent to' 
-             },      
+              , tooltip: 'Group the email was sent to'
+             },
              attachments: {
                 type: "list",
                 label: "Attachment List",
-                col: { cols : 12, md: 6 }, 
+                col: { cols : 12, md: 6 },
                 color: "blue",
                 readonly:true,
                 icon:"mdi-file",
@@ -78,11 +78,20 @@ export const emailModel = {
                 value:"htmlfilepath",
                 class: "pa-2 rounded elevation-4",
              },
+             emailContent:{
+              type: 'textarea'
+            , label: 'Content'
+            , prependInnerIcon:"mdi-text-box"
+            , readonly:true
+            , col: { cols : 12, md: 6 }
+            , class:'title pa-2 rounded col-md-6'
+            , tooltip: 'Part of the letter'
+           },
 
          }
         },
     }
-    
+
 }
 
 // xxxattachments: {
@@ -93,7 +102,7 @@ export const emailModel = {
 //     readonly:true,
 //     accept: "image/*",
 //     multiple: true
-// },      
+// },
 // OptOut: {
 //     type: "list",
 //     label: "Email Opt Out",
@@ -104,5 +113,5 @@ export const emailModel = {
 //     backgroundcolor: "yellow",
 //     col: 5,
 //     activeClass : "red darken-1",
-//     tooltip: 'To NOT receive email anymore, click on of these options' 
+//     tooltip: 'To NOT receive email anymore, click on of these options'
 // },

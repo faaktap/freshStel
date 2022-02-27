@@ -1,11 +1,17 @@
 <template>
   <div>
-    <v-tabs v-model="tab">
-      <v-tab key="DIR1" class="text-caption">
+
+    <v-tabs v-model="tab" class="ma-1 pa-1" height="29">
+      <v-tab
+        key="DIR1"
+        class="text-caption">
         <small>Current Folders</small>
-        <v-btn @click="noColor = !noColor" small text>..</v-btn>
+        <v-btn @click="switchColor" small text>..</v-btn>
       </v-tab>
-      <v-tab key="DIR2" class="text-caption">
+      <v-tab
+         v-if="accessTree != 'student'"
+         key="DIR2"
+         class="text-caption">
         <small>
           All Folders<loading-ball :loading="loading" />
         </small>
@@ -24,7 +30,7 @@
               >
                 <v-btn
                   class="text-caption mr-2 pl-2"
-                  :color="getFolderColor(f)"
+                  :color="getFolderColor(f.filename)"
                   @click="passBackFolderOnButton(f.filename)"
                 >
                   <v-icon left small :color="f.color">
@@ -43,7 +49,7 @@
           <v-card :loading="loading">
             <base-tool-button
               small
-              @click="getFolders()"
+              @click="getTreeFolders()"
             >
               refresh
             </base-tool-button>
@@ -85,8 +91,9 @@
 <script>
 import { zmlFetch } from '@/api/zmlFetch'
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
-import LoadingBall from '@//views/new/comp/LoadingBall.vue'
-import { getters } from "@/api/store";
+import LoadingBall from '@/views/new/comp/LoadingBall.vue'
+import { fol } from '@/views/new/folder/folder.js'
+import { getters } from "@/api/store.js";
 import { zData } from "@/api/zGetBackgroundData.js"
 export default {
   name: 'Folders',
@@ -94,7 +101,8 @@ export default {
   props: {
     directoryDisplayRecords: { type: Array },
     folderLoadUrl: { type: String },
-    currentPath: { type: String }
+    currentPath: { type: String },
+    accessTree: {type: String}
   },
   data: () => ({
     subjects: getters.getState({ object: "gZml" }).subjects,
@@ -105,7 +113,8 @@ export default {
     treeActive: [],
     treeOS: [],
     loading: false,
-    noColor: true
+    noColor: true,
+    treeTraverseTest:[]
   }),
   watch: {
     folderSelected () {
@@ -114,20 +123,25 @@ export default {
   },
   mounted() {
      zData.initialData('Load Subject Data')
+     console.log('mounted:', this.$options.name)
+  },
+  computed: {
   },
   methods: {
-    getFolderColor (fObj) {
+    getFolderColor (filename) {
       let color = 'gray lighten-3'
       if (this.noColor) return color;
       let x = -1
       if (this.subjects.length) {
-         x = this.subjects.findIndex(e => e.path === fObj.filename)
+         x = this.subjects.findIndex(e => e.path === filename)
          if (x > -1) {
            color =  this.subjects[x].color
          }
       }
-      console.log(fObj.filename,x,color, fObj)
       return color
+    },
+    switchColor() {
+      this.noColor = !this.noColor
     },
     treeClick (ik) {
       console.log('treeClick', ik)
@@ -152,8 +166,8 @@ export default {
       // console.log('clicked on tree folder', folder, ' emityting.')
       this.$emit('folder', folder)
     },
-    getFolders (foldername) {
-      // console.log(this.$options.name, 'getFolders', this.folderLoadUrl, this.currentPath, foldername)
+    getTreeFolders (foldername) {
+      // console.log(this.$options.name, 'getTreeFolders', this.folderLoadUrl, this.currentPath, foldername)
       let path = ''
       if (foldername) {
         path = foldername
@@ -167,12 +181,49 @@ export default {
       ts.data.path = path
       ts.data.folder = path
       this.loading = true
-      zmlFetch(ts, this.doneFolderLoading, this.errorLoading)
+      zmlFetch(ts, this.doneTreeFolderLoading, this.errorLoading)
     },
-    doneFolderLoading (result) {
-      console.log(this.$options.name, 'doneFolderload', result)
+    doneTreeFolderLoading (result) {
+      //This database get read ONLY folders and display in tree format
+/*
+-children []
+-depth 0,1,..
+-extenstion "Trash"
+-file ""
+-href "https://kuiliesonline.co.za/Subjects/.Trash"
+-name ".Trash"
+-sameName ".Trash"
+-size
+-time
+*/
+      fol.filterDirectoryResults([])
+      // console.log(this.$options.name, 'doneFolderload', result)
+      // let test = fol.filterDirectoryResults(result)
+      // console.log('fol.filterDirectoryResults answer', test, result)
+      // this.testTraverse(result)
+      // console.log('testTracerTree . folders = ', this.treeTraverseTest.length)
       this.folderItems = result
       this.loading = false
+    },
+    // Easier way to traverse a tree, is to only make 2nd level recursive. (i think)
+    testTraverse(tree) {
+      console.log('test Traverse', tree.length)
+      for (let i = 0; i < tree.length; i++) {
+        this.treeTraverseTest.push(tree[i].href)
+          if (tree[i].children.length) {
+            this.travel1(tree[i].children)
+          }
+      }
+    },
+    travel1(subtree) {
+      for (let j = 0; j < subtree.length; j++) {
+        this.treeTraverseTest.push(subtree[j].href)
+        if ('children' in subtree[j] && subtree[j].children.length) {
+            this.travel1(subtree[j].children)
+        } else {
+          console.log('niks kinders')
+        }
+      }
     },
     errorLoading (result) {
       this.snack('RealError:' + result)
@@ -180,7 +231,7 @@ export default {
     },
     snack (txt) {
       console.log(this.$options.name, 'snack', txt)
-      this.$notifier.showMessage({ content: txt, color: 'info' })
+      // this.$notifier.showMessage({ content: txt, color: 'info' })
     }
   }
 }

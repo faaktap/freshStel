@@ -1,7 +1,6 @@
 <template>
  <v-container>
   <v-row class="justify-center"  align="center" justify-center>
-
     <v-col v-if="getZml.login.isAuthenticated"
            class="mx-auto my-12">
      <v-card max-width="500"
@@ -26,8 +25,12 @@
        <v-btn  @click="showProfile = !showProfile" color="info">
         Profile
        </v-btn>
-       <v-btn @click="doBack" color="primary"> Back </v-btn>
-       <v-btn color="info" @click="startLearning"> Continue </v-btn>
+       <v-btn @click="doBack" color="primary">
+         Back
+       </v-btn>
+       <v-btn color="info" @click="startLearning">
+         Continue
+       </v-btn>
         <v-spacer />
        <v-btn  @click="logout" color="info">
         Logout
@@ -37,9 +40,9 @@
     </v-col>
 <!-- ------------------------------------ -->
      <v-col v-else
-             class="mx-auto my-12 justify-center">
+        class="mx-auto my-12 justify-center">
      <v-hover v-slot:default="{ hover }">
-      <v-card  xmax-width="500"
+      <v-card
            color=#F5F5F5
            style="xoverflow: auto;"
           :elevation="hover ? 12 : 2"
@@ -49,7 +52,7 @@
         <h2> Kuilies Login</h2>
        </v-card-title>
        <v-card-text>
-        <v-form class="px-3" ref="loginForm" width="400" v-on:submit.prevent="onSubmit">
+        <!-- <v-form class="px-3" ref="loginForm" width="400" v-on:submit.prevent="onSubmit"> -->
          <v-text-field  label="User"
             v-model="loginObj.username"
             autocomplete="username"
@@ -67,15 +70,25 @@
             :type="showPassword ? 'text' : 'password'"
             v-on:keyup.enter="onEnter"
          />
-        </v-form>
+        <!-- </v-form> -->
        </v-card-text>
        <v-card-actions>
-        <v-btn @click="registrationMessage()" class="mx-0 mt-3" color="info"> Register </v-btn>
+        <v-btn @click="registrationMessage()" class="mx-0 mt-3" color="info">
+          Register
+        </v-btn>
         <v-spacer />
         <v-btn
+          v-if="!hideForgotButton"
+          class="mx-5 mt-3" color="info"
+          title="Click here if you have forgotten your password"
+          @click="forgotPassword" >
+          Reset
+        </v-btn>
+
+        <v-btn
+            @click.prevent="submit"
             class="mx-0 mt-3"
             :loading="submitting"
-            @click.prevent="submit"
             color="info"
             :disabled="submitting"
         >  Login </v-btn>
@@ -111,11 +124,11 @@
 
 <!-- PROFILE --------------------->
     <v-dialog v-model="showProfile" :scrollable="false"
-              persistent width="50%" dark
+              persistent width="70%"
               :fullscreen="$vuetify.breakpoint.smAndDown"
               >
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" class="ma-2 pa=2">
       <v-card>
         <v-card-title> Registration Complete  {{ getZml.login.type }}</v-card-title>
         <v-card-subtitle> Please make note of your password, or change it</v-card-subtitle>
@@ -123,6 +136,7 @@
 
          <v-text-field
                v-model="getZml.login.username"
+               prepend-icon="mdi-account"
                :disabled="getZml.login.userid > 0"
                label="Username" />
          <v-text-field
@@ -134,18 +148,12 @@
             :type="showPassword ? 'text' : 'password'"
             required />
          <v-text-field v-model="getZml.login.fullname" label="Fullname" required />
-         <v-text-field v-model="getZml.login.phone" label="Phone"  />
-         <v-text-field v-model="getZml.login.email" label="Email"  />
-
-         <template v-if="getZml.login.grade || getZml.login.userid==1">
-           <v-card class="ma-4 pa-2">
-           Grade:{{ getZml.login.grade }}, Type:{{getZml.login.type}}
-           </v-card>
-         </template>
+         <v-text-field v-model="getZml.login.phone" label="Phone"  required />
+         <v-text-field v-model="getZml.login.email" label="Email"  required />
 
         </v-card-text>
         <v-card-actions>
-          <v-btn color="info" @click="startLearning"> Continue </v-btn>
+          <v-btn color="info" @click="showProfile = false"> Close </v-btn>
           <v-spacer />
           <v-btn color="primary" @click="saveDetails"> Save </v-btn>
         </v-card-actions>
@@ -169,56 +177,82 @@ import { getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 
 export default {
-     name: "login"
-    ,props: []
-    ,components: {}
-    ,computed: {
-      testMe() {
-        return ('hallo');
-      }
-    }
-    ,data() {
-      return {
-        hover: false,
-        loginObj: {username:'', password: ''},
-        getZml: getters.getState({ object:"gZml" }),
-        inputRules: [
-           v => v.length >= 3 || 'Minimum lenth is 3 characters'
-        ],
-        submitting: false,
-        loginIcon: 'mdi-human-greeting',
-        loading: null,
-        showPassword: false,
-        showProfile: false,
-      }
-  }
-  ,methods: {
+    name: "login",
+    props: {},
+    components: {},
+    computed: {
+    },
+    data: () => ({
+      hover: false,
+      loginObj: {username:'', password: '', etc:''},
+      getZml: getters.getState({ object:"gZml" }),
+      inputRules: [
+         v => v.length >= 3 || 'Minimum lenth is 3 characters'
+      ],
+      submitting: false,
+      loginIcon: 'mdi-human-greeting',
+      loading: null,
+      showPassword: false,
+      showProfile: false,
+      hideForgotButton: false,
+  }),
+  methods: {
     getData() {
+      console.log(this.$options.name,'p-getData')
       zData.initialData('Load Important Data')
       zData.calendarData('Load Holiday and Birthday Data')
       zData.functionData('Load functions')
     },
     doBack() {
-      this.getData();
-      zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)
-      if (this.getZml.login.password == 'password' || this.getZml.login.password.length < 3) {
-        errorSnackbar("Your password's to easy! Click on the eye to view and change it")
+      console.log(this.$options.name,'p-doBack')
+      if (!this.goodPassword()) {
         return
       }
+      this.getData();
+      zmlLog(this.getZml.login.username , "Login", this.getZml.login.userid + ',' + this.getZml.login.lastdate)
       this.$router.go(-1)
     },
+    goodPassword() {
+      let chgPass = false
+      let fixEmail = false
+      if (this.getZml.login.password.toLowerCase() == 'password' || this.getZml.login.password.length < 5) {
+        chgPass = true
+      }
+      if (!('email' in this.getZml.login) || this.getZml.login.email == '' ) {
+        fixEmail = true
+      }
+      if (this.getZml.login.password == 'secret' || this.getZml.login.password == 'undefined') {
+        chgPass = false
+      }
+      if (fixEmail && chgPass) {
+        errorSnackbar("Please change your password and add an email address.")
+        this.showProfile = true
+        return false
+      } else if (fixEmail) {
+        errorSnackbar("Please supply an email address.")
+        this.showProfile = true
+        return false
+      } else if (chgPass) {
+        errorSnackbar("Please change your password.")
+        this.showProfile = true
+        return false
+      }
+      return true
+    },
     startLearning() {
+      console.log(this.$options.name,'p-startLearning')
+      if (!this.goodPassword()) return
       this.getData();
       this.loadLearn()
     },
     loadLearn() {
-
-
+      console.log(this.$options.name,'p-loadLearn')
       switch (this.getZml.login.type) {
         case 'student' :
         {
            //we have a grade value of 09E2 in login.grade, and we want to split it.
            //slice(startIndex[, endIndex])
+           console.log(this.$options.name,'p-push student')
            this.getZml.gradeLastChosen = 'G' + this.getZml.login.grade
            this.getZml.login.class  = this.getZml.login.grade.slice(3,4)
            this.getZml.login.gclass = this.getZml.login.grade.slice(2,4)
@@ -230,132 +264,161 @@ export default {
         }
         case 'teacher':
         {
-          this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});
+          console.log(this.$options.name,'p-push teacher')
+          this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }});
           break;
         }
         case 'admin' :
         {
-          this.$router.push({ name: 'RealHome' , meta: {layout: "AppLayoutDefault" }});
+          console.log(this.$options.name,'p-push admin')
+          this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }});
           break;
         }
         default:
         {
-          this.$router.push({ name: 'Grade' ,meta: {layout: "AppLayoutGray" }});
+          this.$router.push({ name: 'ViewCampaigns' ,meta: {layout: "AppLayoutGray" }});
           break;
         }
       }
+      console.log(this.$options.name,'p-after route change')
     },
 
-    onEnter: function() {
+    onEnter() {
+      console.log(this.$options.name,'p-onENter')
        if (this.getZml.login.isAuthenticated) {
          this.logout();
        } else {
          this.submit();
        }
+       console.log('after onEnter')
     },
     registrationMessage() {
         infoSnackbar("Sorry! No registration from Login Form. You are already registered.")
     },
     logout() {
-          const bye = 'Thanks for using the system ' + this.getZml.login.fullname + '!'
-          infoSnackbar(bye);
-          this.getZml.login.class = ''
-          this.getZml.login.gclass = ''
-          this.getZml.login.grade = ''
-          this.getZml.login.lang = ''
-          this.getZml.login.fullname = ''
-          this.getZml.login.password = ''
-          this.getZml.login.studentid = ''
-          this.getZml.login.type = ''
-          this.getZml.login.username = ''
-          this.getZml.login.isAuthenticated = false;
-          this.getZml.subjects = []
-          this.getZml.folders = []
-          this.getZml.functions = []
-          this.getZml.voteList = []
-          this.getZml.calendar = []
-          localStorage.removeItem('login')
-          this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
+      console.log(this.$options.name,'p-logOut')
+      const bye = 'Thanks for using the system ' + this.getZml.login.fullname + '!'
+      infoSnackbar(bye);
+
+      Object.entries(this.getZml.login).forEach(([key, value]) => {
+          key = ''
+          console.log(`${key}: ${value}`)
+      });
+      // Set default values
+      this.getZml.login.lang = 'E'
+      this.getZml.login.username = 'guest'
+      this.getZml.login.isAuthenticated = false;
+      localStorage.removeItem('login')
+      this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
     },
     submit() {
-          if (this.$refs.loginForm.validate() && this.submitting == false) {
-              this.getZml.login.isAuthenticated = 0;
-              this.submitting = true;
-              /* Do so php and mysql here... */
-              const login = {
-                  task: 'login',
-                  api: zmlConfig.apiDKHS,
-                  username: this.loginObj.username,
-                  password: this.loginObj.password};
-              zmlFetch(login, this.doneWithLogin, this.loginFail);
-          } else {
-              this.loginIcon = 'mdi-emoticon-wink-outline';
-              infoSnackbar("Please enter better values!");
+      console.log(this.$options.name,'p-subMit')
+      if (this.submitting == false) {
+          this.getZml.login.isAuthenticated = 0;
+          this.submitting = true;
+          /* Do so php and mysql here... */
+          const login = {
+              task: 'login',
+              api: zmlConfig.apiDKHS,
+              username: this.loginObj.username,
+              password: this.loginObj.password
           }
+          zmlFetch(login, this.doneWithLogin, this.loginFail);
+      } else {
+          this.loginIcon = 'mdi-emoticon-wink-outline';
+          infoSnackbar("Please enter better values!");
+      }
+      console.log('after submitting')
     },
     loginFail(error) {
-        this.submitting = false;
-        infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
+      console.log(this.$options.name,'p-loginFail', error)
+      this.submitting = false;
+      infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
     },
     doneWithLogin(response) {
-        console.log('doneWithLogin',response)
-        this.submitting = false;
-        if (response.error == '') {
-            this.getZml.login = response;
-            this.getZml.login.isAuthenticated = true;
-            this.getZml.login.grade = response.grade;
-            this.getZml.login.fullname = response.fullname;
-            this.getZml.login.email = response.email;
-            this.getZml.login.phone = response.phone;
-            this.getZml.login.password = response.password;
-            this.getZml.login.studentid = response.studentid;
-            this.getZml.login.type = response.type;
-            this.getZml.login.username = response.username;
-            this.getZml.login.userid = response.userid ? response.userid : 0;
-            this.getZml.login.logins = response.logins;
-            this.getZml.login.lastdate = response.lastdate;
-            if ('grade' in this.getZml.login && this.getZml.login.grade.includes('A')) {
-              this.getZml.login.lang = 'A'
-              this.$i18n.locale = 'af'
-            } else {
-              this.getZml.login.lang = 'E'
-              this.$i18n.locale = 'en'
-            }
+      console.log(this.$options.name,'p-doneLogin')
+      this.submitting = false;
+      if ('fullname' in response && response.error == '') {
+          this.getZml.login = response;
+          this.getZml.login.isAuthenticated = true;
+          this.getZml.login.grade = response.grade;
+          this.getZml.login.fullname = response.fullname;
+          this.getZml.login.email = response.email;
+          this.getZml.login.phone = response.phone;
+          this.getZml.login.password = response.password;
+          this.getZml.login.studentid = response.studentid;
+          this.getZml.login.type = response.type;
+          this.getZml.login.username = response.username;
+          this.getZml.login.userid = response.userid ? response.userid : 0;
+          this.getZml.login.logins = response.logins;
+          this.getZml.login.lastdate = response.lastdate;
+          if ('grade' in this.getZml.login && this.getZml.login.grade.includes('A')) {
+            this.getZml.login.lang = 'A'
+            this.$i18n.locale = 'af'
+          } else {
+            this.getZml.login.lang = 'E'
+            this.$i18n.locale = 'en'
+          }
+
+          if (!this.goodPassword()) {
+            zmlLog(this.loginObj.username, "LoginFail3", 'To easy password')
+            this.showProfile = true
+          } else {
             console.log('welcome',response.username, this.getZml.login.lang, this.getZml.login.grade,'idx=',this.getZml.login.grade.indexOf('A'))
             this.dropAnEmail()
+            // new user if added = 1
             if (response.added == 1  || response.password == 'password') {
               infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
               this.showProfile = 1;
             } else {
               infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
-              let loginDetails = JSON.stringify(this.getZml.login)
-              localStorage.setItem('login', loginDetails)
-              this.startLearning()
+              this.saveLocalStorage()
+
+              // if you open this, guy goes to home page after usual login
+              // this.startLearning()
             }
-          } else {
-            errorSnackbar('Auth Failed:' + response.error)
           }
+      } else {
+        if ('error' in response) {
+           errorSnackbar('Auth Failed:' + response.error)
+           zmlLog(this.loginObj.username, "LoginFail1", response.error)
+        } else {
+           errorSnackbar('Auth Failed:' + 'Unknown User ')
+           zmlLog(this.loginObj.username, "LoginFail2", this.loginObj.password)
+        }
+
+
+      }
     },
     saveDetails() {
-        //we need to send the stuff for an update
-        const login = {
+      console.log(this.$options.name,'p-saveDet')
+      //we need to send the stuff for an update
+      if (!this.getZml.login.email || !this.getZml.login.phone) {
+          errorSnackbar('You need to supply an email address and a phone number please.')
+          return
+      }
+      const login = {
             task: 'loginupdate',
             api: zmlConfig.apiDKHS,
             data: this.getZml.login}
-        zmlFetch(login,this.doneWithUpdate, this.failUpdate)
-      },
+      zmlFetch(login,this.doneWithUpdate, this.failUpdate)
+    },
     doneWithUpdate(response) {
-        if (response.errorcode == 0 ) {
-           infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
-        } else {
-           errorSnackbar('We have a problem to update your details ' + response.error)
-        }
-      },
+      console.log(this.$options.name,'p-doneUpadte')
+      if (response.errorcode == 0 ) {
+        infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
+        this.showProfile = false
+        this.saveLocalStorage()
+      } else {
+        errorSnackbar('We have a problem to update your details ' + response.error)
+      }
+    },
     failUpdate(response) {
       errorSnackbar('We have a problem to update your details ' + response.errorcode)
     },
     dropAnEmail() {
-      this.getZml.login.password = 'secret'
+      console.log(this.$options.name,'p-dropEMail')
+      // this.getZml.login.password = 'secret'
       let email =
               { subject  : "Learn1 : User has logged on " + this.getZml.login.fullname
                ,email_to :"faaktap@gmail.com"
@@ -374,21 +437,112 @@ export default {
                ,email_from : "admin@kuiliesonline.co.za"};
       zData.sendEmail(email)
     },
+    loadFromLocalStorage() {
+      //Check localstorage...
+      if (localStorage.getItem('login')) {
+        try {
+          this.getZml.login = JSON.parse(localStorage.getItem('login'));
+          this.loginObj.username = this.getZml.login.username
+        } catch(e) {
+          localStorage.removeItem('login')
+        }
+        if (this.getZml.login.lang == 'A') {
+            this.$i18n.locale = 'af'
+        }
+        console.log('ld frm lS',this.getZml.login.username)
+      }
+    },
+    saveLocalStorage() {
+      if (this.getZml.login.username) {
+        let loginDetails = JSON.stringify(this.getZml.login)
+        localStorage.setItem('login', loginDetails)
+        console.log('saved to lS : ', this.getZml.login.username)
+      } else {
+        console.log('saved to lS : Negative')
+      }
+    },
+    sendForgottenPasswordEmail(forgotPasswordLink) {
+      if (!this.loginObj.email) {
+        errorSnackbar('We cannot send an email if you do not have an email address!')
+        return
+      }
+      let email =
+        { subject  : "KuiliesOnline : Reset your password for user : " + this.loginObj.username
+         ,email_to : this.loginObj.email
+         ,htmlmessage : `<h2> Learn1 : Reset your password for user : ${this.loginObj.username}</h2> \
+                 <p>
+                 You seem to have forgotten your password on kuiliesonline?</p>
+                 <p>
+                 Please click on the link below to reset your password.<br>
+                 <center> <a href="${forgotPasswordLink}"> Click Here </a> </center>
+                 <br>
+                 </p><p>
+                 <br>
+                 Alternatively, you can also click here - same thing.
+                 <a href="${forgotPasswordLink}"> ${forgotPasswordLink} </a><br>
+                 </p>
+                 <br>
+                 <p>Your password will be reset to the word : password , and you can change it
+                 once you have logged in. (go to your Profile)
+                 <br>
+                 </p>
+                 <br>
+                 From : Kuilie Admin`
+         ,email_from : "admin@kuiliesonline.co.za"};
+      zData.sendEmail(email)
+      infoSnackbar('Mail was sent to ' + this.loginObj.email)
+    },
+    forgotPassword() {
+      if (!this.loginObj.username) {
+        errorSnackbar("Please supply an username.")
+        return
+      }
+      let ts = {}
+      ts.task = 'plainSql'
+      ts.sql = `select user_email email from dkhs_learner where user_name = '${this.loginObj.username}'`
+      zmlFetch(ts, this.finishedLoadingForgottenPasswordEmail, this.errorLoadingEmail)
+      },
+      errorLoadingEmail(error) {
+        errorSnackbar('Sorry, We have a problem retrieving your email address')
+        console.log(error)
+      },
+      finishedLoadingForgottenPasswordEmail(response) {
+        console.log(response)
+        if (!('email' in response[0])) {
+          errorSnackbar('Sorry, We have a problem retrieving your email address')
+          return
+        }
+        this.loginObj.email = response[0].email
+        let obj = this.loginObj
+        obj.date = new Date()
+        obj.version = zmlConfig.projectID
+        let str = JSON.stringify(obj)
+        let encodedString = btoa(str)
+        console.log('https://kuiliesonline.co.za/virtual-school/login/' + encodedString )
+        this.sendForgottenPasswordEmail('https://kuiliesonline.co.za/virtual-school/login/' + encodedString)
+    },
+
+
   },
   created: function() {
   },
   mounted: function () {
-    //Check localstorage...
-    if (localStorage.getItem('login')) {
-      try {
-        this.getZml.login = JSON.parse(localStorage.getItem('login'));
-      } catch(e) {
-        localStorage.removeItem('login')
-      }
-      if (this.getZml.login.lang == 'A') {
-          this.$i18n.locale = 'af'
-      }
-
+    this.loadFromLocalStorage()
+    console.log(this.$route.params)
+    if ('forgot' in this.$route.params && this.$route.params.forgot) {
+      this.hideForgotButton = true
+      console.log('forgot = ', this.$route.params.forgot)
+      let reverse = atob(this.$route.params.forgot)
+      //alert(reverse)
+      let obj = JSON.parse(reverse)
+      console.log('new update for forgotten password', obj)
+      //We will reset the password to "password", allow him to login, and then force him to change
+      this.loginObj = obj
+      this.loginObj.password = 'password'
+      let ts = {}
+      ts.task = 'plainSql'
+      ts.sql = `UPDATE dkhs_learner SET user_password = 'passWord' where user_name = ${this.loginObj.username}`
+      zmlFetch(ts)
     }
   }
 }

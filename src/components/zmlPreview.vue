@@ -3,17 +3,25 @@
          class="text-center ma-0 pa-0">
   <zml-close-button @btn-click="closeIt" />
   <v-card-title class="text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
-    <v-btn @click="launchOutside"
-           title="Open in Browser/Download">
-        <v-icon> mdi-window-open </v-icon> Open
+    <v-btn
+      @click="launchOutside"
+      title="Open in Browser/Download"
+      >
+      <v-icon> mdi-window-open </v-icon> Open
     </v-btn>
     <div class="mx-4 text-center">
       Preview - {{ getFilenameNoExtension(src) }}
     </div>
-    <!-- <small class="text-caption"> {{ typeExtName }} , {{ httpsrc }}</small> -->
+    <small v-if="['JHMEL','werner'].includes(getZml.login.username)"
+           class="text-caption">
+      Debug:       src={{ src }} <br>
+      ExtName={{ typeExtName }} <br>,
+      httpsrc= {{ httpsrc }}
+    </small>
     <slot />
   </v-card-title>
 
+<!-------------------------------------VIDEO-PLAYABLE------------->
   <v-card-text class="text-center">
   <template v-if="['video-playable'].includes(typeExtName)">
   <small class="text-caption">1</small>
@@ -28,9 +36,9 @@
   </template>
 
 
+<!-------------------------------------AUDIO-PLAYABLE------------->
   <template v-else-if="['audio-playable'].includes(typeExtName)">
   <small class="text-caption">2</small>
-
     <audio controls
            ref="audio"
            xwidth="350"
@@ -39,6 +47,7 @@
     </audio>
   </template>
 
+<!-------------------------------------PICTURE or IMAGE------------->
   <template v-else-if="['picture','image'].includes(typeExtName)">
   <small class="text-caption">3</small>
     <img ref="picture"
@@ -48,7 +57,8 @@
     />
   </template>
 
-  <template v-else-if="['movie','picture','audio','video','markup','text'].includes(typeExtName)">
+<!-------------------------------------GENERAL IFRAME for OTHERS------------->
+  <template v-else-if="['movie','picture','audio','video','markup','text','html'].includes(typeExtName)">
   <small class="text-caption">4</small>
       <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
               ref="iframe"
@@ -60,6 +70,14 @@
             ref="google"
             :src="httpSrcGoogleEmbed"></iframe>
       <small class="text-caption"><br>5</small>
+  </template>
+
+<!-------------------------------------TRY GOOGLE READER------------->
+<template v-else-if="['link'].includes(typeExtName)">
+  <small class="text-caption">4</small>
+      <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
+              ref="iframe"
+              :src="httpsrc" />
   </template>
 
   <!-- <template v-else-if="['presentation'].includes(typeExtName)">
@@ -78,28 +96,28 @@
        (Click on Open)
      </v-card-title>
      <v-card-text>
-      We cannot display this file - you need to download it
+      We cannot display this file - you need to download it<p>
+      If you are logged into google, or microsoft, your can try one of theses commands
+              <br> <a :href="httpSrcOfficeEmbed" target="test"> Microsoft Office Embed </a>
+      <br> <a :href="httpSrcGoogleEmbed" target="test"> Google Docs Embed </a></p>
      </v-card-text>
    </v-card>
 
-      <br> <a :href="httpSrcOfficeEmbed" target="test"> Test Office Embed </a>
-      <br> <a :href="httpSrcGoogleEmbed" target="test"> Test Google Embed </a>
       <br><small class="text-caption">T={{ typeExtName }}</small>
-      <small class="text-caption"> *7</small>
   </template>
-
   </v-card-text>
     <small class="text-caption">
-       <a :href="httpSrcOfficeEmbed" target="test"> Test Office Embed </a>
-       <a :href="httpSrcGoogleEmbed" target="test"> Test Google Embed </a>
+       <a :href="httpSrcOfficeEmbed" target="test"> Office Embed </a>
+       <a :href="httpSrcGoogleEmbed" target="test"> Google Embed </a>
     </small>
  </v-card>
  </template>
 
 <script>
 import zmlCloseButton from '@/components/zmlCloseButton'
-import { extNames } from '@/views/new/api/extensions.js'
-//import { extNames, fileTypes } from '@/views/new/api/extensions.js'
+import { extNames } from '@/api/extensions.js'
+import { zmlLog } from '@/api/zmlLog.js';
+import { getters } from "@/api/store";
 export default {
  name: "zmlPreview",
  props:{  src:  {type: String,default:"https://kuiliesonline.co.za/Subjects/GR12/Accounting_Rekeningkunde/Gr 12 - Mrs Wiegand/Budgets/14.10 Part 2.mp4"}
@@ -107,6 +125,7 @@ export default {
        },
  components: { zmlCloseButton},
  data: () => ({
+    getZml : getters.getState({ object: "gZml" }),
     icon: null,
     title: '',
  }),
@@ -118,8 +137,12 @@ export default {
         return screen.height+"px"
       },
       httpsrc() {
-        let cleanPath = this.src.replace('/home/kuilieso/public_html', '')
-        return 'https://www.kuiliesonline.co.za' + cleanPath
+        if (this.src.includes('/home/')) {
+           let cleanPath = this.src.replace('/home/kuilieso/public_html', '')
+           return 'https://www.kuiliesonline.co.za' + cleanPath
+        } else {
+           return this.src
+        }
       },
       httpSrcGoogleEmbed(){
         return 'https://docs.google.com/gview?url=' + this.httpsrc + '&embedded=true'
@@ -157,13 +180,10 @@ export default {
  methods: {
       getFilenameNoExtension( fileName ) {
        const pieces =   fileName.split('/')
-       console.log('pices:', pieces)
        const l = pieces.length - 1
        if (l >= 0) {
-          console.log('pices:', pieces[l])
           return  pieces[l]
        } else {
-         console.log('pices: nada')
          return ""
        }
       },
@@ -185,7 +205,6 @@ export default {
        this.stopIT()
      },
      stopIT() {
-       console.log('refs = ', this.$refs.iframe)
        let xx = this.$refs.iframe;
        if (!xx) xx = this.$refs.google;
        if (!xx) xx = this.$refs.video;
@@ -203,7 +222,6 @@ export default {
       }
  },
  mounted() {
-        console.log('PRE Mounted')
     /*
         this.icon = getIcon(this.src)
         this.title = getFilename(this.src)
@@ -211,9 +229,12 @@ export default {
             this.title = this.title.substr(50)
         }
       */
+
  },
  watch: {
      src() {
+       const user = getters.getState({ object: "gZml" }).login.username
+       zmlLog(user , "ViewContent", this.src)
      }
  }
 }

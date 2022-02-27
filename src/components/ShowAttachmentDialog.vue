@@ -1,6 +1,6 @@
 <template>
-    <zml-preview :src="image"   
-                 :type="imagetype"  
+    <zml-preview :src="image"
+                 :type="imagetype"
                  @close="closeIt"
     />
 </template>
@@ -17,6 +17,9 @@ export default {
         closeIt() {
             this.$emit('close')
         }
+    },
+    mounted() {
+        console.log('mounted:', this.$options.name, this.image, this.imagetype)
     }
 }
 </script>

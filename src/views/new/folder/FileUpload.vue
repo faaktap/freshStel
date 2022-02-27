@@ -1,11 +1,11 @@
 <template>
- <v-container fluid class="ma-2 pa-2"
+ <v-container class="ma-1 pa-1" fluid
       @dragover.prevent.stop="onDragOver"
       @drop.prevent.stop="addFile"
       :disabled="busy"
     >
  <!-- @dragleave.prevent.stop="onDragLeave"       -->
- <v-card class="ma-6 pa-6" :color="fileWindowColor" elevation="4">
+ <v-card class="my-0 pa-4" :color="fileWindowColor" elevation="4">
 
   <v-card-text>
     {{ titleMessage }}
@@ -15,8 +15,9 @@
         :accept="addFile"
         label="File input"
         ref="file"
-    ></v-file-input> </small>
-    <small v-if="files.length">  {{ files.length }} file(s) </small>
+    />
+    </small>
+    <small v-if="files.length">  {{ files.length }} file(s) ready for upload</small>
     <!-- <v-btn icon
            small
             v-if="inputFiles"
@@ -65,7 +66,7 @@
                  v-bind="attrs"
                  v-on="on"
                 @click="deleteFileEntry(f.name)">
-              <v-icon x-small>mdi-delete</v-icon>
+              <v-icon x-small color="red">mdi-delete</v-icon>
              </v-btn>
            </template>
             <span>Click here to delete this<br>entry before uploading</span>
@@ -89,7 +90,7 @@
     </v-card>
    </v-flex>
   </v-layout>
-  <p class="text-caption"> to: {{ uploadPath }}</p>
+  <p class="text-caption"> to: {{ hideStr(uploadPath,'/home/kuilieso/public_html/Subjects') }}</p>
 </v-card>
 
  </v-container>
@@ -98,7 +99,8 @@
 <script>
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
-import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHelper.js'
+import { makeAWait, uploadFiles, addToQueue } from '@/api/fileUploadHelper.js'
+import { errorSnackbar } from '@/api/GlobalActions'
   export default {
     name: "UploadMachine",
     props: {
@@ -106,8 +108,8 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
     },
     components: {},
     data: () => ({
-        titleMessage: "Drop your file(s) here",
-        afterDropMessage: "Drop your file(s) here",
+        titleMessage: "Drag and Drop your file(s) in this window",
+        afterDropMessage: "Drag and Drop your file(s) in this window",
         beforeDropMessage:"I'm ready! Let go of mouse button!",
         AfterUploadMessage: "Your file(s) was uploaded",
         fileWindowColor:"white",
@@ -139,29 +141,16 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
         this.titleMessage = this.beforeDropMessage
       },
       deleteFileEntry(fname) {
-        console.log('asking to delete ', fname, this.files.length)
-        console.log('asking to delete ', this.files)
+        // console.log('asking to delete ', fname, this.files.length)
+        // console.log('asking to delete ', this.files)
         let idx = this.files.findIndex(e => e.name == fname)
-        console.log('asking to delete no ', idx)
+        // console.log('asking to delete no ', idx)
         if (idx != -1) {
           this.files.splice(idx,1)
         }
       },
-      onAddFiles(e) {
-        this.fileWindowColor = this.fileWindowColorNormal
-        this.titleMessage = this.afterDropMessage
-        console.log('calling addfile from onAddFiles', e)
-        this.addFile(e)
-
-
-        // let files = e.dataTransfer.files;
-        // [...files].forEach(file => {
-        //   this.files.push(file);
-        //   console.log(this.files)
-        //  });
-      },
       snack(txt) {
-        this.$notifier.showMessage({content:txt, color: 'info'})
+        errorSnackbar(txt)
       },
       mes(txt) {
         console.log(txt)
@@ -171,6 +160,11 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
         if (!e) {
             this.snack('First select a file')
             return
+        }
+        if (e.size > zmlConfig.maxUploadSize) {
+          this.snack(`This file is too big!  ${this.formatBytes(e.size)}
+           Maximum size is  ${this.formatBytes(zmlConfig.maxUploadSize)}`)
+          return
         }
         this.busy = true
         let cheatArray = []
@@ -185,8 +179,8 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
         this.fileWindowColor = this.fileWindowColorNormal
         this.titleMessage = this.afterDropMessage
 
-        console.log('addFile',e.dataTransfer.files)
-        console.log('addFile #',e.dataTransfer.files.length)
+        // console.log('addFile',e.dataTransfer.files)
+        // console.log('addFile #',e.dataTransfer.files.length)
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
            await makeAWait(1000,addToQueue,e.dataTransfer.files, this.files, this.busy)
         } else {
@@ -196,6 +190,24 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
 
       async initiateUpload() {
         this.mes('initateUpload')
+        let weDeletedAFile = 0
+        this.files.forEach(e => {
+          if (e.size > zmlConfig.maxUploadSize) {
+            this.snack(`Your file ${e.realname} is to big! ->  ${this.formatBytes(e.size)}
+                        Maximum size is  ${this.formatBytes(zmlConfig.maxUploadSize)}
+                        Please contact Werner at 082 563 9790 to make a plan.`)
+            e.ignore = true
+          }
+        })
+        for (let i = this.files.length-1; i >= 0; i--) {
+         if (this.files[i].ignore == true) {
+            this.files.splice(i,1)
+            weDeletedAFile++;
+         }
+        }
+        if (weDeletedAFile > 0) {
+          return
+        }
         if (this.files.length == 0){
             this.snack('Please drag some files to blue box before doing this.')
             return
@@ -205,12 +217,15 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
             return
         }
 
+
         this.totalSize = this.files.reduce( (accum,item) => accum + item.size,0)
         if (this.totalSize == 0) {
           this.files = []
           this.snack('Our files does not have a size!')
           return
         }
+//        const testSize = [...this.files]
+
 
         this.busy = true
         this.sofarSize = 0
@@ -219,16 +234,17 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
         for (let i = 0; i < this.files.length; i++) {
          this.debugList[i] = this.files[i];
         }
-
         await makeAWait(1000,uploadFiles,this.startUpload, this.files, this.progressProg)
       },
       progressProg(data) {
-          console.log('received data from progress : ', data)
+          // console.log('received data from progress : ', data)
           if (data.lengthComputable) {
                 this.sofarSize += data.loaded
                 this.progressBar = parseInt( ((this.sofarSize / this.totalSize) * 100), 10 );
                 data.howFarAreWe = this.progressBar
           }
+          // added ZML - to make it cleaner
+          this.progressItems.length = 0
           this.progressItems.push(data);
           this.busy = false
       },
@@ -271,6 +287,16 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
       errorWithUpload(response){
           console.log("UPLOAD ERROR : ", response)
       },
+      hideStr(str,partToHide) {
+        let split = str.split(partToHide)
+        // We assume it will be beginning or end, so we will only have two part, and not 3
+        // And one of the parts will always be zero length
+        if (split[0].length)
+           return split[0]
+        else
+           return split[1]
+
+      },
       formatBytes(bytes, decimals = 2) {
         if (bytes === 0) return '0 Bytes';
 
@@ -285,7 +311,7 @@ import { makeAWait, uploadFiles, addToQueue } from '@/views/new/api/fileUploadHe
     },
     mounted() {
       // https://www.vuescript.com/vue-js-drag-drop-uploader-vue-transmit/
-      console.log(this.$options.name)
+      // console.log(this.$options.name)
     },
     watch:{
 

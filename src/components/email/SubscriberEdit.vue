@@ -1,10 +1,10 @@
 <template>
   <v-container>
     <v-text-field
+      v-if="['admin','teacher'].includes(getZml.login.type)"
       v-model="search"
       label="Search for any email address"
       single-line
-      xxxhide-details
       solo
       append-icon="mdi-magnify"
       title="Search for another email"
@@ -32,7 +32,7 @@
     </v-data-table>
 
     <!------------------- E D I T  S U B S C R I B E R -->
-    <v-dialog v-model="showEmail">
+    <v-dialog v-model="showEmail" v-if="['admin','teacher'].includes(getZml.login.type)">
       <v-card color="blue">
         <v-card-title class="justify-center">
           <v-card class="ma-2 pa-2">
@@ -78,7 +78,7 @@
           <v-card class="ma-2 pa-2 text-center">
             <h2>Current Student : {{ currentStudentForInsert }}</h2>
           </v-card>
-          <!-- <br> {{ studentFoundDetails }} 
+          <!-- <br> {{ studentFoundDetails }}
      <br> model:{{ subscriberModel.subModelInsert }}
      <br> schema:{{ subscriberModel.subSchemaInsert }} -->
           <v-form-base
@@ -104,18 +104,21 @@
 </template>
 
 <script>
-//import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'  -- maybe later for export
-import vFormBase from "@/components/vfbase/vFormBase"
+function is_Numeric(num) {  return !isNaN(parseFloat(num)) && isFinite(num);      }
+
+import VFormBase from "@/components/vfbase/VFormBase"
 import StudentLookup from "@/components/student/StudentLookup"
 import { infoSnackbar } from "@/api/GlobalActions"
 import { zData } from "@/api/zGetBackgroundData.js"
 import { subscriberModel } from "./subscriberModel.js"
 import { debounce } from "@/api/timer"
+import { getters } from "@/api/store.js"
 export default {
   name: "SubscriberEdit",
-  components: { vFormBase, StudentLookup },
+  components: { VFormBase, StudentLookup },
   props: ["subid"],
   data: () => ({
+    getZml : getters.getState({ object: "gZml" }),
     debounce: debounce,
     subscriberModel: subscriberModel,
     studentFoundDetails: null,
@@ -346,9 +349,14 @@ WHERE email like '%${this.search}%'`
       zData.loadSql(this.loading, sqlStatement, this.assignSubData, this.api)
     },
     loadSub() {
+      if (!is_Numeric(this.subid)) {
+         this.search = this.subid
+         this.loadSubEmail()
+         return
+      }
       let sqlStatement = `\
 SELECT s.email, s.name, s.extra ,impnumber \
-     , ifnull(m.description,'Active') description 
+     , ifnull(m.description,'Active') description
      , date_format(insertdate,'%Y/%m/%d') insertdate , date_format(changedate,'%Y/%m/%d') changedate \
      , extra, s.subid, grpname, m.outid \
  FROM m_subscriber s \
@@ -385,7 +393,7 @@ WHERE email in  (select email from m_subscriber where subid = ${this.subid})`
       this.showEmail = true
     },
     clickOnSubRow(currentRowRecord) {
-      this.$emit("subscriberChange", currentRowRecord.subid)
+      this.$emit("subscriberChange", currentRowRecord.subid,currentRowRecord)
       if (currentRowRecord.impnumber) {
         this.getStudent(currentRowRecord.impnumber)
       }

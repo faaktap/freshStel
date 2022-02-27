@@ -4,13 +4,13 @@
     <v-col cols="12" v-if="tHeading">
      <h1 class="text-center grey--text"> {{ tHeading }} </h1>
     </v-col>
-    <v-col cols="12">   
+    <v-col cols="12">
      <v-card xcolor="deep-purple">
        <v-container fluid>
          <v-layout color="gray--text text--lighten-5">
          <v-flex>
         <v-text-field
-           
+
            v-model="search"
            append-icon="mdi-magnify"
            label="Search"
@@ -36,7 +36,7 @@
                  multi-sort
                  @click:row="clickOnTableRow"
                 >
-                </v-data-table> 
+                </v-data-table>
                </div>
               </v-card>
            </v-col>
@@ -45,7 +45,7 @@
      </v-card>
     </v-col>
   </v-row>
- </v-container>   
+ </v-container>
 </template>
 
 
@@ -62,7 +62,7 @@ export default {
         curItem:{},
         search:null,
         tableLoading:false,
-        tHeader: []      
+        tHeader: []
     }),
     methods:{
       clickOnTableRow(p1) {
@@ -76,9 +76,12 @@ export default {
         this.tableLoading = true
         this.tHeader = []
         Object.keys(this.tList[0]).forEach(name => {
+          if (name == 'gclass' || name == 'jdoc' || name == 'jdocstructure') return;
             this.tHeader.push(
                  { text:name.charAt(0).toUpperCase() + name.slice(1)
-                 , value: name} )
+                 , type:'text'
+                 , value: name
+                 })
         })
         this.tableLoading = false
       },

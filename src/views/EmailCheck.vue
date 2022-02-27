@@ -6,18 +6,18 @@
            <h3> EMail Status List </h3>
          </v-col>
          </v-row>
-         <base-table-edit 
-                     :tList="emailStatusList" 
-                     :tHeading="'EMail Status - Records = ' + emailStatusList.length" 
-                     bHeading="How are the email doin" 
-                     @edit="tableEdit"
+         <base-table-edit
+                     :tList="emailStatusList"
+                     :tHeading="'EMail Status - Records = ' + emailStatusList.length"
+                     bHeading="How are the email doin"
+                     @edit="tableDblClick"
                      @select="tableSelect"
          />
       <v-btn @click="loadAllData"> Refresh Email List </v-btn>
   </div>
 </template>
 
-<script> 
+<script>
 import { getters } from  "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch'
 import BaseTableEdit from    '@/components/base/baseTableEdit'
@@ -47,15 +47,17 @@ export default {
                     + "where m.deliveryid = s.deliveryid "
                     + "group by s.deliveryid desc, s.status"
                 },
-        emailStatusList:{},        
-       } 
-       
-   }, 
-   computed: {    
-   }, 
+        emailStatusList:{},
+       }
+
+   },
+   computed: {
+   },
    methods: {
-     tableEdit(evt,item) {
-         console.log('back at base - Edit:',item.item, evt)
+     tableDblClick(evt,item) {
+         console.log('back at base - dblClick:evt:', evt )
+         console.log('back at base - Edit:item:',item.item.deliveryid )
+         console.log('Table Show Delivieries 3: ', item.item)
      },
      tableSelect(evt,item) {
          console.log('back at base - select:',item.item, evt)
@@ -86,7 +88,7 @@ export default {
             }
           }, duration);
      },
-     rollCall() {  
+     rollCall() {
        console.info('Start of RollCall')
        if (this.getData.workDone == READY) {
            this.getData.workDone = BUSY
@@ -95,14 +97,14 @@ export default {
         }
        //Check if all is done
        if (this.getData.workDone == DONE)  {
-           this.getData.workDone = WAIT 
+           this.getData.workDone = WAIT
            if (this.timerHandle) {
-               clearInterval(this.timerHandle) 
+               clearInterval(this.timerHandle)
                this.timerHandle = null
            }
            this.progress = false;
         }
-        console.info('RC - End ',this.getData.workDone)        
+        console.info('RC - End ',this.getData.workDone)
         return "not used here"
      },
      loadEmailStatus(e) {

@@ -115,7 +115,7 @@
 
 <script>
 
-import vFormBase from "@/components/vfbase/vFormBase"
+import VFormBase from "@/components/vfbase/VFormBase"
 //import BaseBreakpointDisplay from "@/components/base/BaseBreakpointDisplay"
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import { zmlMail } from '@/api/zmlMail';
@@ -154,7 +154,7 @@ export default {
   name: "vfbasetest",
 
   components: {
-              vFormBase
+              VFormBase
               },
 
   data: () => ({

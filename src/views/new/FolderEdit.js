@@ -1,4 +1,5 @@
-import { extNames, fileTypes } from '@/views/new/api/extensions.js'
+import { extNames, fileTypes } from '@/api/extensions.js'
+import { folFilter } from '@/views/new/folderFilter.js';
 
 export const feh = {
   someGlobals: 'this is lookup',
@@ -37,6 +38,11 @@ export const feh = {
       return ['mdi-bomb-off', 'error']
     }
   },
+  allowInDir(element) {
+    return folFilter.allowInDir(element)
+
+  },
+  // This is to read a flat single directory.
   processReadDirectoryResult (result) {
     const files = []
     const folders = []
@@ -45,6 +51,8 @@ export const feh = {
       element.selected = false
 
       if (element.dir) {
+        if (!feh.allowInDir(element)) return
+        console.log('allowed : ', element.filename);
         [element.icon, element.color] = feh.getExtensionInfo('folder') // extension is always "folder"
         if (element.filename[0] !== '.' && element.filename[0] !== '.') {
           folders.push(element)
@@ -58,6 +66,11 @@ export const feh = {
         files.push(element)
       } else {
         console.log('skipped : ', element.filename)
+      }
+      console.log('element=', element)
+      if (element.ext == 'link') {
+         console.log(element)
+         alert('we found one - should do internal processing for link')
       }
     })
     return [files, folders]

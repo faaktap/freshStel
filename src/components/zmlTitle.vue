@@ -4,6 +4,7 @@
     <v-btn :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
             @click="goHome()"
+            title="Go home"
             class="ma-2"
     > 
     <v-spacer />
@@ -61,8 +62,8 @@ export default {
   methods:{
     goHome() {
       //titleDialog = !titleDialog
-      if (this.$router.currentRoute.path !== "/") {
-            this.$router.push('/') 
+      if (this.$router.currentRoute.path !== "/home") {
+            this.$router.push('/home') 
       }
 
     },

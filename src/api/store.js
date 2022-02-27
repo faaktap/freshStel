@@ -9,11 +9,9 @@ import Vue from 'vue';
 //getZml.subjects = id,name, subjectid,sortorder,shortname,path,description,beskrywing,linksubjectid,picture
 const state = Vue.observable({
     gZml: {login: {isAuthenticated: 0
-                  , grade:8
-                  , type:'guest'
-                  , class:2
-                  , gclass:'E7'
-                  , schoolno:0
+                  , grade:'G12'
+                  , class:'12'
+                  , gclass:''
                   , lang:'E'
                   , fullname:''
                   , surname:''
@@ -21,10 +19,13 @@ const state = Vue.observable({
                   , phone:''
                   , email:''
                   , username:''
+                  , studentid:''
+                  , schoolno:0
                   , userid:''
                   , persid:''
                   , menemonic:''
                   , lastdate:''
+                  , type:'guest'
                   , login:''},
            store: {totalItems: 0},
            grade: '',
@@ -36,10 +37,11 @@ const state = Vue.observable({
            subjectid: '',
            subjects: [],
            folders: [],
-           functions: [], 
-           voteList:[],          
+           functions: [],
+           voteList:[],
            locale: 'af',
-           calendar:[],  
+           calendar:[],
+           popi:[],
            persMenemonic:[],   //SELECT user_name, userid FROM `dkhs_learner` WHERE user_type = 'teacher'
            atester: false,
           }

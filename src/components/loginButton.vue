@@ -30,6 +30,9 @@
         <v-card-text>
           Logins : {{ getZml.login.logins }}
           <br/>Last Login : {{ getZml.login.lastdate }}
+          <div v-if="getZml.login.username == 'werner'" class="text-caption"> DEBUG:
+          {{ getZml.login }}
+          </div>
           <div class="text-caption" v-if="showWerner">
             <v-btn x-small @click="showWerner = false"> hide </v-btn>
             <v-btn x-small to="/viewfunctions"> funcs </v-btn>

@@ -1,15 +1,16 @@
 <template>
  <v-btn @click="$emit('click')"
         class="pclass"
-        :small="testSmall"
+        small
         :color="color"
         :disabled="disabled"
         :loading="loading"
  >
+   <v-icon v-if="icon" left>{{ icon }}</v-icon>
   <slot v-if="!$vuetify.breakpoint.smAndDown">
       {{ text }}
   </slot>
-  <v-icon v-if="icon" right>{{ icon }}</v-icon>
+
 </v-btn>
 </template>
 

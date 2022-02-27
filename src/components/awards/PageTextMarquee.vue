@@ -1,18 +1,19 @@
 <template>
+<!-- type = 5 -->
 <div>
  <observer @on-change="onChange">
-  <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.3)">
+  <v-card class="mt-9 rounded" color="rgba(105, 199, 71, 0.7)">
    <v-card-title primary-title class="justify-center">
     <v-card color="rgb(5, 101, 18, 0.4)" class="rounded pa-3">
-      <h1 class="wordbreak text-justify"> 
+      <h1 class="wordbreak text-justify">
           {{ title }}
        </h1>
     </v-card>
    </v-card-title>
-   <v-card-text> 
+   <v-card-text>
      <v-row justify-lg="center">
        <v-col align="center" cols="12" lg="6" md="6">
-         <v-card  color="rgb(15, 1, 18, 0.8)" class="mt-2"> 
+         <v-card  color="rgb(15, 1, 18, 0.5)" class="mt-2" >
            <v-img class="rounded"
               :src="image || '/img/trophyback5.jpg'"
               lazy-src="img/lazyload.png"
@@ -24,15 +25,15 @@
                       justify="center">
                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-row>
-             </template>             
+             </template>
            </v-img>
          </v-card>
 
         </v-col>
         <v-col align="center" cols="12" lg="6" md="6">
-           <v-card  color="rgb(15, 1, 18, 0.8)"> 
+           <v-card  color="rgb(15, 1, 18, 0.8)" max-height="500">
             <div class="rounded koek1 white--text ma-2">
-              
+
               <v-btn x-small  @click="pause = !pause"
                      :title="listHeading">
                  <v-icon left color="light-green"> mdi-star </v-icon>
@@ -45,9 +46,9 @@
                  <v-icon right color="light-green"> mdi-star </v-icon>
               </v-btn>
             </div>
-            
+
             </v-card>
-            <v-card color="rgb(15, 1, 18, 0.8)" class="rounded  pb-1" height="300">
+            <v-card color="rgb(15, 1, 18, 0.7)" class="rounded  pb-1" height="300">
               <transition-group xname="list-complete" name="list" tag="div">
               <div v-for="a in listFilter" :key="a.name">
                 <!-- {{ passedList.length }} {{ list.length }} -->
@@ -88,12 +89,12 @@ export default {
         istrue:true,
         speed:{type: 'pps', number: 100},
         //list: [{id:1 ,name:'Caterina Malbel'},{id:2 ,name:'Caterina Malbsek'},{id:3 ,name:'Caty Malbek'},{id:4 ,name:'Karet Zofar'}],
-        timerHandle:null,      
+        timerHandle:null,
         pause:false,
         indexList:0,
         firstIteration:true,
 
-       } 
+       }
     },
     computed:{
       listFilter(){
@@ -108,11 +109,11 @@ export default {
           if (entry.isIntersecting) {
             unobserve()
           }
-          
+
         },
         onKeyDown(){
             console.log('keydown')
-        },      
+        },
         sleep(ms) {
            return new Promise(resolve => setTimeout(resolve, ms));
         },
@@ -163,11 +164,11 @@ export default {
     mounted: function() {
       this.startTheProcess()
     },
-    watch: { 
+    watch: {
       propPassedString: {
         immediate: true,
         handler() {
-          if (this.propPassedString) {  
+          if (this.propPassedString) {
             if (this.propPassedString.length > 1 ) {
               //this is one long string with commas, put it in a single array
               let test  = this.propPassedString.split(',')
@@ -182,7 +183,7 @@ export default {
       },
       propPassedList: {
         immediate: true,
-        handler() { 
+        handler() {
           if (this.propPassedList && this.propPassedList.length > 0) {
              this.passedList = this.propPassedList
           }

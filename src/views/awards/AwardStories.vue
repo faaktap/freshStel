@@ -8,7 +8,7 @@
       <v-expansion-panel-content>
       <v-row v-if="allStories">
        <v-col cols="12">
-       <simple-table style="tbody">
+       <v-simple-table style="tbody">
         <tr cols="12" col="4" v-for="s in allStories" :key="s.storyid">
            <td> <v-card class="ma-2 pa-2">{{ s.storymainid }} </v-card>
                
@@ -24,7 +24,7 @@
               Activate </v-btn>  
            </td>
         </tr>
-       </simple-table>
+       </v-simple-table>
        </v-col>
       </v-row>
     </v-expansion-panel-content>

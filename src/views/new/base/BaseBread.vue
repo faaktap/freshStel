@@ -88,8 +88,7 @@
       this.breakItUp()
     },
     watch:{
-      item(o,n) {
-        console.log('new data received on breadcrumbs..', o,n)
+      item() {
         this.breakItUp()
       }
     }

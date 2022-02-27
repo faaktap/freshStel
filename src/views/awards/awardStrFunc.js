@@ -1,15 +1,18 @@
-function randomIntFromInterval(min, max) { 
+
+import { getters } from "@/api/store";
+function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
-
 export const awardStrFunc = {
     splitALine(aLine) {
- // console.log('aLine = ', aLine)
+    // console.log('aLine = ', aLine)
         let subjects = aLine.split(',')
+    // console.log('subjects = ', subjects)
         let retArr = []
         subjects.forEach(e => {
- // console.log('trimmy',e)
+    // console.log('trimmy',e)
+            if (!e) return;
             e = e.trim()                      // remove extra spaces
                .replace(/(\r\n|\n|\r)/gm, "") // remove line endings
                .split(' ')                    // split on space (math literacy)
@@ -19,9 +22,11 @@ export const awardStrFunc = {
                 .join(' ')                    // join the lot together with space in between
             retArr.push( e )   //push to to our array
          })
+    // console.log('trimmy End',retArr.length, retArr)
          return retArr
     },
     convertTextToArray(incomingStringList) {
+      // console.log('convertTextToArray : ', incomingStringList)
         let stringList = incomingStringList
         let miniList = []
         //rip out the last semicolon
@@ -29,7 +34,7 @@ export const awardStrFunc = {
           stringList = stringList.substring(0, stringList.length - 1);
         }
         // Look for any semicolons...
-        let awards  = stringList.split(';') 
+        let awards  = stringList.split(';')
 
         awards.forEach(e => {
           let twoParts  = e.split(':')  // split diploma and subjects
@@ -39,23 +44,39 @@ export const awardStrFunc = {
           if (twoParts.length != 2) {
            alert('We have more than : between ; - error on : ' + stringList)
           }
-          let cnt = randomIntFromInterval(100,999) 
+          let cnt = randomIntFromInterval(100,999)
+          // Remove a comma infron of diploma, bookprixe etcc.
+          if (twoParts[0].substr(0,1) == ',') {
+            twoParts[0] = twoParts[0].substr(1,30)
+          }
           miniList.push( {awardid:cnt, dip:twoParts[0],sub:'' } )  // add diploma
           let arr = awardStrFunc.splitALine(twoParts[1])  //breakup subjects
           arr.forEach(e => {
-            cnt += randomIntFromInterval(1000,9900) 
+            cnt += randomIntFromInterval(1000,9900)
             miniList.push( {awardid:cnt, dip:'', sub:e })   //add subjects
           })
         })
         return miniList
       },
-      imageDisplay(page) {
-        //console.log('imageDisplay : ', page.type)
+      imageDisplay(page, showAllPictures) {
+        let poppiList = getters.getState({ object: "gZml" }).popi
+
+        let popiaApprove = poppiList.findIndex(e => e.studentid == page.otherid)
+        if (popiaApprove == -1) popiaApprove = false;
+
+        // We have a secret poppiByPass keyword
+        // But if not activated, we need to check if they are in our popi list.
+        // If not found, we show a stock image. (32)
+        if (showAllPictures == false) {
+           if (page.otherid > 1000 && popiaApprove == false) {
+              return 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=a&studentno=32'
+           }
+        }
         let img = ''
         switch (page.type) {
             case '1':  {
                 if (page.otherid > 0) {
-                   img = 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=a&studentno=' + page.otherid 
+                   img = 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=a&studentno=' + page.otherid
                 } else {
                    img = "https://www.kuiliesonline.co.za/img/logo60edit.svg"
                 }
@@ -63,14 +84,14 @@ export const awardStrFunc = {
             }
             case '3':  {
               if (page.otherid > 0) {
-                 img = 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=a&studentno=' + page.otherid 
+                 img = 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=a&studentno=' + page.otherid
               } else {
                  img = "https://www.kuiliesonline.co.za/img/logo60edit.svg"
               }
               break
             }
-            case '2': 
-            case '4': 
+            case '2':
+            case '4':
             {
                if (page.otherid) {
                    img = 'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&type=a&studentno=' + page.otherid

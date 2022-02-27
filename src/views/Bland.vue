@@ -1,13 +1,13 @@
 <template>
 <v-sheet>
 
- <base-top heading="BLAND" 
+ <base-top heading="BLAND"
           description="SOME BBLAND STUFF">
    <slot>
      <v-layout cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
       <v-btn class="ma-2" @click="toggle=1" > Toggle 1 </v-btn>
-      <v-btn class="ma-2" @click="toggle=2" > Toggle 2 </v-btn>      
-      <v-btn class="ma-2" @click="toggle=3" > Toggle 3 </v-btn>      
+      <v-btn class="ma-2" @click="toggle=2" > Toggle 2 </v-btn>
+      <v-btn class="ma-2" @click="toggle=3" > Toggle 3 </v-btn>
    </v-layout>
   </slot>
  </base-top>
@@ -27,7 +27,7 @@
  <v-btn @click="testPush"> testPush </v-btn>
  <v-btn @click="testPropsPush"> testPropsPush </v-btn>
  <v-btn @click="runEntryTask"> run Entry Task </v-btn>
-</v-sheet>  
+</v-sheet>
 </template>
 
 
@@ -53,7 +53,7 @@ export default {
   }),
   methods:{
       testPush() {
-        this.$router.push({ name: 'Bland' 
+        this.$router.push({ name: 'Bland'
                           , params:{p1:"Some P1 Info", p2:"AnotherParm" }
                           , meta: {layout: "AppLayoutGray" }}
                           );
@@ -65,8 +65,8 @@ export default {
                 ,entity:'some test'
                 ,tableRecord:null
                 ,tableHeader:null
-                }            
-        this.$router.push({ name: 'PropTest' 
+                }
+        this.$router.push({ name: 'PropTest'
                           , params:p
                           , meta: {layout: "somthing" }}
                           );
@@ -78,17 +78,17 @@ export default {
                 ,entity:this.entity
                 ,tableRecord:null
                 ,tableHeader:null
-                }            
-        this.$router.push({ name: 'PropTest' 
+                }
+        this.$router.push({ name: 'PropTest'
                           , params:p
                           , meta: {layout: "somthing" }}
                           );
-      },      
+      },
   },
   mounted() {
       console.log('Start', this.$options.name)
       this.toggle = 1
-      
+
   }
 };
 </script>

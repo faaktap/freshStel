@@ -6,23 +6,23 @@
        <v-btn class="float-left" icon title="select all" >
          <v-icon  color="green"> mdi-"marker-check" </v-icon>
        </v-btn>
-    </v-col-->   
-    <v-col cols="12" class="heading-2 text-center"> 
+    </v-col-->
+    <v-col cols="12" class="heading-2 text-center">
       <v-card class="pa-2"  color="blue" >
           Click on all the columns you wish to display, print or export
       </v-card>
     </v-col>
     <!--v-col cols="1">
-      <v-btn class="float-right" icon small title="select all" >  
+      <v-btn class="float-right" icon small title="select all" >
         <v-icon> mdi-checkbox-blank" </v-icon>
        </v-btn>
     </v-col-->
 
 
-    <v-col cols="6" md="3" lg="2" xl="1"  
-           class="mx-2 pb-2"  
-             v-for="n in labels" 
-            :key="n.id"          
+    <v-col cols="6" md="3" lg="2" xl="1"
+           class="mx-2 pb-2"
+             v-for="n in labels"
+            :key="n.id"
     >
         <v-checkbox v-model="n.clicked"
                     hide-details
@@ -39,19 +39,21 @@
      <v-text-field v-model="userHeader" label="Heading/List Name" />
   </v-col>
   <v-col cols="12" md="6">
-    <v-btn small @click="$emit('hideModal')" class="pa-1 ma-1 float-right"> Close </v-btn>      
+    <v-btn small @click="$emit('hideModal')" class="pa-1 ma-1 float-right"> Close </v-btn>
     <v-btn small class="float-right pa-1 ma-1" @click="activatePrint += 1"> Print </v-btn>
     <json-to-csv v-if="finalJsonData"
               :json-data="finalJsonData"
               :labels="finalHeading"
               :show-labels="true"
-               class="d-print-none float-right"
-              :csv-title="'Data List prepared by DEKHS App'">
-      <v-btn small class="pa-1 ma-1">    Download    </v-btn>     
+              class="d-print-none float-right"
+              :csv-title="csvTitle"
+              @success="handleClick">
+      <!-- Slot inside json-to-csv -->
+      <v-btn small class="pa-1 ma-1">  Download    </v-btn>
     </json-to-csv>
-    
-  </v-col>  
-</v-row>  
+
+  </v-col>
+</v-row>
 
   <v-row>
    <v-col cols="12">
@@ -66,7 +68,7 @@
   </v-row>
  </v-container>
 </template>
-  
+
 <script>
 import JsonToCsv from '@/api/csv/JsonToCsv.vue'
 import zmlDataTable from '@/components/zmlDataTable.vue'
@@ -89,7 +91,7 @@ export default {
   },
   methods: {
     build() {
-       this.finalJsonData = [] 
+       this.finalJsonData = []
        this.jsonData.forEach(data => {
            let obj = {}
            this.labels.forEach(lab => {
@@ -103,21 +105,21 @@ export default {
        this.labels.forEach(lab => {
                if (lab.clicked == true) {
                  test[lab.desc] = {title: lab.desc.toUpperCase() }
-               } else {
-                 test[lab.desc] = ''
-               }
+               }// else { zml hide heeltemal vir undefined
+                // test[lab.desc] = ''
+                //}
        })
        this.finalHeading = test; //{...[test]}
     },
     buildLabels() {
      this.labels = []
      this.finalHeading = {}
-     this.finalJsonData = [] 
+     this.finalJsonData = []
      if (this.jsonData && this.jsonData.length > 0) {
          let cnt=0
          Object.keys(this.jsonData[0]).forEach(ele => {
               if (cnt == 0 || ele.includes('id') || ele.includes('sortorder')) {
-                this.labels.push( {id:cnt, desc:ele, clicked: false} )
+                this.labels.push( {id:cnt, desc:ele, clicked: false} ) //UNTICK or HIDE FIELD with ID in it
               } else {
                 this.labels.push( {id:cnt, desc:ele, clicked: true} )
               }
@@ -125,8 +127,8 @@ export default {
          })
      }
     },
-    handleClick () {
-      alert('click')
+    handleClick (e) {
+      console.log(this.$options.name,'emitSuccess', e)
 
     },
   },

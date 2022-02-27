@@ -43,11 +43,11 @@
             {{ staffList.length }} entries
         </v-card>
       </template>
-      <template v-slot:[`footer.page-text`]>
+<!--      <template v-slot:[`footer.page-text`]>
         <v-card color="green darken-1" align="center" class="ma-2 pa-2">
             add a button here to insert?
         </v-card>
-      </template>
+      </template> -->
   </v-data-table>   
 
 

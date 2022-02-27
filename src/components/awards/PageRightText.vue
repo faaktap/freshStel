@@ -1,41 +1,42 @@
 <template>
+<!-- TYPE = 4 -->
 <observer @on-change="onChange">
   <v-card class="mt-9 rounded" color="rgba(115, 250, 1, 0.1)" style="height: 100vh">
    <v-card-title primary-title class="justify-center">
-     <v-card color="rgb(15, 101, 8, 0.4)" class="rounded pa-3">
+     <v-card color="rgb(15, 101, 8, 0.8)" class="rounded pa-3 white--text">
         <h1> {{ title }} </h1>
      </v-card>
    </v-card-title>
-   <v-card-text class="pa-2 d-flex justify-center"> 
+   <v-card-text class="pa-2 d-flex justify-center">
     <v-row>
      <v-col cols="12" md="6">
       <v-sheet class="pa-sm-1 pa-md-8 ma-sm-1  ma-md-4 rcorners1" xcolor="grey lighten-3" color="rgba(1, 2, 1, 0.1)" elevation="4">
-          
+
            <v-img class="rcorners1 ml-10 rounded-circle"
             :src="image"
             lazy-src="img/lazyload.png"
             max-width="562"
             :max-height="imageHeight"
             contain>
-                         
+
            </v-img>
-          
-      </v-sheet>      
+
+      </v-sheet>
       <!--v-divider v-if="$vuetify.breakpoint.mdAndUp" class="mx-4" vertical /-->
      </v-col>
      <v-col cols="12" md="6" flex class="justify-content: center;align-items: center;">
       <template v-if="righttext.length < 50"> <br><br> </template>
-      <v-sheet class="pa-sm-1 pa-md-8 rcorners1" 
+      <v-sheet class="pa-sm-1 pa-md-8 rcorners1"
                color="rgba(1, 2, 1, 0.4)" elevation="4">
 
         <v-container fill-height fluid>
               <!-- {{ textheading}}             -->
-           <p v-html="changeHeading ? changeHeading : righttext" 
-              class="font-italic"
-              :class="textheading" 
+           <p v-html="changeHeading ? changeHeading : righttext"
+              class="font-italic white--text"
+              :class="textheading"
               ></p>
         </v-container>
-      </v-sheet>      
+      </v-sheet>
      </v-col>
     </v-row>
    </v-card-text>
@@ -59,7 +60,7 @@ export default {
         currentPanel:null,
         textheading: 'text-md-h4 text-sm-h6',
         changeHeading:null,
-       } 
+       }
     },
     computed: {
        imageHeight () {
@@ -71,7 +72,7 @@ export default {
           case 'xl': return '500'
         }
         return '550'
-      },      
+      },
     },
     methods: {
       checkSize() {
@@ -79,8 +80,8 @@ export default {
 
         if (this.righttext.includes("<b>") ) {
           const testBold = new RegExp("<b>" + "(.*)" + "</b>")
-          let answer = this.righttext.match( testBold ) 
-        
+          let answer = this.righttext.match( testBold )
+
           let rest = this.righttext.slice(answer[0].length)
           let name = this.righttext.slice(0, answer[0].length-1)
           this.changeHeading = ` <span class="text-md-h3 text-sm-h6"> ${name} </span> <span class="text-md-h6 text-sm-body-1"> ${rest} </span> `
@@ -110,7 +111,7 @@ export default {
               this.$playSound(s,0.15)
             }
           }
-        },      
+        },
         randomSound(){
           let r = Math.floor(Math.random() * 4)
           if (r <= 1) return 'https://kuiliesonline.co.za/img/applause4.mp3'
@@ -122,7 +123,7 @@ export default {
     },
     mounted: function() {
       // if (this.image === undefined) {
-      //   this.image = null 
+      //   this.image = null
       // }
       if (this.title.substring(1,7)  == 'HIGHEST') {
         alert('highest!')
@@ -150,7 +151,7 @@ export default {
   transition-property: opacity;
   transition-timing-function: ease;
 }
-.fade-enter, 
+.fade-enter,
 .fade-enter-active {
   transition: all 3s ease;
 }

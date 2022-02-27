@@ -12,6 +12,7 @@
 import helpers from './helpers'
 
 export default {
+  name:"json2csv",
   mixins: [helpers],
   props: {
     jsonData: {
@@ -45,9 +46,11 @@ export default {
   destroyed () {
     this.csvLabels = null
     this.csvData = null
+    console.log('destroyed', this.$options.name)
   },
   methods: {
     handleClick () {
+      console.log('handleclick', this.$options.name)
       let hasErrorEvent = (Object.keys(this._events).indexOf('error') > -1)
       let hasSuccessEvent = (Object.keys(this._events).indexOf('success') > -1)
       if (!this.jsonData.length) {
@@ -76,14 +79,17 @@ export default {
 
       let f = this.$_downloadCsv(`csv-${this._uid}`, content, this.csvTitle)
 
+      console.log('handleclick 5', this.$options.name,f)
+
       if (!f) this.handleError(`An error has occured`, hasErrorEvent)
       if (f && hasSuccessEvent) this.$emit('success', true)
 
     },
     handleError (msg, hasErrorEvent) {
+      console.log('errorEvent', this.$options.name, msg)
       console.log(hasErrorEvent)
       throw msg
-      
+
       //if (hasErrorEvent) this.$emit('error', msg)
     }
   }

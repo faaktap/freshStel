@@ -23,6 +23,7 @@ export function doStuff(tr,task) {
         case "/nested/dialog":
         case "/drive":    //student start
         case "/folderedit":    //student start
+        case "/folder":    //student start
         case "/latest":    //newest files
         case "/latest/7":
         case "/dkhsawards":

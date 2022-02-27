@@ -1,9 +1,10 @@
 <template>
     <div>
+      <!-- {{ page }} -->
         <page-text-left v-if="page.type == 1"
                :title="page.detail1"
                :lefttext="page.detail2"
-                maintitle=""  
+                maintitle=""
                :image="page.image"
         />
 
@@ -17,7 +18,7 @@
         <page-text-left-small-pic v-if="page.type == 3"
                :title="page.detail1"
                :lefttext="page.detail2"
-               :maintitle="page.title"  
+               :maintitle="page.title"
                :image="page.image"
         />
 
@@ -28,7 +29,7 @@
                :image="page.image"
         /> <!-- "https://www.kuiliesonline.co.za/img/CleanDKHS.png" -->
 
-        <page-text-marquee v-if="page.type == 5"    
+        <page-text-marquee v-if="page.type == 5"
                        :title="page.detail1"
                        :propPassedString="page.detail2"
                        :image="page.image"
@@ -55,7 +56,7 @@ export default {
                , PageTextMarquee
                },
     props: {
-           page: { type: Object 
+           page: { type: Object
                  , required:true
                 //  , default: {storyid:101, type:1,  detail1:"detail 1",  detail2:"' detail 2.1", extraNote:"Main Title 1"}
                  }

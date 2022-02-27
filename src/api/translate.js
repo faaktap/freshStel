@@ -88,7 +88,7 @@ export const af = {
     },
     message: {
         programname: "DK Aanlyn Hulpbronne",
-        titleButtonHeading: "DK Hulpbron Kortpaaie",
+        titleButtonHeading: "xxDK Hulpbron Kortpaaie",
         titleButtonHeadingCloseButton: "Maak Toe",
         herotitle: " De Kuilen AANLYN HULPBRON",
         SubmityourEmail: "Stuur die brief",

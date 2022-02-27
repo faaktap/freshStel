@@ -16,7 +16,8 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
                   headers: {'Accept': 'application/json'
                          , 'Content-Type': 'application/json;charset=UTF-8'},
                   body: JSON.stringify(task)}
-        zmlConfig.cl('FETCH-------------- : ', task.task, task)
+        //zmlConfig.cl('FETCH-------------- : ', task.task, task)
+        //console.log('FETCH-------------- : ', task.task, task)
         fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
         .then(response => {
             if (!response.ok) {
