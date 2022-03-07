@@ -28,6 +28,7 @@
         <base-tool-button class="mr-2" icon="mdi-school">
         Grade 10 Subject Selections
         </base-tool-button>
+
       </v-btn-toggle>
 
         </v-card>
@@ -44,6 +45,10 @@
         <base-tool-button class="mr-2" icon="mdi-school">
         Grade 10 Subject Selections
         </base-tool-button>
+        <base-tool-button class="mr-2" icon="mdi-brain">
+        Werner Test
+        </base-tool-button>
+
       </v-btn-toggle>
 
          </v-toolbar>
@@ -84,6 +89,17 @@
 </base-title-expand>
  </v-container>
 
+
+<v-container v-if="toggleDisplay == 3" fluid>
+<base-title-expand color="white" heading="Werner Test" >
+ <v-row>
+  <v-col cols="12">
+     <werner-test title="Grade 10 Subject selection for 2022" />
+  </v-col>
+ </v-row>
+</base-title-expand>
+ </v-container>
+
 <v-dialog v-model="studentInfoShow"
          width="auto"
         :fullscreen="$vuetify.breakpoint.smAndDown">
@@ -102,6 +118,7 @@ import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 import StudentClass from '@/components/student/StudentClass.vue'
 import ClassList from '@/components/homework/ClassList.vue'
+import WernerTest from '@/components/homework/WernerTest.vue'
 import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlConfig } from '@/api/constants';
@@ -117,7 +134,8 @@ export default {
         StudentSubjectList,
         Grade10List,
         BaseTitleExpand,
-        BaseToolButton
+        BaseToolButton,
+        WernerTest
        },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),

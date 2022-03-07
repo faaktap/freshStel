@@ -86,7 +86,7 @@
    <v-flex>
     <v-card v-for="p in progressItems" :key="p.timeStamp"
             color="blue lighten-2">
-     <small> {{ p.eventPhase }} {{ p.loaded }} {{p.timeStamp}} {{ p.total }} {{ p.type }}</small>
+     <small> {{ p.eventPhase }} {{ p.loaded }} {{p.timeStamp}} {{ p.total }} {{ p.type }} {{ progressItems.length }}</small>
     </v-card>
    </v-flex>
   </v-layout>
@@ -237,7 +237,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
         await makeAWait(1000,uploadFiles,this.startUpload, this.files, this.progressProg)
       },
       progressProg(data) {
-          // console.log('received data from progress : ', data)
+          console.log('received data from progress : ', data, data.lengthComputable)
           if (data.lengthComputable) {
                 this.sofarSize += data.loaded
                 this.progressBar = parseInt( ((this.sofarSize / this.totalSize) * 100), 10 );
@@ -246,7 +246,8 @@ import { errorSnackbar } from '@/api/GlobalActions'
           // added ZML - to make it cleaner
           this.progressItems.length = 0
           this.progressItems.push(data);
-          this.busy = false
+          console.log('received data from progress bottom : ', this.sofarSize, this.progressBar)
+          // this.busy = false
       },
       startUpload(fileData, fdet) {
         // We receive two parameters from our uploadFiles worker

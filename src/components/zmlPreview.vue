@@ -12,13 +12,23 @@
     <div class="mx-4 text-center">
       Preview - {{ getFilenameNoExtension(src) }}
     </div>
-    <small v-if="['JHMEL','werner'].includes(getZml.login.username)"
-           class="text-caption">
-      Debug:       src={{ src }} <br>
-      ExtName={{ typeExtName }} <br>,
-      httpsrc= {{ httpsrc }}
-    </small>
-    <slot />
+
+ <v-hover v-if="['JHMEL','werner'].includes(getZml.login.username)"
+          v-slot:default="{ hover }"
+          class="float-right"
+          >
+    <v-badge
+     :value="hover"
+     color="deep-purple accent-4"
+     :content="`Debug:ExtName=${typeExtName} httpsrc= ${httpsrc}`"
+     right
+     transition="slide-x-transition"
+     @click="$emit('fullscreen', true)"
+    >
+    <v-icon>mdi-fountain-pen-tip</v-icon>
+    </v-badge>
+ </v-hover>
+
   </v-card-title>
 
 <!-------------------------------------VIDEO-PLAYABLE------------->
@@ -65,29 +75,31 @@
               :src="httpsrc" />
   </template>
 
+
+<!-------------------------------------GOOGLE READER------------->
   <template v-else-if="['document', 'doc','ebook','pdf'].includes(typeExtName)">
+    <small class="text-caption"><br>5</small>
       <iframe class="ma-0 pa-0" id="iframe" :width="screenwidth" :height="screenheight" title="title"
             ref="google"
             :src="httpSrcGoogleEmbed"></iframe>
-      <small class="text-caption"><br>5</small>
   </template>
 
 <!-------------------------------------TRY GOOGLE READER------------->
 <template v-else-if="['link'].includes(typeExtName)">
-  <small class="text-caption">4</small>
+  <small class="text-caption">6</small>
       <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
               ref="iframe"
               :src="httpsrc" />
   </template>
 
-  <!-- <template v-else-if="['presentation'].includes(typeExtName)">
-  <small class="text-caption">6</small>
+<template v-else-if="['presentation'].includes(typeExtName)">
+  <small class="text-caption">7</small>
   {{httpSrcOfficeEmbed }}
     <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
             ref="office"
             frameborder="0"
             :src="httpSrcOfficeEmbed"></iframe>
-  </template> -->
+  </template>
 
   <template v-else>
 
@@ -96,6 +108,7 @@
        (Click on Open)
      </v-card-title>
      <v-card-text>
+       <small class="text-caption">8</small>
       We cannot display this file - you need to download it<p>
       If you are logged into google, or microsoft, your can try one of theses commands
               <br> <a :href="httpSrcOfficeEmbed" target="test"> Microsoft Office Embed </a>
@@ -118,12 +131,13 @@ import zmlCloseButton from '@/components/zmlCloseButton'
 import { extNames } from '@/api/extensions.js'
 import { zmlLog } from '@/api/zmlLog.js';
 import { getters } from "@/api/store";
+
 export default {
  name: "zmlPreview",
  props:{  src:  {type: String,default:"https://kuiliesonline.co.za/Subjects/GR12/Accounting_Rekeningkunde/Gr 12 - Mrs Wiegand/Budgets/14.10 Part 2.mp4"}
          ,type: {type: String, default:"movie"}
        },
- components: { zmlCloseButton},
+ components: { zmlCloseButton },
  data: () => ({
     getZml : getters.getState({ object: "gZml" }),
     icon: null,
@@ -145,10 +159,10 @@ export default {
         }
       },
       httpSrcGoogleEmbed(){
-        return 'https://docs.google.com/gview?url=' + this.httpsrc + '&embedded=true'
+        return `https://docs.google.com/gview?url=${this.httpsrc}&embedded=true`
       },
       httpSrcOfficeEmbed(){
-        return 'https://view.officeapps.live.com/op/embed.aspx?src=' + this.httpsrc
+        return `https://view.officeapps.live.com/op/embed.aspx?src=${this.httpsrc}`
       },
       typeExtName() {
         if (!this.type) return ''
@@ -188,23 +202,17 @@ export default {
        }
       },
      launchOutside() {
-       console.log('launchOutside')
+       console.log('--launchOutside')
        this.stopIT()
-        window.open(this.httpsrc,'_' + this.type)
-        /*
-        const ts = {
-            task: 'mime',
-            photo: "Subjects/GR12/Accounting_Rekeningkunde/Gr 12 - Mrs Wiegand/Budgets/14.10 Part 2.mp4",
-        }
-        zmlFetch(ts, this.doneL, this.failL)
-        */
+       window.open(this.httpsrc,'_' + this.type)
      },
      closeIt() {
-       console.log('-------------------------closeIt')
+       // console.log('--closeIt')
        this.$emit('close')
        this.stopIT()
      },
      stopIT() {
+       // console.log('--stopIt')
        let xx = this.$refs.iframe;
        if (!xx) xx = this.$refs.google;
        if (!xx) xx = this.$refs.video;
@@ -222,14 +230,6 @@ export default {
       }
  },
  mounted() {
-    /*
-        this.icon = getIcon(this.src)
-        this.title = getFilename(this.src)
-        if (this.title.length > 40) {
-            this.title = this.title.substr(50)
-        }
-      */
-
  },
  watch: {
      src() {

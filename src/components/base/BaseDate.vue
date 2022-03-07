@@ -1,7 +1,7 @@
 <template>
 <div>
- <v-text-field dense 
-          :label="label"         
+ <v-text-field dense
+          :label="label"
           :value="value"
            append-icon="mdi-calendar"
           @focus="showDate = !showDate"
@@ -15,13 +15,14 @@
                    no-title
                    close-on-content-click
                    @change="showDate = false"
-                   v-on:input="updateValue($event)"
+                   @input="updateValue($event)"
                    :value="value">
            </v-date-picker>
           </v-card>
+          {{ current }}
 </div>
 </template>
-          
+
 <script>
 //https://paulund.co.uk/use-v-model-on-custom-vue-component
 //NB Werner!!! https://vuejs.org/v2/guide/components.html#Using-v-model-on-Components
@@ -69,4 +70,4 @@ export default {
     this.current.yyyy = today.getFullYear();
   }
 };
-</script>          
+</script>

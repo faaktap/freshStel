@@ -104,7 +104,7 @@ export default {
   }),
   computed: {
     tableItems () {
-      console.log('computed - tableItems', this.showFolders, this.fileDisplayRecords)
+      // console.log('computed - tableItems', this.showFolders, this.fileDisplayRecords)
       let answer = []
       if (this.showFolders) {
         return this.fileDisplayRecords
@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     checkSelected (item) {
-      console.log('check selected')
+      // console.log('check selected')
       // Check if we should highlight or mark this in some other way
       if (this.moving.some(ele => ele.modtime === item.modtime && ele.filename === item.filename)) {
         item.icon = 'mdi-marker-check'
@@ -135,25 +135,25 @@ export default {
       return false
     },
     rowClick (e) {
-      console.log('click')
+      // console.log('click')
       // user clicked on a row, send it back to parent
       this.$emit('clickRow', e)
       // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
     },
     rowDblClick (e) {
-      console.log('dblclick icon')
+      // console.log('dblclick icon')
       // user dbl clicked on a row, send it back to parent
       this.$emit('clickDblRow', this.localData,e)
       // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
     },
 
     clickIcon (e) {
-      console.log('click icon')
+      // console.log('click icon')
       // user clicked on a row icon , send it back to parent
       this.$emit('clickIcon', e)
     },
     customSort (items, index, isDesc) {
-      console.log('custom sort')
+      // console.log('custom sort')
       // Date sort and size sort should be handled hear. Only datesort now fixed.
       // console.log(items, index, isDesc)
       items.sort((a, b) => {
@@ -169,18 +169,18 @@ export default {
           return b[index] < a[index] ? -1 : 1
         }
       })
-      console.log('custom sort', items)
+      // console.log('custom sort', items)
       return items
     }
   },
   mounted () {
-    console.log('mounted:', this.$options.name, this.headers)
+    // console.log('mounted:', this.$options.name, this.headers)
     this.headerValue.push(this.headers[0])
     this.headerValue.push(this.headers[1])
   },
   watch: {
     headerValue (val) {
-      console.log('watch value', this.val)
+      // console.log('watch value', this.val)
       this.selectedHeaders = val
 
 

@@ -12,6 +12,7 @@
 
 
 <v-card v-if="getZml.login.username=='werner'">
+    WERNER
  <v-tabs v-model="tab" background-color="deep-purple accent-4" centered dark icons-and-text>
   <v-tabs-slider></v-tabs-slider>
   <v-tab href="#tab-1">Recents<v-icon>mdi-phone</v-icon></v-tab>
@@ -110,13 +111,24 @@ export default {
 
       },
       mailIt() {
-          infoSnackbar('Starting your email program...')
-          let attListHref = ''
-          this.attList.forEach(ele => {
-              attListHref += `<a href=${ele.htmlfilepath}> ${ele.humanfilename} </a> <br>`
-          });
-          let href= `mailto:${this.email}?subject=Re:${this.emailListRecord.subject}&body=Message from kuilies\n : ${attListHref}`
-          if (href)  window.open(href, "_email");
+        infoSnackbar('Starting your email program...')
+        let attListHref = '<ul>Attachments'
+        this.attList.forEach(ele => {
+              attListHref += `<li><a href="${ele.htmlfilepath}"> ${ele.humanfilename} </a> </li>`
+        });
+        attListHref += `</ul>`
+        let email =
+              { subject  : `${this.emailListRecord.subject}`
+               ,email_to :"faaktap@gmail.com"
+               ,htmlmessage : `RESEND: ${this.emailListRecord.emailcontent}
+               attachments: ${attListHref}
+               `};
+        console.log(email)
+        zData.sendEmail(email, this.emailDone)
+      },
+      emailDone(response) {
+         console.log('emaildddddddddddddddoooone',response)
+
       },
       clickOnRow(e) {
           console.log('clicked on email', e)

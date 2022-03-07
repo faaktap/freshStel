@@ -6,7 +6,7 @@
 
 <v-container v-else fluid>
 <v-toolbar  dense  row  wrap
-        :collapse="$vuetify.breakpoint.smAndDown">
+           :collapse="$vuetify.breakpoint.smAndDown">
     <v-spacer></v-spacer>
     <base-tool-button
        v-if="studentList.length"
@@ -14,7 +14,8 @@
        class="mr-2"
        title="Click to view attendance list"
        @click="attendancePrep"
-    > Attendance
+    >
+      ATTENDANCE
     </base-tool-button>
     <base-tool-button
        v-if="studentList.length"
@@ -22,7 +23,8 @@
        class="mr-2"
        title="Click to build an export list."
        @click="showListPrint=true"
-    > export/print
+    >
+     EXPORT/PRINT
     </base-tool-button>
     <base-tool-button
        v-if="studentList.length"
@@ -30,7 +32,8 @@
        class="mr-2"
        title="Click to build a list of students with their photos."
        @click="showPhotoList=!showPhotoList"
-    > show photo
+    >
+      SHOW PHOTO
     </base-tool-button>
    <base-tool-button v-if="studentList.length"
         title="Trying to get images to print"
@@ -38,30 +41,27 @@
     >
      T
     </base-tool-button>
-</v-toolbar>
+ </v-toolbar>
 </v-container>
 <v-container class="mt-2" fluid>
 
-<v-row>
+ <v-row>
   <v-col cols="12">
    <student-grade v-model="gradeClass" />
-  <!-- </v-col>
-  <v-col cols="12" md="6"> -->
    <pick-attendance
     v-if="studentList.length && showAttendance == true"
     title="Pick Attendance Parameters"
     :gradeClass="gradeClass"
     @attendanceSelected="attSelected"
- />
-</v-col>
-</v-row>
+   />
+  </v-col>
+ </v-row>
 
-<v-row>
+ <v-row>
   <v-col cols="12" v-if="studentList.length">
    <v-card color="gray lighten-3" class="ma-2" id="x12345">
-    <v-card-title>
-     <hr>
-     <div class="heading text-center">{{ classListHeader }} - {{ title }} </div>
+    <v-card-title class="heading text-center">
+      {{ classListHeader }} (#{{studentList.length}}) {{ title }}
     </v-card-title>
     <v-card-text>
       <v-row>
@@ -85,46 +85,37 @@
              <v-flex xs8 class="ma-2">
               {{ s.surname }}, {{ s.firstname}}
              </v-flex>
-           <div class="float-right"
+             <div class="float-right"
                 @mouseover="hover=s.studentid"
                 v-show="hoverStart == 'R' + s.studentid">
-                 <v-icon small color="green lighten-1" class="ma-1"> mdi-email </v-icon>
-           </div>
-
+                 <v-icon small color="gold darken-1" class="ma-1"> mdi-email </v-icon>
+             </div>
             </v-layout>
           </v-card>
           <div v-if="hover == s.studentid">
-            <!-- <v-card v-for="e in s.email" -->
               <v-card v-for="e in showEmails(s.studentid)"
                    :key="e"
-                    color="green lighten-2"
+                    color="gold lighten-1"
                     class="ma-2 pa-2">
                 {{ e }}
             </v-card>
           </div>
-          <div v-if="hover == s.studentid && !s.emails">
-            <v-card color="red"> No email! </v-card>
-          </div>
-
         </v-col>
       </v-row>
      </v-card-text>
      <v-card-actions>
-
-
      </v-card-actions>
     </v-card>
    </v-col>
   </v-row>
 
 
-
-<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+<!-- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
   (werner) studentList  :
   <div v-for="s in studentList" :key="s.studentid">
   <br><small>{{ s }}</small>
   </div>
-</v-container>
+</v-container> -->
 
 <v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
    <zml-close-button @btn-click="showListPrint = !showListPrint" />
@@ -192,15 +183,19 @@ export default {
         this.showAttendance = !this.showAttendance
         if (this.showAttendance == false) {
           this.attendanceList.length = 0
+          this.classListHeader = `Student List for ${this.gradeClass.g}${this.gradeClass.c}`
         }
       },
       attSelected(aList,aProp) {
         //this.showAttendance = false
         this.attendanceList = aList
+        this.classListHeader = `Student List for ${this.gradeClass.g}${this.gradeClass.c} \
+                                Room (${aProp.location}) Period (${aProp.period}) - ${aProp.staff}`
         console.log('use',aList,' to do a fetch on all students', aProp)
       },
       studentCardColor(id) {
-        if (this.attendanceList.length == 0) return 'gray lighten-2'
+        if (this.attendanceList.length == 0) return 'gray lighten-4'
+        console.log('List=',this.attendanceList)
         if (this.attendanceList.findIndex(a => a.studentid == id) > -1) {
           return "green darken-1"
         } else {
@@ -208,9 +203,12 @@ export default {
         }
       },
       showEmails(id) {
-        console.log('11111',this.studentList.find(e => e.studentid == id))
-        console.log('222222',this.studentList.find(e => e.studentid == id).emails.split(','))
-        return this.studentList.find(e => e.studentid == id).emails.split(',')
+        let em = this.studentList.find(e => e.studentid == id)
+        console.log('show emails',em)
+        if (!em.emails) {
+          return ["No Emails Found"]
+        }
+        return em.emails.split(',')
       },
       loadData(response) {
         this.classListHeader = "Student List for Class " + this.gradeClass.g + ' ' + this.gradeClass.c
@@ -222,12 +220,12 @@ export default {
       classListLoad() {
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = `SELECT studentid, surname, firstname, grade, gclass, idno, GROUP_CONCAT(email) emails\
+        ts.sql = `SELECT studentid, surname, firstname, grade, gclass\
+         , idno, GROUP_CONCAT(email) emails\
          FROM dkhs_student s\
-         left join m_subscriber m on s.studentid = m.impnumber\
+         left join m_subscriber m on s.studentid = m.impnumber and m.outid is null\
          where grade = '${this.gradeClass.g}'\
          and gclass = '${this.gradeClass.c}'\
-         and m.outid is null\
          group by studentid, surname, firstname, grade, gclass, idno\
          order by s.surname, s.firstname`
         ts.api = zmlConfig.apiDKHS

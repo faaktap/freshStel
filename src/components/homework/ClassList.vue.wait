@@ -5,17 +5,14 @@
 </v-container>
 
 <v-container v-else fluid>
-  {{ classObj}}
  <v-toolbar  dense  row  wrap :xxcollapse="$vuetify.breakpoint.smAndDown">
     <v-app-bar-nav-icon  v-if="$vuetify.breakpoint.smAndDown" @click.stop="drawer = !drawer">
     </v-app-bar-nav-icon>
     <v-navigation-drawer v-model="drawer" absolute temporary ></v-navigation-drawer>
     <v-spacer></v-spacer>
-      <base-tool-button class="mr-2" icon="mdi-view-list"
-        :color="showStudentLists ? 'green' : 'blue'"
-        @click="showStudentLists = !showStudentLists">
-        Student List
-      </base-tool-button>
+      <v-switch v-model="showStudentLists"
+                label="Select Student List"
+                class="mt-5 mr-2" inset />
       <base-tool-button class="mr-2" icon="mdi-view-list"
         @click="createClassList">
         Create a New Student List
@@ -23,27 +20,17 @@
       <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
         Change List Properties
       </base-tool-button>
-      <base-tool-button @click="showListData()" class="mr-2" icon="mdi-school">
-       Show Students
+      <base-tool-button @click="showListData(classObj.id)" class="mr-2" icon="mdi-school">
+       Show Students {{ classObj.id }}
       </base-tool-button>
 
-      <base-tool-button
-              @click="showStudentLookup = !showStudentLookup"
-              class="mr-2" icon="mdi-database-edit">
+      <base-tool-button class="mr-2" icon="mdi-database-edit">
        Add Students to List
       </base-tool-button>
 
   </v-toolbar>
 
-<br>
-<v-row>
- <v-col cols="6">
-  <student-lookup v-if="showStudentLookup"
-                       @dataEntered="studentFound"
-                       @idsEntered="IDs"
-                       :searchMore="true" />
- </v-col>
-</v-row>
+
 
   <v-row>
    <v-col cols="12" v-if="getZml.login.type=='admin'">
@@ -56,30 +43,48 @@
   </v-row>
 
   <v-row>
-
-   <v-col v-if="showStudentLists" cols="12">
-     <v-data-table
-     :items="classList"
-     :headers="classListHeader"
-     >
-     <template v-slot:[`footer.page-text`]>
-                   <v-btn icon @click="createClassList()"><v-icon >mdi-table-plus</v-icon></v-btn>
-     </template>
-     <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editClassList(item)">mdi-pencil</v-icon>
-        <v-icon small class="mr-2" @click="selectClassList(item)">mdi-select</v-icon>
-     </template>
-     </v-data-table>
-
-
-
-        <!-- <v-btn class="ma-2" small @click="activateAddStudent(i.id)"> Add Student </v-btn>
+    {{ currentOne }}
+   <v-col v-if="showStudentLists" cols="12" sm="12">
+    <v-expansion-panels min-width="150"
+                       rounded
+                       class="ma-2 pa-2 long-line"
+                       v-model="currentOne"
+                       >
+     <v-expansion-panel v-for="i in classList" :key="i.id">
+      <v-expansion-panel-header disable-icon-rotate
+                               class="no-uppercase "
+                               color="deep-purple lighten-5"
+                               >
+        {{ i.id}} {{ i.listname }}  - (Entries : {{ i.students }})
+      </v-expansion-panel-header>
+      <v-expansion-panel-content class="gray lighten-3">
+       <v-row>
+       <v-col class="my-2">
+        <student-lookup v-if="showStudentLookup"
+                       @dataEntered="studentFound"
+                       @idsEntered="IDs"
+                       :searchMore="true" />
+        </v-col>
+       </v-row>
+       <v-row><v-col>
+         <v-card class="ma-2 px-3">
+           <v-card-title> {{ i.listname }} </v-card-title>
+           <v-card-text>
+         <v-btn @click="showListData(i.id)"> Select it </v-btn>
+        <v-btn class="ma-2" small @click="activateAddStudent(i.id)"> Add Student </v-btn>
         <v-btn class="ma-2" small @click="showListData(i.id)"> Show Students </v-btn>
-        <v-btn class="ma-2" small @click="editClassList(i.id)"> Change List Properties </v-btn> -->
-
+        <v-btn class="ma-2" small @click="editClassList(i.id)"> Change List Properties </v-btn>
+        <v-card class="ma-2 px-3">{{ i.students }} Entries </v-card>
+        </v-card-text>
+        </v-card>
+       </v-col>
+       </v-row>
+      </v-expansion-panel-content>
+     </v-expansion-panel>
+    </v-expansion-panels>
    </v-col>
 
-   <v-col cols="12" v-show="studentClassList.length > 0">
+   <v-col cols="12" md="6" v-show="studentClassList.length > 0">
      <v-card color="deep-purple lighten-5">
        <student-list v-if="classObj"
           :tList="studentClassList"
@@ -116,13 +121,12 @@
 import ClassListEdit from '@/components/homework/ClassListEdit.vue'
 import StudentList from    '@/components/homework/StudentList'
 import StudentLookup from '@/components/student/StudentLookup'
-import StudentSubjectList from '@/components/student/StudentSubjectList'
-import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
-
 import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlConfig } from '@/api/constants';
+import StudentSubjectList from '@/components/student/StudentSubjectList'
 import { infoSnackbar } from '@/api/GlobalActions';
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 
 export default {
     name:"ClassList",
@@ -138,13 +142,6 @@ export default {
         drawer:false,
         gradeClass:{},
         classList:[],
-        classListHeader:[{text:'id', value:'id'},
-                         {text:'teacher', value:'teacher'},
-                         {text:'listname', value:'listname'},
-                         {text:'students', value:'students'},
-                         {text:'share', value:'share'},
-                         {text:'actions', value:'actions'},
-        ],
         classObj:{},
         showListUpdate:false,
         showStudentLists:false,
@@ -153,21 +150,13 @@ export default {
         studentClassList:[],
         studentInfo:'',
         studentInfoShow:false,
-        //currentOne:null,
+        currentOne:null,
     }),
     methods: {
-      selectClassList(e) {
-        console.log(e)
-        this.classObj = e
-        this.showListData()
-      },
-      showListData() {
-        if (this.classObj.id) {
-            this.loadListData()
-            this.showStudentLists = false
-        } else {
-          alert('we have no classObj')
-        }
+      showListData(listID) {
+        this.currentListID = listID
+        this.loadListData()
+        this.showStudentLists = false
       },
       fixChangesOnSendBack(arrayResults,studentid) {
         console.log('update the current student ', studentid, ' with : ', arrayResults)
@@ -192,10 +181,15 @@ export default {
       },
       IDs(value) {
         if (value.data == 'undefined') return;
+        alert('ids' + this.currentListID)
       },
       studentFound(value) {
          if (value.data == 'undefined') return;
-         this.saveStudentinList(value.data.studentid, this.classObj.id)
+         this.saveStudentinList(value.data.studentid, this.currentListID)
+      },
+      activateAddStudent(listID) {
+        this.showStudentLookup = true
+        this.currentListID = listID
       },
       createClassList() {
            this.classObj = { id:null
@@ -207,12 +201,11 @@ export default {
            this.showListUpdate = true
            this.insertList = true
       },
-      editClassList(item) {
-        let listID = item.id
-        this.classObj = this.classList.find(ele => ele.id == listID)
-        console.log('start editing on ', this.classObj)
-        this.showListUpdate = true
-        this.insertList = false
+      editClassList(listID) {
+          this.classObj = this.classList.find(ele => ele.id == listID)
+          console.log('start editing on ', this.classObj)
+          this.showListUpdate = true
+          this.insertList = false
       },
       saveStudentinList(studentid, listid) {
         if (studentid == 0 || listid == 0) {
@@ -262,13 +255,12 @@ export default {
         zmlFetch(ts, this.loadData, this.errorLoading);
       },
       loadListData() {
-        if (this.classObj.id < 1) {
+        if (this.currentListID < 1) {
           alert('we only load data if we have alist nuber')
           return
         }
         //Loading classObj for listheading display
-        //We dont need this anymore, since we clicked on it.
-        //this.classObj = this.classList.find(ele => ele.id == this.currentOne.id)
+        this.classObj = this.classList.find(ele => ele.id == this.currentListID)
         this.studentClassList.length = 0
         let ts = {}
         ts.task = 'PlainSql'
@@ -276,7 +268,7 @@ export default {
                    FROM hw_classliststudent l, dkhs_student s, hw_classlist c\
                   WHERE l.studentid = s.studentid \
                     AND l.classlistid = c.id \
-                    AND l.classlistid = ${this.classObj.id} \
+                    AND l.classlistid = ${this.currentListID} \
                   ORDER BY s.surname, s.firstname`
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, this.displayListData, this.errorLoading);
@@ -344,10 +336,10 @@ export default {
 
     },
     watch: {
-      showStudentLists() {
-        if (this.showStudentLists == false && this.classObj.id) {
-            //Show the list of students...
-        }
+      currentOne(a,b) {
+        console.log('currentone changed ', a,b)
+        this.currentListID = null
+        this.studentClassList.length = 0
       }
     }
 }

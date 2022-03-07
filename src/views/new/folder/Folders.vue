@@ -6,7 +6,11 @@
         key="DIR1"
         class="text-caption">
         <small>Current Folders</small>
-        <v-btn @click="switchColor" small text>..</v-btn>
+        <v-btn @click="switchColor" 
+               small 
+               :title="'no color : ' + noColor"
+               text>..
+        </v-btn>
       </v-tab>
       <v-tab
          v-if="accessTree != 'student'"

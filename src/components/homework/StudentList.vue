@@ -39,11 +39,6 @@
                   <v-toolbar flat>
                     <v-toolbar-title>ClassList Table</v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-switch
-                      v-model="singleExpand"
-                      label="Single expand"
-                      class="mt-2"
-                    ></v-switch>
                   </v-toolbar>
                  </template>
               </v-data-table>
@@ -77,7 +72,7 @@ import QuickEdit from "@/components/homework/QuickEdit.vue"
 export default {
     name:"StudentList",
     components:{QuickEdit},
-    props: {tList: {}
+    props: {tList: {default:[{heading:'', value:''}]}
           , tHeading: {default:'tHeading'}
           , bHeading: {type:String, default:'bHeading'}
           , itemsPerPage: {type:Number, default:20}
@@ -113,31 +108,32 @@ export default {
         this.tableLoading = true
         this.tHeader = []
         this.editable = []
-        Object.keys(this.tList[0]).forEach(name => {
+        //Object.keys(this.tList[0]).forEach(name => {
+        Object.entries(this.tList[0]).forEach(([name, value]) => {
           if (name == 'jdoc' || name == 'jdocstructure') return;
           this.tHeader.push(
                  { text:name.charAt(0).toUpperCase() + name.slice(1)
                  , type:'text'
-                 , value: name
+                 , value: value
                  })
           if (name != 'surname' && name != 'firstname' && name != 'grade' && name != 'studentid' && name != 'id') {
             this.editable.push({heading: name})
           }
         })
-        console.log(this.editable)
+        console.log('this.editable ................', this.editable. this.tList[0])
         this.tableLoading = false
       },
     },
     mounted: function() {
     },
-    watch: {
-        tList: {
-            deep:true,
-            handler() {
-               this.buildHeaders()
-            }
-        }
-    }
+    // watch: {
+    //     tList: {
+    //         deep:true,
+    //         handler() {
+    //            this.buildHeaders()
+    //         }
+    //     }
+    // }
 }
 </script>
 

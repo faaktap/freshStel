@@ -1,5 +1,28 @@
 <template>
 <div>
+
+<v-row><v-col cols="6">
+<base-date
+  label="date"
+  v-model="adate" />
+</v-col><v-col cols="6">
+<base-color
+  label="some color"
+  v-model="acolor" />
+</v-col></v-row>
+ <v-hover v-slot:default="{ hover }">
+    <v-badge
+     :value="hover"
+     color="deep-purple accent-4"
+     :content="`This is some content ${getZml.login.fullname}`"
+     right
+     transition="slide-x-transition"
+    >
+        <v-icon>mdi-fountain-pen-tip</v-icon>
+    </v-badge>
+ </v-hover>
+
+
 <base-title-expand heading="...">
 <v-toolbar color="primary">
     <v-toolbar-title>
@@ -65,12 +88,16 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 
+import BaseDate from '@/components/base/BaseDate.vue';
+import BaseColor from '@/components/base/BaseColor.vue';
 export default {
     name:"WernerTest",
-    components:{ListTest,BaseTitleExpand},
+    components:{ListTest,BaseTitleExpand, BaseDate, BaseColor},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        joke:''
+        joke:'',
+        acolor:'#EB25D5FA',
+        adate:null,
     }),
     computed:{
     },

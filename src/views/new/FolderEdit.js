@@ -52,7 +52,7 @@ export const feh = {
 
       if (element.dir) {
         if (!feh.allowInDir(element)) return
-        console.log('allowed : ', element.filename);
+        // console.log('allowed : ', element.filename);
         [element.icon, element.color] = feh.getExtensionInfo('folder') // extension is always "folder"
         if (element.filename[0] !== '.' && element.filename[0] !== '.') {
           folders.push(element)
@@ -67,7 +67,7 @@ export const feh = {
       } else {
         console.log('skipped : ', element.filename)
       }
-      console.log('element=', element)
+      // console.log('element=', element)
       if (element.ext == 'link') {
          console.log(element)
          alert('we found one - should do internal processing for link')

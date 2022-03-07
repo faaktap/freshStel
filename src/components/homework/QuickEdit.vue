@@ -6,7 +6,13 @@
       <v-subheader>{{ testArr[i-1].key }}</v-subheader>
     </v-flex>
     <v-flex sm6>
-    <v-text-field @blur="sendBack" class="mx-2" solo dense  v-model="testArr[i-1].value" :label="testArr[i-1].key"/>
+    <v-text-field
+      @blur="sendBack"
+      @update="sendBack"
+      class="mx-2" solo dense
+      v-model="testArr[i-1].value"
+      :label="testArr[i-1].key"
+    />
     </v-flex>
   </v-layout>
 

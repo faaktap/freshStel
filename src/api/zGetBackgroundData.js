@@ -139,18 +139,20 @@ function loadSchoolsDays() {
                    }
         getters.getState({ object: "gZml" }).calendar.push(evt)
    })
-   let startDate = new Date(2021,2,1)
+   let startDate = new Date()
+   startDate.setMonth(2)
+   startDate.setDate(1)
    startDate.setHours(0,0,0,0)
    const startOfMonth = zDate.startOfMonth(startDate)
    let dayCnt = zDate.curDay(startOfMonth)
-   let Group = 'A'
+   // let Group = 'A'
    //Kan jy my sê watter skooldag is vandag? (11/03/2021) - Dag 10 sir.
 
    for (let i=0; i< 232; i++) {
       const dayX = zDate.add( startOfMonth, {days:i} )
       if (zDate.isWeekend(dayX))       {       continue   }
       if (zDate.isPublicHoliday(dayX)) {       continue   }
-      const evt= {name: 'day' + dayCnt + ' ' + Group
+      const evt= {name: 'day' + dayCnt //+ ' ' + Group
                , start: zDate.format(dayX,'yyyy-MM-dd') //dayX
                , end: zDate.format(dayX,'yyyy-MM-dd') //dayX
                , color: 'light-blue'
@@ -158,9 +160,15 @@ function loadSchoolsDays() {
                , timed: false
                  }
       getters.getState({ object: "gZml" }).calendar.push(evt)
-      if (dayCnt == 10 && Group == 'B')  {Group = 'A'; dayCnt = 1; continue;}
+      if (dayCnt == 10)  { dayCnt = 1; continue;}
+      /*
+      if (dayCnt == 10 && Group == 'B')  {
+          Group = 'A'; 
+          dayCnt = 1; continue;
+      }
       if (Group == 'A') { Group = 'B'; continue;}
       if (Group == 'B') { Group = 'A'; dayCnt += 1; continue;}
+      */
    }
 }
 

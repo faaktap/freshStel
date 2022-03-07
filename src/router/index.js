@@ -54,18 +54,12 @@ const routes = [
   {
     path: '/wernertest',
     name: 'WernerTest',
-    component: () => import(/* webpackChunkName: "test" */ '../views/learn/WernerTest'),
+    component: () => import(/* webpackChunkName: "test" */ '../views/test/WernerTest'),
     meta: {layout: la[3], authentication: "admin" }
   },
+  { path: '/drive', redirect: '/folder' },
   {
-    path: '/folder'
-    ,name: 'Folder-NoParm'
-    ,component: () => import(/* webpackChunkName: "homework" */ '@/views/new/FolderEdit.vue')
-    ,alias: '/drive'
-    ,meta: {layout: la[3], authentication: "student"}
-  },
-  {
-    path: '/folder/:grade/:subject?/:level1?/:level2?/:level3?/:level4?',
+    path: '/folder/:grade?/:subject?/:level1?/:level2?/:level3?/:level4?',
     name: 'Folder',
     component: () => import(/* webpackChunkName: "homework" */ '@/views/new/FolderEdit.vue'),
     props:true,
@@ -81,22 +75,14 @@ const routes = [
    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
    props: true,    params: {chapterid: 26, orderid: 1, editmode: false},    meta: {layout: la[0], authentication: "public" }
   },
-
   {
-    path: '/loadhomework'
-    ,name: 'LoadHomework-NoParm'
-    ,component: () => import(/* webpackChunkName: "homework" */ '@/views/learn/LoadHomework.vue')
-    ,alias: '/homew'
-    ,meta: {layout: la[3], authentication: "teacher"}
-  },  {
-     path: '/loadhomework/:StudentID'
+     path: '/loadhomework/:StudentID?'
     ,name: 'LoadHomework'
-    ,component: () => import(/* webpackChunkName: "homework" */ '@/views/learn/LoadHomework.vue')
+    ,component: () => import(/* webpackChunkName: "homework" */ '@/views/LoadHomework.vue')
     ,alias: '/homex'
     ,params: {studentID:'20113'}
     ,meta: {layout: la[3], authentication: "student"}
   },
-  // { path: '/drive', redirect: '/folderedit' },
   {
     path: '/admin',
     name: 'Admin',
@@ -135,24 +121,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/StudentAwardTable.vue'),
     meta: {layout: la[1], authentication: "public" }
   },  {
-    path: '/awardedit',
-    name: 'awardedit',
+    path: '/awardedit', name: 'awardedit',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardEdit.vue'),
     meta: {layout: la[3], authentication: "public" }
   },  {
     //award
-    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AKandidate.vue')
+    component: () => import(/* webpackChunkName: "test" */ '@/views/test/AKandidate.vue')
     ,name: 'AKandidate'    ,path: '/a'    ,meta: {layout: la[0], authentication: "public"}
   },
-  // {
-  //   component: () => import(/* webpackChunkName: "leer" */ '../test/LearnTree.vue'),
-  //   path: '/learntree',     name: 'LearnTree',
-  //   meta: {layout: la[3], authentication: "student" },    props: {default:true},
-  //   params: {currentSubjectID:'2', grade:'12'}
-  // },
   {
-     component: () => import(/* webpackChunkName: "leer" */ '@/views/learn/ViewSubjects.vue')
-    ,name: 'ViewSubjects'    ,path: '/subjects'  ,meta: {layout: la[0], authentication: "public"}
+     component: () => import(/* webpackChunkName: "homework" */ '@/views/ViewSubjects.vue')
+    ,name: 'ViewSubjects'    ,path: '/subjects'  ,meta: {layout: la[3], authentication: "admin"}
   },    {
     component: () => import(/* webpackChunkName: "homework" */ '@/views/student/StudentClassList.vue'),
     path: '/studentlist',
@@ -189,40 +168,20 @@ const routes = [
     meta: {layout: la[3]}
   },
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/Bland2.vue')
+    component: () => import(/* webpackChunkName: "test" */ '@/views/test/Bland2.vue')
     ,name: 'bland'
     ,path: '/bland'
     ,meta: {layout: la[3], authentication: "werner"}
   },  {
-    component: () => import(/* webpackChunkName: "test" */ '@/components/FlexGridStuff.vue')
+    component: () => import(/* webpackChunkName: "test" */ '@/views/test/FlexGridStuff.vue')
     ,name: 'flex'
     ,path: '/flex'
     ,meta: {layout: la[0], authentication: "werner"}
   },
-  // {
-  //   component: () => import(/* webpackChunkName: "test" */ '@/views/learn/sh.vue')
-  //   ,name: 'sh'
-  //   ,path: '/sh/:propfolder'
-  //   ,props: true,    params: {propfolder: 585}
-  //   ,meta: {layout: la[3], authentication: "student"}
-  // },  {
-  //   component: () => import(/* webpackChunkName: "test" */ '@/views/learn/sh.vue')
-  //   ,name: 'sh-nofolder'
-  //   ,path: '/sh'
-  //   ,props: true,    params: {propfolder: 585}
-  //   ,meta: {layout: la[3], authentication: "student"}
-  // },
-  {
-    component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/Latest.vue')
-    ,name: 'latestNoPath'
-    ,path: '/latest'
-    ,props: true,    params: {days: 5}
-    ,meta: {layout: la[3], authentication: "student"}
-  },
   {
     component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/Latest.vue')
     ,name: 'latest'
-    ,path: '/latest/:days'
+    ,path: '/latest/:days?'
     ,props: true,    params: {days: 5}
     ,meta: {layout: la[3], authentication: "student"}
   },
@@ -233,14 +192,14 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/components/base/baseTabAndEdit.vue')
+    component: () => import(/* webpackChunkName: "test" */ '@/views/test/baseTabAndEdit.vue')
     ,name: 'basetabandedit'
     ,path: '/basetabandedit'
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
     //emailheck
-    component: () => import(/* webpackChunkName: "email" */ '@/views/StreamLineDB.vue')
+    component: () => import(/* webpackChunkName: "email" */ '@/views/test/StreamLineDB.vue')
     ,name: 'streamline'
     ,path: '/streamline'
     ,meta: {layout: la[0], authentication: "public"}
@@ -259,7 +218,7 @@ const routes = [
     ,meta: {layout: la[0], authentication: "teacher"}
   },
   {
-    path: '/emailssent/:subid',    name: 'emailssent',
+    path: '/emailssent/:subid?',    name: 'emailssent',
     component: () => import(/* webpackChunkName: "email" */ '@/views/EmailsSent.vue'),
     props: true,    params: {subid: 6229, editmode: false},
     meta: {layout: la[3], authentication: "teacher" }
@@ -291,12 +250,6 @@ const routes = [
     ,props: true
     ,meta: {layout: la[3], authentication: "public"}
   },
-  //{
-  //  component: () => import(/* webpackChunkName: "test" */ '@/views/TestExpand.vue')
-  //  ,name: 'TextExpand'
-  //  ,path: '/expand'
-  //  ,meta: {layout: la[0], authentication: "public"}
-  //},
   {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/UserList.vue')
     ,name: 'UserList'
@@ -327,13 +280,6 @@ const routes = [
     ,path: '/photos'
     ,meta: {layout: la[3], authentication: "public"}
   },
-  // {
-  //   component: () => import(/* webpackChunkName: "test" */ '@/views/awards/TestRoute.vue')
-  //   ,name: 'TestRoute'
-  //   ,path: '/tr/:chapterid/:storyid?/:orderid?'
-  //   ,props: true
-  //   ,meta: {layout: la[0], authentication: "public"}
-  // },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
@@ -345,7 +291,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: 'virtual-school',    //This works : /zmltest/  but ./ does not work for layouts
+  base: 'vschool',    //This works : /zmltest/  but ./ does not work for layouts
   werner: 'werner',      //see if I can add my own stuff.
   routes
 })

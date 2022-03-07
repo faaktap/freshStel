@@ -665,7 +665,7 @@ export default {
       this.loading = false
     },
     doneLoadingFiles (result) {
-      console.log('doneloading:1', result.error, result)
+      // console.log('doneloading:1', result.error, result)
       if (result.error) {
         // console.log('doneloading:1')
         this.snack('Error on load:', result.error)
@@ -678,7 +678,7 @@ export default {
         // console.log(result.length, this.fileDisplayRecords.length, this.directoryDisplayRecords.length)
         this.curDir = feh.fixSlash(result[0].dirpath)
         this.loading = false
-        console.log('doneLoading 4 : New curDir::::', this.curDir)
+        // console.log('doneLoading 4 : New curDir::::', this.curDir)
       }
     },
     getExtensionInfo (fileExt) {
@@ -720,7 +720,7 @@ export default {
   mounted () {
     this.checkForANewRoute()
     this.allowEdit = ['teacher','admin'].includes(this.getZml.login.type)
-    console.log('access:', this.getZml.login.type)
+    // console.log('access:', this.getZml.login.type)
   },
 
 }

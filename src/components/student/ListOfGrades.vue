@@ -1,30 +1,30 @@
 <template>
  <v-row>
   <ShowColSize />
-  <template v-if="$vuetify.breakpoint.mobile"> 
+  <template v-if="$vuetify.breakpoint.mobile">
   <v-col cols="12">
       <v-select
-          label="Grade List"      
+          label="Grade List"
           :items="gradeList"
-          :item-text="item =>`${item.grade} - ${item.gclass}`" 
+          :item-text="item =>`${item.grade} - ${item.gclass}`"
           return-object
           @input="doit"
-        ></v-select> {{ obj }}
+        ></v-select>
   </v-col>
 
   </template>
   <template v-else>
   <v-col cols="12" xs="2" sm="2" md="1" lg="1" xl="1"
-         v-for="(g,index) in gradeList" 
-        :key="index" 
-        class="mb-0 mt-1 ml-1 pa-2" 
+         v-for="(g,index) in gradeList"
+        :key="index"
+        class="mb-0 mt-1 ml-1 pa-2"
         >
-     <v-btn small 
-           @click="doit(g)" 
+     <v-btn small
+           @click="doit(g)"
            :title="g.studentcount"
            :loading="loading"
            :color="classColor(g.gclass)"
-     > 
+     >
      {{ g.grade }} {{ g.gclass }}
      </v-btn>
   </v-col>
@@ -52,23 +52,23 @@ export default {
     methods:{
         classColor(gc) {
             switch (gc){
-            case 'A1':  return "blue"
-            case 'A2':  return "blue darken-1"
-            case 'A3':  return "blue darken-2"
-            case 'E1':  return "light-blue"
-            case 'E2':  return "light-blue lighten-1"
-            case 'E3':  return "light-blue lighten-2"
-            case 'E4':  return "light-blue lighten-3"
-            case 'E5':  return "light-blue lighten-4"
-            case 'E6':  return "light-blue lighten-5"
-            case 'E7':  return "light-blue lighten-6"
+            case 'A1':  return "green darken-2"
+            case 'A2':  return "green darken-1"
+            case 'A3':  return "green"
+            case 'E1':  return "lightblue darken-1"
+            case 'E2':  return "lightblue"
+            case 'E3':  return "lightblue lighten-1"
+            case 'E4':  return "lightblue lighten-2"
+            case 'E5':  return "lightblue lighten-3"
+            case 'E6':  return "lightblue lighten-4"
+            case 'E7':  return "lightblue lighten-5"
             }
             return "light-blue darken-2"
         },
         doit(e) {
             this.$emit('input', {g: e.grade,c: e.gclass} )  //send it into v-model on parent...
             this.$emit('chosen') //tell parent something was selected
-        },        
+        },
         loadData(response) {
             this.gradeList = response
             this.loading=false
@@ -83,7 +83,7 @@ export default {
             ts.task = 'PlainSql'
             ts.sql = "SELECT grade, gclass, count(*) studentcount FROM dkhs_student "
                    + " WHERE grade like 'G%'"
-                   + " GROUP BY grade,gclass" 
+                   + " GROUP BY grade,gclass"
             ts.api = zmlConfig.apiDKHS
             zmlFetch(ts, this.loadData, this.loadError);
         },
@@ -94,7 +94,7 @@ export default {
         }
     },
     watch: {
-       
+
     }
 }
 </script>

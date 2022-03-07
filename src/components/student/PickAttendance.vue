@@ -4,7 +4,7 @@
   <v-card-text>
    <v-row>
     <v-col cols="12" md="6">
-     <base-date v-model="aDate"  label="Date" />
+     <base-date v-model="aDate"  label="Date" instructions="FA" />
      <v-card elevation="4" class="ma-2  pa-3" color="deep-purple lighten-5">
        If more than one period is listed, all of them will be shown.
        ie: If the class split up to two or three teachers, and you click on
@@ -17,6 +17,7 @@
         :headers="listOfPerHeading"
         dense
        :items-per-page="nine"
+        mobile-breakpoint="0"
         hide-default-footer
         @click:row="selectPeriod"
       />
@@ -26,7 +27,7 @@
   <v-card-actions>
     <v-btn color="primary" @click="clearSelect"> Clear </v-btn>
     <v-spacer />
-    <v-btn color="primary" @click="doneSelect"> Select </v-btn>
+    <!-- <v-btn color="primary" @click="doneSelect"> Select </v-btn> -->
   </v-card-actions>
  </v-card>
 </template>
@@ -81,7 +82,7 @@ export default {
  where s.studentid = a.capture \
   and a.active is null \
   and a.attendancedate like '${this.aDate}%' \
-  and a.period = ${period} \
+  and a.period = '${period}' \
   and s.grade = '${this.gradeClass.g}' and s.gclass = '${this.gradeClass.c}'`,
             task:'PlainSql'
         }

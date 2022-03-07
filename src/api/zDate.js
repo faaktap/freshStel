@@ -198,7 +198,7 @@ export const zDate = {
   curDay: function(date) {
     //11 Maart 2021 was Dag 10
     //1 maart was dag 2
-    if (compareAsc(date.setHours(0,0,0,0), new Date(2021,2,1).setHours(0,0,0,0) )  == 0 ) {
+    if (compareAsc(date.setHours(0,0,0,0), new Date(2022,2,1).setHours(0,0,0,0) )  == 0 ) {
        return 6
     } else {
       alert('we only work in march')
