@@ -1,6 +1,6 @@
 <template>
  <v-card color="grey lighten-3"
-         class="text-center ma-0 pa-0">
+         class="text-center ma-0 pa-0" :loading="loading">
   <zml-close-button @btn-click="closeIt" />
   <v-card-title class="text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
     <v-btn
@@ -13,7 +13,7 @@
       Preview - {{ getFilenameNoExtension(src) }}
     </div>
 
- <v-hover v-if="['JHMEL','werner'].includes(getZml.login.username)"
+  <v-hover v-if="['JHMEL','werner'].includes(getZml.login.username)"
           v-slot:default="{ hover }"
           class="float-right"
           >
@@ -27,7 +27,7 @@
     >
     <v-icon>mdi-fountain-pen-tip</v-icon>
     </v-badge>
- </v-hover>
+  </v-hover>
 
   </v-card-title>
 
@@ -40,6 +40,10 @@
            class="text-center"
            ref="video"
            :src="httpsrc"
+              @loaded="loaded"
+              @onload="onload"
+              @load="load"
+
       >
       Sorry, your browser doesn't support embedded videos.
     </video>
@@ -53,6 +57,10 @@
            ref="audio"
            xwidth="350"
            :src="httpsrc"
+           @loaded="loaded"
+           @onload="onload"
+           @load="load"
+
     >
     </audio>
   </template>
@@ -60,18 +68,25 @@
 <!-------------------------------------PICTURE or IMAGE------------->
   <template v-else-if="['picture','image'].includes(typeExtName)">
   <small class="text-caption">3</small>
-    <img ref="picture"
-         :height="imageHeight"
-        :src="httpsrc"
-        contain
+    <v-img ref="picture"
+          :height="imageHeight"
+          :src="httpsrc"
+           contain
+           @loaded="loaded"
+           @onload="onload"
+           @load="load"
+
     />
   </template>
 
 <!-------------------------------------GENERAL IFRAME for OTHERS------------->
   <template v-else-if="['movie','picture','audio','video','markup','text','html'].includes(typeExtName)">
   <small class="text-caption">4</small>
-      <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
+      <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" :title="title"
               ref="iframe"
+              @loaded="loaded"
+              @onload="onload"
+              @load="load"
               :src="httpsrc" />
   </template>
 
@@ -79,26 +94,36 @@
 <!-------------------------------------GOOGLE READER------------->
   <template v-else-if="['document', 'doc','ebook','pdf'].includes(typeExtName)">
     <small class="text-caption"><br>5</small>
-      <iframe class="ma-0 pa-0" id="iframe" :width="screenwidth" :height="screenheight" title="title"
+      <iframe class="ma-0 pa-0" id="iframe" :width="screenwidth" :height="screenheight" :title="title"
             ref="google"
-            :src="httpSrcGoogleEmbed"></iframe>
+              @loaded="loaded"
+              @onload="onload"
+              @load="load"
+            :src="httpSrcGoogleEmbed">
+      </iframe>
   </template>
 
 <!-------------------------------------TRY GOOGLE READER------------->
 <template v-else-if="['link'].includes(typeExtName)">
   <small class="text-caption">6</small>
-      <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
+      <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" :title="title"
               ref="iframe"
+              @loaded="loaded"
+              @onload="onload"
+              @load="load"
               :src="httpsrc" />
   </template>
 
 <template v-else-if="['presentation'].includes(typeExtName)">
   <small class="text-caption">7</small>
-  {{httpSrcOfficeEmbed }}
+    {{httpSrcOfficeEmbed }}
     <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" title="title"
             ref="office"
             frameborder="0"
-            :src="httpSrcOfficeEmbed"></iframe>
+              @loaded="loaded"
+              @onload="onload"
+            :src="httpSrcOfficeEmbed">
+    </iframe>
   </template>
 
   <template v-else>
@@ -109,10 +134,10 @@
      </v-card-title>
      <v-card-text>
        <small class="text-caption">8</small>
-      We cannot display this file - you need to download it<p>
-      If you are logged into google, or microsoft, your can try one of theses commands
-              <br> <a :href="httpSrcOfficeEmbed" target="test"> Microsoft Office Embed </a>
-      <br> <a :href="httpSrcGoogleEmbed" target="test"> Google Docs Embed </a></p>
+       <p>We cannot display this file - you need to download it</p>
+       <p>If you are logged into google, or microsoft, you can try one of these links
+              <br> <a :href="httpSrcOfficeEmbed" target="test"> MS Office Embed </a>
+      , <a :href="httpSrcGoogleEmbed" target="test"> Google Docs Embed </a></p>
      </v-card-text>
    </v-card>
 
@@ -142,6 +167,7 @@ export default {
     getZml : getters.getState({ object: "gZml" }),
     icon: null,
     title: '',
+    loading:false
  }),
  computed:{
       screenwidth() {
@@ -192,6 +218,9 @@ export default {
       },
  },
  methods: {
+   loaded(e) {this.loading = false;console.log('loaded:', e)},
+   onload(e) {this.loading = false;console.log('onload:', e)},
+   load(e) {this.loading = false;console.log('load:', e)},
       getFilenameNoExtension( fileName ) {
        const pieces =   fileName.split('/')
        const l = pieces.length - 1
@@ -219,17 +248,19 @@ export default {
        if (!xx) xx = this.$refs.audio;
        if (!xx) xx = this.$refs.office;
        if (!xx) return
-       xx.src  = '';
        let iframes = this.$refs.iframe;
        if (iframes) {
         Array.prototype.forEach.call(iframes, iframe => {
           console.log('iframe=')
           iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo' }), '*');
         });
+        xx.src  = '';
        }
       }
  },
  mounted() {
+   console.log('M:',this.$options.name)
+   this.loading = true
  },
  watch: {
      src() {

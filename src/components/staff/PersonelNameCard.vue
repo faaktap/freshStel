@@ -57,12 +57,14 @@
                        vertical
                       ></v-divider>
   </div>
-  <div class="logo text-center">
-      <!--small>DE KUILEN HS</small-->
-    <v-img class="text-center" src="/img/logo.png"
-           max-width="100"
+  <div class="logo float-right">
+    <v-img class="float-right"
+           src="/img/logo.png"
+           max-height="90"
            contain
+           height="90"
     />
+    <!-- <small>DE KUILEN HS</small> -->
   </div>
 
   </v-card-text>
@@ -164,5 +166,6 @@ display: grid;
 .underlogo { grid-area: 4 / 9 / 9 / 10; }
 .underpic { grid-area: 4 / 1 / 9 / 3; }
 .logo { grid-area: 2 / 9 / 4 / 10; }
+/*.logo { grid-area: 2; } */
 .Surname { grid-area: 1 / 5 / 2 / 10; }
 </style>

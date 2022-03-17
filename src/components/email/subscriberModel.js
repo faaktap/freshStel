@@ -107,7 +107,9 @@ export const subscriberModel = {
                   { value: "1", label: 'Removed by Phoning - via helpdesk at School' },
                   { value: "2", label: 'Removed by User - via unsubscribe function' , disabled:true},
                   { value: "3", label: 'Removed by Sender - problem sending email' },
-                  { value: "0" , label: 'Active' },
+                  { value: "4", label: 'Student left' },
+                  { value: "5", label: 'Mailbox Full' },
+                  { value: "0" ,label: 'Active' },
                   //values is finicky about being strings or number "0" not same as 0
                 ]
             },            

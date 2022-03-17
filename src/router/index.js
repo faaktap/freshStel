@@ -288,10 +288,10 @@ const routes = [
   },
 ]
 
-
+import { publicPath } from '../../vue.config'
 const router = new VueRouter({
   mode: 'history',
-  base: 'vschool',    //This works : /zmltest/  but ./ does not work for layouts
+  base: publicPath, //'virtual-school',    //This works : /zmltest/  but ./ does not work for layouts
   werner: 'werner',      //see if I can add my own stuff.
   routes
 })

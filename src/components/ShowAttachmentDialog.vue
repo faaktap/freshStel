@@ -19,7 +19,7 @@ export default {
         }
     },
     mounted() {
-        console.log('mounted:', this.$options.name, this.image, this.imagetype)
+       console.log('M:', this.$options.name, this.image, this.imagetype)
     }
 }
 </script>

@@ -70,7 +70,7 @@ export const feh = {
       // console.log('element=', element)
       if (element.ext == 'link') {
          console.log(element)
-         alert('we found one - should do internal processing for link')
+         //alert('we found one - should do internal processing for link')
       }
     })
     return [files, folders]

@@ -13,23 +13,24 @@
         </v-card-subtitle>
         </div>
       <div>
-      {{ studentList.data.grade }} 
-      {{ studentList.data.gclass }} 
+      {{ studentList.data.grade }}
+      {{ studentList.data.gclass }}
+      <v-btn class="ma-2"> Edit </v-btn>
       <v-avatar class="ma-3" size="125" tile>
-       <v-img 
+       <v-img
          :src="'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno='+studentList.data.studentid"
          style="float-right;border-radius:40px;"
          contain>
         </v-img>
-      </v-avatar>                 
+      </v-avatar>
       </div>
      </div>
      <v-card-text>
       <small>
         High school De Kuilen Hoërskool
-        <br> 
+        <br>
        {{new Date()}}
-     </small> 
+     </small>
     </v-card-text>
     </v-card>
 </template>

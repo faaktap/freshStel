@@ -8,23 +8,8 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
  -->
 <div>
  <v-row>
-  <v-col cols="6">
-    <v-select
-      v-if="headers"
-      class="text-caption caption blue--text"
-      v-model="headerValue"
-      :items="headers"
-      dense
-      multiple
-      return-object
-      deletable-chips
-      hide-selected
-      small-chips
-      filled
-    />
-  </v-col>
-  <v-col cols="6">
-    <small class="text-caption blue--text"> {{ localData.filename }} </small>
+  <v-col cols="12">
+    <small class="text-caption gray--text"> {{ localData.filename }} </small>
   </v-col>
   </v-row>
 
@@ -48,7 +33,28 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
       @click:row="rowClick"
       @dblclick:row="rowDblClick"
       items-per-page-options="-1"
+      hide-default-footer
     >
+     <!-- <template v-slot:item="{item, on, attrs}">
+       <tr> :class="{active: group && item.id == group.id}">
+       <td>  {{ item }} <br> {{ on }} {{ attrs }} </td>
+       </tr>
+      </template> -->
+      <template #[`footer`]>
+        <v-select
+          v-if="headers"
+          class="text-caption caption blue--text"
+          v-model="headerValue"
+          :items="headers"
+          dense
+          multiple
+          return-object
+          deletable-chips
+          hide-selected
+          small-chips
+          filled
+        />
+      </template>
       <template #[`item.icon`]="{ item }">
         <v-icon
           title="Click on icon to 'play' the file"
@@ -118,6 +124,11 @@ export default {
     }
   },
   methods: {
+    itemRowBackground: function (item) {
+      // add this to v-data-table : :item-class="itemRowBackground"
+       console.log('itemRowBackground',item)
+       return '';  //item.protein > 4.2 ? 'style-1' : 'style-2'
+    },
     checkSelected (item) {
       // console.log('check selected')
       // Check if we should highlight or mark this in some other way
@@ -137,12 +148,14 @@ export default {
     rowClick (e) {
       // console.log('click')
       // user clicked on a row, send it back to parent
+      this.localData = e
       this.$emit('clickRow', e)
       // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
     },
     rowDblClick (e) {
       // console.log('dblclick icon')
       // user dbl clicked on a row, send it back to parent
+      this.localData = e.item
       this.$emit('clickDblRow', this.localData,e)
       // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
     },
@@ -190,4 +203,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

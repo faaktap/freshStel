@@ -243,6 +243,7 @@
 <!-- Show the files --->
         <v-col cols="12" sm="6" md="8">
           <!-- FILES DISPLAY -->
+        <drop-zone @activateDrop="activateDrop" description="OK, I've got it - let go of the mousebutton..">
           <v-card class="ma-2 pa-2">
             <files
               :file-display-records="fileDisplayRecords"
@@ -257,6 +258,7 @@
               @clickIcon="clickFileIcon"
             />
           </v-card>
+        </drop-zone>
         </v-col>
       </v-row>
     </v-card>
@@ -369,6 +371,7 @@
 <script>
 import { feh } from './FolderEdit.js'
 import { zmlFetch } from '@/api/zmlFetch'
+import { zmlFile } from '@/api/zmlFile'
 
 import { getters } from "@/api/store";
 const usertype = getters.getState({ object: "gZml" }).login.type;
@@ -385,6 +388,8 @@ import { infoSnackbar } from '@/api/GlobalActions'
 import { zmlLog } from '@/api/zmlLog.js';
 import ShowAttachmentDialog from '@/components/ShowAttachmentDialog.vue'
 
+import DropZone from '@/components/DropZone.vue'
+
 export default {
   name: 'FolderEdit',
   components: {
@@ -395,7 +400,8 @@ export default {
     Folders,
     FileUpload,
     LoadingBall,
-    ShowAttachmentDialog
+    ShowAttachmentDialog,
+    DropZone
   },
   data: () => ({
     usertype:usertype,
@@ -429,6 +435,9 @@ export default {
     drawer: false
   }),
   methods: {
+    activateDrop() {
+      this.showUpload = true
+    },
     uploadStart() {
       this.showUpload = true
     },
@@ -609,15 +618,30 @@ export default {
     },
     prepareAttachment(fileObj) {
       if (fileObj.ext == 'link') {
-        alert('this is a test for google drive links..')
         console.log('We need to read (getfilecontents):' + fileObj.dirpath + '/' + fileObj.filename)
-        //Put this one in as a test..
-        this.attachment.src = 'https://docs.google.com/spreadsheets/d/1d3HciexwZQndqHULEILwk_g4F1RRwUMlQjVVPc80BsI/edit?usp=sharing'
-        this.attachment.srctype =  'link'
+        this.getFileFromServer(fileObj.dirpath + '/' + fileObj.filename)
       } else {
         this.attachment.src = fileObj.dirpath + '/' + fileObj.filename
         this.attachment.srctype =  fileObj.ext
+        this.showAttachment = true
       }
+
+      console.log('show Attach:', this.attachment.src, this.attachment.srctype)
+    },
+    getFileFromServer(serverfilename) {
+      console.log('asking for : ' , serverfilename)
+      let ts = {}
+      ts.data = {path:serverfilename}
+      zmlFile(ts, this.gotFile)
+    },
+    gotFile(response) {
+      console.log(response)
+      alert('we gt file!')
+      //
+      //Put this one in as a test..
+      //this.attachment.src = 'https://docs.google.com/spreadsheets/d/1d3HciexwZQndqHULEILwk_g4F1RRwUMlQjVVPc80BsI/edit?usp=sharing'
+      this.attachment.src = response.link
+      this.attachment.srctype =  'mp4'
       this.showAttachment = true
     },
     back () {

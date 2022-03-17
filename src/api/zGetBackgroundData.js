@@ -68,6 +68,8 @@ export const zData = {
         if (whatever !== undefined) console.log(whatever)
         let d = new Date();
         let year = d.getFullYear()
+        console.log('loading cal:', getters.getState({ object: "gZml" }).calendar.length)
+        getters.getState({ object: "gZml" }).calendar.length = 0
         if (!getters.getState({ object: "gZml" }).calendar.length) {
             let ts = {}
             ts.task = 'PlainSql'
@@ -100,6 +102,7 @@ export const zData = {
 
 }
 function finishedLoadingCalendar(response) {
+    console.log('loading birthdays')
     response.forEach(ele => {
         const evt= {name: ele.public_preferredname
                  , start: ele.StartDate
@@ -131,6 +134,7 @@ function finishedLoadingBasic (response) {
 
 //----------------------------------------------------------------
 function loadSchoolsDays() {
+   console.log('loading school days')
    zDate.publicHolidays.forEach(xx => {
         const evt= {name: xx.title
                  , start: zDate.format(xx.date,'yyyy-MM-dd')
@@ -141,15 +145,17 @@ function loadSchoolsDays() {
    })
    let startDate = new Date()
    startDate.setMonth(2)
-   startDate.setDate(1)
+   startDate.setDate(14)
    startDate.setHours(0,0,0,0)
-   const startOfMonth = zDate.startOfMonth(startDate)
-   let dayCnt = zDate.curDay(startOfMonth)
+   //const startOfMonth = zDate.startOfMonth(startDate)
+   let dayCnt = zDate.curDay(startDate)
+   //alert('Loading Cal:',dayCnt)
    // let Group = 'A'
    //Kan jy my sê watter skooldag is vandag? (11/03/2021) - Dag 10 sir.
+   //14Mrt2022 = dag1
 
    for (let i=0; i< 232; i++) {
-      const dayX = zDate.add( startOfMonth, {days:i} )
+      const dayX = zDate.add( startDate, {days:i} )
       if (zDate.isWeekend(dayX))       {       continue   }
       if (zDate.isPublicHoliday(dayX)) {       continue   }
       const evt= {name: 'day' + dayCnt //+ ' ' + Group
@@ -161,15 +167,9 @@ function loadSchoolsDays() {
                  }
       getters.getState({ object: "gZml" }).calendar.push(evt)
       if (dayCnt == 10)  { dayCnt = 1; continue;}
-      /*
-      if (dayCnt == 10 && Group == 'B')  {
-          Group = 'A'; 
-          dayCnt = 1; continue;
-      }
-      if (Group == 'A') { Group = 'B'; continue;}
-      if (Group == 'B') { Group = 'A'; dayCnt += 1; continue;}
-      */
+      dayCnt += 1
    }
+   console.log(getters.getState({ object: "gZml" }).calendar)
 }
 
 //----------------------------------------------------------------
