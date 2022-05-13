@@ -18,7 +18,8 @@
   <v-row>
     <v-col cols="12" lg="12">
         <v-layout wrap>
-        <v-flex v-for="gr in grades" :key="gr.id" justify-space-around
+          <grade-display-short displaySize="medium" @input=goTo />    
+        <!--v-flex v-for="gr in grades" :key="gr.id" justify-space-around
          xs-6 >
          <template v-if="gr.id == gradeno">
             <v-btn  small @click="goTo(grp.id)" class="mt-4 ma-1" disabled color="red">
@@ -30,17 +31,17 @@
             {{ gr.name }} 
              </v-btn>            
           </template>
-        </v-flex>
+        </v-flex-->
         <v-flex>
           <v-text-field 
-              v-if="!bOrs"
+              v-if="!bOrs && getZml.grade"
               v-model="search" 
               label="search" 
               clearable
               hint="search on subject" />
         </v-flex>
         <v-flex>
-            <v-btn @click="bOrs = !bOrs" small icon > .. </v-btn>
+            <v-btn title="Different View" @click="bOrs = !bOrs" small icon > .. </v-btn>
         </v-flex>
         </v-layout>
     </v-col>
@@ -56,13 +57,11 @@
     <v-container fluid v-if="!bOrs && getZml.grade">
        <v-layout row wrap>
         <v-flex 
-         v-for="item in filterByGroup" :key="item.itemid"
+         v-for="item in subjectsFilter" :key="item.itemid"
          flex-row
          justify-space-around
          xs-12
          >
-         <!--subject-display  language="E" :item="item" :heading="heading" /-->
-         
          <subject-display2   language="E" :item="item" :heading="heading" />
 
         </v-flex>
@@ -80,16 +79,17 @@ import SubjectDisplay2 from "@/components/learn/SubjectDisplay2"
 import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort'
 import router from "@/router"
 import { infoSnackbar  } from '@/api/GlobalActions'; //,timeoutPromise
+import GradeDisplayShort from '@/components/learn/GradeDisplayShort.vue'
 export default {
     name: "Material",
-    components: ( { //SubjectDisplay
+    components: { //SubjectDisplay
                    SubjectDisplay2
-                 , SubjectDisplayShort} ),
+                 , SubjectDisplayShort
+                 , GradeDisplayShort
+                },
     props: [ 'heading', 'gradeno' ],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        //kies: 8,
-        grades:[],
         content:[],
         latest:[],
         language:null,
@@ -103,11 +103,8 @@ export default {
     activated: function () {
     },
     computed: {
-      seegridType() {
-        return this.x
-      },
-      filterByGroup() {
-        //this.$cs.l('filtergrp',this.kies, this.latest.length, this.content.length)
+      subjectsFilter() {
+        //this.$cs.l('subjectFilter',this.kies, this.latest.length, this.content.length)
          if (this.kies == '') {
            if (this.search.length > 2 ) {
              //do the search
@@ -130,13 +127,8 @@ export default {
             });     
          //this.$cs.l('size now..', selectedData.length)
          if (this.search.length < 2 ) {
-           //Delete all with no activity here...
-           let selData = []
-           selectedData.forEach(ele => {
-              let activity = this.latest.find(obj => ele.id == obj.id && ele.grade == obj.id)
-              if (activity)  this.selData.push(activity)
-           })
-           return(selData)           
+           //make it only updated here...
+           return(selectedData)
          } else {
            //do search 
                 let result = []
@@ -159,8 +151,11 @@ export default {
         zmlFetch(ts, this.latestSubjects, this.loadError)
       },
       latestSubjects(response) {
-          this.latests = response
-          //this.$cs.l('Done with latest', this.latest.length, response)
+        response.forEach(ele => {
+          this.latest.push(ele)
+        })
+        //this.$cs.l('Done with latest', this.latest.length, response)
+        this.doLoadSubjects()
       },
       goTo(where) {
         this.kies = where;
@@ -175,16 +170,9 @@ export default {
                      , params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                      , meta: {layout: "AppLayoutGray" }})
       },
-      doLoadGrades() {
-        //this.$cs.l('loading grades', this.content.length)
-        this.grades = [{id:8,name: 'Grade 8'}
-                          ,{id:9,name: 'Grade 9'}
-                          ,{id:10,name: 'Grade 10'}
-                          ,{id:11,name: 'Grade 11'}
-                          ,{id:12,name: 'Grade 12'}
-                          ]
-        //this.$cs.l('loading subjects', this.content.length)
-        this.grades.forEach(grp => {
+      doLoadSubjects() {
+        //this.$cs.l('loading subjects', this.latest.length)
+        this.getZml.grades.forEach(grp => {
           this.getZml.subjects.forEach(sub => {
              if (sub.subjectid > 0 && sub.subjectid < 400) {
                  let obj = {gid: grp.id
@@ -193,7 +181,17 @@ export default {
                            ,nameafr: sub.beskrywing
                            ,title: sub.shortname + ' ' + grp.id
                           }
-                  this.content.push(obj)
+                  if (this.latest.length) {
+                    let idx = this.latest.findIndex(x => 
+                    x.id == obj.id && grp.id == x.grade
+                    ////this.$cs.l(`xx = $(x.id) == $(obj.id) && $(grp.id) == $(x.grade)`)
+                    )
+                    //this.$cs.l(idx)
+                    if (idx != -1) this.content.push(obj)
+                  } else {
+                    this.content.push(obj)
+                  }
+                  
              }
           })
          })
@@ -204,32 +202,18 @@ export default {
           infoSnackbar("No Data to display - Have you logged in?");
           return;
         }
+        //this.$cs.l('What is heading????', this.heading)
         if (this.heading == "Grade") {
-            //this.$cs.l('load latest...')
+            //this.$cs.l('We have a grade!')
+            //this.$cs.l('load latest changes and subjects..')
             this.loadLatestChangesOnSubjects()
-            //this.$cs.l('load grades...', this.latest.length)
-            //let promise = timeoutPromise('wauit a bit',500)
-            //promise(e => //this.$cs.l('dswdfsdfsdfsdfsdfsdf',e))
-            setTimeout(() => { this.doLoadGrades() }, 1500)
-
-            
         } else {
             this.getZml.login.gradeLastChosen = this.getZml.grade;
-            let loginDetails = JSON.stringify(this.getZml.login)
-            localStorage.setItem('login', loginDetails);
-            //this.$cs.l('PUSH FOR PLATFORM!!!')
             router.push({name:'StudentHub' 
                        ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
                        ,meta: {layout: "AppLayoutGray" }})
 
-            //Here we could push to current tree (files layout), or we could list lcontent
-            /*
-            router.push({name:'LearnTree' 
-                       ,params:{currentSubjectID:this.getZml.subjectid, grade:this.getZml.grade}
-                       ,meta: {layout: "AppLayoutGray" }})
-            */
         }
-        //this.$cs.l('MAT: Mounted')
     },
     watch: { 
     }

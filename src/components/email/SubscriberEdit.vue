@@ -345,7 +345,11 @@ SELECT s.email, s.name, s.extra ,impnumber \
 left join m_out m on s.outid = m.outid \
 left join m_grouplink g on s.subid = g.subid \
 left join m_group a on a.grpid = g.grpid \
-WHERE email like '%${this.search}%'`
+WHERE s.email like '%${this.search}%'\
+   OR impnumber like '%${this.search}%'\
+   OR m.description like '%${this.search}%'\
+   OR s.name like '%${this.search}%'\
+   OR s.extra like '%${this.search}%'`
       zData.loadSql(this.loading, sqlStatement, this.assignSubData, this.api)
     },
     loadSub() {

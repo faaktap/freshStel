@@ -8,6 +8,7 @@
           @click:append="showDate = !showDate"
           v-on:input="updateValue($event)"
           :required="required"
+          class="ma-2"
           />
           <v-card elevation-6 v-if="showDate">
            <v-date-picker dense
@@ -19,7 +20,7 @@
                    :value="value">
            </v-date-picker>
           </v-card>
-          {{ current }}
+          <!-- {{ current }} -->
 </div>
 </template>
 

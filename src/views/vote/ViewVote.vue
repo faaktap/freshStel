@@ -292,7 +292,6 @@ export default {
     
   },
   mounted: function () {
-    localStorage.setItem('lastpath', this.$route.path)
     this.loadOurCandidates();
   },
   created: function () {

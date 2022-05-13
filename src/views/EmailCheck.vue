@@ -1,19 +1,16 @@
 <template>
   <div>
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
-         <v-row>
-          <v-col cols="12">
-           <h3> EMail Status List </h3>
-         </v-col>
-         </v-row>
          <base-table-edit
                      :tList="emailStatusList"
-                     :tHeading="'EMail Status - Records = ' + emailStatusList.length"
-                     bHeading="How are the email doin"
+                     :tHeading="'Email Status Summary  ( Records : ' + emailStatusList.length + ')'"
+                     bHeading="Double click an item to delve deeper."
                      @edit="tableDblClick"
                      @select="tableSelect"
          />
-      <v-btn @click="loadAllData"> Refresh Email List </v-btn>
+      <v-btn @click="loadAllData"
+             title="Click here to load delivery summary."
+      > Refresh Email List </v-btn>
   </div>
 </template>
 
@@ -34,18 +31,18 @@ export default {
         progress:false,
         timerHandle:null,
         dataSequence:false,
-        getData:{id:0
-                 , desc: "Emails Sent"
-                 , workDone: WAIT
-                 , response: {}
-                 , processor: this.loadEmailStatus
-                 , sql:"SELECT s.deliveryid, m.subject, s.status "
-                    + "     , min(s.sentdate) startdate , max(s.sentdate) enddate "
-                    + "     , datediff( max(s.sentdate), min(s.sentdate)) diff "
-                    + "     , count(*) "
-                    + "FROM m_emailsent s, m_delivery m "
-                    + "where m.deliveryid = s.deliveryid "
-                    + "group by s.deliveryid desc, s.status"
+        getData:{id: 0
+               , desc: "Emails Sent"
+               , workDone: WAIT
+               , response: {}
+               , processor: this.loadEmailStatus
+               , sql:`SELECT s.deliveryid, m.subject, s.status \
+                          , min(s.sentdate) startdate , max(s.sentdate) enddate \
+                         , datediff( max(s.sentdate), min(s.sentdate)) diff \
+                         , count(*) \
+                      FROM m_emailsent s, m_delivery m \
+                     where m.deliveryid = s.deliveryid \
+                     group by s.deliveryid desc, s.status`
                 },
         emailStatusList:{},
        }
@@ -55,23 +52,25 @@ export default {
    },
    methods: {
      tableDblClick(evt,item) {
-         console.log('back at base - dblClick:evt:', evt )
-         console.log('back at base - Edit:item:',item.item.deliveryid )
-         console.log('Table Show Delivieries 3: ', item.item)
+        //  console.log('back at base - dblClick:evt:', evt )
+        console.log('back at base - Edit:item:',item.item.deliveryid,evt )
+        //  console.log('Table Show Delivieries 3: ', item.item)
+         this.$router.push({ name: 'EmailDeliveryReport'
+                           , params: {deliverid: item.item.deliveryid} })
      },
      tableSelect(evt,item) {
-         console.log('back at base - select:',item.item, evt)
-
+       //console.log('back at base - select:',item.item, evt)
+       console.log('here we could have a popup form?', evt, item)
      },
      loadAllData() {
        this.progress = true;
-       console.info('fetching in zmlFetchArray......:',this.getData.id, this.getData.desc)
+       //console.info('fetching in zmlFetchArray......:',this.getData.id, this.getData.desc)
        let ts = {sql: this.getData.sql
                 ,task: 'PlainSql'}
        zmlFetch(ts, this.processAllData, this.loadError, this.getData);
      },
-     processAllData(response,notused,queue) {
-       console.log('emc',notused, queue)
+     processAllData(response) {             //processAllData(response,notused,queue)
+       // console.log('emc',notused, queue)
        this.getData.workDone = READY
        this.getData.response = response
        if (!this.timerHandle) {
@@ -104,7 +103,7 @@ export default {
            }
            this.progress = false;
         }
-        console.info('RC - End ',this.getData.workDone)
+        // console.info('RC - End ',this.getData.workDone)
         return "not used here"
      },
      loadEmailStatus(e) {

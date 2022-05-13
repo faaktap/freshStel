@@ -149,24 +149,6 @@ methods: {
   ss() {
       infoSnackbar('hallo')
   },
-  loadFromLocalStorage() {
-      //Check localstorage...
-    if (localStorage.getItem('lastStudent')) {
-        try {
-          this.getZml.login = JSON.parse(localStorage.getItem('login'));
-        } catch(e) {
-          localStorage.removeItem('login')
-        }
-        if (this.getZml.login.lang == 'A') {
-            this.$i18n.locale = 'af'
-        }
-      }
-  },
-  saveLocalStorage() {
-      let loginDetails = JSON.stringify(this.getZml.login)
-      localStorage.setItem('login', loginDetails)
- }
-
 },
 mounted: function () {
     //this.$cs.l('SINF MOUNTED', zmlConfig.maxUploadSize)

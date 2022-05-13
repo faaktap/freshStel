@@ -70,6 +70,7 @@
             <v-btn to="/about"> about </v-btn>
             <v-btn to="/hover"> hover </v-btn>
             <v-btn to="/loadhomework"> loadhomework </v-btn>
+            <v-btn to="/checklog"> checklog </v-btn>
             <!--{{ joke }}            -->
             <v-window>
             xs={{$vuetify.breakpoint.xs}} <br>

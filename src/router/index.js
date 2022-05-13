@@ -7,7 +7,7 @@ import EmptyRouterView from '@/components/EmptyRouterView'
 
 import login from '@/components/Login'
 
-import { getters } from "@/api/store"; //not needed, we do not redirect at the moment...
+import { getters } from "@/api/store";
 
 Vue.use(VueRouter)
 
@@ -198,24 +198,29 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
-    //emailheck
     component: () => import(/* webpackChunkName: "email" */ '@/views/test/StreamLineDB.vue')
     ,name: 'streamline'
     ,path: '/streamline'
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
+    component: () => import(/* webpackChunkName: "email" */ '@/views/LogCheck.vue')
+    ,name: 'checklog'
+    ,path: '/checklog'
+    ,meta: {layout: la[3], authentication: "public"}
+  },
+  {
     component: () => import(/* webpackChunkName: "email" */ '@/views/EmailCheck.vue')
     ,name: 'EmailCheck'
     ,path: '/emailcheck'
-    ,meta: {layout: la[0], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "public"}
   },
   {
     component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailDeliveryReport.vue')
     ,name: 'EmailDeliveryReport'
     ,path: '/emaildeliver/:deliverid?'
     ,props:true
-    ,meta: {layout: la[0], authentication: "teacher"}
+    ,meta: {layout: la[3], authentication: "teacher"}
   },
   {
     path: '/emailssent/:subid?',    name: 'emailssent',
@@ -289,6 +294,7 @@ const routes = [
 ]
 
 import { publicPath } from '../../vue.config'
+import { ls } from '@/api/localStorage.js'
 const router = new VueRouter({
   mode: 'history',
   base: publicPath, //'virtual-school',    //This works : /zmltest/  but ./ does not work for layouts
@@ -297,8 +303,13 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from,next) => {
+  if (ls.test('zmllogin')) {
+    getters.getState({ object: "gZml" }).login = ls.load('zmllogin')
+  }
   const userAuth = getters.getState({ object: "gZml" }).login.isAuthenticated
   const userType = getters.getState({ object: "gZml" }).login.type
+
+
   console.log('R - From.name, to.name |', from.name,'|', to.name,'|', from.path,'|', to.path);
   if (to.name == from.name) {
     if (to.params && to.params == from.params){

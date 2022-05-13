@@ -116,7 +116,6 @@
 <script>
 
 import VFormBase from "@/components/vfbase/VFormBase"
-//import BaseBreakpointDisplay from "@/components/base/BaseBreakpointDisplay"
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import { zmlMail } from '@/api/zmlMail';
 import { survey } from './survey.js'

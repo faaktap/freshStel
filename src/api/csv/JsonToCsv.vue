@@ -35,7 +35,7 @@ export default {
     },
     separator: {
       type: String,
-      default: ',',
+      default: ';',     //Default Separator - changed form , to ; on 2002-04-25 by Werner ZML
       required: false
     }
   },

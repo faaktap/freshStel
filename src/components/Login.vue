@@ -101,8 +101,10 @@
     <v-row>
      <v-col>
       <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == false">
-        <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon> If you are a learner, your login would start with your schoolno, and
-         if you are a teacher it would be your teacher login details. Request them from Werner at  082 563 9790
+        <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>If you are a learner, your login would start with your schoolno, and
+         if you are a teacher it would be your teacher login details.
+         A learner's first login his admin no will be his username and password.
+         Request them from Werner at  082 563 9790
          if you are unsure.
       </v-card>
       <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == true">
@@ -175,6 +177,7 @@ import { zmlLog } from '@/api/zmlLog.js';
 //import router from '@/router';
 import { getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
+import { ls } from "@/api/localStorage.js"
 
 export default {
     name: "login",
@@ -198,13 +201,13 @@ export default {
   }),
   methods: {
     getData() {
-      console.log(this.$options.name,'p-getData')
+      // console.log(this.$options.name,'p-getData')
       zData.initialData('Load Important Data')
       zData.calendarData('Load Holiday and Birthday Data')
       zData.functionData('Load functions')
     },
     doBack() {
-      console.log(this.$options.name,'p-doBack')
+      // console.log(this.$options.name,'p-doBack')
       if (!this.goodPassword()) {
         return
       }
@@ -240,19 +243,19 @@ export default {
       return true
     },
     startLearning() {
-      console.log(this.$options.name,'p-startLearning')
+      // console.log(this.$options.name,'p-startLearning')
       if (!this.goodPassword()) return
       this.getData();
       this.loadLearn()
     },
     loadLearn() {
-      console.log(this.$options.name,'p-loadLearn')
+      // console.log(this.$options.name,'p-loadLearn')
       switch (this.getZml.login.type) {
         case 'student' :
         {
            //we have a grade value of 09E2 in login.grade, and we want to split it.
            //slice(startIndex[, endIndex])
-           console.log(this.$options.name,'p-push student')
+           // console.log(this.$options.name,'p-push student')
            this.getZml.gradeLastChosen = 'G' + this.getZml.login.grade
            this.getZml.login.class  = this.getZml.login.grade.slice(3,4)
            this.getZml.login.gclass = this.getZml.login.grade.slice(2,4)
@@ -264,13 +267,13 @@ export default {
         }
         case 'teacher':
         {
-          console.log(this.$options.name,'p-push teacher')
+          // console.log(this.$options.name,'p-push teacher')
           this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }});
           break;
         }
         case 'admin' :
         {
-          console.log(this.$options.name,'p-push admin')
+          // console.log(this.$options.name,'p-push admin')
           this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }});
           break;
         }
@@ -280,39 +283,39 @@ export default {
           break;
         }
       }
-      console.log(this.$options.name,'p-after route change')
+      // console.log(this.$options.name,'p-after route change')
     },
 
     onEnter() {
-      console.log(this.$options.name,'p-onENter')
+      // console.log(this.$options.name,'p-onENter')
        if (this.getZml.login.isAuthenticated) {
          this.logout();
        } else {
          this.submit();
        }
-       console.log('after onEnter')
+       // console.log('after onEnter')
     },
     registrationMessage() {
         infoSnackbar("Sorry! No registration from Login Form. You are already registered.")
     },
     logout() {
-      console.log(this.$options.name,'p-logOut')
+      // console.log(this.$options.name,'p-logOut')
       const bye = 'Thanks for using the system ' + this.getZml.login.fullname + '!'
       infoSnackbar(bye);
 
-      Object.entries(this.getZml.login).forEach(([key, value]) => {
-          key = ''
-          console.log(`${key}: ${value}`)
-      });
+      // Object.entries(this.getZml.login).forEach(([key, value]) => {
+      //    key = ''
+      //    console.log(`${key}: ${value}`)
+      // });
       // Set default values
       this.getZml.login.lang = 'E'
       this.getZml.login.username = 'guest'
       this.getZml.login.isAuthenticated = false;
-      localStorage.removeItem('login')
+      ls.remove('login')
       this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
     },
     submit() {
-      console.log(this.$options.name,'p-subMit')
+      // console.log(this.$options.name,'p-subMit')
       if (this.submitting == false) {
           this.getZml.login.isAuthenticated = 0;
           this.submitting = true;
@@ -328,15 +331,15 @@ export default {
           this.loginIcon = 'mdi-emoticon-wink-outline';
           infoSnackbar("Please enter better values!");
       }
-      console.log('after submitting')
+      // console.log('after submitting')
     },
     loginFail(error) {
-      console.log(this.$options.name,'p-loginFail', error)
+      // console.log(this.$options.name,'p-loginFail', error)
       this.submitting = false;
       infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
     },
     doneWithLogin(response) {
-      console.log(this.$options.name,'p-doneLogin')
+      // console.log(this.$options.name,'p-doneLogin')
       this.submitting = false;
       if ('fullname' in response && response.error == '') {
           this.getZml.login = response;
@@ -364,7 +367,7 @@ export default {
             zmlLog(this.loginObj.username, "LoginFail3", 'To easy password')
             this.showProfile = true
           } else {
-            console.log('welcome',response.username, this.getZml.login.lang, this.getZml.login.grade,'idx=',this.getZml.login.grade.indexOf('A'))
+            // console.log('welcome',response.username, this.getZml.login.lang, this.getZml.login.grade,'idx=',this.getZml.login.grade.indexOf('A'))
             this.dropAnEmail()
             // new user if added = 1
             if (response.added == 1  || response.password == 'password') {
@@ -391,7 +394,7 @@ export default {
       }
     },
     saveDetails() {
-      console.log(this.$options.name,'p-saveDet')
+      // console.log(this.$options.name,'p-saveDet')
       //we need to send the stuff for an update
       if (!this.getZml.login.email || !this.getZml.login.phone) {
           errorSnackbar('You need to supply an email address and a phone number please.')
@@ -404,7 +407,7 @@ export default {
       zmlFetch(login,this.doneWithUpdate, this.failUpdate)
     },
     doneWithUpdate(response) {
-      console.log(this.$options.name,'p-doneUpadte')
+      // console.log(this.$options.name,'p-doneUpadte')
       if (response.errorcode == 0 ) {
         infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
         this.showProfile = false
@@ -417,7 +420,7 @@ export default {
       errorSnackbar('We have a problem to update your details ' + response.errorcode)
     },
     dropAnEmail() {
-      console.log(this.$options.name,'p-dropEMail')
+      // console.log(this.$options.name,'p-dropEMail')
       // this.getZml.login.password = 'secret'
       let email =
               { subject  : "Learn1 : User has logged on " + this.getZml.login.fullname
@@ -439,6 +442,12 @@ export default {
     },
     loadFromLocalStorage() {
       //Check localstorage...
+      this.getZml.login = ls.load('login')
+      this.loginObj.username = this.getZml.login.username
+      if (this.getZml.login.lang == 'A') {
+            this.$i18n.locale = 'af'
+      }
+      /*
       if (localStorage.getItem('login')) {
         try {
           this.getZml.login = JSON.parse(localStorage.getItem('login'));
@@ -449,16 +458,17 @@ export default {
         if (this.getZml.login.lang == 'A') {
             this.$i18n.locale = 'af'
         }
-        console.log('ld frm lS',this.getZml.login.username)
+        // console.log('ld frm lS',this.getZml.login.username)
       }
+      */
     },
     saveLocalStorage() {
       if (this.getZml.login.username) {
+        ls.save('login', this.getZml.login)
+        /*
         let loginDetails = JSON.stringify(this.getZml.login)
         localStorage.setItem('login', loginDetails)
-        console.log('saved to lS : ', this.getZml.login.username)
-      } else {
-        console.log('saved to lS : Negative')
+        */
       }
     },
     sendForgottenPasswordEmail(forgotPasswordLink) {
@@ -504,10 +514,10 @@ export default {
       },
       errorLoadingEmail(error) {
         errorSnackbar('Sorry, We have a problem retrieving your email address')
-        console.log(error)
+        console.log('Email Retrieve Prob:',error)
       },
       finishedLoadingForgottenPasswordEmail(response) {
-        console.log(response)
+        // console.log(response)
         if (!('email' in response[0])) {
           errorSnackbar('Sorry, We have a problem retrieving your email address')
           return
@@ -518,8 +528,11 @@ export default {
         obj.version = zmlConfig.projectID
         let str = JSON.stringify(obj)
         let encodedString = btoa(str)
-        console.log('https://kuiliesonline.co.za/virtual-school/login/' + encodedString )
+        // console.log('https://kuiliesonline.co.za/virtual-school/login/' + encodedString )
         this.sendForgottenPasswordEmail('https://kuiliesonline.co.za/virtual-school/login/' + encodedString)
+    },
+    testResp () {
+      console.log('update good or bad')
     },
 
 
@@ -528,21 +541,20 @@ export default {
   },
   mounted: function () {
     this.loadFromLocalStorage()
-    console.log(this.$route.params)
     if ('forgot' in this.$route.params && this.$route.params.forgot) {
       this.hideForgotButton = true
-      console.log('forgot = ', this.$route.params.forgot)
+      // console.log('forgot = ', this.$route.params.forgot)
       let reverse = atob(this.$route.params.forgot)
       //alert(reverse)
       let obj = JSON.parse(reverse)
-      console.log('new update for forgotten password', obj)
-      //We will reset the password to "password", allow him to login, and then force him to change
+      // console.log('new update for forgotten password', obj)
+      // We will reset the password to "password", allow him to login, and then force him to change
       this.loginObj = obj
       this.loginObj.password = 'password'
       let ts = {}
       ts.task = 'plainSql'
-      ts.sql = `UPDATE dkhs_learner SET user_password = 'passWord' where user_name = ${this.loginObj.username}`
-      zmlFetch(ts)
+      ts.sql = `UPDATE dkhs_learner SET user_password = 'passWord' where user_name = '${this.loginObj.username}'`
+      zmlFetch(ts, this.testResp, this.testResp)
     }
   }
 }

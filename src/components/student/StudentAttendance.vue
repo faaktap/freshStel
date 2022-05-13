@@ -23,7 +23,7 @@ export default {
     name:"StudentAttendanceList",
     props: ['studentid','color'],
     data: () => ({
-      getZml: getters.getState({ object: "gZml" }) ,  
+      getZml: getters.getState({ object: "gZml" }) ,
       AttendanceList:null,
       emailHeader: [
         //{text: 'id',       align: 'start',  value: 'attendanceid' },
@@ -50,7 +50,7 @@ export default {
  and a.active is null  \
  and a.capture = ${this.studentid}\
  order by  a.attendancedate desc, a.period  ,a.staff, a.location \
- limit 20`}
+ limit 80`}
 
            zmlFetch(sl, this.processAfterFetch);
         }

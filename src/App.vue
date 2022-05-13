@@ -32,10 +32,11 @@
 
 
 <script>
-import { getters } from "@/api/store";
-import { zmlConfig } from '@/api/constants';
-import confirm from "@/api/DialogConfirm";
-import EventBus, { ACTIONS } from '@/api/event-bus';
+import { getters } from "@/api/store"
+// import { ls } from "@/api/localStorage.js"
+import { zmlConfig } from '@/api/constants'
+import confirm from "@/api/DialogConfirm"
+import EventBus, { ACTIONS } from '@/api/event-bus'
 export default {
   name: 'ZmlApp',
   components: {confirm},
@@ -47,22 +48,12 @@ export default {
     projectID: zmlConfig.projectID
   }),
   methods: {
-    locStore(item) {
-      return localStorage.getItem(item)
-    },
   },
   mounted: function () {
     console.log('StartApp : ',this.projectID)
-    //Step thru our localstorage, and load all declared variables?
-    const lval = this.locStore('currentLocale')
-    if (lval) {
-        this.$i18n.locale = lval;
-        this.getZml.locale = lval;
-    }
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open
-
     EventBus.$on(ACTIONS.SNACKBAR, (message, color) => {
         this.snackbarMessage = message;
         if (color) {

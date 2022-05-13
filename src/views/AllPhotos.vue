@@ -28,6 +28,7 @@ You can soon search by student or by photoname
       <v-switch class="ma-2" v-model="showSkool" label="Skool" />
       <v-switch class="ma-2" v-model="showPers" label="Staff" />
       <v-switch class="ma-2" v-model="showPrefek" label="RVL" />
+      <v-switch class="ma-2" v-model="showSoccer" label="Soccer" />
     </v-card>
     <v-row>
       <v-col xs12 md6>
@@ -161,6 +162,7 @@ export default {
        showSkool:false,
        showPers:true,
        showPrefek:false,
+       showSoccer:false,
        showAs:'list'
 
     }),
@@ -169,7 +171,8 @@ export default {
           let workTable = []
           if (!this.showAwards && !this.showSkool &&
               !this.showStudents && !this.showPers &&
-              !this.showPrefek && !this.search) {
+              !this.showPrefek && !this.search &&
+              !this.showSoccer && !this.search) {
              return workTable
           }
           workTable = this.photoList.filter(e =>
@@ -177,6 +180,7 @@ export default {
             (!this.showStudents || e.type == '1')  &&
             (!this.showSkool || e.type == 'skool') &&
             (!this.showPers || e.type == 'pers') &&
+            (!this.showSoccer || e.type == 'soccer') &&
             (!this.showPrefek || (e.type == 'terreinprefek' || e.type == 'rvl' )) &&
             (!this.search || JSON.stringify(e).toLowerCase().indexOf(this.search) > -1)
           )
