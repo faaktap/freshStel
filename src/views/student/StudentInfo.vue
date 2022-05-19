@@ -119,9 +119,9 @@ components: {HeroSection
            , BaseTitleExpand
            },
 data: () => ({
-  studentList:null,
-  searchMore:false,
-  blahblah:'',
+  studentList: null,
+  searchMore: true,
+  blahblah: '',
   getZml: getters.getState({ object:"gZml" }),
 teachers:[
         {firstName:'Jon', lastName:'Doe', specialty:'PE', ms:' University of Georgia',

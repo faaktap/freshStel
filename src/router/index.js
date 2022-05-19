@@ -228,13 +228,13 @@ const routes = [
     props: true,    params: {subid: 6229, editmode: false},
     meta: {layout: la[3], authentication: "teacher" }
   },
-  {
-    path: '/emailall/:search?',    name: 'emailssent',
-    component: () => import(/* webpackChunkName: "email" */ '@/views/EmailAll.vue'),
-    props: true,
-    params: {search: '', editmode: false},
-    meta: {layout: la[3], authentication: "admin" }
-  },
+  // {
+  //   path: '/emailall/:search?',    name: 'emailssent',
+  //   component: () => import(/* webpackChunkName: "email" */ '@/views/EmailAll.vue'),
+  //   props: true,
+  //   params: {search: '', editmode: false},
+  //   meta: {layout: la[3], authentication: "admin" }
+  // },
   {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
     ,name: 'ViewCampaigns'
@@ -286,6 +286,12 @@ const routes = [
     ,meta: {layout: la[3], authentication: "public"}
   },
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/calendarSetup.vue')
+    ,name: 'DaySet'
+    ,path: '/dayset'
+    ,meta: {layout: la[3], authentication: "admin"}
+  },
+  {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
     ,path: '*'
@@ -303,14 +309,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from,next) => {
-  if (ls.test('zmllogin')) {
-    getters.getState({ object: "gZml" }).login = ls.load('zmllogin')
+  if ( (ls.test('login') || ls.test('zmllogin') )&& getters.getState({ object: "gZml" }).login.type == 'guest' ) {
+    getters.getState({ object: "gZml" }).login = ls.load('login')
   }
   const userAuth = getters.getState({ object: "gZml" }).login.isAuthenticated
   const userType = getters.getState({ object: "gZml" }).login.type
 
 
-  console.log('R - From.name, to.name |', from.name,'|', to.name,'|', from.path,'|', to.path);
+  Vue.prototype.$cs.l('R - From.name, to.name |', from.name,'|', to.name,'|', from.path,'|', to.path);
   if (to.name == from.name) {
     if (to.params && to.params == from.params){
     //do nothing
@@ -318,24 +324,24 @@ router.beforeEach((to, from,next) => {
       next();
     }
   } else {
-    console.log('R - Auth Meta:', to.meta.authentication,userAuth, userType);
+    Vue.prototype.$cs.l('R - Auth Meta:', to.meta.authentication,userAuth, userType);
     if (to.meta.authentication != 'public' && userAuth == false && to.name != 'Login') {
-      console.log('R - ForceLogin')
+      Vue.prototype.$cs.l('R - ForceLogin')
       next({name: 'Login', meta:{message:'Bad Authentication for ' + to.name}})
     } else if (to.meta.authentication == 'teacher' && userType == 'student' && to.name != 'Login') {
-      console.log('R - ForceLogin - student not allowed')
+      Vue.prototype.$cs.l('R - ForceLogin - student not allowed')
       next({name: 'Login'
           , props: { errorMessage: 'there was an error' }
           , meta:{message:'Bad Authentication for ' + to.name}})
     }
     else {
-      console.log('R - Just Next', to)
+      Vue.prototype.$cs.l('R - Just Next', to)
       next();
     }
     /*
     if (to.name == 'Home' ) {
        if (getters.getState({ object:"gZml" }).login.isAuthenticated == true) {
-            //this.$cs.l('Logged in : take hime to other home')
+            //Vue.prototype.$cs.l('Logged in : take hime to other home')
             next({name: 'About'})
         } else {
           next();

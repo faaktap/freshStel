@@ -1,38 +1,59 @@
 <template>
- <v-card xmax-width="500" class="mx-auto" :color="color" elevation="2">
+ <v-card class="mx-auto"
+         :color="color"
+         elevation="2"
+  >
    <v-card-title class="headline ma-1"> Attendance </v-card-title>
    <v-card-text v-if="AttendanceList">
-   <v-data-table
-         :headers="emailHeader"
+     <v-data-table
+         :headers="atendanceHeader"
          :items="AttendanceList"
-         :items-per-page="15"
-         :hide-default-footer="true"
+         :items-per-page="5"
          class="elevation-1"
          @click:row="clickOnRow"
-       ></v-data-table>
+     />
    </v-card-text>
    <v-card-text v-else>
       Oops - no attendance found for {{ studentid }}
    </v-card-text>
+   <v-card-actions v-if="AttendanceList">
+     <v-btn @click="showResult = !showResult"
+            small>
+        Show Data for Export
+    </v-btn>
+   </v-card-actions>
+    <v-dialog v-model="showResult" fullscreen>
+     <v-card color="red" v-if="showResult && AttendanceList">
+      <front-json-to-csv :json-data="AttendanceList"
+                         :csv-title="'Attendance List ' + studentid"
+                         @hideModal="showResult = false">
+      </front-json-to-csv>
+     </v-card>
+    </v-dialog>
  </v-card>
 </template>
 <script>
 import { zmlFetch } from "@/api/zmlFetch";
 import { getters } from "@/api/store";
+import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 export default {
     name:"StudentAttendanceList",
     props: ['studentid','color'],
+    components: {FrontJsonToCsv},
     data: () => ({
       getZml: getters.getState({ object: "gZml" }) ,
       AttendanceList:null,
-      emailHeader: [
+      atendanceHeader: [
         //{text: 'id',       align: 'start',  value: 'attendanceid' },
+          {text: 'Date',  align: 'start',  value: 'attendancedate' },
+          {text: 'Session',    align: 'start',  value: 'sessionid' },
           {text: 'Teacher',    align: 'start',  value: 'staff' },
           {text: 'Room',   align: 'start',  value: 'location' },
           {text: 'Period', align: 'start',  value: 'period' },
-          {text: 'Date',  align: 'start',  value: 'attendancedate' },
-          {text: 'Session',    align: 'start',  value: 'sessionid' },
-        ]
+          {text: 'Archived',    align: 'start',  value: 'archived' },
+
+        ],
+      showResult:false
     }),
     methods:{
       clickOnRow(e) {
@@ -41,17 +62,24 @@ export default {
       getAttendance() {
         if (this.studentid) {
            let sl = { task: 'plainSql'
-                    , sql: `select attendancedate,a.sessionid,a.staff,a.location,a.period \
- from dkhs_student s     \
-   , a_attendance a     \
-   , (select distinct capture from a_attendance        group by capture, period      ) d  \
- where d.capture = s.studentid   \
- and s.studentid = a.capture    \
- and a.active is null  \
- and a.capture = ${this.studentid}\
- order by  a.attendancedate desc, a.period  ,a.staff, a.location \
- limit 80`}
-
+                    , sql:
+                `select sessionid,attendancedate, staff, location, period, archived from (\
+                  select attendancedate, a.staff,a.location,a.period,a.sessionid , 'N' archived\
+                   from dkhs_student s \
+                      , a_attendance a \
+                  where a.capture = s.studentid \
+                    and a.active is null \
+                    and a.capture = ${this.studentid} \
+                  union all \
+                  select attendancedate, a.staff,a.location,a.period,a.sessionid , 'Y' \
+                   from dkhs_student s \
+                      , a_attendance_back a \
+                  where a.capture = s.studentid \
+                    and a.active is null \
+                    and a.capture = ${this.studentid} \
+                    ) d \
+                 order by attendancedate DESC`
+           }
            zmlFetch(sl, this.processAfterFetch);
         }
       },

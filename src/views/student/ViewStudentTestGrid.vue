@@ -15,16 +15,16 @@
 <v-row>
 <v-col>
   <h4>Folder Select </h4>
-    <folder-select grade=8 
-                   subjectid=10 
-                  @selected="selectFolder"> 
+    <folder-select grade=8
+                   subjectid=10
+                  @selected="selectFolder">
     </folder-select>
     selectedFolder : {{ selectFolder }}
 </v-col>
 </v-row>
 
 <v-expansion-panels>
- <v-expansion-panel>    
+ <v-expansion-panel>
   <v-expansion-panel-header>
      <v-btn @click="showFolders = !showFolders"    > Show Folders </v-btn>
   </v-expansion-panel-header>
@@ -36,7 +36,7 @@
                    :csv-title="'My Test csv title'">
      <v-btn>
       Download with custom title
-     </v-btn> 
+     </v-btn>
     </front-json-to-csv>
    </v-window>
   </v-expansion-panel-content>
@@ -104,7 +104,7 @@ components: {FrontJsonToCsv
           , FolderSelect
           , SubjectDisplayShort
           , GradeDisplayShort
-          },    
+          },
 data: () => ({
     getZml: getters.getState({ object: "gZml" }),
     folders:[],
@@ -130,7 +130,7 @@ methods:{
     showRefs() {
         //this.$cs.l(this.$refs)
         let componentHTML = this.$el.innerHTML
-        console.log(componentHTML)
+        this.$cs.l(componentHTML)
         //this.$cs.l(this.$refs.myref.innerHTML)
     },
     loadContent() {
@@ -139,10 +139,10 @@ methods:{
     },
     afterFolders(response) {
           this.folders = response;
-    },    
+    },
     afterContentFolders(response) {
           this.contentFolders = response;
-    },    
+    },
 },
 computed:{
       //Display a list of folders on dropdown
@@ -151,7 +151,7 @@ computed:{
         let ignore = false
           this.contentFolders.forEach(item => {
           ignore = false;
-          if (item.grade != this.getZml.grade || 
+          if (item.grade != this.getZml.grade ||
              item.subjectid != this.getZml.subjectid ||
              item.sortorder == 0) {
              ignore = true
@@ -172,7 +172,7 @@ computed:{
 mounted: function() {
        zData.initialData('Load Subject Data')
        this.getZml.grade = 8
-       this.getZml.subjectid = 10    
+       this.getZml.subjectid = 10
        this.loadContent()
 }
 }

@@ -1,38 +1,42 @@
 <template>
- <v-card color="grey lighten-3"
+ <v-card color="white darken-1"
          class="text-center ma-0 pa-0" :loading="loading">
+         
   <zml-close-button @btn-click="closeIt" />
-  <v-card-title class="text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
+  
+  <v-card-title class="ma-1 pa-1 text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
     <v-btn
+      class="ma-2"
       @click="launchOutside"
       title="Open in Browser/Download"
       >
       <v-icon> mdi-window-open </v-icon> Open
     </v-btn>
-    <div class="mx-4 text-center">
+    
+    <div class="mx-4 mb-0 mt-0 pa-0 text-center">
       Preview - {{ getFilenameNoExtension(src) }}
     </div>
 
-  <v-hover v-if="['JHMEL','werner'].includes(getZml.login.username)"
+    <v-hover v-if="['JHMEL','werner'].includes(getZml.login.username)"
           v-slot:default="{ hover }"
           class="float-right"
           >
-    <v-badge
-     :value="hover"
-     color="deep-purple accent-4"
-     :content="`Debug:ExtName=${typeExtName} httpsrc= ${httpsrc}`"
-     right
-     transition="slide-x-transition"
-     @click="$emit('fullscreen', true)"
-    >
-    <v-icon>mdi-fountain-pen-tip</v-icon>
-    </v-badge>
-  </v-hover>
+     <v-badge
+      :value="hover"
+      color="deep-purple accent-4"
+      :content="`Debug:ExtName=${typeExtName} httpsrc= ${httpsrc}`"
+      right
+      transition="slide-x-transition"
+      @click="$emit('fullscreen', true)"
+     >
+      <v-icon>mdi-fountain-pen-tip</v-icon>
+     </v-badge>
+    </v-hover>
 
   </v-card-title>
 
 <!-------------------------------------VIDEO-PLAYABLE------------->
-  <v-card-text class="text-center">
+  <v-card-text class="text-center ma-0 pa-0">
   <template v-if="['video-playable'].includes(typeExtName)">
   <small class="text-caption">1</small>
     <video controls
@@ -93,7 +97,7 @@
 
 <!-------------------------------------GOOGLE READER------------->
   <template v-else-if="['document', 'doc','ebook','pdf'].includes(typeExtName)">
-    <small class="text-caption"><br>5</small>
+    <small class="ma-0 pa-0 text-caption"><br>5</small>
       <iframe class="ma-0 pa-0" id="iframe" :width="screenwidth" :height="screenheight" :title="title"
             ref="google"
               @loaded="loaded"

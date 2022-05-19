@@ -29,6 +29,25 @@
  </v-tabs-items>
 </v-card>
 
+<v-card v-if="getZml.login.username=='werner'">
+    SLIDES
+ <v-tabs v-model="tab" background-color="primary accent-4" centered icons-and-text>
+  <v-tabs-slider></v-tabs-slider>
+  <v-tab href="#tab-1">Recents<v-icon>mdi-chart-timeline</v-icon></v-tab>
+  <v-tab href="#tab-2">Favorites<v-icon>mdi-hard-hat</v-icon></v-tab>
+  <v-tab href="#tab-3">Nearby<v-icon large>mdi-share-variant</v-icon></v-tab>
+ </v-tabs>
+ <v-tabs-items v-model="tab">
+  <v-tab-item v-for="i in 3" :key="i" :value="'tab-' + i">
+   <v-card flat>
+    <v-card-text>{{ i }} {{ 'tab-' + i }} {{ i }} {{ 'asdasdtab-' + i }} {{ i }} {{ 'tab-' + i }}
+    </v-card-text>
+    <v-card-actions> {{ tab }} </v-card-actions>
+   </v-card>
+  </v-tab-item>
+ </v-tabs-items>
+</v-card>
+
  <!-- Show a specific email, and allow to send again. -->
  <v-dialog v-model="showEmail">
    <v-card color="blue">
@@ -100,10 +119,10 @@ export default {
     }),
     methods:{
       test(e) {
-        console.log('test click on form', e)
+        this.$cs.l('test click on form', e)
         if (e.key == 'attachments') {
            infoSnackbar('he clicked on ' +  e.params.text)
-           console.log('e.params.text', e.params.text)
+           this.$cs.l('e.params.text', e.params.text)
            let href= this.attList.find(el => el.humanfilename = e.params.text).htmlfilepath
            if (href)  window.open(href, "_pdfs");
         }
@@ -123,15 +142,15 @@ export default {
                ,htmlmessage : `RESEND: ${this.emailListRecord.emailcontent}
                attachments: ${attListHref}
                `};
-        console.log(email)
+        this.$cs.l(email)
         zData.sendEmail(email, this.emailDone)
       },
       emailDone(response) {
-         console.log('emaildddddddddddddddoooone',response)
+         this.$cs.l('emaildddddddddddddddoooone',response)
 
       },
       clickOnRow(e) {
-          console.log('clicked on email', e)
+          this.$cs.l('clicked on email', e)
           this.emailListRecord = e
           this.attList.length = 0
           if (this.email == null) {
@@ -144,7 +163,7 @@ export default {
           zData.loadSql(this.loading, sqlStatement, this.assignAttachmentData, this.api)
       },
       assignAttachmentData(response) {
-          console.log('assig attachement', response)
+          this.$cs.l('assig attachement', response)
           if (response.length) {
              this.attList = response
           }
@@ -173,7 +192,7 @@ export default {
                              WHERE e.subid = ${this.subid}
                              group by d.subject,e.deliveryid, e.status, e.sentdate,g.grpname, e.log
                              order by e.deliveryid DESC`
-        //console.log('sql = ', sqlStatement)
+        //this.$cs.l('sql = ', sqlStatement)
         zData.loadSql(this.loading, sqlStatement, this.assignData, this.api)
       },
       assignData(response) {
@@ -186,7 +205,7 @@ export default {
 
     },
     mounted() {
-        console.log('start : ', this.$options.name)
+        this.$cs.l('start : ', this.$options.name)
         this.email = ''
         this.executeSql()
         this.mySchema = emailModel.emlSchema

@@ -1,32 +1,26 @@
 <template>
 <div>
-  <v-btn @click="showList = !showList" :title="allAboutPers"> 
+  <v-btn @click="showList = !showList" :title="allAboutPers">
        {{ selected }}
   </v-btn>
-
- <v-row v-if="personelList.length && showList">
-  <v-col cols="12" sm="2" md="2" lg="2" xl="1"  v-for="p in personelList" :key="p.persid" class="ma-1 pa-1">
-    <!--student-grade v-model="gradeClass" /> you selected : {{ gradeClass}}-->
-    <v-btn @click="selectClick(p)"
-           @mouseover="hover = p.menemonic"
-    >
-     {{ p.menemonic }} 
+  <v-dialog v-model="showList"
+          :fullscreen="$vuetify.breakpoint.mobile" xmax-width="600" width="auto">
+   <v-card color="primary" class="ma-4 pa-2">
+    <v-card-title> Teacher/Staff List </v-card-title>
+      <v-layout v-if="personelList.length && showList"
+                row wrap align-center justify-space-between>
+        <v-flex v-for="p in personelList"
+                :key="p.persid" class="ma-1 pa-1">
+         <v-btn @click="selectClick(p)"
+               :title="p.surname +', '+ p.name +', ' + p.registerclass"
+                class="ma-2"
+          >
+     {{ p.menemonic }}
     </v-btn>
-    <div v-if="hover == p.menemonic"
-        xclass="v-card--reveal display-3"
-         >
-          <v-card :elevation="hover ? 12 : 2" 
-                   class="mx-auto"
-                   color="light-blue ">
-            <v-card-text class="my-1 text-center wordbreak" color="yellow--text">
-               {{ p.surname }}, {{p.name}}, {{ p.registergrade}}{{p.registerclass}} </v-card-text>
-          </v-card>
-
-
-
-    </div>
-  </v-col>
- </v-row>
+   </v-flex>
+  </v-layout>
+ </v-card>
+</v-dialog>
 </div>
 </template>
 
@@ -37,7 +31,7 @@ export default {
     name:"PersonelMenemonic",
     components:{},
     props:{
-      
+
     },
     data: () => ({
         personelList:[],
@@ -58,14 +52,14 @@ export default {
       },
       loadError(response) {
         alert('P.M.' + response)
-      },        
+      },
      },
-    mounted() { 
+    mounted() {
         if (this.personelList.length == 0) {
            let ts = {}
            ts.task = 'PlainSql'
            ts.sql = "SELECT persid, username, menemonic, registergrade, registerclass, surname, name, room "
-               + "FROM dkhs_personel WHERE length(menemonic) > 1 order by menemonic" 
+               + "FROM dkhs_personel WHERE length(menemonic) > 1 order by menemonic"
            ts.api = zmlConfig.apiDKHS
            zmlFetch(ts, this.loadData, this.loadError);
         }

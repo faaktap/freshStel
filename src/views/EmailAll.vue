@@ -69,12 +69,12 @@ export default {
    },
    methods: {
      tableDblClick(evt,item) {
-         console.log('back at base - dblClick:evt:', evt )
-         console.log('back at base - Edit:item:',item.item.deliveryid )
-         console.log('Table Show Delivieries 3: ', item.item)
+         this.$cs.l('back at base - dblClick:evt:', evt )
+         this.$cs.l('back at base - Edit:item:',item.item.deliveryid )
+         this.$cs.l('Table Show Delivieries 3: ', item.item)
      },
      tableSelect(evt,item) {
-         console.log('back at base - select:',item.item, evt)
+         this.$cs.l('back at base - select:',item.item, evt)
 
      },
      loadAllData() {
@@ -85,7 +85,7 @@ export default {
        zmlFetch(ts, this.processAllData, this.loadError, this.getData);
      },
      processAllData(response,notused,queue) {
-       console.log('emc',notused, queue)
+       this.$cs.l('emc',notused, queue)
        this.getData.workDone = READY
        this.getData.response = response
        if (!this.timerHandle) {
@@ -127,8 +127,8 @@ export default {
      },
    },
    mounted() {
-     console.log('mount ' , this.$options.name)
-     console.log('params = ', this.search)
+     this.$cs.l('mount ' , this.$options.name)
+     this.$cs.l('params = ', this.search)
      if (this.search) {
          this.getData.where =  `where s.studentid like '%${this.search}%'\
               or s.surname like '%${this.search}%'\
@@ -154,7 +154,7 @@ export default {
      LEFT JOIN dkhs_personel p1 ON LOWER(p1.workemail) = LOWER(m.email) \
      ${this.getData.where}
      ORDER BY gpmid DESC, s.surname, s.firstname`
-     console.log(' sql = ', this.getData.sql)
+     this.$cs.l(' sql = ', this.getData.sql)
      this.loadAllData()
    }
 }

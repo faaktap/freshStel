@@ -1,5 +1,4 @@
 <template>
-<!-- SEE ZMLDATATABLE for Printing zml-data-table- --->
  <v-container class="grey lighten-4" v-if="jsonData" fluid>
    <v-card color="white darken-1">
   <v-row no-gutters class="mb-6" >
@@ -47,9 +46,10 @@
               :labels="finalHeading"
               :show-labels="true"
               class="d-print-none float-right"
-              :csv-title="'Data List prepared by DKLearn'"
-              > <!-- @success="handleClick" -->
-      <v-btn small class="pa-1 ma-1">    Download    </v-btn>
+              :csv-title="csvTitle"
+              @success="handleClick">
+      <!-- Slot inside json-to-csv -->
+      <v-btn small class="pa-1 ma-1">  Download    </v-btn>
     </json-to-csv>
 
   </v-col>
@@ -62,7 +62,6 @@
         :dataList="finalJsonData"
         :userHeader="userHeader"
         :doPrint="activatePrint"
-        :footer="footer"
      />
     </v-card>
    </v-col>
@@ -77,9 +76,9 @@ export default {
   name: "FrontJsonToCsv",
   components: { JsonToCsv , zmlDataTable},
   props: {
-    jsonData: {type: Array, required: true },
-    csvTitle: {type: String, default:'whatever'},
-    footer: {type: String, default:''},
+    jsonData: {
+      type: Array, required: true },
+      csvTitle: {type:String, default:"whatever"},
   },
   data: () => ({
     labels:[],
@@ -106,9 +105,9 @@ export default {
        this.labels.forEach(lab => {
                if (lab.clicked == true) {
                  test[lab.desc] = {title: lab.desc.toUpperCase() }
-               } /* else {  hide vir undef
-                 test[lab.desc] = ''
-               }*/
+               }// else { zml hide heeltemal vir undefined
+                // test[lab.desc] = ''
+                //}
        })
        this.finalHeading = test; //{...[test]}
     },
@@ -128,8 +127,8 @@ export default {
          })
      }
     },
-    handleClick () {
-      // alert('click')
+    handleClick (e) {
+      console.log(this.$options.name,'emitSuccess', e)
 
     },
   },

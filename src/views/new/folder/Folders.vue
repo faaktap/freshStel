@@ -6,8 +6,8 @@
         key="DIR1"
         class="text-caption">
         <small>Current Folders</small>
-        <v-btn @click="switchColor" 
-               small 
+        <v-btn @click="switchColor"
+               small
                :title="'no color : ' + noColor"
                text>..
         </v-btn>
@@ -127,7 +127,7 @@ export default {
   },
   mounted() {
      zData.initialData('Load Subject Data')
-     console.log('mounted:', this.$options.name)
+     this.$cs.l('mounted:', this.$options.name)
   },
   computed: {
   },
@@ -148,7 +148,7 @@ export default {
       this.noColor = !this.noColor
     },
     treeClick (ik) {
-      console.log('treeClick', ik)
+      this.$cs.l('treeClick', ik)
       this.treeOS.push(ik)
       // get the folder from the tree!!! via href value
       // Remove https://kuiliesonline.co.za  from the value. like "IgnoreDir" and send it back
@@ -156,22 +156,22 @@ export default {
       this.$emit('moreFolder', folder)
     },
     onOpen (e1) {
-      console.log('onopen1', e1)
-      // console.log('onopen2',this.treeActive,this.treeOS)
+      this.$cs.l('onopen1', e1)
+      // this.$cs.l('onopen2',this.treeActive,this.treeOS)
     },
     onSelected (e1, e2) {
-      console.log('onselected', e1, e2, this.treeActive, this.treeOS)
+      this.$cs.l('onselected', e1, e2, this.treeActive, this.treeOS)
     },
     passBackFolderOnButton (folder) {
-      // console.log('clicked on button folder', folder, ' emityting.')
+      // this.$cs.l('clicked on button folder', folder, ' emityting.')
       this.$emit('folder', folder)
     },
     passBackFolderOnTree (folder) {
-      // console.log('clicked on tree folder', folder, ' emityting.')
+      // this.$cs.l('clicked on tree folder', folder, ' emityting.')
       this.$emit('folder', folder)
     },
     getTreeFolders (foldername) {
-      // console.log(this.$options.name, 'getTreeFolders', this.folderLoadUrl, this.currentPath, foldername)
+      // this.$cs.l(this.$options.name, 'getTreeFolders', this.folderLoadUrl, this.currentPath, foldername)
       let path = ''
       if (foldername) {
         path = foldername
@@ -201,17 +201,17 @@ export default {
 -time
 */
       fol.filterDirectoryResults([])
-      // console.log(this.$options.name, 'doneFolderload', result)
+      // this.$cs.l(this.$options.name, 'doneFolderload', result)
       // let test = fol.filterDirectoryResults(result)
-      // console.log('fol.filterDirectoryResults answer', test, result)
+      // this.$cs.l('fol.filterDirectoryResults answer', test, result)
       // this.testTraverse(result)
-      // console.log('testTracerTree . folders = ', this.treeTraverseTest.length)
+      // this.$cs.l('testTracerTree . folders = ', this.treeTraverseTest.length)
       this.folderItems = result
       this.loading = false
     },
     // Easier way to traverse a tree, is to only make 2nd level recursive. (i think)
     testTraverse(tree) {
-      console.log('test Traverse', tree.length)
+      this.$cs.l('test Traverse', tree.length)
       for (let i = 0; i < tree.length; i++) {
         this.treeTraverseTest.push(tree[i].href)
           if (tree[i].children.length) {
@@ -225,7 +225,7 @@ export default {
         if ('children' in subtree[j] && subtree[j].children.length) {
             this.travel1(subtree[j].children)
         } else {
-          console.log('niks kinders')
+          this.$cs.l('niks kinders')
         }
       }
     },
@@ -234,7 +234,7 @@ export default {
       this.loading = false
     },
     snack (txt) {
-      console.log(this.$options.name, 'snack', txt)
+      this.$cs.l(this.$options.name, 'snack', txt)
       // this.$notifier.showMessage({ content: txt, color: 'info' })
     }
   }

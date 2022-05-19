@@ -86,7 +86,7 @@ export default {
       },
   },
   mounted() {
-      console.log('Start', this.$options.name)
+      this.$cs.l('Start', this.$options.name)
       this.toggle = 1
 
   }

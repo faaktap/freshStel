@@ -22,8 +22,10 @@ import { format
  import { maxTime } from 'date-fns/constants'
  import { minTime } from 'date-fns'
 
+const adminPeriodDuration = 22
+const adminStartTime = '07:45'
+const period1Duration = 52
 
-//11 Maart 2021 was Dag 10
 export const zDate = {
     publicHolidays : [
       //Should use start and end dates for holidays...
@@ -45,11 +47,10 @@ export const zDate = {
     { title : "School Holiday", date:new Date(2022,7,8)} ,
     { title : "School Holiday", date:new Date(2022,9,28)} ,
     { title : "School Holiday", date:new Date(2022,9,29)} ,
-    { title : "School Holiday", date:new Date(2022,9,29)} ,
   ],
   dayType: [
-   {id:10, dayNo:'1', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:11 ,dayNo:'1', type:'Per1'    , start:'08:07', duration:52}
+   {id:10, dayNo:'1', type:'Admin'   , start: adminStartTime, duration:adminPeriodDuration}
+  ,{id:11 ,dayNo:'1', type:'Per1'    , start:'08:07', duration:period1Duration}
   ,{id:12 ,dayNo:'1', type:'Per2'    , start:'08:55', duration:0}
   ,{id:13 ,dayNo:'1', type:'Per3'    , start:'09:43', duration:0}
   ,{id:14 ,dayNo:'1', type:'Pouse 1' , start:'10:31', duration:0}
@@ -58,8 +59,8 @@ export const zDate = {
   ,{id:17 ,dayNo:'1', type:'Pouse 2' , start:'12:33', duration:0}
   ,{id:18 ,dayNo:'1', type:'Per6'    , start:'12:53', duration:0}
   ,{id:19 ,dayNo:'1', type:'Per7'    , start:'13:42', duration:0}
-  ,{id:20, dayNo:'2', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:21 ,dayNo:'2', type:'Per1'    , start:'08:07', duration:52}
+  ,{id:20, dayNo:'2', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:21 ,dayNo:'2', type:'Per1'    , start:'08:07', duration: period1Duration}
   ,{id:22 ,dayNo:'2', type:'Per2'    , start:'08:55', duration:0}
   ,{id:23 ,dayNo:'2', type:'Per3'    , start:'09:43', duration:0}
   ,{id:24 ,dayNo:'2', type:'Pouse 1' , start:'10:31', duration:0}
@@ -68,8 +69,8 @@ export const zDate = {
   ,{id:27 ,dayNo:'2', type:'Pouse 2' , start:'12:33', duration:0}
   ,{id:28 ,dayNo:'2', type:'Per6'    , start:'12:53', duration:0}
   ,{id:29 ,dayNo:'2', type:'Per7'    , start:'13:42', duration:0}
-  ,{id:30, dayNo:'3', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:31 ,dayNo:'3', type:'Per1'    , start:'08:00', duration:52}
+  ,{id:30, dayNo:'3', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:31 ,dayNo:'3', type:'Per1'    , start:'08:00', duration: period1Duration}
   ,{id:32 ,dayNo:'3', type:'Per2'    , start:'08:45', duration:0}
   ,{id:33 ,dayNo:'3', type:'Per3'    , start:'09:30', duration:0}
   ,{id:34 ,dayNo:'3', type:'Pouse 1' , start:'10:15', duration:0}
@@ -78,8 +79,8 @@ export const zDate = {
   ,{id:37 ,dayNo:'3', type:'Pouse 2' , start:'12:10', duration:0}
   ,{id:38 ,dayNo:'3', type:'Per6'    , start:'12:30', duration:0}
   ,{id:39 ,dayNo:'3', type:'Per7'    , start:'13:15', duration:0}
-  ,{id:40, dayNo:'4', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:41 ,dayNo:'4', type:'Per1'    , start:'08:07', duration:52}
+  ,{id:40, dayNo:'4', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:41 ,dayNo:'4', type:'Per1'    , start:'08:07', duration: period1Duration}
   ,{id:42 ,dayNo:'4', type:'Per2'    , start:'08:55', duration:0}
   ,{id:43 ,dayNo:'4', type:'Per3'    , start:'09:43', duration:0}
   ,{id:44 ,dayNo:'4', type:'Pouse 1' , start:'10:31', duration:0}
@@ -88,8 +89,8 @@ export const zDate = {
   ,{id:47 ,dayNo:'4', type:'Pouse 2' , start:'12:33', duration:0}
   ,{id:48 ,dayNo:'4', type:'Per6'    , start:'12:53', duration:0}
   ,{id:49 ,dayNo:'4', type:'Per7'    , start:'13:42', duration:0}
-  ,{id:50, dayNo:'5', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:51 ,dayNo:'5', type:'Per1'    , start:'08:30', duration:52}
+  ,{id:50, dayNo:'5', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:51 ,dayNo:'5', type:'Per1'    , start:'08:30', duration: period1Duration}
   ,{id:52 ,dayNo:'5', type:'Per2'    , start:'09:11', duration:0}
   ,{id:53 ,dayNo:'5', type:'Per3'    , start:'09:52', duration:0}
   ,{id:54 ,dayNo:'5', type:'Pouse 1' , start:'10:33', duration:0}
@@ -98,8 +99,8 @@ export const zDate = {
   ,{id:57 ,dayNo:'5', type:'Pouse 2' , start:'12:20', duration:0}
   ,{id:58 ,dayNo:'5', type:'Per6'    , start:'12:38', duration:0}
   ,{id:59 ,dayNo:'5', type:'Per7'    , start:'13:19', duration:0}
-  ,{id:60, dayNo:'6', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:61 ,dayNo:'6', type:'Per1'    , start:'08:30', duration:52}
+  ,{id:60, dayNo:'6', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:61 ,dayNo:'6', type:'Per1'    , start:'08:30', duration: period1Duration}
   ,{id:62 ,dayNo:'6', type:'Per2'    , start:'09:11', duration:0}
   ,{id:63 ,dayNo:'6', type:'Per3'    , start:'09:52', duration:0}
   ,{id:64 ,dayNo:'6', type:'Pouse 1' , start:'10:33', duration:0}
@@ -108,8 +109,8 @@ export const zDate = {
   ,{id:67 ,dayNo:'6', type:'Pouse 2' , start:'12:20', duration:0}
   ,{id:68 ,dayNo:'6', type:'Per6'    , start:'12:38', duration:0}
   ,{id:69 ,dayNo:'6', type:'Per7'    , start:'13:19', duration:0}
-  ,{id:70, dayNo:'7', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:71 ,dayNo:'7', type:'Per1'    , start:'08:30', duration:52}
+  ,{id:70, dayNo:'7', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:71 ,dayNo:'7', type:'Per1'    , start:'08:30', duration: period1Duration}
   ,{id:72 ,dayNo:'7', type:'Per2'    , start:'09:11', duration:0}
   ,{id:73 ,dayNo:'7', type:'Per3'    , start:'09:52', duration:0}
   ,{id:74 ,dayNo:'7', type:'Pouse 1' , start:'10:33', duration:0}
@@ -118,8 +119,8 @@ export const zDate = {
   ,{id:77 ,dayNo:'7', type:'Pouse 2' , start:'12:20', duration:0}
   ,{id:78 ,dayNo:'7', type:'Per6'    , start:'12:38', duration:0}
   ,{id:79 ,dayNo:'7', type:'Per7'    , start:'13:19', duration:0}
-  ,{id:80, dayNo:'8', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:81 ,dayNo:'8', type:'Per1'    , start:'08:30', duration:52}
+  ,{id:80, dayNo:'8', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:81 ,dayNo:'8', type:'Per1'    , start:'08:30', duration: period1Duration}
   ,{id:82 ,dayNo:'8', type:'Per2'    , start:'09:11', duration:0}
   ,{id:83 ,dayNo:'8', type:'Per3'    , start:'09:52', duration:0}
   ,{id:84 ,dayNo:'8', type:'Pouse 1' , start:'10:33', duration:0}
@@ -128,8 +129,8 @@ export const zDate = {
   ,{id:87 ,dayNo:'8', type:'Pouse 2' , start:'12:20', duration:0}
   ,{id:88 ,dayNo:'8', type:'Per6'    , start:'12:38', duration:0}
   ,{id:89 ,dayNo:'8', type:'Per7'    , start:'13:19', duration:0}
-  ,{id:80, dayNo:'8', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:91 ,dayNo:'9', type:'Per1'    , start:'08:30', duration:52}
+  ,{id:80, dayNo:'8', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:91 ,dayNo:'9', type:'Per1'    , start:'08:30', duration: period1Duration}
   ,{id:92 ,dayNo:'9', type:'Per2'    , start:'09:11', duration:0}
   ,{id:93 ,dayNo:'9', type:'Per3'    , start:'09:52', duration:0}
   ,{id:94 ,dayNo:'9', type:'Pouse 1' , start:'10:33', duration:0}
@@ -138,8 +139,8 @@ export const zDate = {
   ,{id:97 ,dayNo:'9', type:'Pouse 2' , start:'12:20', duration:0}
   ,{id:98 ,dayNo:'9', type:'Per6'    , start:'12:38', duration:0}
   ,{id:99 ,dayNo:'9', type:'Per7'    , start:'13:19', duration:0}
-  ,{id:100, dayNo:'10', type:'Admin'   , start:'07:45', duration:22}
-  ,{id:101 ,dayNo:'10', type:'Per1'    , start:'08:07', duration:52}
+  ,{id:100, dayNo:'10', type:'Admin'   , start: adminStartTime, duration: adminPeriodDuration}
+  ,{id:101 ,dayNo:'10', type:'Per1'    , start:'08:07', duration: period1Duration}
   ,{id:102 ,dayNo:'10', type:'Per2'    , start:'08:55', duration:0}
   ,{id:103 ,dayNo:'10', type:'Per3'    , start:'09:43', duration:0}
   ,{id:104 ,dayNo:'10', type:'Pouse 1' , start:'10:31', duration:0}
@@ -221,7 +222,7 @@ export const zDate = {
   curDay: function(date) {
     //11 Maart 2021 was Dag 10
     //1 maart was dag 2
-    if (compareAsc(date.setHours(0,0,0,0), new Date(2022,2,14).setHours(0,0,0,0) )  == 0 ) {
+    if (compareAsc(date.setHours(0,0,0,0), new Date(2022,4,3).setHours(0,0,0,0) )  == 0 ) {
        return 1
     } else {
       alert('We could not detect the correct DAY Number')

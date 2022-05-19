@@ -1,12 +1,16 @@
 <template>
- <div v-if="dataList && dataHeader">
-   <v-row no-gutters class="mb-6" >
-    <v-col cols="12" class="heading-2 text-center">
-      <v-card class="pa-2"  color="blue" >
-          VIEWER :  {{ userHeader }}
-      </v-card>
-    </v-col>
-   </v-row>
+<div v-if="dataList && dataHeader" id="printMe">
+ <table width="100%" border="0" class="ma-2">
+  <tr class="d-print-table-row">
+   <td width="30%" style="border: 0px; border-radius: 0px; float: left">
+     DKHS-LEARN<br>{{ today }}
+   </td>
+   <td width="40%" style="border: 0px;  align: center">
+      <center><strong>High School De Kuilen Hoërskool</strong><br>{{ userHeader }}</center>
+   </td>
+   <td width="30%" style="border: 0px; border-radius: 0px; float: right"><img height="60" src="img/logolearn.png" class="float-right" /></td>
+  </tr>
+ </table>
 
   <v-card class="ma-2">
    <v-data-table
@@ -16,13 +20,14 @@
     class="elevation-2"
     disable-pagination
     hide-default-footer
-    id="printMe"
     @click:row="clickOnRow"
    >
    </v-data-table>
- </v-card>
+  </v-card>
+  <div id="testMe" v-html="footer">
+  </div>
  </div>
-</template>
+ </template>
 
 
 <script>
@@ -30,12 +35,12 @@ import printJS from "print-js";
 import { zDate } from '@/api/zDate.js';
 export default {
     name:"zmlDataTable",
-    props: ['dataList', 'userHeader','doPrint'],
+    props: ['dataList', 'userHeader','doPrint','footer'],
     data: () => ({
         dataHeader: [
           {text: 'User',             value: 'user_name' },
-          {text: 'Type',             value: 'user_type' }
-        ]
+          {text: 'Type',             value: 'user_type' },
+        ],
     }),
     methods:{
       clickOnRow(p1,p2) {
@@ -53,11 +58,7 @@ export default {
           })
       },
       printIt() {
-        // const style =
-        //   "@page { margin-top: 10px } @media print { h1 { color: blue },heading { color: blue } }";
-        // const headerStyle = "align:center;";
-
-
+        console.log("The print dialog was started")
         const style = `
           @page { margin-top: 10px }
           @media print {
@@ -66,22 +67,20 @@ export default {
           h1 { color: #1c3a1b }\
           heading { color: #1c3a1b }\
           p.bodyText {font-size:10pt}\
-          th, td {border-radius:6px; padding: 8px;margin: 8px; border: 1px solid #e6e4ed;}\
+          th, td {border-radius:6px; padding: 10px;margin: 10px; border: 1px solid #67656d;}\
           aside {display: none;}\
           main {display: block;}\
          }`
-        const headerStyle = "font-weight: 400; align: center;font:Garamond";
-
-
+        const headerStyle = "font-weight: 300; align: center;font:Garamond";
           printJS({
            printable: "printMe",
            type: "html",
-           header: `<center><h2> ${this.userHeader}  ( ${zDate.format(zDate.todayNoHours(),'yyyy-MM-dd')} )</h2></center>`,
+           header: `<center> ${this.userHeader}  ( Date: ${this.today} )</center>`,
            headerStyle: headerStyle,
            style: style,
            scanStyles: false,
            onPrintDialogClose: () => console.log("The print dialog was closed"),
-           onError: e => console.log(e)
+           onError: (e) => console.log(e)
           });
 
 /*  Other way of printing the data....
@@ -130,21 +129,23 @@ export default {
 
     },
     computed:{
-        listLength() {
-            if (this.dataList) {
-                return this.dataList.length
-            } else {
-                return 0
-            }
-        },
-        objectLength() {
-            if (this.dataList && this.dataList.length) {
-                return Object.entries(this.dataList[0])
-            } else {
-                return 0
-            }
-        }
-
+      today() {
+        return zDate.format(zDate.todayNoHours(),'yyyy-MM-dd')
+      },
+      listLength() {
+          if (this.dataList) {
+              return this.dataList.length
+          } else {
+              return 0
+          }
+      },
+      objectLength() {
+          if (this.dataList && this.dataList.length) {
+              return Object.entries(this.dataList[0])
+          } else {
+              return 0
+          }
+      }
     },
     mounted: function() {
         this.reBuildHeaders()
@@ -156,7 +157,8 @@ export default {
         objectLength () {
           this.reBuildHeaders()
         },
-        doPrint () {
+        doPrint (n,o) {
+          console.log('doPrint',o,n)
           if (this.doPrint > 0) this.printIt()
         }
     }
@@ -164,6 +166,7 @@ export default {
 </script>
 
 <style scoped>
+.print {display:none;}
 @media print {
   body {
     overflow: auto;

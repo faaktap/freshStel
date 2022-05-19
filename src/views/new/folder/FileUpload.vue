@@ -141,10 +141,10 @@ import { errorSnackbar } from '@/api/GlobalActions'
         this.titleMessage = this.beforeDropMessage
       },
       deleteFileEntry(fname) {
-        // console.log('asking to delete ', fname, this.files.length)
-        // console.log('asking to delete ', this.files)
+        // this.$cs.l('asking to delete ', fname, this.files.length)
+        // this.$cs.l('asking to delete ', this.files)
         let idx = this.files.findIndex(e => e.name == fname)
-        // console.log('asking to delete no ', idx)
+        // this.$cs.l('asking to delete no ', idx)
         if (idx != -1) {
           this.files.splice(idx,1)
         }
@@ -153,7 +153,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
         errorSnackbar(txt)
       },
       mes(txt) {
-        console.log(txt)
+        this.$cs.l(txt)
       },
       async addSingleFile(e) {
         this.mes('addSingeFile')
@@ -179,12 +179,12 @@ import { errorSnackbar } from '@/api/GlobalActions'
         this.fileWindowColor = this.fileWindowColorNormal
         this.titleMessage = this.afterDropMessage
 
-        // console.log('addFile',e.dataTransfer.files)
-        // console.log('addFile #',e.dataTransfer.files.length)
+        // this.$cs.l('addFile',e.dataTransfer.files)
+        // this.$cs.l('addFile #',e.dataTransfer.files.length)
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
            await makeAWait(1000,addToQueue,e.dataTransfer.files, this.files, this.busy)
         } else {
-          console.log('Houston we have a prbolem!!!!')
+          this.$cs.l('Houston we have a prbolem!!!!')
         }
       },
 
@@ -237,7 +237,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
         await makeAWait(1000,uploadFiles,this.startUpload, this.files, this.progressProg)
       },
       progressProg(data) {
-          console.log('received data from progress : ', data, data.lengthComputable)
+          this.$cs.l('received data from progress : ', data, data.lengthComputable)
           if (data.lengthComputable) {
                 this.sofarSize += data.loaded
                 this.progressBar = parseInt( ((this.sofarSize / this.totalSize) * 100), 10 );
@@ -246,7 +246,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
           // added ZML - to make it cleaner
           this.progressItems.length = 0
           this.progressItems.push(data);
-          console.log('received data from progress bottom : ', this.sofarSize, this.progressBar)
+          this.$cs.l('received data from progress bottom : ', this.sofarSize, this.progressBar)
           // this.busy = false
       },
       startUpload(fileData, fdet) {
@@ -286,7 +286,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
         }
       },
       errorWithUpload(response){
-          console.log("UPLOAD ERROR : ", response)
+          this.$cs.l("UPLOAD ERROR : ", response)
       },
       hideStr(str,partToHide) {
         let split = str.split(partToHide)
@@ -312,7 +312,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
     },
     mounted() {
       // https://www.vuescript.com/vue-js-drag-drop-uploader-vue-transmit/
-      // console.log(this.$options.name)
+      // this.$cs.l(this.$options.name)
     },
     watch:{
 

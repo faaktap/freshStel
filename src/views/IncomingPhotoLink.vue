@@ -28,10 +28,10 @@ If you click anywhere on the picture, you can type in a name via a lookup
 <!-- Show a lookuplist of studentinfo -->
 <v-btn @click="showResult = !showResult">
     Show Data for Export
-</v-btn> 
+</v-btn>
 
-<v-dialog v-model="showLookup" 
-          max-width="400" 
+<v-dialog v-model="showLookup"
+          max-width="400"
           transition="dialog-bottom-transition"
           retain-focus
           style="overflow-y-hidden"
@@ -39,17 +39,17 @@ If you click anywhere on the picture, you can type in a name via a lookup
           <!-- Show a lookuplist of studentinfo -->
   <v-card color="white">
 
-    <v-card-title class="text-h5 grey lighten-2"> 
-      
+    <v-card-title class="text-h5 grey lighten-2">
+
       <v-btn icon @click="showLookup = !showLookup">
         <v-icon> mdi-close</v-icon>
-      </v-btn> 
-      Student Lookup 
+      </v-btn>
+      Student Lookup
     </v-card-title>
 
     <v-card-text>
      <student-lookup class="pa-0 mt-6"
-                 @dataEntered="studentFound" 
+                 @dataEntered="studentFound"
                  :searchMore="searchMore"/>
     </v-card-text>
   </v-card>
@@ -62,11 +62,11 @@ If you click anywhere on the picture, you can type in a name via a lookup
   <front-json-to-csv :json-data="csvArray"
                      :csv-title="'csvArray title'"
                      @hideModal="showResult = false">
-  </front-json-to-csv>    
+  </front-json-to-csv>
  </v-card>
 </v-dialog>
 
-</v-container>    
+</v-container>
 </template>
 
 <script>
@@ -95,7 +95,7 @@ export default {
        photolinkid:null,
        studentid:null,
        csvArray:[],
-       sqlStatement : "SELECT photolinkid,filepath,filename,p.studentid,linktype,dateloaded,description,userid " 
+       sqlStatement : "SELECT photolinkid,filepath,filename,p.studentid,linktype,dateloaded,description,userid "
                     + ", concat(s.firstname,' ', s.surname, ' ',s.grade) student"
                     + "  from dkhs_photolink p "
                     + "left join dkhs_student s on s.studentid = p.studentid "
@@ -105,10 +105,10 @@ export default {
     }),
     computed: {
        photoListFilter() {
-          if (this.show == 'all') 
+          if (this.show == 'all')
              return this.csvArray
           else
-             return this.csvArray.filter(ele => ele.studentid == null) 
+             return this.csvArray.filter(ele => ele.studentid == null)
        }
     },
     methods:{
@@ -126,10 +126,10 @@ export default {
          }
       },
       clickOnRow(e) {
-         console.log(e)
+         this.$cs.l(e)
          this.showLookup = true
          this.photolinkid = e.photolinkid
-         console.log('we are working with ', this.photolinkid)
+         this.$cs.l('we are working with ', this.photolinkid)
       },
       studentFound(value) {
          this.showLookup = false
@@ -152,11 +152,11 @@ export default {
          zData.loadSql(this.loading, sql, this.updateDone, this.api)
       },
       updateDone(response) {
-        console.log('update done - ', response)
+        this.$cs.l('update done - ', response)
       }
     },
     mounted() {
-      console.log('Start ', this.$options.name)
+      this.$cs.l('Start ', this.$options.name)
       if (this.csvArray.length == 0) {
           this.executeSql()
       }

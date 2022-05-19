@@ -52,15 +52,15 @@ export default {
    },
    methods: {
      tableDblClick(evt,item) {
-        //  console.log('back at base - dblClick:evt:', evt )
-        console.log('back at base - Edit:item:',item.item.deliveryid,evt )
-        //  console.log('Table Show Delivieries 3: ', item.item)
+        //  this.$cs.l('back at base - dblClick:evt:', evt )
+        this.$cs.l('back at base - Edit:item:',item.item.deliveryid,evt )
+        //  this.$cs.l('Table Show Delivieries 3: ', item.item)
          this.$router.push({ name: 'EmailDeliveryReport'
                            , params: {deliverid: item.item.deliveryid} })
      },
      tableSelect(evt,item) {
-       //console.log('back at base - select:',item.item, evt)
-       console.log('here we could have a popup form?', evt, item)
+       //this.$cs.l('back at base - select:',item.item, evt)
+       this.$cs.l('here we could have a popup form?', evt, item)
      },
      loadAllData() {
        this.progress = true;
@@ -70,7 +70,7 @@ export default {
        zmlFetch(ts, this.processAllData, this.loadError, this.getData);
      },
      processAllData(response) {             //processAllData(response,notused,queue)
-       // console.log('emc',notused, queue)
+       // this.$cs.l('emc',notused, queue)
        this.getData.workDone = READY
        this.getData.response = response
        if (!this.timerHandle) {

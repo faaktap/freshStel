@@ -30,8 +30,12 @@ Vue.prototype.$playSound = (path, volume = .5) => {
 export const cs = {
   // eslint-disable-next-line
   l: (...args) => {
-     console.log(...args);
-    }
+      // console.log(...args);
+    },
+  scrollToTop: (containerID) => {
+      let e = document.getElementById(containerID || "app")
+      if (e) { e.scrollIntoView({ behavior: "smooth" })} else { cs.l('ELEMENT DOES NOT EXIST')}
+  }
 }
 
 

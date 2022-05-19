@@ -50,7 +50,7 @@ export default {
   methods: {
   },
   mounted: function () {
-    console.log('StartApp : ',this.projectID)
+    this.$cs.l('StartApp : ',this.projectID)
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open

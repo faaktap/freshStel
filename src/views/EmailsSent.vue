@@ -29,15 +29,15 @@ export default {
     }),
     methods:{
         subscriberChange(e,currentRowRecord) {
-           console.log('new subid received', e)
+           this.$cs.l('new subid received', e)
            this.localSubID = e
            this.currentSubscriber = currentRowRecord
-           console.log('new guy ', this.currentSubscriber)
+           this.$cs.l('new guy ', this.currentSubscriber)
         },
 
     },
     mounted() {
-        console.log('start : ', this.$options.name)
+        this.$cs.l('start : ', this.$options.name)
         this.localSubID = this.subid
     }
 }

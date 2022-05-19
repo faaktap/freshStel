@@ -99,7 +99,7 @@ export default {
       zmlFetch(ts, this.processData, this.loadError);
      },
      loadError(error) {
-       console.log('load files:', error)
+       this.$cs.l('load files:', error)
      },
      processData(response) {
       let filter = response.filter(function (e) {
@@ -111,22 +111,22 @@ export default {
       filter = this.tData.filter(function (e) {
             return !e.path.includes('.Trash');
       })
-      console.log(filter.length)
+      this.$cs.l(filter.length)
       this.tData = filter.filter(function (e) {
             return !e.path.includes('WERNER');
       })
-      console.log(this.tData.length)
+      this.$cs.l(this.tData.length)
       this.progress = false
       this.tData.forEach(e => {
          let pos1 = e.ppath.indexOf("/");
          let pos2 = e.ppath.indexOf("/", pos1 + 1);
          e.grade = e.ppath.slice(0,pos1)
          e.subject = e.ppath.slice(pos1+1,pos2)
-         console.log(e.grade, e.subject, pos1, pos2)
+         this.$cs.l(e.grade, e.subject, pos1, pos2)
       });
       this.tData = filter
       this.tData.sort((a,b) => b.date.localeCompare(a.date));
-      console.log('Latest Full Set - SORTED:',this.tData)
+      this.$cs.l('Latest Full Set - SORTED:',this.tData)
       this.progress = false
      },
      clickOnTableRow(p1) {

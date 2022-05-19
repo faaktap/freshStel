@@ -35,16 +35,19 @@
      <v-row>
          <v-col cols="10">
           <personel-menemonic v-model="wieOmTeWys" @click="showCal=false" />
-        </v-col><v-col cols="2">
-        <v-btn @click="weekOrDayChange">  {{ weekOrDay }} </v-btn>
-        <v-btn @click="showCal = !showCal">
+        </v-col>
+        <v-col cols="2">
+         <v-btn @click="showCal = !showCal">
           <template v-if="!showCal">Show Calendar</template>
           <template v-else>Hide Calendar </template>
         </v-btn>
+
         </v-col></v-row>
+      <v-container fluid>
       <calendar v-show="showCal"
-               :weekOrDay="weekOrDay"
                :menemonic="wieOmTeWys" />
+      </v-container>
+
      </base-title-expand>
 
 </v-col>
@@ -115,19 +118,11 @@ export default {
         today: new Date(),
         tomorrow: new Date(),
         schoolday: null,
-        weekOrDay:"day",
         joke:''
     }),
     computed:{
     },
     methods:{
-        weekOrDayChange() {
-            if (this.weekOrDay == 'day') {
-                this.weekOrDay = 'week'
-            } else {
-                this.weekOrDay = 'day'
-            }
-        },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "light-green lighten-3"

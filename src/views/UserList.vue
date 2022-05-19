@@ -15,6 +15,19 @@
            hide-details
         />
        </v-flex>
+       <v-flex>
+         <v-btn @click="showResult = !showResult" small class="float-right ma-2">
+           <v-icon small> mdi-export </v-icon>
+          Export
+         </v-btn>
+         <v-btn @click="getLogs"
+                      title="Click here to refresh all users who have logged in"
+                      class="float-right ma-2"
+                      small
+         ><v-icon small>mdi-refresh</v-icon>
+         Refresh
+         </v-btn>
+         </v-flex>
       </v-layout>
       <v-row dense>
        <v-col cols="12">
@@ -47,13 +60,10 @@
               First time and last time and how many times a user has created a log entry
              </v-card>
             </template>
-            <template v-slot:[`footer.page-text`]>
+            <!-- <template v-slot:[`footer.page-text`]>
              <v-card color="green darken-1" align="center" class="ma-2 pa-2">
-              <v-btn @click="getLogs"
-                      title="Click here to refresh all users who have logged in"
-              ><v-icon>mdi-table-refresh</v-icon></v-btn>
              </v-card>
-            </template>
+            </template> -->
            </v-data-table>
           </div>
         </v-card>
@@ -66,21 +76,21 @@
 
   <user-edit :u="curItem" />
 
-   <v-dialog v-model="showPasswordChange" :scrollable="false" persistent width="50%" >
+  <v-dialog v-model="showResult" fullscreen>
+     <v-card color="red" v-if="showResult && userList">
+      <front-json-to-csv :json-data="userList"
+                         :csv-title="'User List'"
+                         @hideModal="showResult = false">
+      </front-json-to-csv>
+     </v-card>
+  </v-dialog>
+
+   <v-dialog v-model="showPasswordChange" :scrollable="false" persistent>
     <v-card v-if="curItem" elevation="12" color="white darken-1">
      <v-card-title>
       PASSWORD RESET
      </v-card-title>
 
-     <v-card-text>
-      <v-card color="green" class="ma-2 pa-2">
-      User : {{ curItem.user_name }}
-      <br>Name : {{ curItem.user_fullname }}
-
-      <br>CellPhone : {{ curItem.user_cell }}
-      <br>Last Login : {{ curItem.last }}
-      </v-card>
-     </v-card-text>
      <v-card-actions>
       <v-btn title="Click here to reset password to the word 'password'"
              @click="passwordReset"
@@ -90,6 +100,18 @@
              @click="showPasswordChange = false"
       > Close </v-btn>
      </v-card-actions>
+
+     <v-card-text>
+      <v-card color="green" class="ma-2 pa-2">
+      User : {{ curItem.user_name }}
+      <br>Name : {{ curItem.user_fullname }}
+      <br>Email : {{ curItem.user_email }}
+      <br>CellPhone : {{ curItem.user_cell }}
+      <br>Access : {{ curItem.type }}
+      <br>Times : {{ curItem.times }}
+      <br>Last Login : {{ curItem }}
+      </v-card>
+     </v-card-text>
     </v-card>
    </v-dialog>
   </v-container>
@@ -103,10 +125,11 @@ import { getters } from "@/api/store";
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 import UserEdit from '@/views/UserEdit.vue'
 import { zmlLog } from '../api/zmlLog';
+import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 export default {
     name:"UserList",
     props: [],
-    components: {UserEdit},
+    components: {UserEdit, FrontJsonToCsv},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         showPasswordChange:false,
@@ -118,19 +141,19 @@ export default {
           {text: 'User',             value: 'user_name' },
           {text: 'fullname',         value: 'user_fullname' },
           {text: 'Type',             value: 'user_type' },
-          {text: 'Grade',            value: 'user_grade' },
           {text: 'first use',        value: 'first' },
           {text: 'last use',         value: 'last' },
           {text: 'times used',       value: 'times' },
           {text: 'Cell',       value: 'user_cell' },
           {text: 'Email',       value: 'user_email' },
           {text: "reset",             value: "action", sortable: false }
-        ]
+        ],
+        showResult:false,
     }),
     methods:{
       dblClickOnTableRow(e1,e2) {
-        //console.log(e1)
-        console.log(e2.item)
+        //this.$cs.l(e1)
+        this.$cs.l(e2.item)
         this.curItem = e2.item
       },
       onButtonClick(todo,data) {
@@ -141,21 +164,16 @@ export default {
       getLogs() {
         this.tableLoading = true
         let sl = { task: 'plainSql'
-                 , sql: `SELECT u.userid,u.user_name, u.user_fullname, user_type
-                          , user_cell, user_email, user_grade
-                          , min(log_dte) 'first'
-                          , max(log_dte) 'last'
-                          , count(*) times \
-                           FROM dkhs_learner u \
-                         left outer join dkhs_log as l on l.user = u.user_name \
-                         group by u.userid, u.user_name, u.user_fullname, user_type, user_grade, user_cell, user_email \
-                         order by last DESC`}
-/*
-SELECT u.userid,u.user_name,l.user, u.user_fullname, user_type, user_cell, user_grade, min(log_dte) first, max(log_dte) last, count(*) times
-  FROM dkhs_learner u
-left outer join dkhs_log as l on l.user = u.user_name
-group by u.userid,u.user_name, l.user, u.user_fullname, user_type, user_grade, user_cell order by last DESC
-*/
+                 , sql: `SELECT u.userid,u.user_name\
+     , u.user_fullname, user_type\
+     , user_cell, user_email\
+     , date_format(min(log_dte),'%Y-%m-%d') first\
+     , date_format(max(log_dte),'%Y-%m-%d') last\
+     , count(*) times \
+  FROM dkhs_learner u \
+left outer join dkhs_log as l on l.user = u.user_name \
+group by u.userid, u.user_name, u.user_fullname, user_type, user_grade, user_cell, user_email  \
+ORDER BY last DESC`}
         zmlFetch(sl, this.processAfterFetch, this.processError);
       },
       processAfterFetch(response) {

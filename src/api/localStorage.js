@@ -1,7 +1,7 @@
 let zml = 'zml'
 export const ls = {
-    //cl: (...args) => { console.log(args)},
-    cl: () => { },
+    cl: (...args) => { console.log(args)},
+    //cl: () => { },
     available:  true,
     remove: (name) => {
        localStorage.removeItem(name)
@@ -28,7 +28,7 @@ export const ls = {
           return payload
         }
       } else {
-        ls.cl('LSLOADd: test if ZML exist?', zml + name)
+        ls.cl('LSLOADd: test if name with zml added exist?', zml + name)
         if (localStorage.getItem(zml + name)) {
           try {
             ls.cl('LSLOADe: YES! It Exist! SORTED2', zml + name)
@@ -39,6 +39,7 @@ export const ls = {
           ls.cl('Now we return payload, but what about next time?')
           return payload
         }
+        alert('ok, we have a problem - we want to load - but nothing exist- shouldhave TESTED!!!')
         ls.cl('LSLOADf: It does not exist :-( Add it', zml + ' ' + name)
         ls.makeNewZMLReplacement(name)
         ls.cl('LSLOADg: ZML-Now it SHOULD exist!TryAgainLOAD', zml + name)
@@ -50,6 +51,8 @@ export const ls = {
             localStorage.removeItem(zml + name)
           }
           return payload
+        } else {
+          alert('Daar is groot fout!')
         }
       }
       ls.cl('LSLOADi: RETURN FALSE')

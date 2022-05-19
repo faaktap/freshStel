@@ -1,5 +1,5 @@
 const PROJECT_NAME = "zmlVschool"
-const PROJECT_VERSION = "51.1d"
+const PROJECT_VERSION = "51.2b"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -31,7 +31,7 @@ export const zmlConfig = {
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
   cl: function (...args) {
-    //console.log(...args);
+    console.info(...args);
   },
   randomColor: function() {
     return Math.floor(Math.random()*16777215).toString(16)

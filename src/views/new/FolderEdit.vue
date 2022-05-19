@@ -353,8 +353,7 @@
 
 <!---------------- SHOW FILE --------------------------------------->
     <v-dialog v-model="showAttachment"
-                  xmax-width="400"
-                  :fullscreen="$vuetify.breakpoint.smAndDown"
+                  :fullscreen="$vuetify.breakpoint.lgAndDown"
                   height="90%"
                   :scrollable="false"
                   width="unset">
@@ -442,7 +441,7 @@ export default {
       this.showUpload = true
     },
     reportBack(e1) {
-      console.log('Report Back...........',e1)
+      this.$cs.l('Report Back...........',e1)
       zmlLog(this.getZml.login.username , "UploadContent", this.curDir + ':' + JSON.stringify(e1).substr(0,250))
     },
     closeAndRefresh() {
@@ -511,7 +510,7 @@ export default {
     checkOperation (newFolder) {
       // if we end up here, see if our operation is expecting a folder click.
       // if it is, use it, and return true else return false
-      // console.log('Check if we need this folder for an operation ending', newFolder, this.operation)
+      // this.$cs.l('Check if we need this folder for an operation ending', newFolder, this.operation)
       // confirm('do somethinh?')
       if (this.operation === 'moveFolder') {
         this.doTheMoveAtLast(newFolder, this.moving)
@@ -573,7 +572,7 @@ export default {
       this.clickFileIcon (fileObj)
     },
     clickFile (fileObj) {
-      //console.log('cccccclickFile : received an emit for rowclick on ', fileObj.filename , fileObj.dirpath)
+      //this.$cs.l('cccccclickFile : received an emit for rowclick on ', fileObj.filename , fileObj.dirpath)
       // Check here to see if we want are selecting a folder for moving
       if (fileObj.dir === true) {
         // he clicked a folder
@@ -598,7 +597,7 @@ export default {
           // hy is klaar daar, vee hom uit
           this.moving.splice(idx, 1)
         } else {
-          // console.log('added : ' , this.curFile)
+          // this.$cs.l('added : ' , this.curFile)
           this.moving.push({dirpath: this.curFile.dirpath
                            ,filename: this.curFile.filename
                            ,ext: this.curFile.ext
@@ -608,7 +607,7 @@ export default {
       }
     },
     clickFileIcon (fileObj) {
-      // console.log(this.$options.name, 'received an emit for iconclick on ', fileObj)
+      // this.$cs.l(this.$options.name, 'received an emit for iconclick on ', fileObj)
       // this.snack('we should view the file here')
       if (fileObj.dir == true) {
         this.getFiles(fileObj.dirpath + '/' + fileObj.filename)
@@ -618,7 +617,7 @@ export default {
     },
     prepareAttachment(fileObj) {
       if (fileObj.ext == 'link') {
-        console.log('We need to read (getfilecontents):' + fileObj.dirpath + '/' + fileObj.filename)
+        this.$cs.l('We need to read (getfilecontents):' + fileObj.dirpath + '/' + fileObj.filename)
         this.getFileFromServer(fileObj.dirpath + '/' + fileObj.filename)
       } else {
         this.attachment.src = fileObj.dirpath + '/' + fileObj.filename
@@ -626,16 +625,16 @@ export default {
         this.showAttachment = true
       }
 
-      console.log('show Attach:', this.attachment.src, this.attachment.srctype)
+      this.$cs.l('show Attach:', this.attachment.src, this.attachment.srctype)
     },
     getFileFromServer(serverfilename) {
-      console.log('asking for : ' , serverfilename)
+      this.$cs.l('asking for : ' , serverfilename)
       let ts = {}
       ts.data = {path:serverfilename}
       zmlFile(ts, this.gotFile)
     },
     gotFile(response) {
-      console.log(response)
+      this.$cs.l(response)
       alert('we gt file!')
       //
       //Put this one in as a test..
@@ -652,7 +651,7 @@ export default {
         backFolder = backFolder.slice(0, backFolder.lastIndexOf('/'))
       }
       if (backFolder.length < this.ignoreDir.length) backFolder = this.ignoreDir
-      // console.log(backFolder, this.ignoreDir)
+      // this.$cs.l(backFolder, this.ignoreDir)
       this.getFiles(backFolder)
     },
     changeBreadcrumbFolder (foldername) {
@@ -661,12 +660,12 @@ export default {
       this.getFiles(foldername)
     },
     checkPathBeforeLoadFolder (longFolderName) {
-      // console.log('checkPathBeforeLoadFolder', longFolderName)
+      // this.$cs.l('checkPathBeforeLoadFolder', longFolderName)
       const newFolder = this.ignoreDir + longFolderName
       this.getFiles(newFolder)
     },
     loadFolder (shortfoldername) {
-      // console.log('loadFolder', shortfoldername)
+      // this.$cs.l('loadFolder', shortfoldername)
       const newFolder = this.curDir + '/' + shortfoldername
       // Check here to see if we want are selecting a folder for moving
       if (this.checkOperation(newFolder)) {
@@ -675,7 +674,7 @@ export default {
       this.getFiles(newFolder)
     },
     getFiles (foldername) {
-      // console.log(this.$options.name, 'getFiles', foldername)
+      // this.$cs.l(this.$options.name, 'getFiles', foldername)
       const ts = {}
       ts.api = this.fileLoadUrl
       ts.task = 'whatever' // not needed
@@ -689,20 +688,20 @@ export default {
       this.loading = false
     },
     doneLoadingFiles (result) {
-      // console.log('doneloading:1', result.error, result)
+      // this.$cs.l('doneloading:1', result.error, result)
       if (result.error) {
-        // console.log('doneloading:1')
+        // this.$cs.l('doneloading:1')
         this.snack('Error on load:', result.error)
         // we might need to return here, if we add stuff at bottom
       } else if (!result) {
-        // console.log('doneloading:2')
+        // this.$cs.l('doneloading:2')
         this.snack('we found no files')
       } else {
         [this.fileDisplayRecords, this.directoryDisplayRecords] = feh.processReadDirectoryResult(result)
-        // console.log(result.length, this.fileDisplayRecords.length, this.directoryDisplayRecords.length)
+        // this.$cs.l(result.length, this.fileDisplayRecords.length, this.directoryDisplayRecords.length)
         this.curDir = feh.fixSlash(result[0].dirpath)
         this.loading = false
-        // console.log('doneLoading 4 : New curDir::::', this.curDir)
+        // this.$cs.l('doneLoading 4 : New curDir::::', this.curDir)
       }
     },
     getExtensionInfo (fileExt) {
@@ -744,7 +743,7 @@ export default {
   mounted () {
     this.checkForANewRoute()
     this.allowEdit = ['teacher','admin'].includes(this.getZml.login.type)
-    // console.log('access:', this.getZml.login.type)
+    // this.$cs.l('access:', this.getZml.login.type)
   },
 
 }

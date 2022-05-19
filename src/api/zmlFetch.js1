@@ -63,28 +63,14 @@ async function http(url,
 }
 */
 
-function zFetch(task) {
-    zmlConfig.cl('Z:FETCH-1--------------',task.task)
-    task.program = 'zmlShop'
-    task.status = 'trying'
-    const apiConfig = {method: 'POST',
-        headers: {'Accept': 'application/json'
-                 ,'Content-Type': 'application/json;charset=UTF-8'},
-        body: JSON.stringify(task)
-        }
-    return fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
- }
-
-
-
 async function pFetch(task) {
     task.program = 'zmlShop'
     task.status = 'trying'
 
-    // if we are calling with empty task, presume we are testing online..
+    // if we are calling with empty task, presume we are testing online..    
     if (!task.api) task.api = 'https://kuiliesonline.co.za/api/online.php'
     if (!task.task) task.task = 'online'
-
+    
     const apiConfig = {method: 'POST',
         headers: {'Accept': 'application/json'
                  ,'Content-Type': 'application/json;charset=UTF-8'},
@@ -102,4 +88,4 @@ async function pFetch(task) {
 
 
 
-export {pFetch, zFetch, zmlFetch};
+export {pFetch,zmlFetch};

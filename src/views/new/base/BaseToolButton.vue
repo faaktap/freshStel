@@ -1,5 +1,5 @@
 <template>
- <v-btn @click="$emit('click')"
+ <v-btn @click="$emit('click',value)"
         class="pclass"
         small
         :color="color"
@@ -24,6 +24,7 @@ export default {
     , loading:{type:Boolean, default:false}
     , disabled:{type:Boolean, default:false}
     , icon:{ type:String, default:''}
+    , value:{type:String, default:''}
   },
   computed: {
      testSmall() {

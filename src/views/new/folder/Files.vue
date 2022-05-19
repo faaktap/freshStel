@@ -9,7 +9,7 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
 <div>
  <v-row>
   <v-col cols="12">
-    <small class="text-caption gray--text"> {{ localData.filename }} </small>
+    <small class="text-caption green--text"> {{ localData.filename }} </small>
   </v-col>
   </v-row>
 
@@ -110,7 +110,7 @@ export default {
   }),
   computed: {
     tableItems () {
-      // console.log('computed - tableItems', this.showFolders, this.fileDisplayRecords)
+      // this.$cs.l('computed - tableItems', this.showFolders, this.fileDisplayRecords)
       let answer = []
       if (this.showFolders) {
         return this.fileDisplayRecords
@@ -126,11 +126,11 @@ export default {
   methods: {
     itemRowBackground: function (item) {
       // add this to v-data-table : :item-class="itemRowBackground"
-       console.log('itemRowBackground',item)
+       this.$cs.l('itemRowBackground',item)
        return '';  //item.protein > 4.2 ? 'style-1' : 'style-2'
     },
     checkSelected (item) {
-      // console.log('check selected')
+      // this.$cs.l('check selected')
       // Check if we should highlight or mark this in some other way
       if (this.moving.some(ele => ele.modtime === item.modtime && ele.filename === item.filename)) {
         item.icon = 'mdi-marker-check'
@@ -140,20 +140,20 @@ export default {
       }
       if (item.icon === 'mdi-marker-check') {
         [item.icon, item.color] = feh.getExtensionInfo(item.ext)
-        // console.log('unsel', item.icon, item.oldIcon)
+        // this.$cs.l('unsel', item.icon, item.oldIcon)
         item.selected = false
       }
       return false
     },
     rowClick (e) {
-      // console.log('click')
+      // this.$cs.l('click')
       // user clicked on a row, send it back to parent
       this.localData = e
       this.$emit('clickRow', e)
       // we need the hostname as well .. window.open(e.dirpath + '/' + e.filename, '_ddd')
     },
     rowDblClick (e) {
-      // console.log('dblclick icon')
+      // this.$cs.l('dblclick icon')
       // user dbl clicked on a row, send it back to parent
       this.localData = e.item
       this.$emit('clickDblRow', this.localData,e)
@@ -161,14 +161,14 @@ export default {
     },
 
     clickIcon (e) {
-      // console.log('click icon')
+      // this.$cs.l('click icon')
       // user clicked on a row icon , send it back to parent
       this.$emit('clickIcon', e)
     },
     customSort (items, index, isDesc) {
-      // console.log('custom sort')
+      // this.$cs.l('custom sort')
       // Date sort and size sort should be handled hear. Only datesort now fixed.
-      // console.log(items, index, isDesc)
+      // this.$cs.l(items, index, isDesc)
       items.sort((a, b) => {
         if (index === 'modtime') {
           if (!isDesc) {
@@ -182,21 +182,20 @@ export default {
           return b[index] < a[index] ? -1 : 1
         }
       })
-      // console.log('custom sort', items)
+      // this.$cs.l('custom sort', items)
       return items
     }
   },
   mounted () {
-    // console.log('mounted:', this.$options.name, this.headers)
+    // this.$cs.l('mounted:', this.$options.name, this.headers)
     this.headerValue.push(this.headers[0])
     this.headerValue.push(this.headers[1])
+    this.headerValue.push(this.headers[2])
   },
   watch: {
     headerValue (val) {
-      // console.log('watch value', this.val)
+      // this.$cs.l('watch value', this.val)
       this.selectedHeaders = val
-
-
     }
   }
 }

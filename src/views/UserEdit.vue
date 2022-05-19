@@ -63,16 +63,16 @@ export default {
           infoSnackbar('Starting your email program...')
       },
       clickOnRow(e1,e2) {
-        console.log('clicked on row inside row', e1,e2)
+        this.$cs.l('clicked on row inside row', e1,e2)
       },
       loadLogLines() {
         let sqlStatement = `SELECT log_id, log_dte, ip, function, details FROM dkhs_log \
                         WHERE user like '%${this.u.user_name}%' \
-                           OR function like '%${this.u.user_name}%' order by log_id desc`
+                           OR function like '%${this.u.user_name}%' order by log_id desc limit 50`
         zData.loadSql(this.loading, sqlStatement, this.assignLogData)
       },
       async assignLogData(response) {
-        console.log('after get : ' , response)
+        this.$cs.l('after get : ' , response)
         userListModel.ulModel.logItems = []
         if (!('error' in response)) {
          response.forEach(e => {
@@ -80,7 +80,7 @@ export default {
            userListModel.ulModel.logItems.push(obj)
          })
         }
-        console.log('ALL Data loaded : ', this.myModel.logItems.length)
+        this.$cs.l('ALL Data loaded : ', this.myModel.logItems.length)
       },
       async loadNewOne() {
         if (!this.u) return;
@@ -89,7 +89,7 @@ export default {
         this.user = this.u
         userListModel.ulModel = this.user
         await this.loadLogLines()
-        console.log('----------->',userListModel.ulModel , this.user, this.u)
+        this.$cs.l('----------->',userListModel.ulModel , this.user, this.u)
         this.mySchema = userListModel.ulSchema
         this.myModel = userListModel.ulModel
         this.doneLoading = true
@@ -97,7 +97,7 @@ export default {
 
     },
     mounted() {
-        console.log('start : ', this.$options.name)
+        this.$cs.l('start : ', this.$options.name)
         this.loadNewOne()
     },
     watch: {
