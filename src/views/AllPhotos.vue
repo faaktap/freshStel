@@ -1,14 +1,20 @@
 <template>
 <v-container fluid>
 
-<base-title-expand heading="All the photos in the system is displayed here.">
+<base-title-expand heading="All the photos Kuiliesonline use can be displayed here.">
 These are not only student photos, but also photos we use elsewhere.
 However, I give the option to link a photo to a student, and then the system will
 use that photo as if it is that student.
-Same with personel, if it is a personel/staff photo, i will treat it as such.
+Same with personel, if it is a personel/staff photo, i will treat it as such. (as long as the linkid
+correspond to a staff number)
+<br><br><v-spacer />
+{{ quickTest }}
 </base-title-expand>
 
-<!-- -------------------------S E A R C H , S W I T C H & D I S P L A Y-------------- -->
+
+
+
+ <!-- -------------------------S E A R C H , S W I T C H & D I S P L A Y-------------- -->
    <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
      <!--- SEARCH -->
     <base-search @clear="search=''" v-model="search" />
@@ -31,16 +37,17 @@ Same with personel, if it is a personel/staff photo, i will treat it as such.
    <!--- SWITCH -->
    <v-card v-if="cats && cats.length"
             class="row wrap text-center d-flex justify-space-between ml-0 mt-1 mb-2 pl-1 pr-1">
-         <v-card v-for="cat in cats"
+         <div v-for="cat in cats"
                 :key="cat.text"
                  class="mb-2">
            <v-switch v-model="cat.selected"
                      hide-details
                      ripple
                      class="mt-1 mr-2 mb-2 ml-2"
+                    :loading="loading"
                     :label="cat.text" >
            </v-switch>
-         </v-card>
+         </div>
    </v-card>
 
 
@@ -52,7 +59,6 @@ Same with personel, if it is a personel/staff photo, i will treat it as such.
           class="row wrap text-center d-flex justify-space-around ma-0 mb-2"
           v-for="item in filterPhotos"
           :key="item.uniqno"
-          color="grey lighten-2"
           flat
         >
 
@@ -72,7 +78,7 @@ Same with personel, if it is a personel/staff photo, i will treat it as such.
                        class="float-left"
                        contain rounded />
                        <v-card style="word-wrap:break-word" class="float-right" width="150" elevation="0">
-              {{item.surname}}, {{item.firstname}}
+              {{item.surname}}, {{item.firstname}}<br>
                {{item.grade}} {{item.gclass}}, {{item.type}} - {{ item.studentno}}
                <!-- get filename, and take extension out -->
               {{ item.photo.split('/').pop().split('.').slice(-2).shift()}}
@@ -88,13 +94,15 @@ Same with personel, if it is a personel/staff photo, i will treat it as such.
 <!-- -------------------------S H O W AS L I S T ------------------ -->
     <v-row v-show="showAs == 'list'" class="text-center">
     <v-col cols="12">
+            <!-- :search="search" -->
       <v-data-table
             :headers="photoListHeader"
             :items="filterPhotos"
-            :search="search"
+
             :items-per-page="500"
             class="elevation-2"
             :loading="loading"
+            mobile-breakpoint="0"
             @click:row="clickOnRow"
           />
       </v-col>
@@ -173,11 +181,11 @@ Same with personel, if it is a personel/staff photo, i will treat it as such.
 
 <script>
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
-
+import { pFetch } from '../api/zmlFetch';
+import { look } from "@/api/Lookups.js"
 import { zData } from "@/api/zGetBackgroundData.js"
 import BaseSearch from '@/components/base/BaseSearch';
 import UploadResizedImage from "@/components/UploadResizedImage.vue"
-import { pFetch } from '../api/zmlFetch';
 export default {
     name:"AllPhotos",
     components:{
@@ -193,25 +201,25 @@ export default {
        showResult:false,
        showEdit:false,
        editRecord:{},
-       searchMore:true,
        photoList:[],
        photoListHeader:[
-          { text: "ID", align: "start", value: "uniqno" },
-          { text: "Type", align: "center", value: "type" },
+          { text: "ID", value: "uniqno", align: ' d-none d-lg-table-cell' },
+          { text: "Type",  value: "type", align: ' d-none d-lg-table-cell' },
           { text: "Path", align: "left", value: "photo" },
-          { text: "LinkNo", align: "center", value: "studentno" },
-          { text: "G", align: "center", value: "grade" },
+          { text: "LinkNo", value: "studentno", align: ' d-none d-lg-table-cell' },
+          { text: "G", value: "grade", align: ' d-none d-lg-table-cell' },
        ],
        studentid:null,
        sqlStatement : "SELECT p.uniqno, p.type, p.photo, p.studentno, s.surname, s.firstname, s.grade"
-                    + " , s.gclass"
+                    + " , s.gclass, p.studentno"
                     + " FROM dkhs_photo p"
                     + " LEFT JOIN dkhs_student s ON p.studentno=s.studentid",
        api:"https://kuiliesonline.co.za/api/candid/candidates.php",
        showAs:'list',
        cats:[],
        showAddPhoto:false,
-       fileUploadCategory:''
+       fileUploadCategory:'',
+       quickTest:[]
 
     }),
     computed: {
@@ -220,15 +228,37 @@ export default {
         if (!this.photoList.length) {
           return []
         }
+
         //If we have any switches on, add them to onlyThese
         let onlyThese = this.cats.filter(ele => ele.selected == true)
         if (onlyThese.length == 0) {
           return []
         }
-        return this.photoList.filter(ele => onlyThese.some(e => e.text == ele.type) )
+        // now we apply all the switches, and then search for the searchstring
+        return this.searchFilter (
+                  this.photoList.filter(ele => onlyThese.some(e => e.text == ele.type) )
+                )
       },
     },
     methods:{
+      searchFilter(tableSofar) {
+        // Searching for the searchstring
+        if (!tableSofar.length) return []
+        if (this.search.length == 0) return tableSofar
+        // here we step thru tableSofar with filter, and return true if object loop value match
+        let filterSofar = tableSofar.filter(e => {
+          let found = false
+          Object.values(e).forEach( (value) => {
+            if (value  && value.toLowerCase().indexOf(this.search.toLowerCase()) != -1) {
+              found = true
+            }
+          })
+          //pass the true or false back to the filter
+          return found
+        })
+        return filterSofar
+      },
+
       test(e1,e2) {
         // This is an example of how we can test if we are online..
         this.$cs.l(e1,e2)
@@ -259,7 +289,7 @@ export default {
       // Update dkhs_photo with new name...
       // this.newFileName = file.filename
       // ....
-      alert('update/add it')
+      alert('update/add i - must still add stuff')
       this.showAddPhoto = false
       let task = {}
       pFetch(task)
@@ -286,6 +316,10 @@ export default {
             } else if (e.photo.substr(0,1) != '/') {
               e.photo =  '/bib/assets/staff/' + e.photo
             }
+            if (e.type == 'pers') {
+              //lookup name and surname in staff, and show it in grade?
+              e.grade = look.persMenemonicPersID(e.studentno)
+            }
             tmpArr.push(e.type)
          });
          let tmpArr2 = [...new Set(tmpArr)]
@@ -293,7 +327,12 @@ export default {
          tmpArr.length = 0
          tmpArr2.length = 0
          this.$cs.l(this.cats)
-         this.cats[ Math.floor(Math.random() * (this.cats.length-1))].selected = true
+         // if we come in with a parameter, use that to switch on our category - if it exist.
+         if (this.$route.params.switch && this.cats.find(e => e.text.toLowerCase() == this.$route.params.switch.toLowerCase())) {
+           this.cats.find(e => e.text.toLowerCase() == this.$route.params.switch.toLowerCase()).selected = true
+         } else {
+           this.cats[ Math.floor(Math.random() * (this.cats.length-1))].selected = true
+         }
          this.loading = false
       },
       clickOnRow(e) {
@@ -313,6 +352,7 @@ export default {
     mounted() {
       this.$cs.l('Start ', this.$options.name)
       this.executeSql()
+      this.quickTest = look.persMenemonicAll()
     }
 }
 

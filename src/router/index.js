@@ -49,7 +49,8 @@ const routes = [
     path: '/ff',
     name: 'ff',
     component: () => import(/* webpackChunkName: "vfbasetest" */ '../components/vfbase/vfbasetest'),
-    meta: {layout: la[3], authentication: "public" }
+    meta: {layout: la[3],
+    authentication: "public" }
   },
   {
     path: '/wernertest',
@@ -73,7 +74,8 @@ const routes = [
    //Actual award!
    path: '/virtualawards/:chapterid/:orderid?',    name: 'virtualawards',
    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue'),
-   props: true,    params: {chapterid: 26, orderid: 1, editmode: false},    meta: {layout: la[0], authentication: "public" }
+   props: true,    params: {chapterid: 26, orderid: 1, editmode: false},
+   meta: {layout: la[0], authentication: "public" }
   },
   {
      path: '/loadhomework/:StudentID?'
@@ -96,10 +98,14 @@ const routes = [
     meta: {layout: la[3], authentication: "public" }
   },
   {
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),    path: '/about', name: 'About',    meta: {layout: la[3], authentication: "public" }
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    path: '/about', name: 'About',
+    meta: {layout: la[3], authentication: "werner" }
   },
   {
-    component: () => import(/* webpackChunkName: "bates" */ '../views/bates/Outline.vue'),    path: '/bates', name: 'Bates',    meta: {layout: la[3], authentication: "public" }
+    component: () => import(/* webpackChunkName: "bates" */ '../views/bates/Outline.vue'),
+    path: '/bates', name: 'Bates',
+    meta: {layout: la[3], authentication: "werner" }
   },  {
     //test
     component:EmptyRouterView,   path: '/hover',
@@ -108,7 +114,8 @@ const routes = [
     ]
   }, {
     path: '/dkhsawards',   name: 'dkhsawards',
-    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),    meta: {layout: la[0], authentication: "public" }
+    component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),
+    meta: {layout: la[0], authentication: "werner" }
   },
   // {
   //   path: '/va/:chapterid',    name: 'va',
@@ -119,19 +126,23 @@ const routes = [
     //award - edit
     path: '/studentawards',    name: 'studentawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/StudentAwardTable.vue'),
-    meta: {layout: la[1], authentication: "public" }
+    meta: {layout: la[1], authentication: "werner" }
   },  {
     path: '/awardedit', name: 'awardedit',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardEdit.vue'),
-    meta: {layout: la[3], authentication: "public" }
+    meta: {layout: la[3], authentication: "werner" }
   },  {
     //award
     component: () => import(/* webpackChunkName: "test" */ '@/views/test/AKandidate.vue')
-    ,name: 'AKandidate'    ,path: '/a'    ,meta: {layout: la[0], authentication: "public"}
+    ,name: 'AKandidate'
+    ,path: '/a'
+    ,meta: {layout: la[0], authentication: "werner"}
   },
   {
      component: () => import(/* webpackChunkName: "homework" */ '@/views/ViewSubjects.vue')
-    ,name: 'ViewSubjects'    ,path: '/subjects'  ,meta: {layout: la[3], authentication: "admin"}
+    ,name: 'ViewSubjects'
+    ,path: '/subjects'
+    ,meta: {layout: la[3], authentication: "admin"}
   },    {
     component: () => import(/* webpackChunkName: "homework" */ '@/views/student/StudentClassList.vue'),
     path: '/studentlist',
@@ -282,7 +293,7 @@ const routes = [
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/AllPhotos.vue')
     ,name: 'AllPhotos'
-    ,path: '/photos'
+    ,path: '/photos/:switch?'
     ,meta: {layout: la[3], authentication: "public"}
   },
   {
@@ -309,8 +320,12 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from,next) => {
-  if ( (ls.test('login') || ls.test('zmllogin') )&& getters.getState({ object: "gZml" }).login.type == 'guest' ) {
-    getters.getState({ object: "gZml" }).login = ls.load('login')
+  if (ls.test('zmllogin')  && getters.getState({ object: "gZml" }).login.type == 'guest' ) {
+    getters.getState({ object: "gZml" }).login = ls.load('zmllogin')
+    if (ls.test('zmlPersM')) {
+      getters.getState({ object: "gZml" }).persMenemonic = ls.load('zmlPersM')
+    }
+
   }
   const userAuth = getters.getState({ object: "gZml" }).login.isAuthenticated
   const userType = getters.getState({ object: "gZml" }).login.type

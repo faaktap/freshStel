@@ -249,9 +249,15 @@ export default {
           return
         }
         let template = zDate.todayNoHours()
+        console.log('zDate.todayNoHours()', template)
+        
         template = zDate.gotoMonday(template)
+        console.log('zDate.gotoMonday', template)
+        
         //Go back one more day (to Sunday)
         template.setDate(template.getDate() - 1);
+        console.log('go one back - to sunday', template)
+        
         // Show the next 37 days...
         for (let t=0; t < 37; t++) {
            template = zDate.addOneDay(template)

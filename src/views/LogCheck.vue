@@ -39,7 +39,7 @@
 <v-dialog v-model="showResult">
  <v-card color="red" v-if="showResult && logList">
   <front-json-to-csv :json-data="logList"
-                     csv-title="Email Master List"
+                     csv-title="User Log List"
                      @hideModal="showResult = false">
   </front-json-to-csv>
  </v-card>
@@ -112,14 +112,14 @@ export default {
           zDate.format(today,'yyyy-MM-dd')
           this.getData.where = ` where log_dte like '${zDate.format(today,'yyyy-MM-dd')}%'`
         }
-        this.getData.sql = `select log_id\
-          , substring(log_dte, 3, 8)  date\
-          , substring(log_dte, 11, 6) time\
+        // referer \
+        // log_id \
+        this.getData.sql = `select \
+            concat(substring(log_dte, 3, 8) , ' ' , substring(log_dte, 11, 6)) date \
           , ip \
-          , referer\
-          , user\
-          , function\
-          , details\
+          , user \
+          , function \
+          , details \
            from dkhs_log\
         ${this.getData.where}\
         ORDER BY log_id DESC`
@@ -133,9 +133,32 @@ export default {
        zmlFetch(ts, this.processAllData, this.loadError)
      },
      processAllData(response) {
-       this.logList = response
+       let colArr = ['']
+       this.logList = this.filterColumns(response, colArr)
        this.progress = false
      },
+     filterColumns(resp,colArray) {
+       console.log(colArray)
+       resp.forEach(e => {
+         // if details was saved as json, unstringify it..
+         if (e.details[0] == '"'  && e.details.length > 80  ) {
+           try {
+               e.details = JSON.parse(e.details)
+           } catch {
+               //keep details as is, not a json string
+           }
+         }
+         e.details = e.details.replaceAll("\\/","/");
+         e.details = e.details.replace("home/kuilieso/public_html/Subjects/", "");
+         e.details = e.details.replace(`"\\"\\""`,"/");
+         e.details = e.details.replace(`:[{"ignore":false,"done":false,"ext":"mp4","realname":"`,"")
+         e.details = e.details.replace(`"}]`,"")
+         if (e.details.length > 60 ) {
+           e.details = e.details.substr(1,60) + '..'
+         }
+       });
+       return resp
+     }
    },
    mounted() {
      console.log('mount ' , this.$options.name)

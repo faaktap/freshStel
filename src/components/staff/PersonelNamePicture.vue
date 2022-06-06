@@ -1,9 +1,9 @@
 <template>
-<v-container  v-if="personelRecord">
+<v-card class="ma-0 pa-0"  v-if="personelRecord" elevation="0" color="">
  <!-- See https://grid.layoutit.com/ for gridlayouts -->
 
  <v-card v-if="allowEdit=='true'">
-  <v-layout row wrap align-content-start justify-space-between>
+  <v-layout row wrap align-content-start justify-space-around>
     <v-flex>
       <v-card color="blue accent-1" class="ma-2 pa-5">
         Actions
@@ -15,7 +15,11 @@
   </v-layout>
  </v-card>
 
- <v-card max-width="230" class="ma-2 text-center">
+  <!-- rgba(105, 199, 71, 0.3) -->
+  <!-- rgb(205, 127, 50) -->
+ <v-card max-width="230" class="ma-2 text-center"
+        color="rgba(185, 156, 49, 0.9)"
+        style="border-radius:50px">
   <v-card-text class="text-center">
    <div class="Photo"
        @click="$emit('pictureUpload', personelRecord)"
@@ -29,9 +33,10 @@
            style="border-radius:50px">
    </v-img>
    </div>
-  <div class="Surname headline">
-    {{ personelRecord.data.surname }},
-    {{ personelRecord.data.name }}
+  <div class="Surname headline green--text text--darken-3">
+    <!-- {{ personelRecord.data.surname }},
+    {{ personelRecord.data.name }} -->
+    {{ personelRecord.data.public_preferredname }}
   </div>
   <!--div class="line"><v-divider
                        class="mx-4"
@@ -69,7 +74,7 @@
 , "IDNumber": "7306165079082", "changedate": "2020-07-22 17:44:16" } }
 -->
 
- </v-container>
+ </v-card>
 </template>
 
 <script>

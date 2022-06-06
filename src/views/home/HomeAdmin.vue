@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="getZml.login.isAuthenticated">
 
 <v-toolbar color="primary">
     <v-toolbar-title>

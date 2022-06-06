@@ -39,7 +39,7 @@ export const ls = {
           ls.cl('Now we return payload, but what about next time?')
           return payload
         }
-        alert('ok, we have a problem - we want to load - but nothing exist- shouldhave TESTED!!!')
+        alert('ok, we have a problem - we want to load - but nothing exist? Please inform Werner')
         ls.cl('LSLOADf: It does not exist :-( Add it', zml + ' ' + name)
         ls.makeNewZMLReplacement(name)
         ls.cl('LSLOADg: ZML-Now it SHOULD exist!TryAgainLOAD', zml + name)

@@ -1,4 +1,5 @@
 <template>
+<!-- custom filters on v-data-table search explained... https://www.front.id/en/articles/vuetify-achieve-multiple-filtering-data-table-component-->
 <div>
 
 <v-row>

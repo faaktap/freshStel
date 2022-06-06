@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="tHeader.length && tList.length">
+  <v-container fluid v-if="tHeader.length && tList.length">
    <v-row >
     <v-col cols="12" v-if="tHeading">
      <h1 class="text-center grey--text"> {{ tHeading }} </h1>
@@ -9,30 +9,31 @@
        <v-container fluid>
          <v-layout color="gray--text text--lighten-5">
          <v-flex>
-        <v-text-field
-
-           v-model="search"
-           append-icon="mdi-magnify"
-           label="Search"
-           single-line
-           hide-details
-         >
-         </v-text-field>
+          <v-text-field
+             v-model="search"
+             append-icon="mdi-magnify"
+             label="Search"
+             single-line
+             hide-details
+          />
          </v-flex>
          </v-layout>
          <v-row dense>
+           <!-- <v-btn x-small @click="fontsize -= 1"> - {{ fontsize }} </v-btn>
+           <v-btn x-small @click="fontsize += 1"> + {{ fontsize }} </v-btn> -->
            <v-col cols="12">
              <v-card color="blue lighten-5" class="ma-1">
               <div>
-                  <v-card class="text-center ma-2 pa-2" color="primary gray--text text--lighten-3"> {{ bHeading }} </v-card>
+                <v-card class="text-center ma-2 pa-2" color="primary gray--text text--lighten-3"> {{ bHeading }} </v-card>
                 <v-data-table
                  v-if="tList && tHeader.length > 0"
                  :headers="tHeader"
-                 :items="tList"
+                 :items="tListFilter"
                  :items-per-page="itemsPerPage"
                  :search="search"
-                  class="elevation-1"
+                  class="elevation-1 mytable"
                  color="purple lighten-3"
+                 :style="'font-size:' + fontsize + 'px  !important'"
                  multi-sort
                  @click:row="clickOnTableRow"
                 >
@@ -62,9 +63,20 @@ export default {
         curItem:{},
         search:null,
         tableLoading:false,
-        tHeader: []
+        tHeader: [],
+        fontsize:12
     }),
+    computed: {
+      tListFilter() {
+        // Object.keys(this.tList[0]).forEach(name => {
+        // })
+        return this.tList
+      }
+    },
     methods:{
+      fontchange() {
+        this.fontsize -= 1
+      },
       clickOnTableRow(p1) {
           let trow = this.tList.find(ele => ele.contentid == p1.contentid)
           this.$emit('bonga',trow)
@@ -99,3 +111,16 @@ export default {
 }
 </script>
 
+<style scoped>
+/*
+.mytable {
+    font-size: 0.575rem;
+    height: 33px;
+
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td, .v-data-table > .v-data-table__wrapper > table > thead > tr > td, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td {
+    font-size: 0.575rem;
+    height: 33px;
+}
+*/
+</style>

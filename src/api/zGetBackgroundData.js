@@ -3,7 +3,7 @@ import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
 import { zmlFetch, zFetch } from '@/api/zmlFetch';
 import { zDate } from '@/api/zDate.js'
-
+import { ls } from "@/api/localStorage.js"
 //import { zData } from "@/api/zGetBackgroundData.js"
 
 function l(...args) {
@@ -141,7 +141,10 @@ function finishedLoadingBasic (response) {
     getters.getState({ object: "gZml" }).subjects = response.subjects;
     // getters.getState({ object: "gZml" }).folders = response.folders;
     getters.getState({ object: "gZml" }).functions = response.functions;
+
     getters.getState({ object: "gZml" }).persMenemonic = response.pers;
+    ls.save('zmlPersM', response.pers)
+
     // will be empty when not a student
     if (response.student.length) {
       getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;

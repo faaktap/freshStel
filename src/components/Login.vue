@@ -445,6 +445,9 @@ export default {
       if (ls.test('login')) {
          this.getZml.login = ls.load('login')
          this.loginObj.username = this.getZml.login.username
+      } else if (ls.test('zmllogin')) {
+         this.getZml.login = ls.load('zmllogin')
+         this.loginObj.username = this.getZml.login.username
       }
       if (this.getZml.login.lang == 'A') {
             this.$i18n.locale = 'af'
