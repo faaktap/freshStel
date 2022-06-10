@@ -7,6 +7,10 @@
     console.log(c);
 */
 
+import Vue from 'vue'
+function l(...args) { Vue.prototype.$cs.l(...args) }
+
+
 import { format
         ,lastDayOfMonth
         ,addYears
@@ -26,16 +30,15 @@ const adminPeriodDuration = 22
 const adminStartTime = '07:45'
 const period1Duration = 52
 
+
 export const zDate = {
     publicHolidays : [
       //Should use start and end dates for holidays...
     { title : "New Year's Day", date:new Date(2022,0,1)} ,
     { title : "Human Rights Day", date:new Date(2022,2,21)} ,
-
     { title : "Good Friday", date:new Date(2022,3,15)} ,
-    { title : "Family Day", date:new Date(2021,3,18)} ,
-
-    { title : "Freedom Day", date:new Date(2021,3,27)} ,
+    { title : "Family Day", date:new Date(2022,3,18)} ,
+    { title : "Freedom Day", date:new Date(2022,3,27)} ,
     { title : "Worker's Day", date:new Date(2022,4,1)} ,
     { title : "Day Off Workers", date:new Date(2022,4,2)} ,
     { title : "Youth Day", date:new Date(2022,4,16)} ,
@@ -150,6 +153,20 @@ export const zDate = {
   ,{id:108 ,dayNo:'10', type:'Per6'    , start:'12:53', duration:0}
   ,{id:109 ,dayNo:'10', type:'Per7'    , start:'13:42', duration:0}
   ],
+
+  setDateMDY: function(dteSTR) {
+    let [m,d,y] = dteSTR.split('-')
+    return new Date(`${m} ${d}, ${y} 00:00:00`)
+    // usage : let  date1 = setDateMDY('Jul-30-2021')
+    // console.log( date1.toLocaleString() )
+  },
+  setDateYMD: function(dteSTR) {
+    console.log('setDataFunction',dteSTR)
+    console.log(dteSTR.substr(0,10))
+    let [y,m,d] = dteSTR.substr(0,10).split('-')
+    return new Date(`${y}-${m}-${d} 00:00:00`)
+    // usage : let  date1 = setDateYMD('Jul-30-2021')
+  },
   format: function (...args) {
     return format(...args)
   },
@@ -218,6 +235,13 @@ export const zDate = {
       }
     })
     return isSame
+  },
+  getMondayPast() {
+    let today = new Date()
+    today.setDate(today.getDate() - 10)
+    this.gotoMonday(today)
+    l('this is monday past:', today, today.setHours(0,0,0,0))
+    return today
   },
   curDay: function(date) {
     //11 Maart 2021 was Dag 10

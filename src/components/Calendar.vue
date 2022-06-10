@@ -1,6 +1,6 @@
 <template>
 <v-card class="ma-0 pa-0" color="white">
-  <v-row v-if="menemonic">
+  <v-row v-if="incomingMenemonic">
     <v-col>
     <v-sheet
       tile
@@ -34,7 +34,7 @@
       </v-col>
       <v-col cols=3>
         <v-card xcolor="primary" class="ma-2 pt-0 pb-0 pr-2 pl-2" elevation="1" >
-          {{ menemonic }} <small>Display:</small>
+          {{ incomingMenemonic }} <small>Display:</small>
          <v-btn x-small @click="weekOrDayChange">  {{ weekOrDay }} </v-btn>
 
         </v-card>
@@ -131,15 +131,18 @@
       </v-sheet>
     </v-col>
   </v-row>
-  <!-- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+  <v-container v-else>
+     srfwerwerewrwerewrwerew
+  </v-container>
+  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
     <v-row>
-        <v-col cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
+        <v-col cols="6" lg="3" v-for="(f,i) in sortIt" :key="i">
         <v-card color="blue" class="ma-2 pa-1" >
-        {{ i }} {{ f.name }} - {{ f.start }} {{ f.end }} {{ f.type }}
+         {{ f.name }} : {{ f.start }}- {{ f.end }} {{ f.type }}
          </v-card>
         </v-col>
    </v-row>
-  </v-container>-->
+  </v-container>
         <v-btn  @click="checkChange"> R(CC) </v-btn>
 </v-card>
 </template>
@@ -165,6 +168,7 @@ export default {
       selectedEvent: null,
       selectedElement: null,
       selectedOpen: null,
+      incomingMenemonic: null,
       personeelMenemonic: '',
       weekOrDay:'week',
       weekday:[1, 2, 3, 4, 5, 6, 0],
@@ -208,7 +212,7 @@ export default {
       },
       loadRooster(){
         this.selectedOpen = false
-        this.personeelMenemonic = this.menemonic
+        this.personeelMenemonic = this.incomingMenemonic
         if (!this.personeelMenemonic) this.personeelMenemonic = 'WIE'
 
 /*      we have GROEN as a menemonic - so cannot do this test
@@ -243,30 +247,31 @@ export default {
         //We could use this.calValue as current selected day - but not needed if we show one week of periods.
         //Get this week's first "day", monday is 1.
         if (this.getZml.calendar.length==0) {
-          alert('Oops! - Our calendar seem to be empty?')
+          alert(`Oops! - Our calendar seem to be empty for ${this.personeelMenemonic}?`)
         }
         if (response.error) {
           return
         }
         let template = zDate.todayNoHours()
-        console.log('zDate.todayNoHours()', template)
-        
+        this.$cs.l('zDate.todayNoHours()', template)
+
         template = zDate.gotoMonday(template)
-        console.log('zDate.gotoMonday', template)
-        
-        //Go back one more day (to Sunday)
-        template.setDate(template.getDate() - 1);
-        console.log('go one back - to sunday', template)
-        
-        // Show the next 37 days...
-        for (let t=0; t < 37; t++) {
+        this.$cs.l('zDate.gotoMonday', template)
+
+        //Go back one week
+        template.setDate(template.getDate() - 7);
+        this.$cs.l('go one back - to sunday', template)
+        // Show the next 57 days...
+        for (let t=0; t < 57; t++) {
+          this.$cs.l('loading : ', t, zDate)
            template = zDate.addOneDay(template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal =>
               cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'
            )
            if (!sday) {
-             console.log('no SDAY:', response)
+             // Usually when it's a weekend?
+             // console.log('Skipping:', zDate.format(template,'yyyy-MM-dd'), template.getDay())
              continue
            }
            response.forEach(ele => {
@@ -357,9 +362,30 @@ export default {
          if (!this.calReady) {
           setTimeout(() => { this.rinseRepeat() }, 2000)
          }
+      },
+      startTheLoad() {
+        this.$cs.l('check if events was loaded..')
+        if( this.getZml.calendar.length < 300) {
+            setTimeout(this.startTheLoad, 50) //wait 50 millisecnds then recheck
+            this.$cs.l('check AGAIN if events was loaded')
+            return
+        }
+        console.log('calendar events is now cool!!!!!', this.getZml.calendar.length)
+        this.today = new Date()
+        this.today.setHours(0,0,0,0)
+        this.calToday = zDate.format(this.today,'yyyy-MM-dd')
+        this.loadCalendar()
+        this.loadRooster()
+
       }
     },
   computed: {
+      sortIt() {
+        let cal = this.getZml.calendar.filter(item => item.type == 'School')
+        // console.log(this.getZml.calendar,cal)
+        return cal.sort((a,b) => a.startdate - b.startdate)
+      },
+
       cal () {
         return this.calReady ? this.$refs.calendar : null
       },
@@ -368,20 +394,23 @@ export default {
       },
     },
   mounted () {
+    this.$cs.l('MOUNTING CALENDAR-----------------')
+    if (!this.menemonic) {
+      if (this.$route.params.menemonic) {
+          this.incomingMenemonic = this.$route.params.menemonic.toUpperCase()
+      }
+    } else {
+      this.incomingMenemonic = this.menemonic
+    }
+
       zData.initialData('Load Subject Data')
       zData.calendarData('Load Calendar Data')
-      //this.events = [] //let's keep old events for now...
-      this.today = new Date()
-      this.today.setHours(0,0,0,0)
-      this.calToday = zDate.format(this.today,'yyyy-MM-dd')
-      this.loadCalendar()
-      this.loadRooster()
-
-      //this.activateCalendar()
-      this.rinseRepeat()
+      this.startTheLoad()
+      //this.rinseRepeat()
   },
   watch: {
     menemonic() {
+      this.incomingMenemonic = this.menemonic
       zData.calendarData('Load Calendar Data')
       this.loadRooster()
     }

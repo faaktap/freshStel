@@ -303,6 +303,13 @@ const routes = [
     ,meta: {layout: la[3], authentication: "admin"}
   },
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/Calendar.vue')
+    ,name: 'Calendar'
+    ,path: '/calendar/:menemonic?'
+    ,props:true
+    ,meta: {layout: la[3], authentication: "public"}
+  },
+  {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
     ,path: '*'

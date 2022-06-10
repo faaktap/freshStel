@@ -1,7 +1,9 @@
 let zml = 'zml'
 export const ls = {
-    cl: (...args) => { console.log(args)},
-    //cl: () => { },
+    // eslint-disable-next-line
+    cl: (...args) => { 
+      // console.log(args)
+    },
     available:  true,
     remove: (name) => {
        localStorage.removeItem(name)

@@ -63,6 +63,7 @@ async function http(url,
 }
 */
 
+//Return a promise - zFetch
 function zFetch(task) {
     zmlConfig.cl('Z:FETCH-1--------------',task.task)
     task.program = 'zmlShop'
@@ -76,7 +77,7 @@ function zFetch(task) {
  }
 
 
-
+//Return data - still have trouble with this
 async function pFetch(task) {
     task.program = 'zmlShop'
     task.status = 'trying'

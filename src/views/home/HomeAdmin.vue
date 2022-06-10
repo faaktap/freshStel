@@ -56,8 +56,6 @@
 </v-col>
 |</v-row>
 
-
-
   <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
      <v-expansion-panels>
         <v-expansion-panel>
@@ -74,6 +72,7 @@
             <v-btn to="/hover"> hover </v-btn>
             <v-btn to="/loadhomework"> loadhomework </v-btn>
             <v-btn to="/checklog"> checklog </v-btn>
+            <v-btn @click="dateTest"> dateTest </v-btn>
             <!--{{ joke }}            -->
             <v-window>
             xs={{$vuetify.breakpoint.xs}} <br>
@@ -95,17 +94,20 @@
 <script>
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
-import { zmlFetch } from '@/api/zmlFetch.js'
+import { zmlFetch, zFetch } from '@/api/zmlFetch.js'
 import { zData } from '@/api/zGetBackgroundData.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
-//import { zData } from "@/api/zGetBackgroundData.js"
 import EmailList from '@/components/email/EmailList.vue';
 import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
+
+//Werner test
+import { zDate } from '@/api/zDate.js';
+//import { loadCalendar } from '@/api/loadCalendar.js';
 
 export default {
     name:"AdminHome",
@@ -123,6 +125,66 @@ export default {
     computed:{
     },
     methods:{
+      dayNum(forDate) {
+        let year = forDate.getFullYear();
+        let month = forDate.getMonth() + 1; //JS month start at 0
+        let day = forDate.getDate();
+        console.log('-------------', year, month, day,forDate)
+        zFetch({task: 'Plainsql',
+          sql: `SELECT dayno, fulldate FROM dkhs_date WHERE fulldate = '${year}-${month}-${day}'`,
+          api:zmlConfig.apiDKHS}
+        ).then((r) => {
+                      console.log(r)
+                      if (r.status >= 200 && r.status <= 299) {
+                        return r.json();
+                      } else {
+                        throw Error(r.statusText);
+                      }
+        })
+        .then(data => {
+          console.log('Assign to pb', data)
+        })
+
+      },
+      dateTest() {
+        let startDate = zDate.getMondayPast()
+        console.log('Monday Past',startDate)
+        //let dayCnt = zDate.curDay(startDate)
+        this.dayNum(startDate)
+        console.log('werner test : dayCnt =----------------- ')
+        // let  date1 = zDate.setDateMDY('Jul-30-2021')
+        // console.log('Date1 : ', date1.toLocaleString() )
+        // let  date2 = zDate.setDateYMD('2022-01-01')
+        // console.log('Date 2:', date2.toLocaleString() )
+
+        let publicHolidays = []
+        //let dayType, days
+        let sql = 'select * from dkhs_holiday'
+        console.log('start:',sql)
+        zFetch({task:'PlainSql', sql:sql, api:zmlConfig.apiDKHS})
+        .then((r) => {
+                      console.log(sql, r)
+                      if (r.status >= 200 && r.status <= 299) {
+                        return r.json();
+                      } else {
+                        throw Error(r.statusText);
+                      }
+        })
+        .then(data => {
+          console.log('Assign to pb', data)
+          publicHolidays = data
+          publicHolidays.forEach(e => {
+             e.realdate =  zDate.setDateYMD(e.fulldate)
+             // console.log(e)
+          });
+          console.log(publicHolidays)
+        })
+        .catch(err => {
+          console.log('Fetch Error:',err)
+          if (err == "TypeError: Failed to fetch") alert('kuilies is away')
+        })
+        console.log('check check dayNum = ')
+      },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "light-green lighten-3"

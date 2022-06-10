@@ -6,6 +6,7 @@
     let c = new Date(year + 1, month, day);
     console.log(c);
 */
+// date.getDay --- always return day of week 1 to 5 is Mon to Fri, sunday is zero and sat is 6
 
 import { zDate } from '@/api/zDate.js'
 

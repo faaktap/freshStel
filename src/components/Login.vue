@@ -204,7 +204,7 @@ export default {
       // this.$cs.l(this.$options.name,'p-getData')
       zData.initialData('Load Important Data')
       zData.calendarData('Load Holiday and Birthday Data')
-      zData.functionData('Load functions')
+      //zData.functionData('Load functions')
     },
     doBack() {
       // this.$cs.l(this.$options.name,'p-doBack')
@@ -312,7 +312,8 @@ export default {
       this.getZml.login.username = 'guest'
       this.getZml.login.isAuthenticated = false;
       ls.remove('login')
-      this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
+      ls.remove('zmllogin')
+      // this.$router.push({ name: 'Home'}); // ,meta: {layout: "AppLayoutGray" }});
     },
     submit() {
       // this.$cs.l(this.$options.name,'p-subMit')

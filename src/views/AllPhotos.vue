@@ -56,26 +56,26 @@ correspond to a staff number)
  <v-container>
     <v-row v-show="showAs == 'card'" class="text-center">
         <v-card cols="12" md="6"
-          class="row wrap text-center d-flex justify-space-around ma-0 mb-2"
+          class="row wrap text-center d-flex justify-space-around ma-1"
           v-for="item in filterPhotos"
           :key="item.uniqno"
           flat
         >
 
         <v-hover v-slot:default="{ hover }">
-          <v-card class="pa-1 ma-1"
+          <v-card class="pa-2 ma-1"
                   outlined tile
                   :elevation="hover ? 12 : 2"
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
 
           >
-            <v-card-text>
+            <v-card-text class="ma-0 pa-0">
                 <v-img :src="'https://kuiliesonline.co.za/' + item.photo"
                        max-height="100"
                        max-width="100"
                        lazy-src="img/lazyload.png"
                        :title="'S:' + item.studentno + ' U:' + item.uniqno + ' ' + item.photo"
-                       class="float-left"
+                       class="float-left mx-auto"
                        contain rounded />
                        <v-card style="word-wrap:break-word" class="float-right" width="150" elevation="0">
               {{item.surname}}, {{item.firstname}}<br>
