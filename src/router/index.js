@@ -310,6 +310,12 @@ const routes = [
     ,meta: {layout: la[3], authentication: "public"}
   },
   {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/Reports.vue')
+    ,name: 'reports'
+    ,path: '/reports'
+    ,meta: {layout: la[3], authentication: "public"}
+  },
+  {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'
     ,path: '*'

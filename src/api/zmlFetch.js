@@ -78,7 +78,8 @@ function zFetch(task) {
 
 
 //Return data - still have trouble with this
-async function pFetch(task) {
+//https://kentcdodds.com/blog/replace-axios-with-a-simple-custom-fetch-wrapper
+function pFetch(task) {
     task.program = 'zmlShop'
     task.status = 'trying'
 
@@ -91,11 +92,15 @@ async function pFetch(task) {
                  ,'Content-Type': 'application/json;charset=UTF-8'},
         body: JSON.stringify(task)
         }
-    const response = await fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
-        //.catch(err => {
-        // zmlConfig.cl('FETCH--------------catch with errcallback',task.task,err)
-       // }
-    return response.text();
+        fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
+        .then(async response => {
+            if (response.ok) {
+              return await response.json()
+            } else {
+              const errorMessage = await response.text()
+              return Promise.reject(new Error(errorMessage))
+            }
+          })
 }
 
 

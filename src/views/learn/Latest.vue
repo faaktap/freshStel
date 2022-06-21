@@ -76,7 +76,7 @@ export default {
                 ],
         previousDays:null,
         search:'',
-        toggleDisplay:1
+        toggleDisplay:1,
        }
    },
    computed: {
@@ -92,7 +92,7 @@ export default {
    },
    methods: {
      loadData() {
-      this.progress = true;
+      this.progress = true
       let ts = {}
       ts.api = 'https://kuiliesonline.co.za/api/file/zmlDir.php'
       ts.task = 'read'
