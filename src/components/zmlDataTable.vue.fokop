@@ -1,0 +1,179 @@
+<template>
+<v-container fluid v-if="dataList && dataHeader">
+
+ <v-btn @click="printDiv('printArea')" class="btn btn-primary btn-block">Print DIV</v-btn>
+
+  <hr><h1>HERE WE START</h1>
+
+doprint = {{ this.doPrint }}
+<div id="printArea" name="printArea">
+ <table width="100%" border="0" class="ma-2">
+  <tr class="d-print-table-row">
+   <td width="30%" style="border: 0px; border-radius: 0px; float: left">
+     DKHS-LEARN<br>{{ today }}
+   </td>
+   <td width="40%" style="border: 0px;  align: center">
+      <center><strong>High School De Kuilen Hoërskool</strong><br>{{ userHeader }}</center>
+   </td>
+   <td width="30%" style="border: 0px; border-radius: 0px; float: right"><img height="60" src="img/logo.png" class="float-right" /></td>
+  </tr>
+ </table>
+
+
+  <v-card class="ma-2">
+   <v-data-table
+    :headers="dataHeader"
+    :items="dataList"
+    :items-per-page="45"
+    class="elevation-2"
+    disable-pagination
+    hide-default-footer
+    @click:row="clickOnRow"
+    id="pies"
+   >
+   </v-data-table>
+  </v-card>
+
+</div>
+  <div id="testMe" v-html="footer">
+  </div>
+    <prntest />
+ <h1>HERE WE NED</h1><hr>
+</v-container>
+</template>
+
+
+<script>
+import * as printJS from "print-js";
+import { zDate } from '@/api/zDate.js';
+import prntest from './prntest.vue'
+export default {
+    name:"zmlDataTable",
+    props: ['dataList', 'userHeader','doPrint','footer'],
+    components:{prntest},
+    data: () => ({
+        dataHeader: [
+          {text: 'User',             value: 'user_name' },
+          {text: 'Type',             value: 'user_type' },
+        ],
+    }),
+    methods:{
+      clickOnRow(p1,p2) {
+        console.log('p1 = ', p1)
+        console.log('p2 = ', p2)
+        this.$emit('clickOnRow',p1,p2)
+      },
+      onButtonClick(todo,data) {
+        console.log(todo, data)
+      },
+      reBuildHeaders() {
+          this.dataHeader = []
+          Object.keys(this.dataList[0]).forEach(ele => {
+              this.dataHeader.push( {text:ele.toUpperCase(), value:ele } )
+          })
+      },
+      printDiv(divName) {
+      // Get HTML to print from element
+      const prtHtml = document.getElementById(divName).innerHTML;
+      // Get all stylesheets HTML
+      let stylesHtml = '';
+      for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+        stylesHtml += node.outerHTML;
+      }
+      console.log(stylesHtml)
+      console.log(prtHtml)
+      // Open the print window
+      const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+      WinPrint.document.write(`<!DOCTYPE html><html><head>${stylesHtml}</head><body>${prtHtml}</body></html>`);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
+    },
+   print() {
+      let o = {printable: "pies", style:'',type: "HTML"}
+      console.log(o)
+       printJS(o);
+    },
+
+      printIt() {
+        printJS({
+          printable: "printArea", //Id to print content
+          style:'',
+          type: "HTML"
+        });
+
+      }
+
+    },
+    computed:{
+      today() {
+        return zDate.format(zDate.todayNoHours(),'yyyy-MM-dd')
+      },
+      listLength() {
+          if (this.dataList) {
+              return this.dataList.length
+          } else {
+              return 0
+          }
+      },
+      objectLength() {
+          if (this.dataList && this.dataList.length) {
+              return Object.entries(this.dataList[0])
+          } else {
+              return 0
+          }
+      }
+    },
+    mounted: function() {
+        this.reBuildHeaders()
+    },
+    watch: {
+        listLength () {
+          this.reBuildHeaders()
+        },
+        objectLength () {
+          this.reBuildHeaders()
+        },
+        doPrint () {
+          if (this.doPrint > 0) this.printIt()
+        }
+    }
+}
+</script>
+
+<style scoped>
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printArea, #printArea * {
+    visibility: visible;
+  }
+  #printArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+</style>
+<xstyle scoped>
+/* .print {display:none;} */
+@media print {
+  body {
+    overflow: auto;
+    height: auto;
+  }
+  .scroll-y {
+     height: auto;
+     overflow: visible;
+  }
+}
+.capitalize-first {
+  text-transform: lowercase;
+}
+.capitalize-first::first-letter {
+  text-transform: uppercase;
+}
+</xstyle>

@@ -1,12 +1,20 @@
 <template>
  <v-container fluid>
-   rh - {{ reportHeader }}
+   <h3 class="text-center ma-2"> {{ reportHeader }} </h3>
      <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
      <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn>
+     <v-text-field
+           v-model="search"
+           append-icon="mdi-magnify"
+           label="Search"
+           single-line
+           hide-details
+        />
      </v-card>
-      <v-data-table v-if="orDTTable.length"
+      <v-data-table
+             v-if="filterTable.length"
             :headers="labels"
-            :items="orDTTable"
+            :items="filterTable"
             :items-per-page="30"
             :footer-props="{
                'items-per-page-options': [20, 50, 100]
@@ -15,8 +23,8 @@
       </v-data-table>
 
 <v-dialog v-model="showPrint" xwidth="auto" :fullscreen="$vuetify.breakpoint.smAndDown">
-  <front-json-to-csv v-if="orDTTable"
-                   :json-data="orDTTable"
+  <front-json-to-csv v-if="filterTable2.length"
+                   :json-data="filterTable2"
                    :csv-title="reportHeader"
                    @hideModal="showPrint = false"
                    :footer="footer">
@@ -45,13 +53,42 @@ export default {
       showPrint: false,
       orDTTable: [],
       labels: [],
-      footer: `<br><br><table BORDER=5 BORDERCOLOR="#4a6053" width=100% style='text-align: right; border-spacing: 10px;'>
-               <tr><th width=20%>Person Responsible:</th><td width=30%></td><th width=20%>Checked By:</th><td width=30%></td></tr>
-               <tr><th>Signature:</th><td></td><th>Signature:</th><td></td></tr>
-                <tr><th>Date:</th><td></td><th>Date:</th><td></td></tr></table>`
+      footer: `<br><br><table BORDER=2 BORDERCOLOR="#4a6053" width=100% style='text-align: right; border-spacing: 4px;'>
+               <tr><th width=20%>eXaminAtOR:</th><td width=30%></td><th width=20%>Checked By:</th><td width=30%></td></tr>
+               <tr><th>Afrikaans:</th><td></td><th>English:</th><td></td></tr>
+                <tr><th>Date1: </th><td></td><th>Date2:</th><td></td></tr></table>`,
+      search: ''
 
   }),
   computed: {
+    filterTable() {
+       //If the table is empty - return blank
+        if (!this.orDTTable.length) {
+          return []
+        }
+        if (this.search.length == 0) return this.orDTTable
+
+        // now we apply all the switches, and then search for the searchstring
+        return this.orDTTable.filter(ele => {
+          console.log(this.search.toLowerCase() , ele.grade.substr(0,this.search.length).toLowerCase())
+          return this.search.toLowerCase() == ele.grade.substr(0,this.search.length).toLowerCase()
+        })
+    },
+    filterTable2() {
+      let prTab = []
+      let id  = 1
+      this.filterTable.forEach(e => {prTab.push({no: id++,
+                                            studno: e.studentid,
+                                            surname: e.surname,
+                                            firstname: e.firstname,
+                                            grade: e.grade,
+                                            teacher: e.teacher,
+                                            t1: '',
+                                            t2: '',
+                                            note_or_comment:''})
+      })
+      return prTab
+    }
   },
   methods:{
     getData () {

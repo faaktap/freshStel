@@ -215,6 +215,13 @@ const routes = [
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
+    component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailBulletins.vue')
+    ,name: 'newsletters'
+    ,path: '/newsletters/:emailSearch?'
+    ,props: true,    params: {emailSearch: 'd'}
+    ,meta: {layout: la[0], authentication: "public"}
+  },
+  {
     component: () => import(/* webpackChunkName: "email" */ '@/views/LogCheck.vue')
     ,name: 'checklog'
     ,path: '/checklog'
@@ -314,6 +321,31 @@ const routes = [
     ,name: 'reports'
     ,path: '/reports'
     ,meta: {layout: la[3], authentication: "public"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "newone" */ '@/views/Reinette.vue')
+    ,name: 'eksamendruk'
+    ,path: '/eksamendruk'
+    ,meta: {layout: la[3], authentication: "admin"}
+  },
+  {
+    path: '/wifi/:studentid?',    name: 'wifi',
+    component: () => import(/* webpackChunkName: "student" */ '@/components/student/StudentWiFi.vue'),
+    props: true,    params: {studentid: 17033, editmode: false},
+    meta: {layout: la[3], authentication: "student" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "admin" */ '@/views/BookReturn.vue'),
+    path: '/bookreturn',
+    name: 'BookReturn',
+    props:true,
+    meta: {layout: la[3], authentication: "admin" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "student" */ '@/components/MeritMenu.vue'),
+    path: '/merit',
+    name: 'MeritMenu',
+    meta: {layout: la[3], authentication: "student" }
   },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')

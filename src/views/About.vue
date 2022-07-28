@@ -2,18 +2,19 @@
 <div>
   <h1>ABOUT</h1>
 
-  <hero-section 
-      title="About the Virtual School System" 
-      text="About this" 
-      moretext="It is an example" 
+  <hero-section
+      title="About the Virtual School System"
+      text="About this"
+      moretext="It is an example"
       color="purple"
       button=""
       icon=""
       func=""
   />
+  {{ paths }}
 <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
 only werner:
-<base-tool :toolList="toolList" 
+<base-tool :toolList="toolList"
             toolbarName="Name of Toolbar a bit longer than usual"
             @toolclick="listenToToolbar"/>
 
@@ -28,7 +29,7 @@ only werner:
         </span>
 </transition-group>
 
-<v-btn @click="shuffle">Shuffle</v-btn> 
+<v-btn @click="shuffle">Shuffle</v-btn>
 <v-btn @click="addTop">Add Top </v-btn>
 <v-btn @click="menuItems.pop()">delete bottom</v-btn>
 <v-btn @click="addTopDeleteBottom">add and delete 4 items</v-btn>
@@ -112,7 +113,7 @@ only werner:
     <contact-form>
     </contact-form>
   </v-col>
-  
+
 
  </v-row>
   </v-container>
@@ -132,7 +133,7 @@ only werner:
  <zml-preview   :src="src" type="Picture"  >
    <zmlCloseButton @btn-click="showPicture = !showPicture"/>
  </zml-preview>
-</v-dialog> 
+</v-dialog>
 </v-container>
 </div>
 </template>
@@ -174,7 +175,7 @@ data: () => ({
   showMovie : false,
   showAudio : false,
   showPicture : false,
-        menuItems:[ 
+        menuItems:[
                    {title:'Select Folder',icon:'mdi-folder'},
                    {title:'New Folder', icon:'mdi-folder-plus-outline'},
                    {title:'New File', icon:'mdi-file'},
@@ -184,7 +185,7 @@ data: () => ({
                    {title:'Empty Folder',icon:'mdi-delete'},
                    {title:'Delete Folder',icon:'mdi-delete-empty'},
                    {title:'Refresh Folder',icon:'mdi-database-refresh'},
-                   ],  
+                   ],
   paths:['/a', '/h','/1','/','/home','/about','/hover',
    '/virtualawards/1','/studentawards', '/learntree', '/viewlearn',
    '/grade',   '/grade/8',   '/studenthub',   '/subjects',   '/student',
@@ -195,9 +196,9 @@ data: () => ({
     ,'/werner','/flex','/streamline','/sh','/latest'
     ,'/sgrade','/sgrade1','/sgrade2','/sgrade3'
     ,'/ws','/game','/emailcheck','/basetabandedit'
-    ,'/loadhomework', '/studentlist'
+    ,'/loadhomework', '/studentlist', '/eksamendruk'
     ],
-    randomColors:[],     
+    randomColors:[],
     toolList:[{name:"Button1"},{name:"button2"},{name:"button3"}],
     baseColors:[],
     tint:[],
@@ -206,7 +207,7 @@ data: () => ({
 }),
 computed: {
 },
-methods: { 
+methods: {
   listenToToolbar(e) {
     alert(e)
   },
@@ -233,11 +234,11 @@ methods: {
         [newArr[i], newArr[rand]] = [newArr[rand], newArr[i]];
     }
     return newArr
-  },  
+  },
   anyColor(){
-    let b = Math.floor(Math.random() * this.baseColors.length) 
-    let t = Math.floor(Math.random() * this.tint.length) 
-    let v = Math.floor(Math.random() * this.variant.length) 
+    let b = Math.floor(Math.random() * this.baseColors.length)
+    let t = Math.floor(Math.random() * this.tint.length)
+    let v = Math.floor(Math.random() * this.variant.length)
 
     return this.baseColors[b] + ' ' + this.tint[t] + '-' + this.variant[v]
   },

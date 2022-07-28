@@ -1,6 +1,7 @@
 <template>
   <div>
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
+
       <v-card>
         <v-card-text>
           <v-row>

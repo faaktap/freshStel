@@ -13,7 +13,7 @@ export const zData = {
     someGlobals :  'hallo',
     loading : false,
     closeDate : null,
-    loadSql(loading, sqlStatement, assignDataProc, api){
+    loadSql(loading, sqlStatement, assignDataProc, api = zmlConfig.apiDKHS){
         zData.loading = loading
         let ts = {}
         ts.task = 'PlainSql'

@@ -1,6 +1,5 @@
 <template>
  <v-row>
-  <ShowColSize />
   <template v-if="$vuetify.breakpoint.mobile">
   <v-col cols="12">
       <v-select
@@ -35,10 +34,9 @@
 <script>
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlConfig } from '@/api/constants';
-import ShowColSize from '@/components/base/ShowColSize';
 export default {
     name:"ListOfGrades",
-    components:{ShowColSize},
+    components:{},
     data: () => ({
         gradeList:[],
         loading:false,

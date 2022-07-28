@@ -30,6 +30,14 @@
             </v-icon>
           Attendance Badge
         </v-btn>
+        <v-btn @click="showWiFiUsername"
+               class="ma-2 pa-2">
+            <v-icon>
+              mdi-wifi
+            </v-icon>
+          WCGSCHOOLS WiFi UserName
+        </v-btn>
+
     </v-col>
 </v-row>
 <!-- <iframe src="https://en.wikipedia.org/wiki/HTML_element#Frames"
@@ -39,10 +47,11 @@
             width="100%"
             height="100%"
             scrolling="auto" /> -->
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 <v-row>
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
-   <!-- <v-expansion-panel>
+   <v-expansion-panel>
     <v-expansion-panel-header expand-icon="mdi-calendar"
        title="A calendar for your current day. If you notice the day is wrong, please inform Werner or ms. Wiegand">
        Calendar - ({{ gradeToShow.g }} {{ gradeToShow.c }} / {{ weekOrDay }})
@@ -52,7 +61,7 @@
               :weekOrDay="weekOrDay"
               :studentGradeClass="gradeToShow.g +  gradeToShow.c" />
    </v-expansion-panel-content>
-   </v-expansion-panel> -->
+   </v-expansion-panel>
 
 
    <v-expansion-panel>
@@ -65,9 +74,9 @@
           <list-test functiongroup="other" />
        </v-expansion-panel-content>
    </v-expansion-panel>
+
    <v-expansion-panel>
-       <v-expansion-panel-header
-         title="Email Addresses for Newsletters.">
+       <v-expansion-panel-header title="Email Addresses for Newsletters.">
          Email Addresses for Newsletters.
        </v-expansion-panel-header>
        <v-expansion-panel-content>
@@ -75,8 +84,7 @@
        </v-expansion-panel-content>
    </v-expansion-panel>
    <v-expansion-panel>
-       <v-expansion-panel-header
-         title="Link to subjects">
+       <v-expansion-panel-header title="Link to subjects">
           Subjects
        </v-expansion-panel-header>
        <v-expansion-panel-content>
@@ -85,8 +93,7 @@
    </v-expansion-panel>
 
    <v-expansion-panel>
-       <v-expansion-panel-header
-         title="Show Email Bulletins">
+       <v-expansion-panel-header title="Show Email Bulletins">
           Email Bulletins
        </v-expansion-panel-header>
        <v-expansion-panel-content>
@@ -173,6 +180,9 @@ export default {
         }
     },
     methods:{
+        showWiFiUsername() {
+            this.$router.push({ name: 'wifi', params: {studentid: this.studentid, editmode: false} })
+        },
         showAttendanceBadge(){
              window.open(`https://kuiliesonline.co.za/att/badge/${this.studentid}`)
         },

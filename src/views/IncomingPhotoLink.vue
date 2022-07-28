@@ -105,6 +105,7 @@ export default {
     }),
     computed: {
        photoListFilter() {
+          if (this.csvArray.error) return []
           if (this.show == 'all')
              return this.csvArray
           else

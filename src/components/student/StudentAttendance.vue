@@ -25,7 +25,7 @@
     <v-dialog v-model="showResult" fullscreen>
      <v-card color="red" v-if="showResult && AttendanceList">
       <front-json-to-csv :json-data="AttendanceList"
-                         :csv-title="'Attendance List ' + studentid"
+                         :csv-title="`Attendance List ${studentid} ${studentSurname}`"
                          @hideModal="showResult = false">
       </front-json-to-csv>
      </v-card>
@@ -63,15 +63,17 @@ export default {
         if (this.studentid) {
            let sl = { task: 'plainSql'
                     , sql:
-                `select sessionid,attendancedate, staff, location, period, archived from (\
-                  select attendancedate, a.staff,a.location,a.period,a.sessionid , 'N' archived\
+                `select sessionid,attendancedate, staff, location, period, archived, surname, grade from (\
+                  select attendancedate, a.staff,a.location,a.period,a.sessionid
+   				         , 'N' archived, s.surname, concat(grade, gclass) grade \
                    from dkhs_student s \
                       , a_attendance a \
                   where a.capture = s.studentid \
                     and a.active is null \
                     and a.capture = ${this.studentid} \
                   union all \
-                  select attendancedate, a.staff,a.location,a.period,a.sessionid , 'Y' \
+                  select attendancedate, a.staff,a.location,a.period,a.sessionid 
+				         , 'Y', s.surname, concat(grade, gclass) grade \
                    from dkhs_student s \
                       , a_attendance_back a \
                   where a.capture = s.studentid \
@@ -85,8 +87,10 @@ export default {
       },
       processAfterFetch(response) {
         console.log(response)
+		this.studentSurname = ''
           if (!response.error) {
              this.AttendanceList= response
+             this.studentSurname = `: ${response[0].surname} : ${response[0].grade}`
           } else {
               this.AttendanceList = []
           }

@@ -1,7 +1,7 @@
 <template>
         <v-autocomplete
                @input="updateValue"
-               @blur.stop="passPersonID"
+                v-on:keyup.enter="$event.target.nextElementSibling.focus()"
                 :value="value"
                 :label="label"
                :items="itemList"
@@ -10,9 +10,9 @@
                 item-value="placeid"
                 item-text="concatsearch"
                :search-input="searchInput"
-                dense outlined rounded shaped
+                dense
               >
-        </v-autocomplete> <!--{{ searchInput}}-->
+        </v-autocomplete>
 
 </template>
 
@@ -20,12 +20,11 @@
 import { getters } from "@/api/store";
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
-import { crudTask } from "@/components/crud/crudTask.js"
 export default {
    name:"ZAutoPlace",
    props:{
            value:{}
-         , label: {type:String,default:"Place/Class"}
+         , label: {type:String,default:""}
    },
    data: () => ({
      getZml: getters.getState({ object: "gZml" }),
@@ -47,23 +46,19 @@ export default {
       }
   },
   methods:{
-    passPersonID() {
-      if (this.lastOneSelected) {
-          let index = this.placeTable.findIndex(ele => ele.placeid == this.lastOneSelected)
-          if (index > -1) {
-            console.log(this.$options.name, 'send owner', this.placeTable[index].ownerid, 'for',this.placeTable[index].name)
-            this.$emit('select',this.placeTable[index].ownerid)
-          }
-      }
-    },
     updateValue(e) {
-      this.$emit('input', e)
+      console.log('updateValue-S_PLACE-...', e)
       let index = this.placeTable.findIndex(ele => ele.placeid == e)
+      console.log('updateValue-index...', index)
       if (index > -1) {
-        console.log(this.$options.name, 'send object')
-        this.$emit('objectSelected',this.placeTable[index])
+        //console.log(this.$options.name, 'send object')
+        //this.$emit('objectSelected',this.placeTable[index])
+        console.log('updateValue-array object...', this.placeTable[index])
+        console.log('emitting...', this.placeTable[index].concatsearch)
+        this.$emit('input', this.placeTable[index].concatsearch)
+        this.$emit('try', this.placeTable[index].concatsearch)
+        return
       }
-      this.lastOneSelected = e
     },
     getData() {
       let ts = {}
@@ -79,12 +74,10 @@ export default {
     },
     loadData(response) {
       this.placeTable = response
-      crudTask.save('place', response)
     }
   },
   mounted() {
     console.log('Start' , this.$options.name,this.placeTable.length)
-    this.placeTable = crudTask.load('place')
     if (this.placeTable.length == 0) this.getData()
   },
 }

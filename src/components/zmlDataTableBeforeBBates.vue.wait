@@ -8,23 +8,7 @@
     </v-col>
    </v-row>
 
-  <v-card class="ma-2" id="printMe">
-    <v-card-title class="hide">
-     <table width="100%" border="0" class="ma-2">
-     <tr class="d-print-table-row">
-      <td width="30%" style="border: 0px; border-radius: 0px; float: left">
-        DKHS-LEARN<br>{{ today }}
-      </td>
-      <td width="40%" style="border: 0px;  align: center">
-        <center><strong>High School De Kuilen Hoërskool</strong><br>{{ userHeader }}</center>
-      </td>
-      <td width="30%" style="border: 0px; border-radius: 0px; float: right">
-        <img height="60" src="img/logo.png" class="float-right" />
-      </td>
-  </tr>
- </table>
-
- </v-card-title>
+  <v-card class="ma-2">
    <v-data-table
     :headers="dataHeader"
     :items="dataList"
@@ -32,11 +16,10 @@
     class="elevation-2"
     disable-pagination
     hide-default-footer
+    id="printMe"
     @click:row="clickOnRow"
-    multi-sort
    >
    </v-data-table>
-   <v-card-text class="hide" v-html="footer">  </v-card-text>
  </v-card>
  </div>
 </template>
@@ -47,7 +30,7 @@ import printJS from "print-js";
 import { zDate } from '@/api/zDate.js';
 export default {
     name:"zmlDataTable",
-    props: ['dataList', 'userHeader','doPrint','footer'],
+    props: ['dataList', 'userHeader','doPrint'],
     data: () => ({
         dataHeader: [
           {text: 'User',             value: 'user_name' },
@@ -56,6 +39,8 @@ export default {
     }),
     methods:{
       clickOnRow(p1,p2) {
+        console.log('p1 = ', p1)
+        console.log('p2 = ', p2)
         this.$emit('clickOnRow',p1,p2)
       },
       onButtonClick(todo,data) {
@@ -66,7 +51,6 @@ export default {
           Object.keys(this.dataList[0]).forEach(ele => {
               this.dataHeader.push( {text:ele.toUpperCase(), value:ele } )
           })
-          console.log(this.dataHeader)
       },
       printIt() {
         // const style =
@@ -81,32 +65,71 @@ export default {
           body {overflow: auto;height: auto;font:Garamond;}\
           h1 { color: #1c3a1b }\
           heading { color: #1c3a1b }\
-          p.bodyText {font-size:8pt}\
-          th, td {border-radius:2px; padding: 2px;margin: 2px; border: 1px solid #e6e4ed;}\
-          table: {width:100%;}\
+          p.bodyText {font-size:10pt}\
+          th, td {border-radius:6px; padding: 8px;margin: 8px; border: 1px solid #e6e4ed;}\
           aside {display: none;}\
           main {display: block;}\
          }`
-        const headerStyle = "align: center;font:Garamond";
+        const headerStyle = "font-weight: 400; align: center;font:Garamond";
 
 
           printJS({
            printable: "printMe",
            type: "html",
-           //header: `<center><small> ${this.today} )</small></center>`,
+           header: `<center><h2> ${this.userHeader}  ( ${zDate.format(zDate.todayNoHours(),'yyyy-MM-dd')} )</h2></center>`,
            headerStyle: headerStyle,
            style: style,
            scanStyles: false,
            onPrintDialogClose: () => console.log("The print dialog was closed"),
            onError: e => console.log(e)
           });
+
+/*  Other way of printing the data....
+            // Get HTML to print from element
+            (this.$refs)
+            let prtHtml = '<table style="border-collapse: collapse">'
+
+            prtHtml += '<tr>'
+            Object.keys(this.dataList[0]).forEach(ele => {
+              prtHtml += '<th class="capitalize-first" style="border: 1px solid #CDCDCD">' + ele + '</th>'
+            })
+            prtHtml += '</tr>'
+
+            this.dataList.forEach(ele => {
+                prtHtml += '<tr>'
+                Object.keys(ele).forEach(item => {
+                  prtHtml += '<th>' + ele[item] + '</th>'
+                })
+                prtHtml += '</tr>'
+            })
+            prtHtml += '</table>'
+            // Get all stylesheets HTML
+            let stylesHtml = ''
+            for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
+              stylesHtml += node.outerHTML;
+            }
+            // Open the print window
+            const WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+
+            WinPrint.document.write(`<!DOCTYPE html>
+            <html>
+              <head>
+                ${stylesHtml}
+              </head>
+              <body>
+                ${prtHtml}
+              </body>
+            </html>`);
+
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            WinPrint.close();
+*/
       }
 
     },
     computed:{
-      today() {
-          return zDate.format(zDate.todayNoHours(),'yyyy-MM-dd')
-      },
         listLength() {
             if (this.dataList) {
                 return this.dataList.length
@@ -141,14 +164,11 @@ export default {
 </script>
 
 <style scoped>
-.hide {display:none;}
-
 @media print {
   body {
     overflow: auto;
     height: auto;
   }
-  table {width: 100%;}
   .scroll-y {
      height: auto;
      overflow: visible;

@@ -10,7 +10,7 @@
           :required="required"
           class="ma-2"
           />
-          <v-card elevation-6 v-if="showDate">
+          <v-card elevation-3 v-if="showDate">
            <v-date-picker dense
                    picker-date
                    no-title
@@ -38,7 +38,8 @@ export default {
         },
   data: () => ({
     showDate: false,
-    current:{dd:0, mm:0, yyyy:0}
+    current:{dd:0, mm:0, yyyy:0},
+    cheatValue: null
   }),
   methods:{
     checkIfInFuture(dte) {
@@ -69,6 +70,9 @@ export default {
     this.current.dd = String(today.getDate()).padStart(2, '0');
     this.current.mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     this.current.yyyy = today.getFullYear();
+
+    this.cheatValue = this.value
+    if (this.value == '')  this.cheatValue = this.current.yyyy + '-' + this.current.mm + '-' + this.current.dd
   }
 };
 </script>

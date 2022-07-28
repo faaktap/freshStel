@@ -41,6 +41,7 @@
                   xxxhide-default-header
                   class="elevation-2"
                   color="purple lighten-3"
+                  :loading="loading"
                   @click:row="clickOnTableRow"
             >
             </v-data-table>
@@ -77,6 +78,7 @@ export default {
         previousDays:null,
         search:'',
         toggleDisplay:1,
+        loading: false
        }
    },
    computed: {
@@ -96,10 +98,12 @@ export default {
       let ts = {}
       ts.api = 'https://kuiliesonline.co.za/api/file/zmlDir.php'
       ts.task = 'read'
+      this.loading = true
       zmlFetch(ts, this.processData, this.loadError);
      },
      loadError(error) {
        this.$cs.l('load files:', error)
+       this.loading = false
      },
      processData(response) {
       let filter = response.filter(function (e) {
@@ -128,6 +132,7 @@ export default {
       this.tData.sort((a,b) => b.date.localeCompare(a.date));
       this.$cs.l('Latest Full Set - SORTED:',this.tData)
       this.progress = false
+      this.loading = false
      },
      clickOnTableRow(p1) {
         //Take this findfolder out, since we understand file contentid in latest.vue

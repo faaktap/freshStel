@@ -1,9 +1,11 @@
 <template>
  <v-card color="white darken-1"
          class="text-center ma-0 pa-0" :loading="loading">
-         
+
   <zml-close-button @btn-click="closeIt" />
-  
+<!-- For EPUB, epub we could try and get https://github.com/Treinetic/TreineticEpubReader started
+     see https://stackoverflow.com/questions/16933086/how-to-read-epub-files-using-javascript#16950918
+-->
   <v-card-title class="ma-1 pa-1 text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
     <v-btn
       class="ma-2"
@@ -12,7 +14,7 @@
       >
       <v-icon> mdi-window-open </v-icon> Open
     </v-btn>
-    
+
     <div class="mx-4 mb-0 mt-0 pa-0 text-center">
       Preview - {{ getFilenameNoExtension(src) }}
     </div>
@@ -105,6 +107,7 @@
               @load="load"
             :src="httpSrcGoogleEmbed">
       </iframe>
+      {{ httpSrcGoogleEmbed }}
   </template>
 
 <!-------------------------------------TRY GOOGLE READER------------->
