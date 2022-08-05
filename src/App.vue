@@ -33,7 +33,7 @@
 
 <script>
 import { getters } from "@/api/store"
-// import { ls } from "@/api/localStorage.js"
+//import { ls } from "@/api/localStorage.js"
 import { zmlConfig } from '@/api/constants'
 import confirm from "@/api/DialogConfirm"
 import EventBus, { ACTIONS } from '@/api/event-bus'
@@ -51,6 +51,22 @@ export default {
   },
   mounted: function () {
     this.$cs.l('StartApp : ',this.projectID)
+    /*
+    let payload = "WERNER SMIT"
+    this.$cs.l(payload.toString('base64'))
+    const data = {test:"test", num:"number"};
+    console.log('---ORIGINAL-----', data)
+    // Encode String
+    const encode = Buffer.from(JSON.stringify(data)).toString('base64')
+    console.log('\n---ENCODED-----', encode)
+    // Decode String
+    const decode = JSON.parse(Buffer.from(encode, 'base64').toString('utf-8'))
+    console.log('\n---DECODED-----', decode)
+    ls.save('zmlForWerner',[{some:'data', num:1234}])
+    let t = ls.load('zmlForWerner')
+    console.log('answer = ', t)
+    */
+
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open

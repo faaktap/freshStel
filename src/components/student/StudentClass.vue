@@ -42,12 +42,13 @@
      T
     </base-tool-button>
  </v-toolbar>
+
 </v-container>
 <v-container class="mt-2" fluid>
 
  <v-row>
   <v-col cols="12">
-   <student-grade v-model="gradeClass" />
+   <student-grade v-model="gradeClass" gc="gradeClass" />
    <pick-attendance
     v-if="studentList.length && showAttendance == true"
     title="Pick Attendance Parameters"
@@ -153,7 +154,7 @@ import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 
 export default {
     name:"StudentClass",
-    props:["title"],
+    props:["title","gc"],
     components:{
         StudentGrade
        ,FrontJsonToCsv
@@ -240,7 +241,14 @@ export default {
       }
      },
     mounted() {
-      console.log('start : ', this.$options.name)
+      console.log('SC(mounted)1 : ', this.$options.name)
+      console.log('SC(mounted)2 : ', this.$router.params)
+      console.log('SC(mounted)3 : ', this.gc)
+      if (this.gc && this.gc.c & this.gc.g) {
+        // {"g": "G08", "c": "E1" }
+        console.log('gc exist', this.gc)
+        this.gradeClass = {g:this.gc.g, c:this.gc.c}
+      }
     },
     watch: {
       gradeClass() {

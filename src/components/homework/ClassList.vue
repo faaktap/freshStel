@@ -24,7 +24,7 @@
         Change List Properties
       </base-tool-button>
       <base-tool-button @click="showListData()" class="mr-2" icon="mdi-school">
-       Show Students
+       Show Students {{ showStudentLists }}
       </base-tool-button>
 
       <base-tool-button
@@ -50,14 +50,17 @@
      Since you are admin, you see all the lists..
    </v-col>
    <v-col cols="12">
-     <h2> Current List : {{ this.classObj.listname }}</h2>   {{ this.classObj.update_timestamp }}
-     - {{ this.classObj.students }} Students
+     <h2> Current List : {{ this.classObj.listname }}</h2>
+     Date: {{ classObj.update_timestamp }}
+     - {{ classObj.students }} Students
    </v-col>
   </v-row>
 
   <v-row>
 
    <v-col v-if="showStudentLists" cols="12">
+    this is showStudentsList : There are to many information in this component.
+    We need to split it.
      <v-data-table
      :items="classList"
      :headers="classListHeader"
@@ -164,7 +167,8 @@ export default {
       showListData() {
         if (this.classObj.id) {
             this.loadListData()
-            this.showStudentLists = false
+            //this.showStudentLists = false
+            this.showStudentLists = true
         } else {
           alert('we have no classObj')
         }
@@ -181,7 +185,7 @@ export default {
         console.log('stud jsdoc = ',student)
         let ts = {
            task: 'PlainSql',
-           sql: `update hw_classliststudent set jdoc = '${JSON.stringify(student.jsdoc)}' \
+           sql: `update hw_classliststudent set jdoc = '${JSON.stringify(student.jsdoc)}' /
                    where id = ${student.id}`,
            api: zmlConfig.apiDKHS
         }
@@ -272,20 +276,31 @@ export default {
         this.studentClassList.length = 0
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = `SELECT s.surname, s.firstname, concat(s.grade, s.gclass) grade, l.jdoc, l.studentid, c.jdocstructure,l.id  \
-                   FROM hw_classliststudent l, dkhs_student s, hw_classlist c\
-                  WHERE l.studentid = s.studentid \
-                    AND l.classlistid = c.id \
-                    AND l.classlistid = ${this.classObj.id} \
-                  ORDER BY s.surname, s.firstname`
+        ts.sql = `\
+SELECT s.surname, s.firstname, concat(s.grade, s.gclass) grade, l.jdoc, l.studentid, c.jdocstructure,l.id \
+ FROM hw_classliststudent l, dkhs_student s, hw_classlist c \
+ WHERE l.studentid = s.studentid \
+   AND l.classlistid = c.id \
+   AND l.classlistid = ${this.classObj.id} \
+ ORDER BY s.surname, s.firstname`
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, this.displayListData, this.errorLoading);
       },
       displayListData(response) {
         this.studentClassList = response
+        if (!this.studentClassList.length) {
+          //We have a problem iterating thru classlist
+          console.log('PROBLEM WITH CLASSLIST',response)
+        }
         this.studentClassList.forEach(e => {
           if (!e.jdoc) {
-            e.jdoc = JSON.parse(e.jdocstructure)
+            try {
+             e.jdoc = JSON.parse(e.jdocstructure)
+            }
+            catch (err) {
+             console.log('error parsing JSON (displayListData:1) :', err)
+            }
+
             //Object.entries(e.jdoc).forEach(([key, value]) => e[key] = value)
             for (let i=0; i < e.jdoc.length; i++) {
               // console.log('e.jdoc[i]', e.jdoc[i].heading )
@@ -293,8 +308,9 @@ export default {
             }
           } else {
             //the structure has been filled aready -
-            e.jdoc = JSON.parse(e.jdoc)
-            Object.entries(e.jdoc).forEach(([key, value]) => e[key] = value)
+            try { e.jdoc = JSON.parse(e.jdoc) }
+            catch (err) {console.log('error parsing JSON (displayListData:2) :', err)}
+            Object.entries(e.jdoc).forEach( ([key, value]) => e[key] = value)
           }
           console.log('student classlist after jdoc parsed', e.jdoc)
           // New one, assign values
@@ -312,13 +328,13 @@ export default {
           //show all the list if we login as werner
           where = ''
         }
-        ts.sql = `SELECT c.id, c.teacher, c.listname, c.share, c.jdocstructure \
-                       , create_timestamp, update_timestamp \
-                       , count(s.classlistid) students \
-                   FROM hw_classlist c \
-                   left join hw_classliststudent s on s.classlistid = c.id \
-                   ${where}
-                   group by s.classlistid`
+        ts.sql = `\
+SELECT c.id, c.teacher, c.listname, c.share, c.jdocstructure \
+ , create_timestamp, update_timestamp \
+ , count(s.classlistid) students \
+ FROM hw_classlist c \
+ LEFT JOIN hw_classliststudent s on s.classlistid = c.id \
+ ${where} group by s.classlistid`
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, this.showData, this.errorLoading);
       },
@@ -328,8 +344,14 @@ export default {
              return
          }
          this.classList = payload
+         console.log('xxxxxxxxxx', payload)
          this.classList.forEach(e => {
+          try {
            e.jdocstructure = JSON.parse(e.jdocstructure)
+          }
+          catch (err) {
+             console.log('error parsing JSON(CL:loadData) :', err)
+          }
          })
          console.log('loaded classlists :', this.classList)
       },

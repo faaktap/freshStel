@@ -80,10 +80,10 @@
 
 
  <v-container v-if="toggleDisplay == 2" fluid>
-<base-title-expand color="white" heading="Grade 10 Subject Selection - 2022" >
+<base-title-expand color="white" heading="Grade 10 Subject Selection - 2023" >
  <v-row>
   <v-col cols="12">
-     <grade-10-list title="Grade 10 Subject selection for 2022" />
+     <grade-10-list title="Grade 10 Subject selection for 2023" />
   </v-col>
  </v-row>
 </base-title-expand>

@@ -335,7 +335,7 @@ export default {
       // this.$cs.l('after submitting')
     },
     loginFail(error) {
-      // this.$cs.l(this.$options.name,'p-loginFail', error)
+      this.$cs.l(this.$options.name,'p-loginFail', error)
       this.submitting = false;
       infoSnackbar('LoginFailed: We could not make contact with our server. (' + error + ')')
     },

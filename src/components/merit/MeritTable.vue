@@ -1,0 +1,181 @@
+<template>
+<v-container fluid>
+  <base-title-expand color="purple" heading="Merit Musings">
+  <p>
+    Once a merit is selected, we need to define a way taht it can be added.. Easily, Quickly
+    If a teacher is adding merits, he would most likely select on emerit and load a lot of students
+    for it, so we could allow him to select a file, or paste a lot of schoolnumber in, maybe
+    divided by commas.<br>
+    If a student select a merit, we can autoadd him, with a ref that a teach must approve.
+
+  </p>
+  </base-title-expand>
+  <base-title-expand color="purple" heading="Merit Select System 1"><p>
+    One way of displaying the merit system, it's a bit tricky to go back only one. So the back button start over.
+    Do we want to show the learners what the points for each entry is?</p>
+
+
+<router-link to="/merit"> <v-btn> test1 </v-btn> </router-link>
+<v-btn to="/merit">  test2  </v-btn>
+<router-link :to="{ path: '/merit' }">test 3</router-link>
+  </base-title-expand>
+
+<p> Double click to go deeper, or press Edit button to change title, info or points.  </p>
+  <merit-form  v-if="id && id > 0"
+              :id="id"
+              @done="doneEditing" />
+  <v-divider />
+
+  <h2>{{ treeString }}</h2>
+   <v-data-table  v-if="aTable.length"
+     :headers="headers"
+     :items="tableItemFilter"
+     @click="meritClick"
+     @dblclick:row.prevent="meritDblClick"
+     mobile-breakpoint="0"
+   >
+      <template v-slot:[`footer.page-text`]>
+       <v-btn v-if="index != 0"
+             @click="backClick()"
+             align="center" class="ma-2 pa-2" >
+          back
+      </v-btn>
+      </template>
+      <template v-slot:[`item.points`]="{ item }">
+        <div v-if="item.forward == 0"> {{ item.points}} </div>
+      </template>
+      <template v-slot:[`item.description`]="{ item }"  >
+       <template v-if="!$vuetify.breakpoint.mobile">
+         {{ item.description }}
+        </template>
+      </template>
+      <template v-slot:[`item.action`]="{ item }">
+        <v-btn-toggle v-model="toggle">
+         <v-btn icon x-small
+                @click="meritDblClick($event,item)"
+                title="Delve">
+             <v-icon small color="red" class="my-1">mdi-arrow-right-circle-outline</v-icon>
+         </v-btn>
+         <v-btn  icon x-small
+                @click="retrieveForDelete(item)"
+                title="Delete">
+             <v-icon small color="red" class="my-1">mdi-delete</v-icon>
+         </v-btn>
+         <v-btn  x-small icon
+                @click="retrieveForEdit(item)"
+                title="Edit">
+             <v-icon small color="green" class="my-1">mdi-circle-edit-outline</v-icon>
+         </v-btn>
+
+        </v-btn-toggle>
+      </template>
+   </v-data-table>
+   <v-card color="primary">
+    <merit-chip />
+   </v-card>
+</v-container>
+</template>
+
+<script>
+import { getters } from "@/api/store"
+import { zData } from "@/api/zGetBackgroundData.js"
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import { infoSnackbar } from "@/api/GlobalActions"
+import MeritForm from "@/components/merit/MeritForm"
+import MeritChip from "@/components/merit/MeritChip"
+  export default {
+    name: 'MeritTable',
+    components:{ BaseTitleExpand, MeritForm, MeritChip },
+    data () {
+      return {
+        getZml: getters.getState({ object: "gZml" }),
+        id:0,
+        action:'',
+        toggle:'',
+        index: 0,  //start with first menu, on v-datatable
+        aTable: [], // we keep all data from sql here
+        treeString: '', //display our selection
+        headers: [{ text:"the name", value: "title", align: "left"},
+                 //{ text:"back", value: "back", align: "left"},
+                 //{ text:"forward", value: "forward", align: "left"},
+                 { text:"", value: "points", align: "center"},
+                 { text:"", value: "description", align: "left"},
+                 { text:"", value: "action", align: "right"}],
+    }},
+    methods: {
+      initialize(data) {
+        //Although we have the data, we rather read from store
+        if (this.getZml.meritLevel.length < 10) {
+           this.aTable = data
+        } else {
+           this.aTable = this.getZml.meritLevel
+        }
+      },
+      clickOnRow(e1,e2) {
+        console.log('clicked on row inside row', e1,e2)
+      },
+      doneEditing(e) {
+        console.log('afterEdit:', e)
+        this.id = 0
+        this.initialize()
+      },
+      retrieveForDelete(i) {
+        this.action = 'Delete'
+        console.log('retrieveForDelete:',i)
+        },
+      retrieveForEdit(i) {
+        this.action = 'Edit'
+        console.log('retrieveForEdit',i)
+        this.id = i.id
+        console.log('CurrentRec was loaded',this.id)
+        },
+      chgSubMenu(i,tag) {
+        if (tag.forward == 0) {
+          //we reach a workable tag
+          infoSnackbar('we reached the end - ask for student, and do assignment here - can enter many students at a time, or import?')
+        }
+        //Get the record, where our id is in back list
+        let id = this.aTable [this.aTable.findIndex(e => e.id == tag.forward)]
+        console.log(id)
+
+      },
+       backClick() {
+         this.treeString = ''
+         this.index = 0
+       },
+       meritDblClick(e,i) {
+        //going forward
+        // When we click on the icon, and not use dblclick, we need to define i.item as i
+        // (Diffenent info is passed down)
+        console.log(e,i)
+        if (!i.item) i.item = i
+
+
+        this.treeString += i.item.title + (i.item.forward == 0 ? '.' : ', ')
+        if (i.item.forward == 0) {
+          infoSnackbar('we reached the end - ask for student, and do assignment here - can enter many students at a time, or import?')
+          return
+        }
+        let id = this.aTable [this.aTable.findIndex(e => e.id == i.item.forward)]
+        if (id == -1) alert('we have a problem with out indexes')
+        this.index = id.back
+       },
+       meritClick(e) {
+        console.log(e)
+       },
+    },
+    mounted() {
+        let sqlStatement = `SELECT * from d_meritlevel`
+        zData.loadSql(this.loading, sqlStatement, this.initialize)
+    },
+    computed: {
+       tableItemFilter() {
+        // console.log('iFilt=', this.index)
+        if (!this.aTable.length) return []
+          return this.aTable.filter(e => {
+                    if (e.back == this.index) { return true } else { return false }
+                 })
+       },
+    },
+  }
+</script>

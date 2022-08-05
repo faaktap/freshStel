@@ -5,11 +5,9 @@
    <strong>Subject selection for Grade 9's for next year is either open yet, or closed already</strong>
  </v-col>
  <v-col v-else cols="12" col-md="6" >
-   <!--v-btn @click="xxxx" class="test"> test </v-btn-->
   <v-card color="white" elevation="6" class="mx-6 pa-4" ref="includeInEmail">
    <v-form v-if="mySchema &&  Object.keys(mySchema).length > 1"
             ref="form">
-
     <v-form-base
         autocomplete="off"
         id="myform"
@@ -74,12 +72,13 @@
              <h2>BELANGRIKE INLIGTING EN INSTRUKSIES</h2>
               <ol>
                <li>	‘n Leerder MOET een vak per groep kies.</li>
-               <li>	IGO, IT en KUNS vereis ‘n aanlegtoets.</li>
+               <li>	IGO, FWET en KUNS vereis ‘n toelatingstoets.</li>
                <li>	Leerders wat Fisiese Wetenskap kies, MOET ook Wiskunde kies.</li>
                <li>	Daar is beperkte spasie in die RTT en VERBRUIKERSTUDIE klasse.</li>
                <li>	Jy kan nie dieselfde vak twee keer kies nie.</li>
-               <li>	Leerders wat ‘n 8ste vak kies, MOET ‘n gemiddeld van 80% in daardie vak in die finale gr.9 eksamen behaal.
+               <li>	Leerders wat ‘n 8ste vak kies, MOET ‘n gemiddeld van 70% in daardie vak en ‘n gemiddeld van 70% in alle vakke in die finale gr.9 eksamen behaal.'.
                     <br>*Jy moet skriftelik aansoek doen om 'n agste vak te neem.</li>
+               <li> Leerders kry slegs een geleentheid om hul vakkeuses te maak. Sodra hul dit indien word die stelsel vir daardie leerder gesluit.</li>
               </ol>
                 </v-card>
             </v-col><v-col cols="12" md="6" class="mt-2">
@@ -87,12 +86,13 @@
               <h2>IMPORTANT INFORMATION AND INSTRUCTIONS</h2>
               <ul>
                <li>	A learner MUST choose one subject per group.</li>
-               <li>	EGD, IT and ART requires an aptitude test.</li>
+               <li>	EGD, PHYS SCI and ART requires an admission test.</li>
                <li>	Learners who choose Physical Science MUST also choose Mathematics.</li>
                <li>	Limited space available in CAT and CONSUMER STUDIES classes.</li>
-               <li>	You can not choose the same subject twice.</li>
-               <li>	Learners choosing an 8th subject MUST attain an average of 80% in that subject in the final gr.9 examination.
+               <li>	You cannot choose the same subject twice.</li>
+               <li>	Learners choosing an 8th subject MUST obtain an average of 70% in that subject and an average of 70% for all subjects in the final gr9 examination.
                  <br>*You must apply in writing to take an eighth subject.</li>
+               <li> Learners get one chance to choose subjects, after saving the system will be locked for them.</li>
               </ul>
                 </v-card>
             </v-col>
@@ -125,7 +125,7 @@ import { util } from '@/api/util.js'
 const langrelaas = "              <h2>IMPORTANT INFORMATION AND INSTRUCTIONS</h2>"
               +"<ul>"
                +"<li>	A learner MUST choose one subject per group.</li>"
-               +"<li>	EGD, IT and ART requires an aptitude test.</li>"
+               +"<li>	EGD and ART requires an aptitude test.</li>"
                +"<li>	Learners who choose Physical Science MUST also choose Mathematics.</li>"
                +"<li>	Limited space available in CAT and CONSUMER STUDIES classes.</li>"
                +"<li>	You can not choose the same subject twice.</li>"
@@ -199,6 +199,7 @@ export default {
               , col: { cols: 12, md: 6 }
               , class:'title pa-2 rounded col-md-6'
               , tooltip: "Admission number / Toelatingsnommer"
+              , hint: "If you enter the school number, it make it easier for us"
               },
            email: { type: 'email'
               , label: 'Parent/Guardian Email'
@@ -209,27 +210,27 @@ export default {
               , class:'xtitle pa-2 rounded col-md-6'
               , ripple:{ center:true, class: 'item blue--text' }
               , tooltip: "Please enter a parent or guardian email address."
-              , hint:'email'
+              , hint:'email of parent/guardian'
               },
            surname: { type: 'text'
-              , label: 'Surname / Van *'
+              , label: `Learner's Surname /Leerder se van *`
               , prependInnerIcon:"mdi-account-question"
               , solo:true
               , rules: [ required('Please enter student surname') ]
               , col: { cols: 12, md: 6 }
               , class:'title pa-2 rounded col-md-6'
-              , tooltip: "Surname / Van"
-              , hint: 'lname'
+              , tooltip: "Learner Surname /Leerder se van"
+              , hint: 'Please enter the surname of the learner'
               },
            name: { type: 'text'
-              , label: 'Name / Naam *'
+              , label: `Learner's name / Leerder se naam *`
               , prependInnerIcon:"mdi-account-question-outline"
               , solo:true
               , rules: [ required('Please enter student name') ]
               , col: { cols : 12, md: 6 }
               , class:'title pa-2 rounded col-md-6'
-              , tooltip: 'Name / Naam'
-              , hint: 'fname'
+              , tooltip: 'Name of Learner / Leerder se naam'
+              , hint: 'Please enter the name of the learner'
               },
            grade: { type:"select"
               , label: "Grade / Graad *"
@@ -239,6 +240,7 @@ export default {
               , rules: [ required('Please enter student\'s current grade.') ]
               , col: { cols: 12 }
               , tooltip:"Grade / Graad"
+              , hint: 'Current grade of the learner'
               },
         }
        },
@@ -326,7 +328,6 @@ export default {
                          ,'Consumer Studies / Verbruikerstudies'
                          ,'Visual Arts / Visuele Kuns'
                          ,'Tourism / Toerisme'
-                         ,'IT'
                          ,'Music / Musiek'
                          ,'Geography / Geografie'
                          ]
@@ -469,7 +470,7 @@ export default {
       },
       reset () {
         this.$refs.form.reset()
-        window.scrollTo(0,0);
+        window.scrollTo(0,0)
       },
       saveFile() {
        const data = JSON.stringify(this.mySchema)

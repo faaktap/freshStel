@@ -42,6 +42,7 @@ const state = Vue.observable({
            locale: 'af',
            calendar:[],
            popi:[],
+           meritLevel:[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
            persMenemonic:[],   //SELECT user_name, userid FROM `dkhs_learner` WHERE user_type = 'teacher'
            atester: false,
           }

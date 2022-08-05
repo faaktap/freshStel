@@ -331,7 +331,8 @@ const routes = [
   {
     path: '/wifi/:studentid?',    name: 'wifi',
     component: () => import(/* webpackChunkName: "student" */ '@/components/student/StudentWiFi.vue'),
-    props: true,    params: {studentid: 17033, editmode: false},
+    props: true,
+    params: {studentid: 17033, editmode: false},
     meta: {layout: la[3], authentication: "student" }
   },
   {
@@ -342,10 +343,30 @@ const routes = [
     meta: {layout: la[3], authentication: "admin" }
   },
   {
-    component: () => import(/* webpackChunkName: "student" */ '@/components/MeritMenu.vue'),
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritMenu.vue'),
     path: '/merit',
     name: 'MeritMenu',
     meta: {layout: la[3], authentication: "student" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/components/student/StudentClass.vue'),
+    path: '/class',
+    name: 'ClassList',
+    params: {title:"studentClassList",gc:{ g: "G12", c: "E1" }},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritTable.vue'),
+    path: '/meritview',
+    name: 'MeritTable',
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritForm.vue'),
+    path: '/meritedit/:id',
+    name: 'MeritForm',
+    props:true,
+    meta: {layout: la[3], authentication: "teacher" }
   },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')

@@ -106,6 +106,7 @@ export default {
     },
     methods:{
       classListLoad() {
+        console.log('retrieving all')
          g10.getAllQuiz('all',this.loadData)
       },
       loadData(response) {
@@ -113,7 +114,8 @@ export default {
           alert('No Data Yet!')
           return
         }
-        this.classListHeader = "Student List for Grade 10's in 2022"
+        console.log(response)
+        this.classListHeader = "Student List for Grade 10's in 2023"
         this.studentList.length = 0
         this.studentList = JSON.parse( response )
       },

@@ -25,5 +25,5 @@ function doneFetch (response) {
 */
 function errorFetch (response) {
     console.log('error:', response)
-    errorSnackbar('We had an error saving your data!' + response)
+    errorSnackbar('We had an error retrieving your data!' + response)
 }

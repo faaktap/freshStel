@@ -38,7 +38,9 @@ export function doStuff(tr,task) {
 		case "/eksamendruk":
         case "/emailssent/6582":
         case "/newsletters/d":
-        case "/merit":        
+        case "/merit":
+        case "/meritview":
+        case "/meritedit":
             return zmlReRoute(tr, task)
 
         default:

@@ -4,6 +4,7 @@ import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import { ls } from "@/api/localStorage.js"
 import { zLoadCal } from "@/api/loadCalendar.js"
+import { crudTask } from '../components/crud/crudTask';
 
 function l(...args) {
     Vue.prototype.$cs.l(...args)
@@ -48,9 +49,13 @@ export const zData = {
                         }
         fetch(zmlConfig.emailPath, apiConfig);
     },
-    initialData:  (whatever) => {
+    wernerTest() {},
+    initialData:  (whatever, afterwardsFunction) => {
         if (whatever !== undefined)
             l(whatever)
+        if (afterwardsFunction !== undefined) {
+           crudTask.wernerTest = afterwardsFunction
+        }
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
             const ts = {}
@@ -94,6 +99,14 @@ function finishedLoadingBasic (response) {
       getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;
       getters.getState({ object: "gZml" }).login.gclass = response.student[0].gclass;
     }
+    if (response.meritlevel.length != 0) {
+        ls.save('zmlMeritLevel', response.meritlevel)
+        getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;
+    } else {
+        l('finishedLoadingBasic:d_MeritLevel is empty!')
+    }
+    if (crudTask.wernerTest !== undefined) crudTask.wernerTest()
+
 }
 
 

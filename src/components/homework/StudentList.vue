@@ -1,31 +1,31 @@
 <template>
-  <v-container v-if="tHeader.length && tList.length">
-   <v-row >
-    <v-col cols="12" v-if="tHeading">
+ <v-container v-if="tHeader.length && tList.length">
+  <v-row >
+   <v-col cols="12" v-if="tHeading">
      <h1 class="text-center grey--text"> {{ tHeading }} </h1>
-    </v-col>
-    <v-col cols="12">
-     <v-card xcolor="deep-purple">
-      <v-container fluid>
-       <v-layout color="gray--text text--lighten-5">
-        <v-flex>
-         <v-text-field
+   </v-col>
+   <v-col cols="12">
+    <v-card xcolor="deep-purple">
+     <v-container fluid>
+      <v-layout color="gray--text text--lighten-5">
+       <v-flex>
+        <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
           label="Search"
           single-line
           hide-details
-         />
-        </v-flex>
-       </v-layout>
-       <v-row dense>
-        <v-col cols="12">
-         <v-card color="blue lighten-5" class="ma-1">
-           <div>
-             <v-card class="text-center ma-2 pa-2" color="primary gray--text text--lighten-3">
-               SL {{ bHeading }}
-             </v-card>
-              <v-data-table
+        />
+       </v-flex>
+      </v-layout>
+      <v-row dense>
+       <v-col cols="12">
+        <v-card color="blue lighten-5" class="ma-1">
+         <div>
+           <v-card class="text-center ma-2 pa-2" color="primary gray--text text--lighten-3">
+             SL {{ bHeading }}
+           </v-card>
+           <v-data-table
                  v-if="tList && tHeader.length > 0"
                  :headers="tHeader"
                  :items="tList"
@@ -34,21 +34,21 @@
                  color="purple lighten-3"
                  @click:row="clickOnTableRow"
                  class="elevation-1"
-              >
-                <template v-slot:top>
-                  <v-toolbar flat>
-                    <v-toolbar-title>ClassList Table</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
-                 </template>
-              </v-data-table>
-            </div>
-          </v-card>
-         </v-col>
-        </v-row>
-      </v-container>
-     </v-card>
-    </v-col>
+           >
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-toolbar-title>ClassList Table</v-toolbar-title>
+                <v-spacer></v-spacer>
+              </v-toolbar>
+            </template>
+           </v-data-table>
+          </div>
+        </v-card>
+       </v-col>
+      </v-row>
+     </v-container>
+    </v-card>
+   </v-col>
   </v-row>
 
 <v-dialog v-model="showEdit" :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto">
@@ -125,15 +125,11 @@ export default {
       },
     },
     mounted: function() {
+      console.log('mounted', this.$options.name, this.tList.length, this.tList)
+      if (this.tList.length == 1) {
+        //load some new stuff
+      }
     },
-    // watch: {
-    //     tList: {
-    //         deep:true,
-    //         handler() {
-    //            this.buildHeaders()
-    //         }
-    //     }
-    // }
 }
 </script>
 

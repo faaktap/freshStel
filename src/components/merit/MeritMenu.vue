@@ -1,25 +1,19 @@
 <template>
 <v-container fluid>
   <v-form-base
-        autocomplete="off"
-        id="myform"
-        :model="myModel"
-        :col=12
-        @click="clickOnRow"
-         @blur="clickOnRow">
-          <template #slot-bottom-myform>
-          <v-col cols="12">
-          <v-card class="slot">
-            <v-card-actions>
-            <v-btn color="success" class="mr-4"
-            @click="clickOnRow">
-            Save
-          </v-btn>
-          <v-spacer />
-          </v-card-actions>
-        </v-card>
-       </v-col>
-      </template>
+    autocomplete="off"
+    id="myform"
+    :model="myModel"
+    :col=12
+    @click="clickOnRow"
+    @blur="clickOnRow"
+    >
+    <template #slot-bottom-myform>
+      <v-col cols="12"> <v-card class="slot"> <v-card-actions>
+        <v-btn color="success" class="mr-4" @click="clickOnRow"> Save </v-btn>
+        <v-spacer />
+      </v-card-actions></v-card></v-col>
+    </template>
   </v-form-base>
   <base-title-expand color="purple" heading="Merit Select System 1"><p>
     One way of displaying the merit system, it's a bit tricky to go back only one. So the back button start over.
