@@ -17,41 +17,42 @@
           temporary
         >
         <v-dialog v-model="drawer">
-        <v-card class="ma-2 pa-2">
-        <v-btn-toggle dense v-model="toggleDisplay">
-        <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced">
-           Class/Grade Lists
-        </base-tool-button>
-        <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
-         Your Own Lists
-        </base-tool-button>
-        <base-tool-button class="mr-2" icon="mdi-school">
-        Grade 10 Subject Selections
-        </base-tool-button>
-
-      </v-btn-toggle>
-
-        </v-card>
+         <v-card class="ma-2 pa-2">
+          <v-btn-toggle dense v-model="toggleDisplay">
+           <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced">
+            Class/Grade Lists
+           </base-tool-button>
+           <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
+            Your Own Lists
+           </base-tool-button>
+           <base-tool-button class="mr-2" icon="mdi-school">
+            Grade 10 Subject Selections
+           </base-tool-button>
+          </v-btn-toggle>
+         </v-card>
         </v-dialog>
+
         </v-navigation-drawer>
-    <v-spacer></v-spacer>
-    <v-btn-toggle dense v-model="toggleDisplay">
-        <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced">
-           Class/Grade Lists
-        </base-tool-button>
-        <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
-         Your Own Lists
-        </base-tool-button>
-        <base-tool-button class="mr-2" icon="mdi-school">
+
+     <v-spacer></v-spacer>
+
+     <v-btn-toggle dense v-model="toggleDisplay">
+      <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced">
+        Class/Grade Lists
+      </base-tool-button>
+      <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
+        Your Own Lists
+      </base-tool-button>
+      <base-tool-button class="mr-2" icon="mdi-school">
         Grade 10 Subject Selections
-        </base-tool-button>
-        <base-tool-button class="mr-2" icon="mdi-brain">
+      </base-tool-button>
+      <base-tool-button class="mr-2" icon="mdi-brain">
         Werner Test
-        </base-tool-button>
+      </base-tool-button>
+     </v-btn-toggle>
 
-      </v-btn-toggle>
+    </v-toolbar>
 
-         </v-toolbar>
 
 
 <v-container v-if="toggleDisplay == 0" fluid>
@@ -59,6 +60,7 @@
     <v-toolbar-title> General Class Lists  </v-toolbar-title>
     <v-spacer />
   </v-toolbar>
+
    <v-row>
    <v-col cols="12">
      <student-class title="" />
@@ -80,13 +82,13 @@
 
 
  <v-container v-if="toggleDisplay == 2" fluid>
-<base-title-expand color="white" heading="Grade 10 Subject Selection - 2023" >
+<!-- <base-title-expand color="white" heading="Grade 10 Subject Selection - 2023" > -->
  <v-row>
   <v-col cols="12">
      <grade-10-list title="Grade 10 Subject selection for 2023" />
   </v-col>
  </v-row>
-</base-title-expand>
+<!-- </base-title-expand> -->
  </v-container>
 
 
@@ -140,7 +142,7 @@ export default {
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         drawer:false,
-        gradeClass:{},
+        //gradeClass:{},
         classList:[],
         classObj:{},
         showListUpdate:false,

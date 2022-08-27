@@ -13,14 +13,14 @@ or
        color="purple" />
 -->
 <template>
- <v-expansion-panels rounded class="pa-0 mb-2"  v-model="panel">
+ <v-expansion-panels rounded class="pa-0 mx-0 mb-2"  v-model="panel">
    <v-expansion-panel>
     <v-expansion-panel-header  :color="color">
         <slot name="header">
          <h1 :class="`${headingSize} text-center`">{{ heading }}</h1>
          </slot>
      </v-expansion-panel-header>
-     <v-expansion-panel-content class="ma-4">
+     <v-expansion-panel-content class="ma-0 pa-0">
          <slot>
          <p class="heading-4">{{ heading}} </p>
          <div v-html="explanation">
@@ -39,7 +39,7 @@ export default {
           ,explanation: {default:"Some explanation with <b>html</b> and maybe later pictures" }
           ,color: {default:"white"}
           ,openOrClose: {default:""}
-          ,headsize: {default:1}
+          ,headsize: {default:2}
     },
     data () {
       return {

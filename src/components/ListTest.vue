@@ -1,8 +1,7 @@
 <template>
- <!-- <v-row>
-  <v-col cols="12" lg="6"> -->
+ <v-container fluid>
    <transition name="fade" mode="out-in" duration="1500">
-   <v-card class="ma-2">
+   <v-card class="ma-0">
     <v-list subheader class="transition-fast-in-fast-out v-card--reveal ">
       <v-subheader :class="cardColor(functiongroup)">  Access: {{ functiongroup }}
         <v-spacer />
@@ -28,8 +27,7 @@
 
    </v-card>
    </transition>
-   <!-- </v-col>
-  </v-row> -->
+  </v-container>
 </template>
 
 <script>

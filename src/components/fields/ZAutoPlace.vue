@@ -56,7 +56,7 @@ export default {
         console.log('updateValue-array object...', this.placeTable[index])
         console.log('emitting...', this.placeTable[index].concatsearch)
         this.$emit('input', this.placeTable[index].concatsearch)
-        this.$emit('try', this.placeTable[index].concatsearch)
+        // this.$emit('try', this.placeTable[index].concatsearch)
         return
       }
     },

@@ -40,7 +40,7 @@ export const zData = {
         if (!email.email_replyto) email.email_replyto = ''
         if (!email.test) email.test = "no"
         if (!email.email_from) email.email_from = "admin@kuiliesonline.co.za"
-        if (!email.trusted_user) email.trusted_user = "info@kuiliesonlin.co.za"
+        if (!email.trusted_user) email.trusted_user = "info@kuiliesonline.co.za"
         let apiConfig = { method: 'POST'
                         , headers: { 'Accept': 'application/json'
                                    , api: zmlConfig.apiDKHS
@@ -78,6 +78,7 @@ export const zData = {
     randomChuckNorris: async () => {
         let response = await fetch('https://api.chucknorris.io/jokes/random')
         let data = await response.json()
+        console.log('chuck data', data.value)
         return data
     }
 
@@ -99,13 +100,14 @@ function finishedLoadingBasic (response) {
       getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;
       getters.getState({ object: "gZml" }).login.gclass = response.student[0].gclass;
     }
-    if (response.meritlevel.length != 0) {
+    if (response.meritlevel.length > 5) {
         ls.save('zmlMeritLevel', response.meritlevel)
-        getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;
+        getters.getState({ object: "dgZml" }).meritLevel = response.meritlevel;
     } else {
         l('finishedLoadingBasic:d_MeritLevel is empty!')
     }
     if (crudTask.wernerTest !== undefined) crudTask.wernerTest()
+    console.log('....................DONE LOADING BACKGROUND DATA')
 
 }
 

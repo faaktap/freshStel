@@ -16,8 +16,8 @@
                          @userid="currentRecord.userid = $event"/>
      <v-text-field v-model="currentRecord.title" label="title" filled class="ma-2"/>
      <v-text-field v-if="currentRecord.forward == 0"
-                   v-model="currentRecord.points"
-                   label="points allocated"
+                   v-model="currentRecord.meritid"
+                   label="meritid"
                    filled class="ma-2" />
      <v-textarea v-model="currentRecord.description" label="description" filled class="ma-2"/>
     </v-layout>

@@ -14,29 +14,11 @@ import helpers from './helpers'
 export default {
   mixins: [helpers],
   props: {
-    jsonData: {
-      type: Array,
-      required: true
-    },
-    csvTitle: {
-      type: [String, Number],
-      default: 'csv',
-      required: false
-    },
-    showLabels: {
-      type: Boolean,
-      default: true,
-      required: false
-    },
-    labels: {
-      type: Object,
-      required: false
-    },
-    separator: {
-      type: String,
-      default: ';',
-      required: false
-    }
+    jsonData: {      type: Array, required: true    },
+    csvTitle: {      type: [String, Number], default: 'csv', required: false    },
+    showLabels: {    type: Boolean, default: true, required: false    },
+    labels: {        type: Object, required: false    },
+    separator: {     type: String, default: ';', required: false    }
   },
   data: () => ({
     csvLabels: null,

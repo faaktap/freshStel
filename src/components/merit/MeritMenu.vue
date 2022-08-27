@@ -144,7 +144,7 @@ import VFormBase from "@/components/vfbase/VFormBase"
         },
     }},
     mounted() {
-        let sqlStatement = `SELECT * from d_meritlevel`
+        let sqlStatement = `SELECT * from dkhs_meritlevel`
         zData.loadSql(this.loading, sqlStatement, this.initialize)
     },
     computed: {

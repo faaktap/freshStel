@@ -15,7 +15,7 @@ correspond to a staff number)
 
 
  <!-- -------------------------S E A R C H , S W I T C H & D I S P L A Y-------------- -->
-   <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
+   <v-card cols="12" class="col wrap text-center d-flex justify-space-between ma-0 mb-2">
      <!--- SEARCH -->
     <base-search @clear="search=''" v-model="search" />
     <!--- DISPLAY -->
@@ -53,7 +53,7 @@ correspond to a staff number)
 
 
 <!-- -------------------------S H O W AS C A R D  ------------------ -->
- <v-container>
+ <v-container fluid>
     <v-row v-show="showAs == 'card'" class="text-center">
         <v-card cols="12" md="6"
           class="row wrap text-center d-flex justify-space-around ma-1"
@@ -63,7 +63,7 @@ correspond to a staff number)
         >
 
         <v-hover v-slot:default="{ hover }">
-          <v-card class="pa-2 ma-1"
+          <v-card class="pa-1 ma-0"
                   outlined tile
                   :elevation="hover ? 12 : 2"
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"

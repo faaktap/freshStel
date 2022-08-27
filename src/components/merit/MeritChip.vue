@@ -6,7 +6,7 @@
             :key="tag.id"
             @click="chgSubMenu(0,tag)"
             outlined
-            title="tag.info"
+            :title="tag.info"
     >
      <template v-if="tag.title"> {{ tag.title }} </template>
     </v-chip>
@@ -17,7 +17,7 @@
             :key="tag.id"
             @click="chgSubMenu(1,tag)"
             outlined
-            title="tag.info"
+            :title="tag.info"
     >
      <template v-if="tag.title"> {{ tag.title }} </template>
     </v-chip>
@@ -28,7 +28,7 @@
             :key="tag.id"
             @click="chgSubMenu(2,tag)"
             outlined
-            title="tag.info"
+            :title="tag.points"
 
     >
      <template v-if="tag.title"> {{ tag.title }} </template>
@@ -40,7 +40,7 @@
             :key="tag.id"
             @click="chgSubMenu(3,tag)"
             outlined
-            title="tag.info"
+            :title="tag.points"
     >
      <template v-if="tag.title"> {{ tag.title }} </template>
     </v-chip>
@@ -76,7 +76,7 @@ import { infoSnackbar } from "@/api/GlobalActions"
                  { text:"action", value: "action", align: "left"}],
     }},
     mounted() {
-        let sqlStatement = `SELECT * from d_meritlevel`
+        let sqlStatement = `SELECT * from dkhs_meritlevel`
         zData.loadSql(this.loading, sqlStatement, this.initialize)
     },
     computed: {

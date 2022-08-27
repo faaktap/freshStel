@@ -13,11 +13,21 @@
      <hr>
      <div class="heading text-center">{{ classListHeader }}</div>
     </v-card-title>
+
+     <v-card-actions>
+       <v-btn v-if="studentList.length"
+           @click="showListPrint=true"
+           class="ma-2 pa-2"
+           title="Click to build an export list.">
+           export
+       </v-btn>
+     </v-card-actions>
+
     <v-card-text>
       <v-row>
-          <v-col cols="12">
+          <!-- <v-col cols="12">
               <v-text-field outlined filled v-model="studentListSearch" label="Search by Surname" />
-          </v-col>
+          </v-col> -->
         <v-col cols="6" md="4" lg="3"
                v-for="(s,index) in studentListFilter"
               :key="s.schoolno">
@@ -33,14 +43,6 @@
         </v-col>
       </v-row>
      </v-card-text>
-     <v-card-actions>
-       <v-btn v-if="studentList.length"
-           @click="showListPrint=true"
-           small
-           title="Click to build an export list.">
-           export
-       </v-btn>
-     </v-card-actions>
     </v-card>
    </v-col>
   </v-row>
@@ -114,10 +116,11 @@ export default {
           alert('No Data Yet!')
           return
         }
-        console.log(response)
         this.classListHeader = "Student List for Grade 10's in 2023"
         this.studentList.length = 0
         this.studentList = JSON.parse( response )
+        // Add a backtick before grade for export excel
+        this.studentList.forEach(e => e.grade = '`'+e.grade)
       },
       loadError(error) {
         alert('S.C.A.' + error)

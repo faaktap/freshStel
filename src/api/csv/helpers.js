@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 module.exports = {
-    
+
   methods: {
     $_createCsvLabelsConf (arr) {
       let conf = {}
@@ -35,7 +35,7 @@ module.exports = {
     $_createCsvContent (arr, labels, separator) {
       let row = ''
       let c = ''
-      let type = ''
+      // let type = ''
 
       try {
         // eslint-disable-next-line
@@ -43,12 +43,14 @@ module.exports = {
           row = ''
           // eslint-disable-next-line
           Object.keys(labels).map(function (k, s) {
-            type = typeof m[k]
-            if (type === 'number' || type === 'float') {
-              row += m[k] + separator
-            } else {
-              row += '"' + m[k] + '"' + separator
-            }
+            // werner Aug 2022 - Elna 9E2 becomes 9000000 on export
+            // type = typeof m[k]
+            // console.log(m[k], parseFloat(m[k]), isNaN(m[k]), Number(m[k]), m[k].match(/[0-9]E/g))
+            // if (Number(m[k]) && m[k].match(/[0-9]E/g) != null){
+            //    row += `"'${m[k]}" ${separator}`
+            //  } else {
+               row += `"${m[k]}"${separator}`
+            //  }
           })
 
           row = row.slice(0, -1)

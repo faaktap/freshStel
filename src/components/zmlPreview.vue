@@ -40,7 +40,6 @@
 <!-------------------------------------VIDEO-PLAYABLE------------->
   <v-card-text class="text-center ma-0 pa-0">
   <template v-if="['video-playable'].includes(typeExtName)">
-  <small class="text-caption">1</small>
     <video controls
            height="80%" width="70%"
            class="text-center"
@@ -53,6 +52,7 @@
       >
       Sorry, your browser doesn't support embedded videos.
     </video>
+    <small class="text-caption">1</small>
   </template>
 
 
@@ -69,11 +69,11 @@
 
     >
     </audio>
+    <small class="text-caption">2</small>
   </template>
 
 <!-------------------------------------PICTURE or IMAGE------------->
   <template v-else-if="['picture','image'].includes(typeExtName)">
-  <small class="text-caption">3</small>
     <v-img ref="picture"
           :height="imageHeight"
           :src="httpsrc"
@@ -83,23 +83,24 @@
            @load="load"
 
     />
+    <small class="text-caption">3</small>
   </template>
 
 <!-------------------------------------GENERAL IFRAME for OTHERS------------->
   <template v-else-if="['movie','picture','audio','video','markup','text','html'].includes(typeExtName)">
-  <small class="text-caption">4</small>
       <iframe class="ma-0 pa-0" id="iframe" width="900" height="480" :title="title"
               ref="iframe"
               @loaded="loaded"
               @onload="onload"
               @load="load"
               :src="httpsrc" />
+      <small class="text-caption">4</small>              
   </template>
-
+  
 
 <!-------------------------------------GOOGLE READER------------->
   <template v-else-if="['document', 'doc','ebook','pdf'].includes(typeExtName)">
-    <small class="ma-0 pa-0 text-caption"><br>5</small>
+    <!--small class="ma-0 pa-0 text-caption"><br>5</small-->
       <iframe class="ma-0 pa-0" id="iframe" :width="screenwidth" :height="screenheight" :title="title"
             ref="google"
               @loaded="loaded"
@@ -107,7 +108,7 @@
               @load="load"
             :src="httpSrcGoogleEmbed">
       </iframe>
-      {{ httpSrcGoogleEmbed }}
+      <small>{{ httpSrcGoogleEmbed }}.(5)</small>
   </template>
 
 <!-------------------------------------TRY GOOGLE READER------------->

@@ -51,25 +51,28 @@ export const crudTask = {
                ,id : record.id
                ,back : record.back
                ,forward : record.forward
-               ,points : record.points
+               ,meritid : record.meritid
                ,userid : record.userid
                }
      ts.data.bind = {
           id: record.id
          ,title: record.title ? record.title.trim() : null
          ,description: record.description ? record.description.trim() : null
-         ,points: record.points
+         ,meritid: record.meritid
          ,userid: record.userid
          }
-     ts.sql = `update d_meritlevel set title = :title, description = :description, points = :points \
-                                     , userid = :userid where id = :id`
+     ts.sql = `update dkhs_meritlevel\
+                  set title = :title\
+                    , description = :description
+                    , meritid = :meritid\
+                    , userid = :userid where id = :id`
      console.log(ts)
      ts.api = zmlConfig.apiPath
      zmlFetch(ts, pcallback, errorFetch)
      // Update store data
      let gzp = getters.getState({ object: "gZml" })
      let idx = gzp.meritLevel.findIndex(e => e.id == record.id)
-     gzp.meritLevel[idx].points = record.points
+     gzp.meritLevel[idx].merit = record.meritid
      gzp.meritLevel[idx].title = record.title
      gzp.meritLevel[idx].description = record.description
      gzp.meritLevel[idx].userid = record.userid

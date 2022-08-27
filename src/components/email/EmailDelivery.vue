@@ -7,6 +7,7 @@
     :items-per-page="20"
     class="elevation-2"
     :loading="loading"
+    mobile-breakpoint="0"
     @click:row="clickOnRow">
  </v-data-table>
 
@@ -109,7 +110,7 @@ export default {
           {text: 'status',     value: 'status' },
           {text: 'sentdate',   value: 'sentdate' },
           {text: 'group',      value: 'grpname' },
-          {text: 'email',      value: 'log' },
+          {text: 'email',      value: 'email' },
       ],
       email:null,
       showEmail:false,
@@ -138,7 +139,7 @@ export default {
         attListHref += `</ul>`
         let email =
               { subject  : `${this.emailListRecord.subject}`
-               ,email_to :"faaktap@gmail.com"
+               ,email_to : [this.emailListRecord.email,'wrnrsmit@gmail.com']
                ,htmlmessage : `RESEND: ${this.emailListRecord.emailcontent}
                attachments: ${attListHref}
                `};
@@ -168,7 +169,7 @@ export default {
              this.attList = response
           }
           emailModel.emlModel = {
-              email:this.emailListRecord.log,
+              email:this.emailListRecord.email,
               sentdate:this.emailListRecord.sentdate,
               subject:this.emailListRecord.subject,
               status:this.emailListRecord.status,
@@ -183,7 +184,7 @@ export default {
       },
       executeSql() {
         this.emailList = []
-        let sqlStatement = `SELECT d.subject,e.deliveryid, e.status, e.sentdate,g.grpname, e.log, group_concat(p.html) emailcontent
+        let sqlStatement = `SELECT d.subject,e.deliveryid, e.status, e.sentdate,g.grpname, e.log email, group_concat(p.html) emailcontent
                              FROM m_emailsent e
                              left join m_delivery d on d.deliveryid = e.deliveryid
                              left join m_grouplink l on l.subid = e.subid

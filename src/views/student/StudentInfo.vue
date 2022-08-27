@@ -46,7 +46,7 @@
        <base-title-expand v-if="studentList" heading="Student Subjects">
            <student-subject-list :studentid="studentList.data.studentid" color="white darken-1" />
        </base-title-expand>
-       <base-title-expand v-if="studentList" heading="Student Emails">
+       <base-title-expand v-if="studentList" heading="Student Email Contacts">
           <student-email-list :studentid="studentList.data.studentid" color="white darken-1"/>
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Photos">
@@ -55,6 +55,11 @@
        <base-title-expand v-if="studentList" heading="Student Attendance">
           <student-attendance :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
+       LearnAssis
+       <base-title-expand v-if="studentList" heading="Learn Assist">
+          <student-learn-assist :studentid="studentList.data.studentid"  color="white darken-1" />
+       </base-title-expand>
+
   </v-container>
 
 <!--   another nice card layout we might use...
@@ -105,6 +110,7 @@ import StudentPhotoList from '@/components/student/StudentPhotoList'
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentAttendance from '@/components/student/StudentAttendance'
+import StudentLearnAssist from '@/components/student/StudentLearnAssist'
 
 export default {
 name: "StudentInfo",
@@ -116,6 +122,7 @@ components: {HeroSection
            , StudentEmailList
            , StudentSubjectList
            , StudentAttendance
+           , StudentLearnAssist
            , BaseTitleExpand
            },
 data: () => ({

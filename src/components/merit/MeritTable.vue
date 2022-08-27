@@ -2,7 +2,7 @@
 <v-container fluid>
   <base-title-expand color="purple" heading="Merit Musings">
   <p>
-    Once a merit is selected, we need to define a way taht it can be added.. Easily, Quickly
+    Once a merit is selected, we need to define a way that it can be added.. Easily, Quickly
     If a teacher is adding merits, he would most likely select on emerit and load a lot of students
     for it, so we could allow him to select a file, or paste a lot of schoolnumber in, maybe
     divided by commas.<br>
@@ -70,12 +70,16 @@
         </v-btn-toggle>
       </template>
    </v-data-table>
+
    <v-card color="primary">
     <merit-chip />
    </v-card>
 </v-container>
 </template>
 
+<docs>
+Here is some documentation
+</docs>
 <script>
 import { getters } from "@/api/store"
 import { zData } from "@/api/zGetBackgroundData.js"
@@ -83,11 +87,14 @@ import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import { infoSnackbar } from "@/api/GlobalActions"
 import MeritForm from "@/components/merit/MeritForm"
 import MeritChip from "@/components/merit/MeritChip"
-  export default {
+
+
+export default {
     name: 'MeritTable',
     components:{ BaseTitleExpand, MeritForm, MeritChip },
     data () {
       return {
+        docs:  this.__docs,
         getZml: getters.getState({ object: "gZml" }),
         id:0,
         action:'',
@@ -103,14 +110,6 @@ import MeritChip from "@/components/merit/MeritChip"
                  { text:"", value: "action", align: "right"}],
     }},
     methods: {
-      initialize(data) {
-        //Although we have the data, we rather read from store
-        if (this.getZml.meritLevel.length < 10) {
-           this.aTable = data
-        } else {
-           this.aTable = this.getZml.meritLevel
-        }
-      },
       clickOnRow(e1,e2) {
         console.log('clicked on row inside row', e1,e2)
       },
@@ -142,8 +141,8 @@ import MeritChip from "@/components/merit/MeritChip"
        backClick() {
          this.treeString = ''
          this.index = 0
-       },
-       meritDblClick(e,i) {
+      },
+      meritDblClick(e,i) {
         //going forward
         // When we click on the icon, and not use dblclick, we need to define i.item as i
         // (Diffenent info is passed down)
@@ -159,14 +158,59 @@ import MeritChip from "@/components/merit/MeritChip"
         let id = this.aTable [this.aTable.findIndex(e => e.id == i.item.forward)]
         if (id == -1) alert('we have a problem with out indexes')
         this.index = id.back
-       },
-       meritClick(e) {
+      },
+      meritClick(e) {
         console.log(e)
-       },
+      },
+      initialize(data) {
+        //Although we have the data, we rather read from store
+        console.log('INITIALIZE START')
+        console.timeLog('timer','-1')
+        if (this.getZml.meritLevel.length < 10) {
+           this.aTable = data
+           console.log('still too small',this.getZml.meritLevel)
+        } else {
+           this.aTable = this.getZml.meritLevel
+           console.log('BIG ENOUGH',this.getZml.meritLevel)
+        }
+        // do a test...
+        console.timeLog('timer','0')
+        //[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
+        console.timeLog('timer','1')
+        console.log('after setTimeout in Initsialize')
+
+      },
+      testStuff() {
+        console.log('IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIin teststuff -- filter meritLevel')
+        console.timeLog('timer','2')
+        let bot = this.getZml.meritLevel.filter(e => e.forward == 0)
+        console.log('endpoints = ', bot)
+        console.timeEnd('timer')
+      },
+      callIt(p) {
+        p()
+      }
     },
     mounted() {
-        let sqlStatement = `SELECT * from d_meritlevel`
-        zData.loadSql(this.loading, sqlStatement, this.initialize)
+      console.log('MOUNTED START')
+      console.time('timer')
+
+         if (this.getZml.meritLevel.length < 10) {
+            console.timeLog('we need to load it...')
+            let sqlStatement = `SELECT * from d_meritlevel`
+            zData.loadSql(this.loading, sqlStatement,this.initialize)
+            console.timeLog('timer','mm')
+         } else {
+           console.timeLog('already there....')
+           this.aTable = this.getZml.meritLevel
+         }
+
+
+      let timeout = setTimeout(
+        function() {
+          this.testStuff
+      }, 4000)
+      console.timeLog('aTIMEOIT VALUE', timeout)
     },
     computed: {
        tableItemFilter() {

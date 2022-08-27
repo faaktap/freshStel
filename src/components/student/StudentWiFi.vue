@@ -20,15 +20,17 @@
    <v-card-title class="headline ma-1"> WiFi Login Explanation </v-card-title>
    <v-card-text>
     <ul>
-     <li color="red" >Some users(android) might need to enter username as WCGSCHOOLS/{{ username }}
+     <li color="red" >Some users(android) might need to enter username as <strong>WCGSCHOOLS/{{ username }}</strong>
        <br>BACKSLASH important
      </li>
      <li color="red" >Proxy can be entered as proxy.wcgschools.gov.za (carefull of spelling)
-     <br>Carefull of 10(dot)(space)0 it must be 10dot0 ie: 10.0</li>
+     <br>Carefull of proxy(dot)(space)wcg it must be proxy(dot)wcg ie: proxy.wcg</li>
      <li>If your phone force a certificate, it will not work - it MUST be "don't validate"</li>
+     <li>If you get a message "validation failed" your username or password is wrong</li>
     </ul>
-   <v-img elevation="4"
-          src="/img/wifilogindirections.png"
+   <v-img elevation="6"
+          class="ma-2 pa-2"
+          src="https://kuiliesonline.co.za/virtual-school/img/wifilogindirections.png"
           contain />
    </v-card-text>
  </v-card>
@@ -50,9 +52,10 @@ export default {
       getUsername() {
         if (this.studentid) {
            let sl = { task: 'plainSql'
-                    , sql:`SELECT w.*, s.grade, s.gclass, s.studentid
-                             FROM almalwcglogin w, dkhs_student s
-                            WHERE s.surname = w.surname and w.firstname = s.firstname
+                    , sql:`SELECT w.*, s.grade, s.gclass, s.studentid\
+                             FROM almalwcglogin w, dkhs_student s\
+                            WHERE s.surname = w.surname \
+                              AND SUBSTR(w.firstname,1,LENGTH(s.firstname)) = s.firstname\
                               AND s.studentid  = ${this.studentid}`
 
            }

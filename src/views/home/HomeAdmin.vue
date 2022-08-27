@@ -12,7 +12,10 @@
          absolute top right
          color="blue-grey"
          class="ma-2 white--text"
-         title="Click here to refresh"  @click="loadFunctions"> Refresh </v-btn>
+         title="Click here to refresh"
+         @click="loadFunctions">
+          Refresh
+         </v-btn>
        </div>
       </div>
     </v-toolbar-title>
@@ -21,14 +24,13 @@
 <v-row>
  <v-col cols="12">
      <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students">
-     <v-row><v-col cols="12" md="6" >
+     <v-container fluid>
            <list-test functiongroup="admin" />
-           </v-col><v-col cols="12" md="6">
+           <!-- </v-col><v-col cols="12" md="6"> -->
            <list-test functiongroup="teacher" />
-           </v-col><v-col cols="12" md="6">
+           <!-- </v-col><v-col cols="12" md="6"> -->
            <list-test functiongroup="student" />
-           </v-col>
-     </v-row>
+     </v-container>
      </base-title-expand>
 
      <base-title-expand heading="Calendar (Click here to view your day!) ">
@@ -55,8 +57,8 @@
 
 </v-col>
 |</v-row>
-
   <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+    {{ joke || 'no joke'}}
      <v-expansion-panels>
         <v-expansion-panel>
           <v-expansion-panel-header>
@@ -73,7 +75,6 @@
             <v-btn to="/loadhomework"> loadhomework </v-btn>
             <v-btn to="/checklog"> checklog </v-btn>
             <v-btn @click="dateTest"> dateTest </v-btn>
-            <!--{{ joke }}            -->
             <v-window>
             xs={{$vuetify.breakpoint.xs}} <br>
             sm={{$vuetify.breakpoint.sm}}<br>
@@ -81,9 +82,51 @@
             lg={{$vuetify.breakpoint.lg}}<br>
             xl={{$vuetify.breakpoint.xl}}<br>
             </v-window>
-             <email-list />
+             emailist:<email-list />
             </v-layout>
             <list-test functiongroup="all" />
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+              global tables
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-layout class="ma-1" col wrap justify-space-between>
+              <v-tabs
+                v-model="vtabs"
+                slider-color="yellow"
+               >
+               <v-tab key="1"> grades </v-tab>
+               <v-tab key="2"> subject </v-tab>
+               <v-tab key="3"> folders </v-tab>
+               <v-tab key="4"> funcs </v-tab>
+               <v-tab key="5"> popi </v-tab>
+               <v-tab key="6"> merits </v-tab>
+               <v-tab key="7"> pers </v-tab>
+               <v-tab-item key="1">
+               <zml-data-table v-if="getZml.grades" :dataList="getZml.grades" userHeader="grades"/>
+               </v-tab-item>
+               <v-tab-item key="2">
+               <zml-data-table v-if="getZml.subjects" :dataList="getZml.subjects" userHeader="subjects"/>
+               </v-tab-item>
+               <v-tab-item  key="3">
+               <zml-data-table v-if="getZml.folders" :dataList="getZml.folders" userHeader="folders"/>
+               </v-tab-item>
+               <v-tab-item  key="4">
+               <zml-data-table v-if="getZml.functions" :dataList="getZml.functions" userHeader="functions"/>
+               </v-tab-item>
+               <v-tab-item  key="5">
+               <zml-data-table v-if="getZml.popi" :dataList="getZml.popi" userHeader="popi"/>
+               </v-tab-item>
+               <v-tab-item  key="6">
+               <zml-data-table v-if="getZml.meritLevel" :dataList="getZml.meritLevel" userHeader="meritLevel"/>
+               </v-tab-item>
+               <v-tab-item  key="7">
+               <zml-data-table v-if="getZml.persMenemonic" :dataList="getZml.persMenemonic" userHeader="persMenemonic" />
+               </v-tab-item>
+              </v-tabs>
+            </v-layout>
           </v-expansion-panel-content>
         </v-expansion-panel>
      </v-expansion-panels>
@@ -95,13 +138,13 @@
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
 import { zmlFetch, zFetch } from '@/api/zmlFetch.js'
-import { zData } from '@/api/zGetBackgroundData.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 import EmailList from '@/components/email/EmailList.vue';
 import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
-
+import zmlDataTable from '@/components/zmlDataTable.vue'
+import { zData } from '@/api/zGetBackgroundData.js';
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 
@@ -111,7 +154,7 @@ import { zDate } from '@/api/zDate.js';
 
 export default {
     name:"AdminHome",
-    components:{EmailList, Calendar,PersonelMenemonic, ListTest,BaseTitleExpand},
+    components:{EmailList, Calendar,PersonelMenemonic, ListTest,BaseTitleExpand, zmlDataTable},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         wieOmTeWys:'Teacher',
@@ -120,7 +163,8 @@ export default {
         today: new Date(),
         tomorrow: new Date(),
         schoolday: null,
-        joke:''
+        joke:'no joke',
+        vtabs: '1'
     }),
     computed:{
     },
@@ -219,8 +263,7 @@ export default {
         },
         async CallAsyncFunction() {
           if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
-
-           const joke = await zData.randomChuckNorris();
+           let joke = await zData.randomChuckNorris();
            this.joke = joke.value
            if  (this.joke && ( this.joke.indexOf('sex')
                             || this.joke.indexOf('prince albert')
@@ -231,13 +274,14 @@ export default {
                             || this.joke.indexOf('pregna')
                             || this.joke.indexOf('bondag')
                             || this.joke.indexOf('gay'))) {
-               this.joke = await zData.randomChuckNorris().value;
+               joke = await zData.randomChuckNorris();
+               this.joke = joke.value
            }
           }
         },
     },
     mounted() {
-        //this.$cs.l('MOUNT ADMINHME ITEMS=',this.today,this.tomorrow)
+        this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
         this.CallAsyncFunction()
 
     }

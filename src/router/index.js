@@ -8,6 +8,7 @@ import EmptyRouterView from '@/components/EmptyRouterView'
 import login from '@/components/Login'
 
 import { getters } from "@/api/store";
+import { zmlLog } from '@/api/zmlLog.js';
 
 Vue.use(VueRouter)
 
@@ -259,10 +260,11 @@ const routes = [
     ,path: '/elections'
     ,meta: {layout: la[3], authentication: "public"}
   },
-  {
+{
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewVote.vue')
     ,name: 'ViewVote'
     ,path: '/candidates/:campaignid'
+    ,params: {campaignid: false}
     ,props: true
     ,meta: {layout: la[3], authentication: "public"}
   },
@@ -336,6 +338,13 @@ const routes = [
     meta: {layout: la[3], authentication: "student" }
   },
   {
+    path: '/att/:studentid?',    name: 'StudentAttendance',
+    component: () => import(/* webpackChunkName: "student" */ '@/components/student/StudentAttendance.vue'),
+    props: true,
+    params: {studentid: 17033, editmode: false},
+    meta: {layout: la[3], authentication: "student" }
+  },
+  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/BookReturn.vue'),
     path: '/bookreturn',
     name: 'BookReturn',
@@ -396,8 +405,12 @@ router.beforeEach((to, from,next) => {
   const userAuth = getters.getState({ object: "gZml" }).login.isAuthenticated
   const userType = getters.getState({ object: "gZml" }).login.type
 
+  // Vue.prototype.$cs.l('R - From.name, to.name |', from.name,'|', to.name,'|', from.path,'|', to.path);
 
-  Vue.prototype.$cs.l('R - From.name, to.name |', from.name,'|', to.name,'|', from.path,'|', to.path);
+  zmlLog(getters.getState({ object: "gZml" }).login.username
+        ,"Route"
+        , `${from.name}->${to.name} : ${from.path} -> ${to.path}`)
+
   if (to.name == from.name) {
     if (to.params && to.params == from.params){
     //do nothing

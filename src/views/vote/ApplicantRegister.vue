@@ -10,7 +10,7 @@
 
  <v-container class="grey lighten-5" v-if="getZml.login.studentid">
     <v-row no-gutters>
-      <v-col sm="4">        
+      <v-col sm="4">
     <v-form
     ref="form"
     >
@@ -39,13 +39,13 @@
     ></v-text-field>
        <v-img :src="oldPhoto + '?k-'+Math.random()"
           max-height=200
-          contain> </v-img> 
+          contain> </v-img>
   </v-form>
  </v-col>
  <v-col>
 {{ studdata.studentid }} - {{ studdata.grade }}{{ studdata.gclass }} <br>
 <v-card color="grey lighten-1" class="ma-2">
-  <image-uploader :debug="1" 
+  <image-uploader :debug="1"
         :preview="true"
         :className="['fileinput', { 'fileinput--loaded': hasImage }]"
         capture="environment"
@@ -54,7 +54,7 @@
         :quality="0.7"
         outputFormat="verbose"
         @input="setImage"
-      > 
+      >
         <v-label for="fileInput" slot="upload-label">
           <figure>
             <svg
@@ -71,8 +71,8 @@
    </image-uploader>
 </v-card>
    <v-card v-if="campaignid" color="grey lighten-2" class="ma-2">
-     <video-uploader @fileUploaded="receiveResponse" 
-                     titleMessage="Select Video" 
+     <video-uploader @fileUploaded="receiveResponse"
+                     titleMessage="Select Video"
                      :extraPath="'/Test/werner/' + campaignid"
                      :triggerUpload="startVideoUpload"
      />
@@ -96,7 +96,7 @@
 <script>
 // @ is an alias to /src
 import ImageUploader from 'vue-image-upload-resize';
-import { getters } from "@/api/store";   
+import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import VideoUploader from '@/components/VideoUploader';
 
@@ -106,7 +106,7 @@ export default {
   props:['campaignid'],
   data() {
     return {
-      getZml: getters.getState({ object: "gZml" }),      
+      getZml: getters.getState({ object: "gZml" }),
       IDNo: null,
       Firstname: null,
       Surname: null,
@@ -140,7 +140,7 @@ export default {
       if (response.fileName.length > 0) {
         this.doUpdate(response.fileName)
       } else {
-        // no video - proceed silently to save 
+        // no video - proceed silently to save
         this.doUpdate('')
       }
     },
@@ -148,22 +148,22 @@ export default {
       let task = {}
         if (this.image == undefined || this.image.dataUrl == undefined) {
            task = {method: "savecandidatedata",
-                    foto: this.currentPhoto, 
+                    foto: this.currentPhoto,
                     deliveryid: this.campaignid ,
                     campaignid: this.campaignid ,
-                    idno: this.IDNo ,                    
+                    idno: this.IDNo ,
                     realName: this.IDNo,
                     firstname: this.Firstname,
                     surname: this.Surname,
                     email: this.EMail,
-                    video: video 
+                    video: video
                     };
         } else {
           task = {method: "savecandidatedata",
-                    base64: this.image.dataUrl, 
+                    base64: this.image.dataUrl,
                     deliveryid: this.campaignid ,
                     campaignid: this.campaignid ,
-                    idno: this.IDNo ,                    
+                    idno: this.IDNo ,
                     realName: this.IDNo,
                     firstname: this.Firstname,
                     surname: this.Surname,
@@ -190,7 +190,7 @@ export default {
       }
     },
     errorLoad(response) {
-         console.log('error on getid:', response) 
+         console.log('error on getid:', response)
     },
     displayData(result) {
         this.studdata = result[0]
@@ -215,15 +215,16 @@ export default {
          ts.task = 'PlainSql'
          ts.sql = "select * from dkhs_student "
              + " where studentid = " + this.getZml.login.studentid
-         zmlFetch(ts, this.loadID, this.errorLoad);      
+         zmlFetch(ts, this.loadID, this.errorLoad);
       }
     },
     loadID(result) {
       //then we read from rvlselect...
       //this.$cs.l('result on LoadID = ', result)
       if (!Array.isArray(result)) {
-          this.$router.go(-1)
-      } 
+        alert('You are not logged in as a student.')
+        this.$router.go(-1)
+      }
       this.IDNo = result[0].idno
       this.fetchID()
     }

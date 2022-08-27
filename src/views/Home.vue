@@ -66,6 +66,7 @@ import TeacherHome from "@/views/home/HomeTeacher"
 import StudentHome from "@/views/home/HomeStudent"
 import AdminHome from "@/views/home/HomeAdmin"
 import Login from '@/components/Login'
+import { zData } from '@/api/zGetBackgroundData.js';
 export default {
   name: 'Home',
   components: {
@@ -98,6 +99,9 @@ export default {
       /* Boring tasks about router, done in buttons.js */
       if (!doStuff(this.$router,task)) { console.log(task) }
    }
+  },
+  mounted() {
+    zData.initialData('Load all the Data')
   }
 }
 </script>

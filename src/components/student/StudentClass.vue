@@ -63,7 +63,7 @@
    <v-card color="gray lighten-3" class="ma-2" id="x12345">
     <v-card-title class="heading text-center">
       {{ classListHeader }} (#{{studentList.length}}) {{ title }}
-    </v-card-title>
+     </v-card-title>
     <v-card-text>
       <v-row>
         <v-col cols="6" md="4" lg="3"

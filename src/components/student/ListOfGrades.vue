@@ -1,7 +1,7 @@
 <template>
  <v-row>
     <v-col cols="12">
-        <h1>This is ListOfGrades.vue Start</h1>
+        <!-- <h1>This is ListOfGrades.vue Start</h1> -->
     </v-col>
   <template v-if="$vuetify.breakpoint.mobile">
   <v-col cols="12">
@@ -32,7 +32,7 @@
   </v-col>
   </template>
     <v-col cols="12">
-        <h1>This is ListOfGrades.vue END</h1>
+        <!-- <h1>This is ListOfGrades.vue END</h1> -->
     </v-col>
  </v-row>
 </template>

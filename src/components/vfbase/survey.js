@@ -4,13 +4,15 @@ import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 
 export const survey = {
-    saveData: (id,key,modeldata,pcallback=doneFetch,pErrorcallback=errorFetch) => {  
+    saveData: (id,key,modeldata,pcallback=doneFetch,pErrorcallback=errorFetch) => {
         let ts = {}
         ts.task = 'saveQuiz'
-        ts.data = {surveyid : id
-                  ,ownerid : getters.getState({ object: "gZml" }).login.ownerid
-                  ,quizkey : key
-                  ,quizdata : modeldata}
+        ts.data = {
+            surveyid : id
+           ,ownerid : getters.getState({ object: "gZml" }).login.ownerid
+           ,quizkey : key
+           ,quizdata : modeldata
+        }
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, pcallback, pErrorcallback)
         return "done"
@@ -27,7 +29,7 @@ export const survey = {
         ts.task = 'getStudents'
         ts.data = key
         ts.api = zmlConfig.apiDKHS
-        zmlFetch(ts, pCallback)        
+        zmlFetch(ts, pCallback)
     }
 }
 

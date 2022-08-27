@@ -2,9 +2,13 @@
 function makeAWait(milisecs,nextProc,parm1, parm2 ,parm3) {
  let openWin = new Promise((resolve) => {
    let wagbietjie = setTimeout(() => {
-     clearTimeout(wagbietjie);
-     resolve( nextProc(parm1,parm2, parm3 )) ;
-     if (parm3 ) {console.log('Parm3 after tm',parm3); parm3=false}
+     console.log('makewait timeout',openWin)
+     clearTimeout(wagbietjie)
+     resolve( nextProc(parm1,parm2, parm3 ))
+     if (parm3 ) {
+        console.log('Parm3 after tm',parm3)
+        parm3=false
+     }
    }, milisecs)
  })
  console.log('makewait',openWin)

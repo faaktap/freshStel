@@ -234,7 +234,7 @@ export default {
               },
            grade: { type:"select"
               , label: "Grade / Graad *"
-              , items: ['9A1','9A2','9E1','9E2','9E3','9E4','9E5','9E6','9E7']
+              , items: ['9A1','9A2','9E1','9E2','9E3','9E4','9E5','9E6','9E7','9E8']
               , prependInnerIcon:"mdi-alpha-g-box"
               , solo:true
               , rules: [ required('Please enter student\'s current grade.') ]
@@ -493,9 +493,9 @@ export default {
             heading += "<tr><td>Group/Groep 1<td>" + Answer.subject1
             heading += "<tr><td>Group/Groep 2<td>" + Answer.subject2
             heading += "<tr><td>Group/Groep 3<td>" + Answer.subject3
-            heading += "<tr><td>Group/Groep 4<td>" + Answer.subject5
-            heading += "<tr><td>Group/Groep 5<td>" + Answer.subject6
-            heading += "<tr><td>Group/Groep 6<td>" + Answer.subject7
+            heading += "<tr><td>Group/Groep 5<td>" + Answer.subject5
+            heading += "<tr><td>Group/Groep 6<td>" + Answer.subject6
+            heading += "<tr><td>Group/Groep 7<td>" + Answer.subject7
 
             let ts = {method: "zmlsendmail"
                      ,htmlmessage: heading +  "</table></div><br><br><hr>" + JSON.stringify(Answer)

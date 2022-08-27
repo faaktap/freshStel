@@ -4,7 +4,7 @@
  <v-col cols="2">
     <v-btn @click="showGrades = !showGrades">
         {{ gradeClass.g }} {{ gradeClass.c }}
-    </v-btn> {{ showGrades }}
+     </v-btn> <!-- {{ showGrades }} -->
  </v-col>
  <v-col cols="8">
    <list-of-grades

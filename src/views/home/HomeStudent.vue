@@ -47,7 +47,7 @@
             width="100%"
             height="100%"
             scrolling="auto" /> -->
-            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            (homestudent)
 <v-row>
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
@@ -138,7 +138,7 @@ import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import ListTest from '@/components/ListTest.vue';
-//import CalendarStudent from '@/components/CalendarStudent';
+import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
@@ -148,7 +148,7 @@ export default {
     name:"StudentHome",
     components:{
           ListTest
-        //, CalendarStudent
+        , CalendarStudent
         , StudentEmailList
         , StudentSubjectList
         , StudentPhotoList

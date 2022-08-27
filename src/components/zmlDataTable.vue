@@ -1,5 +1,5 @@
 <template>
- <div v-if="dataList && dataHeader">
+ <div v-if="Array.isArray(dataList) && dataHeader">
    <v-row no-gutters class="mb-6" >
     <v-col cols="12" class="heading-2 text-center">
       <v-card class="pa-2"  color="blue" >
@@ -13,7 +13,7 @@
      <table width="100%" border="0" class="ma-2">
      <tr class="d-print-table-row">
       <td width="30%" style="border: 0px; border-radius: 0px; float: left">
-        DKHS-LEARN<br>{{ today }}
+        DK-eLearn<br>Printed:{{ today }}
       </td>
       <td width="40%" style="border: 0px;  align: center">
         <center><strong>High School De Kuilen Hoërskool</strong><br>{{ userHeader }}</center>
@@ -25,7 +25,9 @@
  </table>
 
  </v-card-title>
+   <v-card-text v-if="footer.length > 400" class="mx-0 my-1 pa-0 xhide" v-html="footer">  </v-card-text>
    <v-data-table
+     v-if="Array.isArray(dataList)"
     :headers="dataHeader"
     :items="dataList"
     :items-per-page="45"
@@ -36,7 +38,7 @@
     multi-sort
    >
    </v-data-table>
-   <v-card-text class="hide" v-html="footer">  </v-card-text>
+   <v-card-text v-if="footer.length < 400" class="ma-1 pa-0 hide" v-html="footer">  </v-card-text>
  </v-card>
  </div>
 </template>
@@ -47,7 +49,7 @@ import printJS from "print-js";
 import { zDate } from '@/api/zDate.js';
 export default {
     name:"zmlDataTable",
-    props: ['dataList', 'userHeader','doPrint','footer'],
+    props: ['dataList', 'userHeader','doPrint','footer','small'],
     data: () => ({
         dataHeader: [
           {text: 'User',             value: 'user_name' },
@@ -62,19 +64,38 @@ export default {
         console.log(todo, data)
       },
       reBuildHeaders() {
+        if (Array.isArray(this.dataList) && this.dataList.length > 0) {
+          this.$cs.l(this.$options.name,'isArray = ' , this.dataList.length, this.userHeader)
+          //console.log()
           this.dataHeader = []
           Object.keys(this.dataList[0]).forEach(ele => {
               this.dataHeader.push( {text:ele.toUpperCase(), value:ele } )
           })
-          console.log(this.dataHeader)
+        } else {
+          this.$cs.l(this.$options.name,'noArray = ', this.userHeader)
+        }
       },
       printIt() {
         // const style =
         //   "@page { margin-top: 10px } @media print { h1 { color: blue },heading { color: blue } }";
         // const headerStyle = "align:center;";
-
-
-        const style = `
+        let style = ''
+        if (this.small) {
+         style = `
+          @page { margin-top: 45px }
+          @media print {
+          .print  {display:block}\
+          body {overflow: auto;height: auto;width: 100%;}\
+          h1 { color: #1c3a1b }\
+          heading { color: #1c3a1b; height: 150px}\
+          p.bodyText {font-size:12pt}\
+          th, td {font: Helvetica;font-size: 9pt; border-radius: 1px; padding: 1px; margin: 1px; border: 1px solid #e6e4ed;}\
+          table: {width:95%;}\
+          aside {display: none;}\
+          main {display: block;}\
+         }`
+        } else {
+         style = `
           @page { margin-top: 10px }
           @media print {
           .print  {display:block}\
@@ -83,12 +104,12 @@ export default {
           heading { color: #1c3a1b }\
           p.bodyText {font-size:8pt}\
           th, td {border-radius:2px; padding: 2px;margin: 2px; border: 1px solid #e6e4ed;}\
-          table: {width:100%;}\
+          table: {width:95%;}\
           aside {display: none;}\
           main {display: block;}\
          }`
+        }
         const headerStyle = "align: center;font:Garamond";
-
 
           printJS({
            printable: "printMe",
@@ -147,8 +168,9 @@ export default {
   body {
     overflow: auto;
     height: auto;
+    margin-left: 20px;
   }
-  table {width: 100%;}
+  table {width: 90%;}
   .scroll-y {
      height: auto;
      overflow: visible;

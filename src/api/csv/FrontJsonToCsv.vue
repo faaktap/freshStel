@@ -63,6 +63,7 @@
         :userHeader="userHeader"
         :doPrint="activatePrint"
         :footer="footer"
+        :small="small"
      />
     </v-card>
    </v-col>
@@ -80,6 +81,7 @@ export default {
     jsonData: {type: Array, required: true },
     csvTitle: {type: String, default:'whatever'},
     footer: {type: String, default:''},
+    small: {type: Boolean, default: false}
   },
   data: () => ({
     labels:[],
@@ -119,7 +121,8 @@ export default {
      if (this.jsonData && this.jsonData.length > 0) {
          let cnt=0
          Object.keys(this.jsonData[0]).forEach(ele => {
-              if (cnt == 0 || ele.includes('id') || ele.includes('sortorder')) {
+              //if (cnt == 0 || ele.includes('id') || ele.includes('sortorder')) {
+              if (ele.includes('id') || ele.includes('sortorder')) {
                 this.labels.push( {id:cnt, desc:ele, clicked: false} ) //UNTICK or HIDE FIELD with ID in it
               } else {
                 this.labels.push( {id:cnt, desc:ele, clicked: true} )
