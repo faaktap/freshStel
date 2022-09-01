@@ -26,7 +26,7 @@
 import { zData } from "@/api/zGetBackgroundData.js"
 import { getters } from "@/api/store";
 export default {
-    name:"StudentEmailList",
+    name:"StudentLearnAssist",
     props: ['studentid','color'],
     data: () => ({
       getZml: getters.getState({ object: "gZml" }) ,

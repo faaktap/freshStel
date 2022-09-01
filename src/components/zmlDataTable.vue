@@ -35,6 +35,7 @@
     disable-pagination
     hide-default-footer
     @click:row="clickOnRow"
+    :item-class="itemRowBackground"
     multi-sort
    >
    </v-data-table>
@@ -57,6 +58,16 @@ export default {
         ]
     }),
     methods:{
+      itemRowBackground(item) {
+        console.log('itemRowBackground','grade' in item , item.grade.indexOf('A')>-1)
+        if ('learnassist' in item && item.learnassist) {
+          return 'blue'
+        }
+        if ('grade' in item && item.grade.indexOf('A')>-1) {
+           return 'red'
+        }
+        return ''
+      },
       clickOnRow(p1,p2) {
         this.$emit('clickOnRow',p1,p2)
       },
@@ -93,6 +104,8 @@ export default {
           table: {width:95%;}\
           aside {display: none;}\
           main {display: block;}\
+          .red {background-color: #eee;}\
+          .blue {background-color: #FFFFE0;}\
          }`
         } else {
          style = `
@@ -179,11 +192,20 @@ export default {
      position: absolute;
      overflow: visible;
   }
+  .red {
+    background-color: rebeccapurple;
+  }
 }
 .capitalize-first {
   text-transform: lowercase;
 }
 .capitalize-first::first-letter {
   text-transform: uppercase;
+}
+.red {
+  background-color: rebeccapurple;
+}
+.blue {
+  background-color: gainsboro;
 }
 </style>

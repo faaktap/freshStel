@@ -1,295 +1,145 @@
 <template>
-<div>
-  <h1>ABOUT</h1>
-
-  <hero-section
-      title="About the Virtual School System"
-      text="About this"
-      moretext="It is an example"
-      color="purple"
-      button=""
-      icon=""
-      func=""
-  />
-  {{ paths }}
-<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-only werner:
-<base-tool :toolList="toolList"
-            toolbarName="Name of Toolbar a bit longer than usual"
-            @toolclick="listenToToolbar"/>
-
-<h1>Sel Multi </h1>
-<multi-sel v-model="multiselValue" :value="multiselValue" /> {{ multiselValue }}
-
-
-<h1> transition Groups for Lists </h1>
-<transition-group name="list" tag="span">
-        <span v-for="item in menuItems" :key="item.title" class="ma-1">
-          {{ item.title }} <v-icon small>  {{ item.icon }}</v-icon> {{ item.title }}
-        </span>
-</transition-group>
-
-<v-btn @click="shuffle">Shuffle</v-btn>
-<v-btn @click="addTop">Add Top </v-btn>
-<v-btn @click="menuItems.pop()">delete bottom</v-btn>
-<v-btn @click="addTopDeleteBottom">add and delete 4 items</v-btn>
-<v-row>
-  <v-col cols="6">
-  <transition-group name="flip-list" tag="div">
-  <div v-for="m in menuItems" :key="m.title">
-     <zmlContentButton :btnFace="m.title" :icon="m.icon" />
-  </div>
-  </transition-group>
-</v-col>
-<v-col cols="6">
-<div>
-      <transition-group name="flip-list"> <!-- Carefull with vuetify tags - does ot work-->
-        <v-btn v-for="item in menuItems" :key="item.title" class="ma-2">
-          <v-icon> {{ item.icon }}</v-icon> {{ item.title }}
-        </v-btn>
-      </transition-group>
-</div>
-</v-col>
-</v-row>
-<h1>Subject Display Short </h1>
-<subject-display-short /> {{ getZml.subjectid}}
-
-
-
-<h1> Random Colors and Route List len = {{ randomColors.length}} </h1>
-<v-row xv-if="randomColors.length > 0">
-  <h2> All the routes currently (March 2021) in here..</h2>
-  <v-col  xs12 cols=2 v-for="(p,i) in paths" :key="i">
-    <v-card :color="randomColors[i]" min-width="100" class="ma-2 pa-2">
-    <router-link :to="p" :title="randomColors[i]">{{p}}</router-link>
-    </v-card>
-  </v-col>
-</v-row>
-
-
-
-  <student-lookup @dataEntered="studentFound" @idsEntered="IDs" />
-    SL = {{ studentList }} <br>     SI = {{ studentIDs }}
-
-<h1> Audio / Sound</h1>
-<v-container v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-<v-row>
-  <v-col xs12>
-   <v-card color="brown lighten-2" class="ma-3 pa-2" @click.self="showMovie = !showMovie">
-    Stuff inside the v-card (v-col is xs12) <v-btn @click="showAudio = !showAudio"> Audio </v-btn>
-   </v-card>
-<v-card class="ma-2"> <v-card-title> Basic Players </v-card-title>
-<!--basic-player /-->
-<v-btn @click="showMovie = !showMovie"> Toggle Video </v-btn>
-<v-btn @click="showAudio = !showAudio"> Toggle Audio </v-btn>
-<v-btn @click="showPicture = !showPicture"> Toggle Picture </v-btn>
-</v-card>
-  </v-col>
-</v-row>
-
-
-<h1> zmlContentButton Demo </h1>
-<v-row>
-  <v-col v-for="m in menuItems" :key="m.title">
-    <zmlContentButton :btnFace="m.title" :icon="m.icon" />
-  </v-col>
-</v-row>
-
-
- <v-row>
-  <v-col>
-   <v-card class="about" color=blue>
-    <h1>This is an about page</h1>
-    tryme : {{ tryme }}
-    <v-card-actions>
-    <v-btn @click="ss()"> kliek my </v-btn>
-    <v-btn @click="confirm()"> kliek my vir confirmation </v-btn>
-    </v-card-actions>
-   </v-card>
-  </v-col>
-  <v-col>
-    <h2> Email popup </h2>
-    <v-btn @click="getZml.atester = !getZml.atester"> open contact </v-btn> {{getZml.atester }}
-    <contact-form>
-    </contact-form>
-  </v-col>
-
-
- </v-row>
-  </v-container>
-<v-dialog v-model="showMovie" max-width="400">
-<zml-preview  :src="src" type="movie"  >
-  <zmlCloseButton @btn-click="showMovie = !showMovie"/>
-</zml-preview>
-</v-dialog>
-
-<v-dialog v-model="showAudio" max-width="400">
- <zml-preview   :src="src" type="audio"  >
-   <zmlCloseButton @btn-click="showAudio = !showAudio"/>
- </zml-preview>
-</v-dialog>
-
-<v-dialog v-model="showPicture" max-width="400" color="blue">
- <zml-preview   :src="src" type="Picture"  >
-   <zmlCloseButton @btn-click="showPicture = !showPicture"/>
- </zml-preview>
-</v-dialog>
-</v-container>
-</div>
+<v-container fluid>
+  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+    <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">New Item</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+<v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+    </template>
+    <template v-slot:no-data>
+      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
+  </v-data-table>
+ </v-container>
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
-import { infoSnackbar } from '@/api/GlobalActions';
-import ContactForm from "@/components/ContactForm";
-import { getters } from "@/api/store";
-import HeroSection from "@/views/sections/HeroSection.vue"
-import {halloWorld} from "./About.js"
-import zmlPreview from '@/components/zmlPreview.vue'
-import zmlCloseButton from '@/components/zmlCloseButton.vue'
-import zmlContentButton from '@/components/zmlContentButton.vue'
-import baseTool from '@/components/base/baseTool.vue'
-import StudentLookup from '@/components/student/StudentLookup.vue'
-import SubjectDisplayShort from '@/components/learn/SubjectDisplayShort.vue'
-import MultiSel from './MultiSel.vue'
 export default {
-name: "about",
-props:{},
-components: {ContactForm
-           , HeroSection
-           , zmlPreview
-           , zmlCloseButton
-           , zmlContentButton
-           , StudentLookup
-           , SubjectDisplayShort
-           , baseTool
-           , MultiSel
-           },
-data: () => ({
-  studentList:null,
-  studentIDs:null,
-  getZml: getters.getState({ object:"gZml" }),
-  atester : false,
-  tryme : zmlConfig.extra,
-  src : "https://kuiliesonline.co.za/Subjects/GR12/Accounting_Rekeningkunde/Gr 12 - Mrs Wiegand/Budgets/14.10 Part 2.mp4",
-  showMovie : false,
-  showAudio : false,
-  showPicture : false,
-        menuItems:[
-                   {title:'Select Folder',icon:'mdi-folder'},
-                   {title:'New Folder', icon:'mdi-folder-plus-outline'},
-                   {title:'New File', icon:'mdi-file'},
-                   {title:'New dinges', icon:''},
-                   {title:'Something very longins and weird', icon:'mdi-ambulance'},
-                   {title:'Test1 woordd', icon:'mdi-coffee'},
-                   {title:'Empty Folder',icon:'mdi-delete'},
-                   {title:'Delete Folder',icon:'mdi-delete-empty'},
-                   {title:'Refresh Folder',icon:'mdi-database-refresh'},
-                   ],
-  paths:['/a', '/h','/1','/','/home','/about','/hover',
-   '/virtualawards/1','/studentawards', '/learntree', '/viewlearn',
-   '/grade',   '/grade/8',   '/studenthub',   '/subjects',   '/student',
-   '/personel',   '/viewfunctions',   '/nested',    'dialog',    '/werner'
-    ,'/werner/:id'    ,'route1/:rid'    ,'/flex'    ,'/campaigns'    ,'/candidates/101'
-    ,'/applicant/11102'    ,'/expand'    ,'/userlist'    ,'/testupload'    ,'/sview'
-    ,'/tcal'    ,'/ecal'    ,'/color','/dkhsawards', '/va/123','/awardedit','/AKandidate'
-    ,'/werner','/flex','/streamline','/sh','/latest'
-    ,'/sgrade','/sgrade1','/sgrade2','/sgrade3'
-    ,'/ws','/game','/emailcheck','/basetabandedit'
-    ,'/loadhomework', '/studentlist', '/eksamendruk'
+  name: "HelloWorld",
+  data: () => ({
+    dialog: false,
+    headers: [
+      {
+        text: "Dessert (100g serving)",
+        align: "start",
+        sortable: false,
+        value: "name",
+      },
+      { text: "Calories", value: "calories" },
+      { text: "Fat (g)", value: "fat" },
+      { text: "Actions", value: "actions", sortable: false },
     ],
-    randomColors:[],
-    toolList:[{name:"Button1"},{name:"button2"},{name:"button3"}],
-    baseColors:[],
-    tint:[],
-    variant:[],
-    multiselValue:{}
-}),
-computed: {
-},
-methods: {
-  listenToToolbar(e) {
-    alert(e)
-  },
-  addTopDeleteBottom() {
-    let i = 4
-    while (i>1){
-      i--
-      this.menuItems.unshift({title:"New Title " +  Math.floor(Math.random() * (100 + 1)), icon: "mdi-delete"})
-      this.menuItems.pop()
-    }
-  },
-  addTop() {
-    this.menuItems.unshift({title:"New Title " +  Math.floor(Math.random() * (100 + 1)), icon: "mdi-delete"})
-  },
-  shuffle() {
-      //this.menuItems = _.shuffle(this.menuItems);
-      this.menuItems = this.shuffledArr(this.menuItems);
-      this.menuItems.push({title:"New Title " +  Math.floor(Math.random() * (100 + 1)), icon: "mdi-delete"})
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      name: "",
+      calories: 0,
+      fat: 0,
+      carbs: 0,
+      protein: 0,
     },
-  shuffledArr(arr){
-    const newArr = arr.slice()
-    for (let i = newArr.length - 1; i > 0; i--) {
-        const rand = Math.floor(Math.random() * (i + 1));
-        [newArr[i], newArr[rand]] = [newArr[rand], newArr[i]];
-    }
-    return newArr
+    defaultItem: {
+      name: "",
+      calories: 0,
+      fat: 0,
+      carbs: 0,
+      protein: 0,
+    },
+  }),
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
   },
-  anyColor(){
-    let b = Math.floor(Math.random() * this.baseColors.length)
-    let t = Math.floor(Math.random() * this.tint.length)
-    let v = Math.floor(Math.random() * this.variant.length)
-
-    return this.baseColors[b] + ' ' + this.tint[t] + '-' + this.variant[v]
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
   },
-
-  IDs(value) {
-    if (value.data == 'undefined') return;
-    this.studentIDs = value;
+  created() {
+    this.initialize();
   },
-  studentFound(value) {
-    if (value.data == 'undefined') return;
-    this.studentList = value;
+  methods: {
+    initialize() {
+      this.desserts = [
+        {
+          name: "Frozen Yogurt",
+          calories: 159,
+          fat: 6.0,
+        },
+        {
+          name: "Ice cream sandwich",
+          calories: 237,
+          fat: 9.0,
+        },
+        {
+          name: "Eclair",
+          calories: 262,
+          fat: 16.0,
+        },
+      ];
+    },
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem(item) {
+      const index = this.desserts.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.desserts.splice(index, 1);
+    },
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
   },
-  ss() {
-     infoSnackbar('Hello from snackbar in About.vue!','cyan');
-     alert( halloWorld)
-  },
-  confirm() {
-    this.$root.$confirm("Heading for User to Read"
-                      , "Longer message about what the action is supposed to be"
-                      , { color: 'deep-purple accent-4' })
-  }
-},
-mounted: function() {
-  this.baseColors = ['red','green','blue','yellow','pink','purple','indigo','teal','lime','orange','brown','amber']
-  this.tint = ['darken','lighten','accent']
-  this.variant = [1,2,3,4]
-
-  for (let i=0 ; i<40 ; i++) {
-     this.randomColors[i] = this.anyColor()
-  }
-}
-
-}
+};
 </script>
-
-<style scoped>
-.flip-list-move {
-  transition: transform 1s;
-}
-
-.list-enter-active,
-.list-leave-active {
-  transition: all 1s;
-}
-.list-enter,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-.my-toolbar >>> .v-toolbar__content {
-  padding: 2px;
-  justify-content: right;
-}
-</style>

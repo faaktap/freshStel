@@ -45,6 +45,7 @@
             color="success"
             class="mr-4"
             @click="validate"
+            :disabled="noChange"
           >
             Save
           </v-btn>
@@ -162,9 +163,10 @@ export default {
     zData:zData,
     valid: false,
     year: 2021,
-    isOpen:true,
-    resultStr: '',
-    tmpSchoolNo :'',
+    isOpen: true,
+    resultStr :'',
+    tmpSchoolNo: '',
+    myModelBackup: {},
     myModel: {
       email:null,
       schoolno:null,
@@ -344,6 +346,14 @@ export default {
   computed:{
       studFullName() {
           return this.myModel.name + ' ' + this.myModel.surname
+      },
+      noChange() {
+        if (JSON.stringify(this.myModel) == JSON.stringify(this.myModelBackup)) {
+          console.log('no changes yet')
+          return true
+        }
+        console.log('there is a difference', this.myModel, this.myModelBackup)
+        return false
       }
   },
   methods:{
@@ -392,6 +402,7 @@ export default {
         if (!response.errorcode && response[0].quizdata) {
            infoSnackbar('We received previously entered data - set:' + response.length)
            this.myModel = JSON.parse( response[0].quizdata )
+           this.myModelBackup = JSON.parse( response[0].quizdata )
         } else {
            //alert('we received no data - calling getSurname.....')
            //no message needed - we have not saved data previously

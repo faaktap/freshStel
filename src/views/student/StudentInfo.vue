@@ -55,9 +55,12 @@
        <base-title-expand v-if="studentList" heading="Student Attendance">
           <student-attendance :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
-       LearnAssis
        <base-title-expand v-if="studentList" heading="Learn Assist">
+          (We use this to mark examlists with "BUR" for separate exam venue)
           <student-learn-assist :studentid="studentList.data.studentid"  color="white darken-1" />
+       </base-title-expand>
+       <base-title-expand v-if="studentList" heading="Student Merits">
+          <student-merit :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
 
   </v-container>
@@ -111,6 +114,7 @@ import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentAttendance from '@/components/student/StudentAttendance'
 import StudentLearnAssist from '@/components/student/StudentLearnAssist'
+import StudentMerit from '@/components/student/StudentMerit'
 
 export default {
 name: "StudentInfo",
@@ -123,6 +127,7 @@ components: {HeroSection
            , StudentSubjectList
            , StudentAttendance
            , StudentLearnAssist
+           , StudentMerit
            , BaseTitleExpand
            },
 data: () => ({

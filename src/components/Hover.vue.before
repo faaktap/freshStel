@@ -1,0 +1,452 @@
+<template>
+<v-container fluid>
+
+<base-title-expand  heading="base-title-expand">
+<v-layout>
+<v-flex xs6>
+   initial value = {{ selectedFruitNo }}
+   <br>v-model = {{ selectedFruitNo }}
+   <br>asLabel = select your fruit
+   <br>itemObj = fruitObj
+</v-flex>
+    <v-flex xs6>
+   <auto-sel-obj id="zyx1"
+             asLabel="Select your Fruit!"
+            :initialValue="selectedFruitNo"
+            :itemObj="fruitObject"
+             v-model="selectedFruitNo" >
+   </auto-sel-obj>
+   </v-flex>
+   <v-flex xs12>
+      selectedSubject = {{ selectedSubject }}
+      <auto-sel-sub id="zyx4"
+             asLabel="Subject"
+            :initialValue="selectedSubject"
+            :itemObj="getZml.subjects"
+             v-model="selectedSubject"
+      />
+
+
+
+   </v-flex>
+</v-layout>
+</base-title-expand>
+
+<transition-test />
+<v-btn @click="uploadStuffShow = !uploadStuffShow"> upload </v-btn>
+<v-row v-if="uploadStuffShow">
+ <v-col cols=6 >
+   <v-text-field v-model="uploadTitleMessage" label="uploadTitleMessage" />
+   <v-text-field v-model="uploadCardColor" label="uploadCardColor" />
+   <v-text-field v-model="uploadExtraPath" label="uploadExtraPath" />
+   <v-text-field v-model="uploadPrependName" label="uploadPrependName" />
+   <v-text-field v-model="uploadBtnColor" label="uploadBtnColor" />
+ </v-col>
+ <v-col cols=6 >
+  <upload-wrapper
+         :titleMessage="uploadTitleMessage"
+         :cardColor="uploadCardColor"
+         :extraPath="uploadExtraPath"
+         :prependName="uploadPrependName"
+         :btnColor="uploadBtnColor"
+         @filesBeingUploaded="processListOfFiles"
+         @fileUploadDone="tellOfOneFile"
+  />
+ </v-col>
+</v-row>
+    <v-row>
+      <v-col cols=3 >
+   <v-card color="primary"> primary:login:{{ getZml.login }} </v-card>
+      </v-col><v-col cols=3>
+   <v-card color="secondary"> secondary: grade:{{ getZml.grade }} </v-card>
+   </v-col><v-col cols=3>
+   <v-card color="warning">warning:subject:{{ getZml.subject }} id : {{ getZml.subjectid }} </v-card>
+   </v-col><v-col cols=3>
+   <v-card color="error">error:local:{{ getZml.locale }}   </v-card>
+          <v-btn class="ma-2" color="primary">   primary </v-btn>
+          <v-btn class="ma-2" color="secondary"> secondary </v-btn>
+          <v-btn class="ma-2" color="accent">    accent </v-btn>
+          <v-btn class="ma-2" color="error">     error </v-btn>
+          <v-btn class="ma-2" color="info">      info  </v-btn>
+          <v-btn class="ma-2" color="success">   success </v-btn>
+          <v-btn class="ma-2" color="warning">   warning </v-btn>
+<v-btn color="lightblue"> lb btn </v-btn>
+<v-btn color="yellow"> y btn </v-btn>
+<v-btn color="pink"> p btn </v-btn>
+<v-btn color="orange"> o btn </v-btn>
+<v-btn color="magenta"> m btn </v-btn>
+<v-btn color="darkblue"> db btn </v-btn>
+<v-btn color="gray"> g btn </v-btn>
+<v-btn color="neutralgray"> ng btn </v-btn>
+<v-btn color="green"> g btn </v-btn>
+<v-btn color="red"> red btn </v-btn>
+<v-btn color="darkblueshade"> dbs btn </v-btn>
+<v-btn color="lightgray"> lg btn </v-btn>
+<v-btn color="lightpink"> lp btn </v-btn>
+<v-btn color="white"> w btn </v-btn>
+
+<v-btn color="lightblue--text"> lb text </v-btn>
+<v-btn color="yellow--text"> yellow  </v-btn>
+<v-btn color="pink--text"> pink </v-btn>
+<v-btn color="orange--text"> ornage </v-btn>
+<v-btn color="magenta--text"> magenta </v-btn>
+<v-btn color="darkblue--text"> darkblue </v-btn>
+<v-btn color="gray--text"> gray </v-btn>
+<v-btn color="neutralgray--text"> btn </v-btn>
+<v-btn color="green--text"> green txt </v-btn>
+<v-btn color="red--text"> red </v-btn>
+<v-btn color="darkblueshade--text"> dbshade </v-btn>
+<v-btn color="lightgray--text"> lgray </v-btn>
+<v-btn color="lightpink--text"> lpink </v-btn>
+<v-btn color="white--text"> white </v-btn>
+
+   </v-col><v-col cols=3>
+    <div
+      @mouseover="hover = true"
+      @mouseleave="hover = false"
+      :class="{ active: hover }"    >
+      Hover me to change the background! (active becomes true on hover <br> see style below)
+    </div>
+    </v-col>
+    </v-row>
+
+    <h1> Other (better) hover option - see style </h1>
+
+   <v-row justify="center" class="fill-height" align="stretch"  color="green">
+    <v-col color="red" cols=4>
+     <p class="subheading grey--text"> This is heading for v-hover </p>
+     <div>
+        <v-icon color="blue"> mdi-silverware </v-icon>
+        <v-btn  @mouseover="hover = true"
+                 @mouseleave="hover = false"
+                 title="hover is used in a few places - but not working for v-hover">
+          Doen Niks
+         </v-btn>
+         <v-spacer />
+         <span v-if="hover">This is a secret message.</span>
+         <v-hover v-slot:default="{ hover }">
+          <v-card color="green"
+                 min-width=150
+                 min-height=150
+                 :elevation="hover ? 12 : 2"
+                 :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+          >
+             green? <br>
+          <v-card-title> some card heading </v-card-title>
+          <v-card-text> some card text </v-card-text>
+          <v-icon x-large color="blue"> mdi-wardrobe-outline </v-icon>
+          <v-icon x-large> mdi-wardrobe </v-icon>
+          </v-card>
+         </v-hover>
+
+     </div>
+   </v-col>
+    <v-col cols=6>
+     <v-hover v-slot:default="{ hover }" open-delay="200">
+      <v-card color="green"
+             min-width=50
+             min-height=50
+             :elevation="hover ? 12 : 2"
+             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+      >
+       <v-card-subtitle> some card heading </v-card-subtitle>
+       <v-card-text>
+          some card text
+       <v-expand-transition>
+          <div
+            v-if="hover"
+            class="d-flex transition-fast-in-fast-out purple darken-2 v-card--reveal display-3 white--text"
+            style="height: 100%;"
+          >
+            $14.99
+          </div>
+       </v-expand-transition>
+       </v-card-text>
+      </v-card>
+     </v-hover>
+    </v-col>
+
+    <v-col cols=4>
+     <v-hover
+         v-slot:default="{ hover }"
+         open-delay="200">
+      <v-card :elevation="hover ? 12 : 2"
+             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}">
+       <v-img src="img/zmltest.svg"
+             max-height=140px
+             contain >
+       </v-img>
+      </v-card>
+     </v-hover>
+    </v-col>
+
+    <v-col cols=4>
+      <div> start </div>
+       <v-hover v-slot:default="{ hover }">
+         <v-card
+          max-width=250
+          min-width=150
+          min-height=250
+          max-height=350
+          color=#F5F5F5
+          style="xoverflow: auto;"
+          :elevation="hover ? 12 : 2"
+          :class="{
+          'on-hover': hover,
+          'overwrite-hover': $vuetify.breakpoint.xsOnly
+         }">
+           <v-icon color="green" title="You have selected this product!">mdi-marker-check</v-icon>
+           <v-icon color="purple" title="This product is part of a mix case!">mdi-marker-check</v-icon>
+           <v-icon color="gray">10</v-icon>
+           <v-spacer/><h3>h3</h3>
+            <v-img src="img/zmltest.svg" max-height=240px contain class="ma-1">
+             <v-expand-transition>
+              <div v-if="hover"
+                   class="d-flex justify-center transition-fast-in-fast-out darken-2 v-card--reveal "
+                   style="align-items: center;">
+                <v-img
+                          max-width="120px"
+                          contain
+                          src="zmlrekenaars.png"
+                          >
+                </v-img>
+              </div>
+             </v-expand-transition>
+            </v-img>
+            <div v-if="hover">
+              <v-btn  fab left bottom absolute title="add 2 cart">
+               <v-badge overlap :visibility="clicks">
+                <span slot="badge"> {{ clicks }} </span>
+                 <v-icon large
+                        color="grey lighten-1">
+                   mdi-shopping
+                 </v-icon>
+               </v-badge>
+              </v-btn>
+              <v-btn fab bottom right absolute title="detail">
+               <v-icon large color="green lighten-1"> mdi-information</v-icon>
+              </v-btn>
+            </div>
+            <div class="wordbreak ma-2 myitem text-center">
+             <span> theItem.title <br>
+              <center>R theItem.price <v-icon>  mdi-glass-wine </v-icon> theItem.unit x R theItem.price / theItem.unit</center>
+             </span>
+            </div>
+          </v-card>
+         </v-hover>
+    </v-col>
+      <v-col col2="12">
+        <v-card class="mx-auto" max-width="344">
+          <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"></v-img>
+          <v-card-title>Sunshine</v-card-title>
+          <v-card-subtitle>Lorem ipsum</v-card-subtitle>
+          <v-card-actions>
+            <v-btn text>Share</v-btn>
+            <v-btn color="purple" text>Explore</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="show = !show">
+              <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+            </v-btn>
+          </v-card-actions>
+          <v-expand-transition>
+            <div v-show="show">
+              <v-divider></v-divider>
+              <v-card-text>Lorem ipsum.</v-card-text>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+
+  <v-col cols="6" class="filter">
+   <auto-sel id="zyx2"
+            :asLabel="'Some Label for User (' + selectedFruit + ')'"
+            :initialValue="selectedFruit"
+            :itemArr="fruitOptions"
+             v-model="selectedFruit1">
+   </auto-sel>
+  </v-col>
+  <v-col cols=5>
+   <auto-sel id="zyx1"
+             asLabel="Select your Fruit!"
+            :initialValue="selectedFruit"
+            :itemArr="fruitOptions"
+             v-model="selectedFruit2">
+   </auto-sel>
+  </v-col>
+
+  <v-col cols=4>
+   <auto-sel-obj id="zyx1"
+             asLabel="Select your Fruit!"
+            :initialValue="selectedFruitNo"
+            :itemObj="fruitObject"
+             v-model="selectedFruitNo" >
+   </auto-sel-obj>
+  </v-col>
+  <v-col cols=5>
+    <v-card color="light-blue">
+      <v-card-title> AutoList: (auto-sel-sub) len={{ getZml.subjects.length }} </v-card-title>
+      <v-card-actions>
+        <v-btn @click="selectedSubject=17" > reset to 17 </v-btn>
+        <v-btn @click="testzData"> textzData </v-btn>
+      </v-card-actions>
+      <v-card-text>
+
+     <auto-sel-sub id="zyx4"
+             asLabel="Subject"
+            :initialValue="selectedSubject"
+            :itemObj="getZml.subjects"
+             v-model="selectedSubject"/>
+
+             selectedSubject = {{ selectedSubject }}
+      </v-card-text>
+    </v-card>
+  </v-col>
+  <v-col cols=12>
+<br>mobile     {{ $vuetify.breakpoint.mobile   }}
+<br>mobileBreakpoint     {{ $vuetify.mobileBreakpoint   }}
+<br>xsOnly     {{ $vuetify.breakpoint.xsOnly   }}
+<br>smOnly     {{ $vuetify.breakpoint.smOnly   }}
+<br>smAndDown  {{ $vuetify.breakpoint.smAndDown}}
+<br>smAndUp    {{ $vuetify.breakpoint.smAndUp  }}
+<br>mdOnly     {{ $vuetify.breakpoint.mdOnly   }}
+<br>mdAndDown  {{ $vuetify.breakpoint.mdAndDown}}
+<br>mdAndUp    {{ $vuetify.breakpoint.mdAndUp  }}
+<br>lgOnly     {{ $vuetify.breakpoint.lgOnly   }}
+<br>lgAndDown  {{ $vuetify.breakpoint.lgAndDown}}
+<br>lgAndUp    {{ $vuetify.breakpoint.lgAndUp  }}
+<br>xlOnly     {{ $vuetify.breakpoint.xlOnly   }}
+<br>width      {{ $vuetify.breakpoint.width    }}
+<br>height     {{ $vuetify.breakpoint.height  }}
+<br>name       {{ $vuetify.breakpoint.name  }}
+
+  </v-col>
+  <v-col cols="12">
+    <h3>SMART MARQUEE </h3>
+    <smart-marquee
+        :panelIndex="selectedSubject"
+        :list="[{id:1 ,name:'Caterina Malbel'},{id:2 ,name:'Caterina Malbsek'},{id:3 ,name:'Caty Malbek'},{id:4 ,name:'Karet Zofar'}]"
+        listHeading="TopOfRight"
+        heading="Werner Middle Smit"
+        >
+    </smart-marquee>
+    <h3>SMART DSPLAY </h3>
+    <smart-display
+        studentid="12000"
+        studentName="Student Name"
+        :diplomaList="[{awardid:12,sub:'Kreatiewe KUNSTE', dip: 'HALF COLORS'}
+                      ,{awardid:13,sub:'DINGES TAAL', dip: ''}
+                      ,{awardid:14,sub:'MATEMATOES', dip: ''}
+                      ,{awardid:15,sub:'Visuels sfess', dip: 'BOEKPRYS'}
+        ]"
+        extraNote="an extra note"
+        :alles="{a: 'hier is niks'}"
+        :panelIndex="selectedSubject">
+    </smart-display>
+ </v-col>
+  <v-col cols="12">
+    <h3>SMART PHOTO </h3>
+    <smart-photo
+        title="this is a title and more"
+        photoPath="https://www.ft.com/assets/product/dynamic-barriers/comment.jpg"
+        photoNo=''
+        caption="this is a caption thing"
+    >
+    </smart-photo>
+  </v-col>
+  <v-col cols="12">
+    <h3>SMART TEXT </h3>
+    <smart-text
+        title="this is a title"
+        atext="this is a text this is a text this is a text this is a text this is a text this is a text this is a text"
+        maintitle="this is the main title" >
+    </smart-text>
+  </v-col>
+
+ </v-row>
+
+</v-container>
+</template>
+
+<script>
+import { getters } from "@/api/store"
+import AutoSel from '@/components/AutoSel.vue'
+import AutoSelObj from '@/components/AutoSelObj.vue'
+import AutoSelSub from '@/components/AutoSelSub.vue'
+//import OnFocus from '@/components/OnFocus.vue'
+
+
+import { zData } from "@/api/zGetBackgroundData.js"
+import SmartDisplay from '@/components/awards/SmartDisplay';
+import SmartPhoto from '@/components/awards/SmartPhoto';
+import SmartText from '@/components/awards/SmartText';
+import SmartMarquee from '@/components/awards/SmartMarquee';
+import UploadWrapper from '@/test/UploadWrapper';
+import TransitionTest from './transition/TransitionTest.vue'
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+export default {
+  components: {
+    UploadWrapper
+    , SmartMarquee,SmartText,SmartPhoto,SmartDisplay
+    , AutoSel, AutoSelObj, AutoSelSub
+    , TransitionTest//, OnFocus
+    , BaseTitleExpand
+  },
+ data: () => ({
+  uploadTitleMessage:"upload a file or files",
+  uploadCardColor:"lightpink",
+  uploadExtraPath:"Test/werner1",
+  uploadPrependName:"prep-",
+  uploadBtnColor:"primary",
+  uploadStuffShow:false,
+  getZml: getters.getState({ object: "gZml" }),
+  classtest:'col-4 col-sm-6 col-md-8',
+  fruitOptions: ['appels','pere','tamaties','waatlemoen'],
+  fruitObject: [{id:1,name:'appels'},{id:2,name:'pere'},
+                {id:3,name:'tamaties'},{id:4,name:'waatlemoen'}],
+  selectedFruit: "appels",
+  selectedFruit1: "",
+  selectedFruit2: "",
+  //selectedFruitNo:{id:4,name:'waatlemoen'}, //but 4 would work as well
+  selectedFruitNo:{id:4}, //but 4 would work as well
+  selectedSubject:7,
+  subjectChanged:'',
+  clicks: 1,
+  hover: 1,
+  show: false,
+  items: [
+      {
+        color: "#1F7087",
+        src: "http://placekitten.com/200/200",
+        title: "Cat",
+        artist: "James Smith",
+      },
+      {
+        color: "#952175",
+        src: "http://placekitten.com/200/200",
+        title: "Cat",
+        artist: "Ellie Jones",
+      },
+    ],
+ }),
+ methods:{
+   processListOfFiles(e) {
+     console.log('we have received a list of files to be done', e)
+   },
+   tellOfOneFile(e) {
+     console.log('we have received one file done', e)
+   },
+   testzData() {
+     zData.initialData('hallo')
+   },
+ },
+}
+</script>
+
+<style scoped>
+.active {
+  background: purple;
+}
+h1:hover {
+  background: green;
+}
+</style>

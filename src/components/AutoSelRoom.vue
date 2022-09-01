@@ -32,7 +32,7 @@ A. The search function, use the itemdisplay to get data to display in dropdown
         :search-input.sync="search"
         :items="itemObj"
         :item-text="itemDisplay"
-        item-value="subjectid"
+        item-value="name"
         xxreturn-object
         :label="asLabel">
 <!--
@@ -58,8 +58,10 @@ A. The search function, use the itemdisplay to get data to display in dropdown
 
 
 <script>
+import { getters } from "@/api/store"
+import { zData } from "@/api/zGetBackgroundData.js"
 export default {
-   name: "SubObjectPickList",
+   name: "PersObjectPickList",
    props: {itemObj: {type: Array,required:true}
           ,asLabel: {type:String, default:'xxxx'}
           ,initialValue: {default:1}
@@ -68,23 +70,33 @@ export default {
     search: null,
     what: null,
   }),
-  mounted() {
-     this.what = this.itemObj.find(item => item.id == this.initialValue)
-   },
   computed: {
     searchText() {
       return this.itemObj[0] || ''
     },
     itemDisplay() {
         //return "this.itemToShow";
-        return item => item.shortname + ' — ' + item.description
+        //return item => item.name + ' — ' + item.workarea +  ' - ' + item.description
+        return item => item.name + ' - ' + item.description
     }
   },
-  methods: {      },
+  methods: {
+    finished() {
+       this.what = this.itemObj.find(item => item.name == this.initialValue)
+    }
+  },
+  mounted() {
+    if (getters.getState({ object: "gZml" }).place.length < 5) {
+       zData.initialData('hallo', this.finished)
+    } else {
+        this.finished()
+    }
+   },
+
   watch: {
     initialValue(n,o) {
-      console.log('W',this.$options.name,o,n)
-      this.what = this.itemObj.find(item => item.id == this.initialValue)
+       console.log('W',this.$options.name,o,n)
+       this.what = this.itemObj.find(item => item.name == this.initialValue)
     }
    }
 }

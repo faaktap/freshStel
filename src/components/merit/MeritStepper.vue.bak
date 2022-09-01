@@ -1,0 +1,123 @@
+<template>
+<v-container fluid class="mb=2">
+    <h2 class="heading-1 text-center">
+         Allocation a  merit to a student</h2>
+  <v-stepper v-model="cStep" vertical>
+    <!-- <v-stepper-header>
+     </v-stepper-header> -->
+      <v-stepper-step editable step="1" complete>{{ meritDescription}} {{ studentData }}</v-stepper-step>
+      <v-stepper-content step="1">
+        <v-card color="grey lighten-2" xclass="mb-12" height="150px">
+         <v-card-text v-if="getZml.login.studentid">
+            FOR : <strong> {{ studentData }} </strong>
+         </v-card-text>
+         <v-card-text v-else>
+           <student-lookup @dataEntered="studentFound"
+                            :searchMore="true"
+                            small
+           />
+         </v-card-text>
+         <v-card-actions>
+            <v-spacer />
+            <v-btn small color="primary" @click="cStep = 2"> Continue </v-btn>
+            <v-btn small color="warning" @click="goBack"> Cancel </v-btn>
+         </v-card-actions>
+        </v-card>
+      </v-stepper-content>
+
+      <v-divider />
+
+      <v-stepper-step step="2" editable>Teacher</v-stepper-step>
+      <v-stepper-content step="2">
+        <v-card color="grey lighten-1" class="mb-12" height="400px">
+             <personel-lookup @dataEntered="persFound"
+                            :searchMore="true"
+                            x-small
+             />
+        </v-card>
+        <v-btn color="primary" @click="cStep = 3"> Continue </v-btn>
+        <v-btn text @click="cStep = 1"> back </v-btn>
+      </v-stepper-content>
+
+      <v-divider></v-divider>
+
+      <v-stepper-step step="3" editable>Save</v-stepper-step>
+      <v-stepper-content step="3">
+        <v-card>
+        ask the date and save it
+        <base-date v-model="meritDte"  label="Date" xxinstructions="FA" />
+        </v-card>
+      </v-stepper-content>
+
+
+  </v-stepper>
+</v-container>
+</template>
+
+<script>
+import { getters } from "@/api/store"
+import { mer } from "@/components/merit/merit.js"
+import StudentLookup from "@/components/student/StudentLookup.vue"
+//import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue'
+import PersonelLookup from '@/components/staff/PersonelLookup.vue'
+import BaseDate from "@/components/base/BaseDate.vue"
+export default {
+    name: 'MeritStepper',
+    props: ['meritid'],
+    components:{
+        StudentLookup
+//       ,PersonelMenemonic
+       ,PersonelLookup
+       ,BaseDate
+    },
+    data () {
+      return {
+        getZml: getters.getState({ object: "gZml" }),
+        cStep: 1,
+        meritDescription: '',
+        studentData: 0,
+        curStudId: 0,
+        wieOmTeWys:'',
+        persSearch:'',
+        meritDte:null
+    }},
+    methods:{
+        initialize(pData, pDesc) {
+            this.$cs.l('initialize  ', pData, pDesc)
+            //alert('now we get studentid and staff and date')
+            this.meritDescription = pDesc
+        },
+        goBack() {
+            this.$router.back()
+        },
+        persFound(e) {
+            console.log(e)
+            console.log(e.data.menemonic)
+        },
+        studentFound(e) {
+          this.studentData = e
+          this.curStudId = e.data.studentid
+          this.studentData = `${e.data.studentid}, ${e.data.firstname} ${e.data.surname} {${e.data.grade})`
+      },
+
+
+    },
+    mounted() {
+        this.$cs.l('Mounted', this.$options.name)
+        if (this.meritid) {
+           mer.check({meritid: this.meritid, desc: '', continue:this.initialize})
+        }
+        if (this.getZml.login.studentid) {
+            this.studentData = `${this.getZml.login.studentid}, ${this.getZml.login.firstname} ${this.getZml.login.surname} {${this.getZml.login.grade})`
+            this.curStudId = this.getZml.login.studentid
+        }
+
+
+    },
+    watch:{
+        meritid(n,o) {
+            this.$cs.l('meritid watch ', n, o)
+        }
+    }
+}
+</script>

@@ -73,7 +73,7 @@ function zFetch(task) {
                  ,'Content-Type': 'application/json;charset=UTF-8'},
         body: JSON.stringify(task)
         }
-    return fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
+    return fetch(task.api ? task.api : zmlConfig.apiDKHS, apiConfig)
  }
 
 

@@ -32,7 +32,7 @@ A. The search function, use the itemdisplay to get data to display in dropdown
         :search-input.sync="search"
         :items="itemObj"
         :item-text="itemDisplay"
-        item-value="subjectid"
+        item-value="user_name"
         xxreturn-object
         :label="asLabel">
 <!--
@@ -59,7 +59,7 @@ A. The search function, use the itemdisplay to get data to display in dropdown
 
 <script>
 export default {
-   name: "SubObjectPickList",
+   name: "PersObjectPickList",
    props: {itemObj: {type: Array,required:true}
           ,asLabel: {type:String, default:'xxxx'}
           ,initialValue: {default:1}
@@ -69,7 +69,7 @@ export default {
     what: null,
   }),
   mounted() {
-     this.what = this.itemObj.find(item => item.id == this.initialValue)
+     this.what = this.itemObj.find(item => item.user_name == this.initialValue)
    },
   computed: {
     searchText() {
@@ -77,14 +77,14 @@ export default {
     },
     itemDisplay() {
         //return "this.itemToShow";
-        return item => item.shortname + ' — ' + item.description
+        return item => item.user_name + ' — ' + item.user_fullname
     }
   },
   methods: {      },
   watch: {
     initialValue(n,o) {
-      console.log('W',this.$options.name,o,n)
-      this.what = this.itemObj.find(item => item.id == this.initialValue)
+       console.log('W',this.$options.name,o,n)
+       this.what = this.itemObj.find(item => item.user_name == this.initialValue)
     }
    }
 }

@@ -1,13 +1,13 @@
 <template>
 <!-- SEE ZMLDATATABLE for Printing zml-data-table- --->
  <v-container class="grey lighten-4" v-if="jsonData" fluid>
-   <v-card color="white darken-1">
-  <v-row no-gutters class="mb-6" >
-    <!--v-col cols="1" class="heading-2 text-center">
-       <v-btn class="float-left" icon title="select all" >
-         <v-icon  color="green"> mdi-"marker-check" </v-icon>
-       </v-btn>
-    </v-col-->
+  <v-card color="white darken-1">
+   <v-row no-gutters class="mb-6" >
+    <!-- <v-col cols="1" class="heading-2 text-center">
+      <v-btn class="float-left" icon title="select all" >
+        <v-icon  color="green"> mdi-marker-check" </v-icon>
+      </v-btn>
+    </v-col> -->
     <v-col cols="12" class="heading-2 text-center">
       <v-card class="pa-2"  color="blue" >
           Click on all the columns you wish to display, print or export
@@ -19,11 +19,10 @@
        </v-btn>
     </v-col-->
 
-
     <v-col cols="6" md="3" lg="2" xl="1"
            class="mx-2 pb-2"
-             v-for="n in labels"
-            :key="n.id"
+           v-for="n in labels"
+          :key="n.id"
     >
         <v-checkbox v-model="n.clicked"
                     hide-details
@@ -37,7 +36,7 @@
 
 <v-row>
   <v-col cols="12" md="6">
-     <v-text-field v-model="userHeader" label="Heading/List Name" />
+    <v-text-field v-model="userHeader" label="Heading/List Name" />
   </v-col>
   <v-col cols="12" md="6">
     <v-btn small @click="$emit('hideModal')" class="pa-1 ma-1 float-right"> Close </v-btn>
@@ -48,10 +47,9 @@
               :show-labels="true"
               class="d-print-none float-right"
               :csv-title="'Data List prepared by DKLearn'"
-              > <!-- @success="handleClick" -->
+              >
       <v-btn small class="pa-1 ma-1">    Download    </v-btn>
     </json-to-csv>
-
   </v-col>
 </v-row>
 
@@ -74,6 +72,7 @@
 <script>
 import JsonToCsv from '@/api/csv/JsonToCsv.vue'
 import zmlDataTable from '@/components/zmlDataTable.vue'
+import { ls } from "@/api/localStorage.js"
 export default {
   name: "FrontJsonToCsv",
   components: { JsonToCsv , zmlDataTable},
@@ -81,7 +80,8 @@ export default {
     jsonData: {type: Array, required: true },
     csvTitle: {type: String, default:'whatever'},
     footer: {type: String, default:''},
-    small: {type: Boolean, default: false}
+    small: {type: Boolean, default: false},
+    unique: {type: String, default:''},
   },
   data: () => ({
     labels:[],
@@ -94,6 +94,7 @@ export default {
   },
   methods: {
     build() {
+      console.log(this.$options.name,' clicked for build')
        this.finalJsonData = []
        this.jsonData.forEach(data => {
            let obj = {}
@@ -113,8 +114,13 @@ export default {
                }*/
        })
        this.finalHeading = test; //{...[test]}
+       console.log(this.$options.name,'saving if : ' , this.unique)
+       if (this.unique) {
+           ls.save(this.unique, this.labels)
+       }
     },
     buildLabels() {
+     console.log('building new labels')
      this.labels = []
      this.finalHeading = {}
      this.finalJsonData = []
@@ -131,12 +137,23 @@ export default {
          })
      }
     },
-    handleClick () {
-      // alert('click')
+  },
+  mounted() {
+    console.log('mount', this.$options.name, this.csvTitle,this.small, this.unique)
+    console.log('check if statement : ', this.unique , ls.test('zml'+this.unique))
+    if (this.unique && ls.test('zml'+this.unique)) {
+      this.labels = ls.load(this.unique)
+    } else {
+      this.buildLabels()
+    }
+    this.userHeader = this.csvTitle
 
-    },
   },
   watch:{
+      unique: function() {
+        console.log(this.$options.name,'loading if : ' , this.unique)
+        if (this.unique && ls.test(this.unique)) this.labels = ls.load(this.unique)
+      },
       jsonData: function() {
         this.buildLabels()
       },
@@ -147,10 +164,5 @@ export default {
         }
       }
   },
-  mounted() {
-     this.userHeader = this.csvTitle
-     //'mount',this.$options.name, this.csvTitle
-     this.buildLabels()
-  }
 }
 </script>

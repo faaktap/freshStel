@@ -47,7 +47,7 @@
             width="100%"
             height="100%"
             scrolling="auto" /> -->
-            (homestudent)
+            (homestudent){{ studentid }}
 <v-row>
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
@@ -85,8 +85,7 @@
    </v-expansion-panel>
    <v-expansion-panel>
        <v-expansion-panel-header title="Link to subjects">
-          Subjects
-       </v-expansion-panel-header>
+          Subjects</v-expansion-panel-header>
        <v-expansion-panel-content>
         <student-subject-list :studentid="studentid" color="primary" />
        </v-expansion-panel-content>
@@ -94,13 +93,21 @@
 
    <v-expansion-panel>
        <v-expansion-panel-header title="Show Email Bulletins">
-          Email Bulletins
-       </v-expansion-panel-header>
+          Email Bulletins</v-expansion-panel-header>
+
        <v-expansion-panel-content>
-        <email-bulletins emailSearch="ebull" />
-       </v-expansion-panel-content>
+        <email-bulletins emailSearch="ebull" /></v-expansion-panel-content>
    </v-expansion-panel>
 
+   <v-expansion-panel>
+       <v-expansion-panel-header title="Show Email Bulletins">
+          Merits</v-expansion-panel-header>
+       <v-expansion-panel-content>
+       <!-- <base-title-expand v-if="studentid" heading="Student Merits"> -->
+        <student-merit :studentid="studentid"  xcolor="grey" />
+       <!-- </base-title-expand> -->
+       </v-expansion-panel-content>
+   </v-expansion-panel>
   </v-expansion-panels>
 
 
@@ -142,6 +149,7 @@ import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
+import StudentMerit from '@/components/student/StudentMerit'
 import EmailBulletins from '@/components/email/EmailBulletins'
 import Avatar from '@/components/base/Avatar'
 export default {
@@ -152,6 +160,7 @@ export default {
         , StudentEmailList
         , StudentSubjectList
         , StudentPhotoList
+        , StudentMerit
         , Avatar
         , EmailBulletins
         //, StudentGrade
@@ -189,11 +198,11 @@ export default {
         showPhoto(ev) {
             //We only load the photo if he clicks on the avatar icon.
             //Then we replace the "initialicon" with a actual photo - if we have one.
-            console.log('He clicked the icon - display photos if there are some', ev)
+            this.$cs.l('He clicked the icon - display photos if there are some', ev)
             this.showPhotos = true
         },
         weHaveIt(ev) {
-            console.log('arrived!!', ev)
+            this.$cs.l('arrived!!', ev)
             this.photo=ev
         },
        weekOrDayChange() {
@@ -237,16 +246,16 @@ export default {
         }
     },
     mounted: function() {
-        console.log('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
+        this.$cs.l('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
         this.studentid = this.getZml.login.schoolno
         if (this.getZml.login.grade.length == 2 ) {
            this.gradeToShow.g = 'G'.concat(this.getZml.login.grade)
         } else {
            this.gradeToShow.g = 'G0'.concat(this.getZml.login.grade)
         }
-        console.log(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
+        this.$cs.l(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
         this.gradeToShow.c = this.getZml.login.gclass
-        console.log('home2:', this.gradeToShow.g + this.gradeToShow.c)
+        this.$cs.l('home2:', this.gradeToShow.g + this.gradeToShow.c)
         this.showCal = true;
         this.loadFunctions()
 

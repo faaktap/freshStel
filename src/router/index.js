@@ -351,10 +351,17 @@ const routes = [
     props:true,
     meta: {layout: la[3], authentication: "admin" }
   },
+  // {
+  //   component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritMenu.vue'),
+  //   path: '/merit',
+  //   name: 'MeritMenu',
+  //   meta: {layout: la[3], authentication: "student" }
+  // },
   {
-    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritMenu.vue'),
-    path: '/merit',
-    name: 'MeritMenu',
+    path: '/meritadd/:meritid/:studentid?',
+    name: 'MeritStepper',
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritStepper.vue'),
+    props: true,    params: {meritid: 1},
     meta: {layout: la[3], authentication: "student" }
   },
   {
@@ -395,12 +402,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from,next) => {
-  if (ls.test('zmllogin')  && getters.getState({ object: "gZml" }).login.type == 'guest' ) {
+  if (ls.test('zmllogin') && getters.getState({ object: "gZml" }).login.type == 'guest' ) {
     getters.getState({ object: "gZml" }).login = ls.load('zmllogin')
     if (ls.test('zmlPersM')) {
       getters.getState({ object: "gZml" }).persMenemonic = ls.load('zmlPersM')
     }
-
   }
   const userAuth = getters.getState({ object: "gZml" }).login.isAuthenticated
   const userType = getters.getState({ object: "gZml" }).login.type

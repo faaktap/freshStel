@@ -1,12 +1,12 @@
 <template>
-  <v-autocomplete 
+  <v-autocomplete
         v-model="searchResult"
-        :value="searchText" 
-        :search-input.sync="search" 
+        :value="searchText"
+        :search-input.sync="search"
         :items="list"
-        :item-text="itemDisplay" 
-        item-value="desc" 
-        return-object 
+        :item-text="itemDisplay"
+        item-value="desc"
+        return-object
         outlined
         dense
         label="Personel Surname"
@@ -22,14 +22,14 @@ export default {
    name: "PersonelLookup",
    props: {},
    data: () => ({
-    searchResult: '',
+    searchResult: 'MON',
     search: "",
     loadingItems: false,
     list:[{desc:"Type"}
          ,{desc:"Personel"}
          ,{desc:"Surname"}],
   }),
-  mounted() { 
+  mounted() {
       //this.list = this.somedefaults;
    },
 
@@ -39,6 +39,7 @@ export default {
     },
     itemDisplay() {
         return "desc";
+        //return "Surname";
     },
   },
 
@@ -68,7 +69,7 @@ export default {
         this.list = [];
         for (let i=0; i < response.length; i++) {
             let row = response[i];
-            let obj = {desc: row.name + ' ' + row.surname + ', ' + row.email, data: response[i]};
+            let obj = {desc: `${row.surname} ${row.name.substr(0,1)}, ${row.menemonic}`, data: response[i]};
             this.list.push(obj);
         }
         this.loadingItems = false;

@@ -97,6 +97,7 @@ export default {
       this.progress = true
       let ts = {}
       ts.api = 'https://kuiliesonline.co.za/api/file/zmlDir.php'
+      ts.path = '/home/kuilieso/public_html/Subjects'
       ts.task = 'read'
       this.loading = true
       zmlFetch(ts, this.processData, this.loadError);

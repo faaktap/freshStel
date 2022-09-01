@@ -1,22 +1,14 @@
 <template>
  <v-container fluid>
    <h3 class="text-center ma-2"> {{ reportHeader }} </h3>
-     <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
-     <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn>
-     <!-- <v-text-field
-           v-model="search"
-           append-icon="mdi-magnify"
-           label="Search"
-           single-line
-           hide-details
-        /> -->
-     </v-card>
-      <v-data-table
+    <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
+      <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn>
+    </v-card>
+    <v-data-table
           v-if="filterTable.length"
           :headers="labels"
           :items="filterTable"
-      >
-      </v-data-table>
+    />
 
 <v-dialog v-model="showPrint" xwidth="auto" :fullscreen="$vuetify.breakpoint.smAndDown">
   <front-json-to-csv v-if="filterTable2.length"
@@ -24,6 +16,7 @@
                    :csv-title="reportHeader"
                    @hideModal="showPrint = false"
                    :footer="realFooter"
+                   :unique="unique"
                    :small="true">
    <v-btn>
       Download with custom title
@@ -44,7 +37,8 @@ export default {
          sqlSelect:{type:String, required:true},
          reportHeader:{type:String, default:"reportHeader"},
          entity:{type:String},
-         footer:{type:String, default:""}
+         footer:{type:String, default:""},
+         unique:{type:String, default:""}
          },
   components: {FrontJsonToCsv},
   data: () => ({

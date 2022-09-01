@@ -8,6 +8,11 @@ import Vue from 'vue';
 //getZml.folders = folderid sortorder foldername realfoldername subjectid grade icon create_timestamp update_timestamp
 //getZml.subjects = id,name, subjectid,sortorder,shortname,path,description,beskrywing,linksubjectid,picture
 const state = Vue.observable({
+    gOth: {popi:[],
+           atester: false,
+           store: {totalItems: 0},
+           folders: [],
+    },
     gZml: {login: {isAuthenticated: 0
                   , grade:'G12'
                   , class:'12'
@@ -27,7 +32,6 @@ const state = Vue.observable({
                   , lastdate:''
                   , type:'guest'
                   , login:''},
-           store: {totalItems: 0},
            grade: '',
            grades:[{id:8 ,text: "G08",name: 'Grade 8'} ,{id:9 ,text: "G09",name: 'Grade 9'}
                   ,{id:10,text: "G10",name: 'Grade 10'},{id:11,text: "G11",name: 'Grade 11'}
@@ -36,15 +40,13 @@ const state = Vue.observable({
            subject: '',
            subjectid: '',
            subjects: [],
-           folders: [],
            functions: [],
            voteList:[],
            locale: 'af',
            calendar:[],
-           popi:[],
            meritLevel:[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
            persMenemonic:[],   //SELECT user_name, userid FROM `dkhs_learner` WHERE user_type = 'teacher'
-           atester: false,
+           place: [],  //p.placeid, p.name, w.name workarea, p.description,p.ownerid concat(p.name, ' - ',w.name) concatsearch"
           }
     });
 
@@ -73,7 +75,7 @@ const mutations = {
 
 const getters = {
   getState({ object, objectPath } = {}) {
-    if (state[object] === undefined) console.error("getState: Invalid Object.");
+    if (state[object] === undefined) console.error("getState: Invalid Object.", object, objectPath);
     if (objectPath === undefined) return state[object];
     if (objectPath && Array.isArray(objectPath) && objectPath.length) {
       let navigate = [object, ...objectPath.slice(0, -1)],

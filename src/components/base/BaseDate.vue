@@ -43,9 +43,9 @@ export default {
   }),
   methods:{
     checkIfInFuture(dte) {
-      console.log(this.instructions)
-      if (this.instructions == 'FA') return 0;
-      console.log(this.instructions)
+      console.log(this.instructions, 'before check', this.instructions == 'FA')
+      if (this.instructions == 'FA') return false;
+      console.log(this.instructions, 'fall thru')
       let selected = {}
       selected.yyyy= dte.substr(0,4)
       selected.mm = dte.substr(5,2)

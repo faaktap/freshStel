@@ -1,18 +1,20 @@
 <template>
 <v-container fluid>
-  <small><i>{{ anotherTreeString }}</i></small>
+    <small><i>{{ treeString }}</i></small>
+    {{ selArr }}
   <v-chip-group mandatory column>
     <v-chip v-for="tag in meritFilter(idx0)"
             :key="tag.id"
             @click="chgSubMenu(0,tag)"
             outlined
             :title="tag.info"
+
     >
      <template v-if="tag.title"> {{ tag.title }} </template>
     </v-chip>
   </v-chip-group>
   <v-divider color="grey darken-4" inset />
-  <v-chip-group mandatory column color="primary">
+  <v-chip-group mandatory column>
     <v-chip v-for="tag in meritFilter(idx1)"
             :key="tag.id"
             @click="chgSubMenu(1,tag)"
@@ -49,7 +51,7 @@
     </v-chip>
   </v-chip-group>
   <v-divider class="mb-2" inset width="40%" />
-  <v-btn small v-if="meritAlloc.meritid" @click="allocate"> Allocate {{ anotherTreeString }} </v-btn>
+  <v-btn small v-if="meritAlloc.meritid" @click="allocate"> Allocate {{ treeString }} </v-btn>
 
   <!-- <merit-stepper v-if="meritInfo" :meritInfo="meritInfo" /> -->
 </v-container>
@@ -75,6 +77,7 @@ import { mer } from "@/components/merit/merit.js"
         idx3: -1,
         idx4: -1,
         aTable: getters.getState({ object: "gZml" }).meritLevel , // we keep all data from sql here
+        treeString: '', //display our selection
         selArr: [],
         curTag:'',
         meritInfo:'',
@@ -91,15 +94,6 @@ import { mer } from "@/components/merit/merit.js"
               return false
             }
             })
-       },
-       anotherTreeString() {
-        let answer = ''
-        this.selArr.forEach(s => {
-          const f = this.aTable.find(f => f.id == s )
-          answer += f.title + (f.forward == 0 ? '.' : ', ')
-        })
-        return answer
-
        }
     },
     methods: {
@@ -116,7 +110,7 @@ import { mer } from "@/components/merit/merit.js"
         let id = this.selArr[this.selArr.length-1]
         let r = this.aTable.find(f => f.id == id )
         //alert('MeritID = we need to add it to meritlink if not exist' + r.meritid + this.treeString)
-        this.meritAlloc = {meritid: r.meritid, desc: this.anotherTreeString, continue:this.okWereGood}
+        this.meritAlloc = {meritid: r.meritid, desc: this.treeString, continue:this.okWereGood}
         mer.check(this.meritAlloc)
         // now we need to wait before we call meritstepper. - continue will do that..
         return
@@ -130,25 +124,14 @@ import { mer } from "@/components/merit/merit.js"
         this.meritInfo = "sdfsdfsdf"
 */
       },
-      fixLevel(level,selectedtag) {
-        //We worked with level 0 to 4 (max 5 levels)
-          console.log('fixlevel if needed level=',level,'tag=',selectedtag.title)
-          while (this.selArr.length > level) {
-            this.selArr.pop()
-            console.log('after pop we have:', this.selArr)
-          }
-          this.selArr.push(selectedtag.id)
-      },
       chgSubMenu(i,tag) {
-        console.log('chgSubMenu  :array length and i ', i, tag)
-        this.fixLevel(i,tag)
-        console.log('chgSubMenu  :after level', i, tag)
+        this.addLevel(i,tag)
         if (tag.forward == 0) {
           //we reach a workable tag
           //infoSnackbar('we reached the end - ask for student, and do assignment here - can enter many students at a time, or import?')
           let id = this.selArr[this.selArr.length-1]
           let r = this.aTable.find(f => f.id == id )
-          this.meritAlloc = {meritid: r.meritid, desc: this.anotherTreeString}
+          this.meritAlloc = {meritid: r.meritid, desc: this.treeString}
           return
         }
         this.meritAlloc = {}
@@ -159,7 +142,7 @@ import { mer } from "@/components/merit/merit.js"
             this.idx2 = -1
             this.idx3 = -1
             this.selArr = []
-            this.fixLevel(i,tag)
+            this.addLevel(i,tag)
         }
         if (i == 1) { this.idx2 = id.back }
         if (i == 2) { this.idx3 = id.back }
@@ -168,11 +151,29 @@ import { mer } from "@/components/merit/merit.js"
         console.log('tag = ',i, tag.id, this.idx0,this.idx1,this.idx2,this.idx3, this.idx4)
 
         this.curTag = tag
+
+        //recalc treeString
+        this.treeString = ''
+        this.selArr.forEach(s => {
+          let f = this.aTable.find(f => f.id == s )
+          this.treeString += f.title + (f.forward == 0 ? '.' : ', ')
+        })
+
+
        },
        addLevel(i,tag) {
-        console.log('addLevel  :array length and i ', i, this.selArr.length)
-        if (this.selArr.length > i) this.selArr.pop()
+        console.log('array length and i ', i, this.selArr.length)
+        if (this.selArr.length > i-1) this.selArr.pop()
         this.selArr.push(tag.id)
+        this.treeString = ''
+        let lastOne
+        this.selArr.forEach(e => {
+            const f = this.aTable.find(f => f.id == e )
+            lastOne = f.meritid
+            this.treeString += f.title + (f.forward == 0 ? '.' : ', ')
+        })
+        console.log('pushed - treeString = ', this.treeString, 'meritid=',lastOne)
+
        },
        initialize(data) {
         if (this.getZml.meritLevel.length < 10) {

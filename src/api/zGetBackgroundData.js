@@ -49,7 +49,7 @@ export const zData = {
                         }
         fetch(zmlConfig.emailPath, apiConfig);
     },
-    wernerTest() {},
+    //wernerTest() {},
     initialData:  (whatever, afterwardsFunction) => {
         if (whatever !== undefined)
             l(whatever)
@@ -95,6 +95,11 @@ function finishedLoadingBasic (response) {
     getters.getState({ object: "gZml" }).persMenemonic = response.pers;
     ls.save('zmlPersM', response.pers)
 
+    if (response.place.length > 5) {
+      getters.getState({ object: "gZml" }).place = response.place;
+      ls.save('zmlPlace', response.place)
+    }
+
     // will be empty when not a student
     if (response.student.length) {
       getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;
@@ -102,7 +107,7 @@ function finishedLoadingBasic (response) {
     }
     if (response.meritlevel.length > 5) {
         ls.save('zmlMeritLevel', response.meritlevel)
-        getters.getState({ object: "dgZml" }).meritLevel = response.meritlevel;
+        getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;
     } else {
         l('finishedLoadingBasic:d_MeritLevel is empty!')
     }
