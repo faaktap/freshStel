@@ -74,7 +74,7 @@
    </v-col>
   </v-row>
 
-  <user-edit :u="curItem" />
+  <user-edit v-if="'userid' in curItem" :u="curItem" />
 
   <v-dialog v-model="showResult" fullscreen>
      <v-card color="red" v-if="showResult && userList">

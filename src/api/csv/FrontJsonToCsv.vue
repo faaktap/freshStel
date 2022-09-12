@@ -41,7 +41,7 @@
   <v-col cols="12" md="6">
     <v-btn small @click="$emit('hideModal')" class="pa-1 ma-1 float-right"> Close </v-btn>
     <v-btn small class="float-right pa-1 ma-1" @click="activatePrint += 1"> Print </v-btn>
-    <json-to-csv v-if="finalJsonData"
+    <json-to-csv v-if="finalJsonData.length"
               :json-data="finalJsonData"
               :labels="finalHeading"
               :show-labels="true"
@@ -75,7 +75,10 @@ import zmlDataTable from '@/components/zmlDataTable.vue'
 import { ls } from "@/api/localStorage.js"
 export default {
   name: "FrontJsonToCsv",
-  components: { JsonToCsv , zmlDataTable},
+  components: {
+    JsonToCsv
+   ,zmlDataTable
+  },
   props: {
     jsonData: {type: Array, required: true },
     csvTitle: {type: String, default:'whatever'},
@@ -96,6 +99,7 @@ export default {
     build() {
       console.log(this.$options.name,' clicked for build')
        this.finalJsonData = []
+       console.log(this.$options.name,'BUILD 1')
        this.jsonData.forEach(data => {
            let obj = {}
            this.labels.forEach(lab => {
@@ -106,6 +110,7 @@ export default {
            this.finalJsonData.push(obj)
        })
        let test = {}
+       console.log(this.$options.name,'BUILD 2')
        this.labels.forEach(lab => {
                if (lab.clicked == true) {
                  test[lab.desc] = {title: lab.desc.toUpperCase() }
@@ -113,11 +118,14 @@ export default {
                  test[lab.desc] = ''
                }*/
        })
+       console.log(this.$options.name,'BUILD 3')
        this.finalHeading = test; //{...[test]}
        console.log(this.$options.name,'saving if : ' , this.unique)
        if (this.unique) {
-           ls.save(this.unique, this.labels)
+          console.log('this.uniqe is true')
+           // ls.save(this.unique, this.labels)
        }
+       console.log(this.$options.name,'BUILD 4')
     },
     buildLabels() {
      console.log('building new labels')
@@ -141,26 +149,30 @@ export default {
   mounted() {
     console.log('mount', this.$options.name, this.csvTitle,this.small, this.unique)
     console.log('check if statement : ', this.unique , ls.test('zml'+this.unique))
-    if (this.unique && ls.test('zml'+this.unique)) {
-      this.labels = ls.load(this.unique)
-    } else {
-      this.buildLabels()
-    }
+    // if (this.unique && ls.test('zml'+this.unique)) {
+    //   console.log('loading unique : ', 'zml' + this.unique,ls.load(this.unique))
+    //   this.labels = ls.load(this.unique)
+    // } else {
+    //   console.log('Ask for buildlabels .. unique = ', this.unique)
+       this.buildLabels()
+    // }
     this.userHeader = this.csvTitle
 
   },
   watch:{
-      unique: function() {
-        console.log(this.$options.name,'loading if : ' , this.unique)
-        if (this.unique && ls.test(this.unique)) this.labels = ls.load(this.unique)
-      },
+      // unique: function() {
+      //   console.log(this.$options.name,'loading if : ' , this.unique)
+      //   if (this.unique && ls.test(this.unique)) this.labels = ls.load(this.unique)
+      // },
       jsonData: function() {
         this.buildLabels()
       },
       labels: {
         deep: true,
-        handler() {
+        handler(n,o) {
+          console.log('labels handler: new',n,'old',o)
           this.build()
+          console.log('build watch done')
         }
       }
   },

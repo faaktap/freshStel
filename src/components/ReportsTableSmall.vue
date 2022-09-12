@@ -15,6 +15,7 @@
                    :json-data="filterTable2"
                    :csv-title="reportHeader"
                    @hideModal="showPrint = false"
+                   @printed="showPrint=false"
                    :footer="realFooter"
                    :unique="unique"
                    :small="true">
@@ -80,8 +81,7 @@ export default {
                                             teacher: e.teacher,
                                             examdate: e.examdate,
                                             learnassist: e.learnassist,
-                                            present: '',
-                                            t1: ''})
+                                            present: ''})
       })
       return prTab
     }

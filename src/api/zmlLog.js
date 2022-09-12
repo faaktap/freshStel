@@ -1,4 +1,5 @@
 import { zmlConfig } from '@/api/constants';
+import { getters } from "@/api/store";
 // eslint-disable-next-line
 function zmlLog(user, pagename,logobj, callback,errcallback) {
     zmlConfig.cl('incoming task for LOG = ' , pagename)
@@ -6,7 +7,7 @@ function zmlLog(user, pagename,logobj, callback,errcallback) {
         task.data =  {}
         task.data.logdata = logobj || 'nodata'
         task.data.pagename = pagename || 'nopage'
-        task.data.user = user || 'none'
+        task.data.user = user || getters.getState({ object: "gZml" }).login.username
         task.task = 'dolog'
         task.status = 'trying'
         task.api =  zmlConfig. apiDKHS
@@ -14,10 +15,10 @@ function zmlLog(user, pagename,logobj, callback,errcallback) {
                   headers: {'Accept': 'application/json'
                          , 'Content-Type': 'application/json;charset=UTF-8'},
                   body: JSON.stringify(task)}
-     
+
         fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
-        .then(response => response.json())  
-        .then(response => { 
+        .then(response => response.json())
+        .then(response => {
            if (callback) callback(response,task);
            zmlConfig.cl('ZF: after log callback for ',task.task);
         })
@@ -26,4 +27,4 @@ function zmlLog(user, pagename,logobj, callback,errcallback) {
             if (errcallback) errcallback(err);
         });
     }
-export {zmlLog};    
+export {zmlLog};

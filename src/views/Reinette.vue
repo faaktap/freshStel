@@ -283,14 +283,19 @@ export default {
       //console.log(this.subjectHeader)
     },
     hello(parms) {
+      let cKeyIdx = parms.subject.indexOf('.')
+      let cKey = ''
+      if (cKeyIdx > -1) {
+          cKey = parms.subject.substr(cKeyIdx+1,1)
+      }
       this.sqlSelect = `select s.studentid\
-     , s.surname\
-	 , s.firstname\
-	 , concat(s.grade,'.', s.gclass) grade\
-	 , g.venue\
-	 , g.examdate\
-	 , g.teacher\
-     , IF( EXISTS(SELECT studentid FROM dkhs_learnassist WHERE studentid = s.studentid), 'BUR', '') learnassist\
+ , s.surname\
+ , s.firstname\
+ , concat(s.grade,'.', s.gclass) grade\
+ , g.venue\
+ , g.examdate\
+ , g.teacher\
+ , IF( EXISTS(SELECT studentid FROM dkhs_learnassist WHERE studentid = s.studentid), 'BUR', '') learnassist\
  from dkhs_student s\
     , dkhs_subjectgroup g\
 	, dkhs_studsub ss\
@@ -299,6 +304,7 @@ export default {
    and g.teacher = ss.teacher\
    and g.teacher = '${parms.teacher}'\
    and g.subjectname = '${parms.subject}'\
+   and ss.ckey = ${cKey}\
    and s.grade = '${parms.grade}'\
    and g.grade = '${parms.grade}'`
       this.reportHeader = `ExamPrintList: ${parms.grade} ${parms.teacher} in ${parms.venue} on ${parms.examdate}`

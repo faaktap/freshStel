@@ -13,11 +13,12 @@ or
        color="purple" />
 -->
 <template>
+<v-container fluid>
  <v-expansion-panels rounded class="pa-0 mx-0 mb-2"  v-model="panel">
-   <v-expansion-panel>
+   <v-expansion-panel value="0">
     <v-expansion-panel-header  :color="color">
         <slot name="header">
-         <h1 :class="`${headingSize} text-center`">{{ heading }}</h1>
+         <h2 :class="`${headingSize} text-center`">{{ heading }}</h2>
          </slot>
      </v-expansion-panel-header>
      <v-expansion-panel-content class="ma-0 pa-0">
@@ -29,7 +30,7 @@ or
      </v-expansion-panel-content>
     </v-expansion-panel>
  </v-expansion-panels>
-
+</v-container>
 </template>
 
 <script>

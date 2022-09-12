@@ -69,7 +69,9 @@ export default {
     what: null,
   }),
   mounted() {
-     this.what = this.itemObj.find(item => item.user_name == this.initialValue)
+    //console.log('W0 mounted :', this.initialValue, this.itemObj.length)
+     this.what = this.itemObj.find(e => e.user_name == this.initialValue)
+     //console.log('W1 mounted :', this.what)
    },
   computed: {
     searchText() {
@@ -77,14 +79,16 @@ export default {
     },
     itemDisplay() {
         //return "this.itemToShow";
+        //console.log('W33IT', this.itemObj.find(item => item.user_name == this.initialValue))
         return item => item.user_name + ' — ' + item.user_fullname
     }
   },
   methods: {      },
   watch: {
     initialValue(n,o) {
-       console.log('W',this.$options.name,o,n)
+       console.log('W1',this.$options.name,o,n)
        this.what = this.itemObj.find(item => item.user_name == this.initialValue)
+       //console.log('W2',this.what)
     }
    }
 }

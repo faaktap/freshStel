@@ -36,10 +36,10 @@
 </v-col>
 |</v-row>
 
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='wie'">
+    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
        <v-btn href="http://kuiliesonline.co.za/cw-mail/"> Online Mass Mail </v-btn>
     </div>
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
         HT
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>

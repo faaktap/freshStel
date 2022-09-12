@@ -1,5 +1,10 @@
 <template>
 <v-container fluid>
+  <v-card>
+    <v-card-actions v-if="showAdd==false">
+      <v-btn  @click="showAdd = !showAdd"> Add </v-btn>
+    </v-card-actions>
+    <template v-else>
   <small><i>{{ anotherTreeString }}</i></small>
   <v-chip-group mandatory column>
     <v-chip v-for="tag in meritFilter(idx0)"
@@ -37,7 +42,7 @@
     </v-chip>
   </v-chip-group>
   <v-divider inset color="green" />
-  <v-chip-group mandatory column color="grey darken-3">
+  <v-chip-group mandatory column color="grey darken-3" class="ma-2 pa-2" >
     <v-chip v-for="tag in meritFilter(idx3)"
             :key="tag.id"
             @click="chgSubMenu(3,tag)"
@@ -48,9 +53,10 @@
      <template v-if="tag.title"> {{ tag.title }} </template>
     </v-chip>
   </v-chip-group>
-  <v-divider class="mb-2" inset width="40%" />
-  <v-btn small v-if="meritAlloc.meritid" @click="allocate"> Allocate {{ anotherTreeString }} </v-btn>
-
+  <!-- <v-divider class="mb-2" inset width="40%" /> -->
+  <v-btn class="ma-2 pa-2" small v-if="meritAlloc.meritid" @click="allocate"> Allocate {{ anotherTreeString }} </v-btn>
+    </template>
+  </v-card>
   <!-- <merit-stepper v-if="meritInfo" :meritInfo="meritInfo" /> -->
 </v-container>
 </template>
@@ -62,13 +68,15 @@ import { infoSnackbar } from "@/api/GlobalActions"
 import { mer } from "@/components/merit/merit.js"
 //import MeritStepper from "@/components/merit/MeritStepper"
   export default {
-    name: 'MeritMenu',
+    name: 'MeritChip',
+    props:['studentid'],
     components:{
       // MeritStepper
     },
     data () {
       return {
         getZml: getters.getState({ object: "gZml" }),
+        showAdd:false,
         idx0: 0, //start with first menu on v-chips
         idx1: -1,
         idx2: -1,
@@ -103,10 +111,13 @@ import { mer } from "@/components/merit/merit.js"
        }
     },
     methods: {
-      okWereGood(pData, description) {
-        console.log('we do not need description here ', description)
+      okWereGood(pData) {
+        console.log('.....We do not need description here ', mer.descriptionForThisSession, pData.meritid, this.studentid, pData)
         this.$router.push({name: 'MeritStepper' , meta: {layout: "AppLayoutDefault" }
-                          ,params: {meritid: pData.meritid} })
+                          ,params: {meritid: pData.meritid
+                                 , description: mer.descriptionForThisSession
+                                 , studentid:this.studentid}
+                          })
       },
       allocate() {
         if (!this.meritAlloc.meritid) {
@@ -120,19 +131,10 @@ import { mer } from "@/components/merit/merit.js"
         mer.check(this.meritAlloc)
         // now we need to wait before we call meritstepper. - continue will do that..
         return
-/*
-
-        // Now we need to check if this merit is in dkhs_meritlink,
-        // if not there, we need to add record meritid, defaultpersmenemonic, defaultdescription
-        //
-        // then we need to add dkhs_meritstudent
-        // meritstudentid, studentid, meritid, meritdte, persmenemonic, confirmdte, description
-        this.meritInfo = "sdfsdfsdf"
-*/
       },
       fixLevel(level,selectedtag) {
         //We worked with level 0 to 4 (max 5 levels)
-          console.log('fixlevel if needed level=',level,'tag=',selectedtag.title)
+          //console.log('fixlevel if needed level=',level,'tag=',selectedtag.title)
           while (this.selArr.length > level) {
             this.selArr.pop()
             console.log('after pop we have:', this.selArr)
@@ -140,9 +142,9 @@ import { mer } from "@/components/merit/merit.js"
           this.selArr.push(selectedtag.id)
       },
       chgSubMenu(i,tag) {
-        console.log('chgSubMenu  :array length and i ', i, tag)
+        // console.log('chgSubMenu  :array length and i ', i, tag)
         this.fixLevel(i,tag)
-        console.log('chgSubMenu  :after level', i, tag)
+        //console.log('chgSubMenu  :after level', i, tag)
         if (tag.forward == 0) {
           //we reach a workable tag
           //infoSnackbar('we reached the end - ask for student, and do assignment here - can enter many students at a time, or import?')
@@ -165,25 +167,28 @@ import { mer } from "@/components/merit/merit.js"
         if (i == 2) { this.idx3 = id.back }
         if (i == 3) { this.idx4 = id.back }
 
-        console.log('tag = ',i, tag.id, this.idx0,this.idx1,this.idx2,this.idx3, this.idx4)
+        // console.log('tag = ',i, tag.id, this.idx0,this.idx1,this.idx2,this.idx3, this.idx4)
 
         this.curTag = tag
        },
        addLevel(i,tag) {
-        console.log('addLevel  :array length and i ', i, this.selArr.length)
+        // console.log('addLevel  :array length and i ', i, this.selArr.length)
         if (this.selArr.length > i) this.selArr.pop()
         this.selArr.push(tag.id)
        },
        initialize(data) {
-        if (this.getZml.meritLevel.length < 10) {
-           this.getZml.meritLevel = data
-        }
         this.aTable = data
+        this.getZml.meritLevel = data
        },
     },
     mounted() {
+      this.$cs.l('Mounted', this.$options.name, 'Stud?=',this.studentid)
+      if (this.getZml.meritLevel.length > 10) {
+           this.aTable = this.getZml.meritLevel
+      } else {
         let sqlStatement = `SELECT * from dkhs_meritlevel`
         zData.loadSql(this.loading, sqlStatement, this.initialize)
+      }
     },
 
   }

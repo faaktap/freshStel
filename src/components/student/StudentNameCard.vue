@@ -3,19 +3,19 @@
    <v-card v-if="studentList" class="mx-auto" :color="color" elevation="2" xtile>
      <div class="d-flex flex-no-wrap justify-space-between ma-2">
       <div>
-        <v-card-title class="headline" v-text="studentList.data.surname" />
+        <v-card-title class="headline">
+          <strong>{{ studentList.data.surname }}</strong>
+        </v-card-title>
         <v-card-subtitle class="headline">
             <b>{{ studentList.data.firstname }}</b>
-            <table class="body-1 pt-2">
-            <tr><td> admin</td><td> {{ studentList.data.studentid }} </td></tr>
-            <tr><td> idnumber </td> <td>{{ studentList.data.idno }} </td></tr>
-            </table>
+            <v-simple-table class="body-1 pt-2 ma-2 pa-2">
+            <tr><td> admin &nbsp;</td><td> {{ studentList.data.studentid }} </td></tr>
+            <tr><td> id  &nbsp;</td> <td>{{ studentList.data.idno }} </td></tr>
+            <tr><td> name  &nbsp;</td> <td>{{ studentList.data.firstname }} {{ studentList.data.surname }}</td></tr>
+            </v-simple-table>
         </v-card-subtitle>
         </div>
       <div>
-      {{ studentList.data.grade }}
-      {{ studentList.data.gclass }}
-      <v-btn class="ma-2"> Edit </v-btn>
       <v-avatar class="ma-3" size="125" tile>
        <v-img
          :src="'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno='+studentList.data.studentid"
@@ -23,6 +23,12 @@
          contain>
         </v-img>
       </v-avatar>
+      <br>
+      {{ studentList.data.grade }}
+      {{ studentList.data.gclass }}
+      <!-- <br> -->
+      <v-btn small class="ma-2" color="primary"> Edit </v-btn>
+
       </div>
      </div>
      <v-card-text>
@@ -39,7 +45,6 @@
 export default {
     name:"StudentNameCard",
     props: ['studentList','color'],
-    mounted: function() {
-    }
+    mounted() {}
 }
 </script>

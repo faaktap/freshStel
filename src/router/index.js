@@ -161,6 +161,13 @@ const routes = [
     name: 'PersonelInfo',
     meta: {layout: la[3], authentication: "public" }
   },  {
+      component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelNameCardDemo.vue'),
+      path: '/personel/:persName?',
+      name: 'PersonelCard',
+      props: true,
+      params: {persName: 'what'},
+      meta: {layout: la[3], authentication: "admin" }
+  },  {
     component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelMenemonic.vue'),
     path: '/sgrade1',    name: 'sgrade1',    meta: {layout: la[3], authentication: "admin" }
   },  {
@@ -358,23 +365,37 @@ const routes = [
   //   meta: {layout: la[3], authentication: "student" }
   // },
   {
-    path: '/meritadd/:meritid/:studentid?',
+    path: '/meritadd/:meritid/:studentid?/:description?',
     name: 'MeritStepper',
     component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritStepper.vue'),
-    props: true,    params: {meritid: 1},
+    props: true,
+    params: {meritid: 1,studentid:'', description:''},
     meta: {layout: la[3], authentication: "student" }
   },
+  {
+    path: '/meritpoint',
+    name: 'MeritPoint',
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritPoint.vue'),
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritStart.vue'),
+    path: '/meritstart',
+    name: 'MeritStart',
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/staff/PersonelMeritList.vue'),
+    path: '/persmeritlist',
+    name: 'PersMeritList',
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+
   {
     component: () => import(/* webpackChunkName: "homework" */ '@/components/student/StudentClass.vue'),
     path: '/class',
     name: 'ClassList',
     params: {title:"studentClassList",gc:{ g: "G12", c: "E1" }},
-    meta: {layout: la[3], authentication: "teacher" }
-  },
-  {
-    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritTable.vue'),
-    path: '/meritview',
-    name: 'MeritTable',
     meta: {layout: la[3], authentication: "teacher" }
   },
   {

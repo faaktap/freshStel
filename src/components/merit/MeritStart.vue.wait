@@ -1,5 +1,50 @@
 <template>
+<div>
+<v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
+    You are not logged in, or you are not a teacher!
+</v-container>
+
+
 <v-container fluid>
+
+<v-toolbar  dense  row  wrap :xxcollapse="$vuetify.breakpoint.smAndDown">
+    <v-app-bar-nav-icon  v-if="$vuetify.breakpoint.smAndDown" @click.stop="drawer = !drawer">
+    </v-app-bar-nav-icon>
+    <v-navigation-drawer v-model="drawer" absolute temporary >
+
+      <v-switch v-model="showMeritPoint" hide-details
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Merit Point Allocation"
+      />
+
+      <base-tool-button class="mr-2" icon="mdi-cupcake">
+        List 2
+      </base-tool-button>
+      <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
+        List 3
+      </base-tool-button>
+      </v-navigation-drawer>
+      <v-spacer />
+      <v-switch v-model="showMeritPoint" hide-details
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Merit Point Allocation"
+      />
+
+      <base-tool-button class="mr-2" icon="mdi-cupcake">
+        List 2
+      </base-tool-button>
+      <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
+        List 3
+      </base-tool-button>
+
+  </v-toolbar>
+
+
+
+<merit-link v-if="showMeritPoint" />
+
+
+
   <base-title-expand color="purple" heading="Merit Musings">
   <p>
     Once a merit is selected, we need to define a way that it can be added.. Easily, Quickly
@@ -75,6 +120,7 @@
     <merit-chip />
    </v-card>
 </v-container>
+</div>
 </template>
 
 <docs>
@@ -83,17 +129,28 @@ Here is some documentation
 <script>
 import { getters } from "@/api/store"
 import { zData } from "@/api/zGetBackgroundData.js"
-import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import { infoSnackbar } from "@/api/GlobalActions"
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+
 import MeritForm from "@/components/merit/MeritForm"
 import MeritChip from "@/components/merit/MeritChip"
 
+import MeritLink from "@/components/merit/MeritLink"
 
 export default {
     name: 'MeritTable',
-    components:{ BaseTitleExpand, MeritForm, MeritChip },
+    components:{
+        BaseTitleExpand
+      , BaseToolButton
+      , MeritForm
+      , MeritChip
+      , MeritLink
+    },
     data () {
       return {
+        drawer: false,
+        showMeritPoint: false,
         docs:  this.__docs,
         getZml: getters.getState({ object: "gZml" }),
         id:0,

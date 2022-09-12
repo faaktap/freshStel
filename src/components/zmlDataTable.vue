@@ -25,7 +25,7 @@
  </table>
 
  </v-card-title>
-   <v-card-text v-if="footer.length > 400" class="mx-0 my-1 pa-0 xhide" v-html="footer">  </v-card-text>
+   <v-card-text v-if="footer.length > 400" class="mx-0 my-1 pa-2 xhide" v-html="footer">  </v-card-text>
    <v-data-table
      v-if="Array.isArray(dataList)"
     :headers="dataHeader"
@@ -59,21 +59,15 @@ export default {
     }),
     methods:{
       itemRowBackground(item) {
-        console.log('itemRowBackground','grade' in item , item.grade.indexOf('A')>-1)
-        if ('learnassist' in item && item.learnassist) {
-          return 'blue'
-        }
-        if ('grade' in item && item.grade.indexOf('A')>-1) {
-           return 'red'
-        }
+    //    console.log('itemRowBackground','grade' in item , item.grade.indexOf('A')>-1)
+        if ('learnassist' in item && item.learnassist) { return 'blue'}
+        if ('grade' in item && item.grade.indexOf('A')>-1) {return 'red'}
         return ''
       },
       clickOnRow(p1,p2) {
         this.$emit('clickOnRow',p1,p2)
       },
-      onButtonClick(todo,data) {
-        console.log(todo, data)
-      },
+      onButtonClick(todo,data) { console.log(todo, data) },
       reBuildHeaders() {
         if (Array.isArray(this.dataList) && this.dataList.length > 0) {
           this.$cs.l(this.$options.name,'isArray = ' , this.dataList.length, this.userHeader)
@@ -91,6 +85,7 @@ export default {
         //   "@page { margin-top: 10px } @media print { h1 { color: blue },heading { color: blue } }";
         // const headerStyle = "align:center;";
         let style = ''
+        //th, td {font: Helvetica;font-size: 10pt; border-radius: 1px; padding: 1px; margin: 1px; border: 1px solid #e6e4ed;}\
         if (this.small) {
          style = `
           @page { margin-top: 45px }
@@ -100,13 +95,16 @@ export default {
           h1 { color: #1c3a1b }\
           heading { color: #1c3a1b; height: 150px}\
           p.bodyText {font-size:12pt}\
-          th, td {font: Helvetica;font-size: 9pt; border-radius: 1px; padding: 1px; margin: 1px; border: 1px solid #e6e4ed;}\
+          th, td {font-size: 14pt; border-radius: 1px; padding: 1px; margin: 1px; border: 1px solid #e6e4ed;}\
           table: {width:95%;}\
           aside {display: none;}\
           main {display: block;}\
-          .red {background-color: #eee;}\
-          .blue {background-color: #FFFFE0;}\
+          .red {background-color: rgb(182, 164, 201); font-style: italic;}\
+          .blue {background-color: gainsboro; font-style: oblique;}\
          }`
+         //          .red {background-color: #eee;}\
+          //.blue {background-color: #FFFFE0;}\
+
         } else {
          style = `
           @page { margin-top: 10px }
@@ -134,6 +132,7 @@ export default {
            onPrintDialogClose: () => console.log("The print dialog was closed"),
            onError: e => console.log(e)
           });
+          this.$emit('printed')
       }
 
     },
@@ -177,7 +176,32 @@ export default {
 <style scoped>
 .hide {display:none;}
 
+.red {
+  background-color: rgb(182, 164, 201);
+  font-style: italic;
+}
+.blue {
+  background-color: gainsboro;
+  font-style: oblique;
+}
+.capitalize-first {
+  text-transform: lowercase;
+}
+.capitalize-first::first-letter {
+  text-transform: uppercase;
+}
+
+
 @media print {
+
+/*
+  *:before,*:after {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+*/
   body {
     overflow: auto;
     height: auto;
@@ -192,20 +216,14 @@ export default {
      position: absolute;
      overflow: visible;
   }
-  .red {
-    background-color: rebeccapurple;
-  }
-}
-.capitalize-first {
-  text-transform: lowercase;
-}
-.capitalize-first::first-letter {
-  text-transform: uppercase;
-}
 .red {
-  background-color: rebeccapurple;
+  background-color: rgb(182, 164, 201);
+  font-style: italic;
 }
 .blue {
   background-color: gainsboro;
+  font-style: oblique;
 }
+}
+
 </style>

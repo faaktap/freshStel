@@ -50,7 +50,7 @@
   </v-container>
 
 
- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+ <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
    <h2> Welcome Werner! </h2>
                <v-btn to="/loadhomework"> loadhomework </v-btn>
  </v-container>

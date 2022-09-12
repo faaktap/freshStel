@@ -93,4 +93,10 @@ const getters = {
   // other specific getters ...
 };
 
-export { getters, mutations, state };
+const actions = {
+  printAllDesert({ commit }, data) {
+    commit("PRINT_ALL_DESERTS", data);
+  },
+};
+
+export { getters, mutations, state, actions };

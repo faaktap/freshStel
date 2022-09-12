@@ -39,7 +39,7 @@ export function doStuff(tr,task) {
         case "/emailssent/6582":
         case "/newsletters/d":
         case "/merit":
-        case "/meritview":
+        case "/meritstart":
         case "/meritedit":
             return zmlReRoute(tr, task)
 

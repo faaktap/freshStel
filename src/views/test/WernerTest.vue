@@ -42,7 +42,7 @@
 </v-toolbar>
 
 
-<div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+<div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
      <v-expansion-panels>
         <v-expansion-panel>
           <v-expansion-panel-header>

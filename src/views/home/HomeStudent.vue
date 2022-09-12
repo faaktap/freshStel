@@ -47,7 +47,7 @@
             width="100%"
             height="100%"
             scrolling="auto" /> -->
-            (homestudent){{ studentid }}
+            <!--(homestudent){{ studentid }} -->
 <v-row>
  <v-col cols="12">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
@@ -126,11 +126,11 @@
 , "description": null}
 { "functionid": "10", "sortorder": "55", "functionname": "RCL Campaigns", "shortname": "Sign Up", "payload": "/campaigns", "functiontype": "local", "functionaccess": "student", "tip": "DKHS Candidates Register and Voting System", "grade": null, "icon": "mdi-vote", "description": "De Kuilen Candidates Register and Voting System", "create_timestamp": "2021-03-01 15:24:45", "update_timestamp": "2021-03-18 15:49:57" }
     -->
-|</v-row>
+</v-row>
 
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
 
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>
     </div>

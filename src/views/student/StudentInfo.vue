@@ -11,7 +11,7 @@
                />
   <hr />
 
-  <v-toolbar color="primary" class="my-toolbar">
+  <v-toolbar v-if="!$route.params.studentid" color="primary" class="my-toolbar">
     <v-toolbar-title>
       <template v-if="!searchMore">
         Please enter a part of the student's surname
@@ -22,28 +22,28 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-switch
-          v-model="searchMore"
-          color="secondary"
-         :label="`Search more than Surname: ${searchMore}`"
-      ></v-switch>
+      <v-switch v-model="searchMore"
+                color="secondary"
+                :label="`Search more than Surname: ${searchMore}`"
+      />
     </v-toolbar-items>
   </v-toolbar>
 
-
-  <v-container>
-
+  <v-container fluid>
        <student-lookup
+          v-if="!$route.params.studentid"
           v-model="blahblah"
           @dataEntered="studentFound"
           :searchMore="searchMore" />
        {{ blahblah }}
+      <div id="printMe">
        <div v-if="studentList"> Admin Number : {{ studentList.data.studentid }} </div>
 
-       <base-title-expand v-if="studentList" heading="Basic Student Info">
-          <student-name-card :studentList="studentList" color="blue lighten-2" />
-       </base-title-expand>
-       <base-title-expand v-if="studentList" heading="Student Subjects">
+       <!-- <base-title-expand v-if="studentList" heading="Basic Student Info"> -->
+          <student-name-card v-if="studentList" :studentList="studentList" color="blue lighten-2" />
+       <!-- </base-title-expand> -->
+       <base-title-expand v-if="studentList" heading="Student Subjects"
+                          openOrClose="open">
            <student-subject-list :studentid="studentList.data.studentid" color="white darken-1" />
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Email Contacts">
@@ -59,10 +59,12 @@
           (We use this to mark examlists with "BUR" for separate exam venue)
           <student-learn-assist :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
-       <base-title-expand v-if="studentList" heading="Student Merits">
+       <base-title-expand v-if="studentList" heading="Student Merits"
+                          openOrClose="open">
           <student-merit :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
-
+      </div>
+      <v-btn icon x-small @click="printIt" class="noprint"><v-icon>mdi-print</v-icon> print </v-btn>
   </v-container>
 
 <!--   another nice card layout we might use...
@@ -81,11 +83,11 @@
             </v-card-text>
 
             <v-card-actions>
-              <v-btn outline color='blue'>
+              <v-btn outlined color='blue'>
                 More...
               </v-btn>
               <v-spacer></v-spacer>
-              <v-btn outline color='green'>
+              <v-btn outlined color='green'>
                 Appointments
               </v-btn>
             </v-card-actions>
@@ -93,7 +95,7 @@
         </v-flex>
       </v-layout>
     </v-container>
--->
+ -->
  </v-container>
 
   <router-link :to="{ name: 'PersonelInfo'}" > <v-icon> mdi-nature-people </v-icon> </router-link>
@@ -102,7 +104,7 @@
 </template>
 
 <script>
-//import { zmlConfig } from '@/api/constants';
+import { zFetch } from '@/api/zmlFetch';
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection"
@@ -115,6 +117,8 @@ import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentAttendance from '@/components/student/StudentAttendance'
 import StudentLearnAssist from '@/components/student/StudentLearnAssist'
 import StudentMerit from '@/components/student/StudentMerit'
+
+import { printHeader, printPage} from "@/api/zmlPrint.js"
 
 export default {
 name: "StudentInfo",
@@ -131,6 +135,8 @@ components: {HeroSection
            , BaseTitleExpand
            },
 data: () => ({
+  printHeader: printHeader,
+  userHeader: "Student Info : ",
   studentList: null,
   searchMore: true,
   blahblah: '',
@@ -150,6 +156,10 @@ teachers:[
       ]
 }),
 methods: {
+   printIt() {
+      printPage('printMe', true)
+      this.$emit('printed')
+  },
   IDs(value) {
     if (value.data == 'undefined') return;
     this.studentIDs = value;
@@ -157,13 +167,41 @@ methods: {
   studentFound(value) {
     if (value.data == 'undefined') return;
     this.studentList = value;
+    //We call the same route, but with a new studentid.
+    this.$router.push({ name: 'StudentInfo'
+                      , params: {studentid: this.studentList.data.studentid, editmode: false}})
+                      //, meta: {layout: 'AppLayoutGray'
+                             //, authentication: "admin" } })
   },
   ss() {
       infoSnackbar('hallo')
   },
+  quickLoadStudent(studentid) {
+    this.$cs.l(studentid)
+    let sql = `select * from dkhs_student\
+               where studentid = ${studentid}`
+    let p = zFetch({task:'PlainSql', sql:sql})
+    p.then((r) => {
+      if (r.status >= 200 && r.status <= 299) {
+        return r.json();
+      } else { throw Error(r.statusText) }
+    })
+    .then(data => {
+     if ('error' in data && data.error.indexOf('no rows') > -1) {
+       console.error('we have error on retrieve', data)
+     } else {
+      let s = data[0]
+      this.studentList = {desc: `${s.surname}, ${s.firstname}  ${s.studentid} - ${s.grade}${s.gclass}  ${s.idno}`
+                         ,data:s}
+     }
+    })
+  }
 },
 mounted: function () {
-    //this.$cs.l('SINF MOUNTED', zmlConfig.maxUploadSize)
+    this.$cs.l('MOUNTED', this.$options.name, this.studentid)
+    if (this.studentid  && this.studentid != 'undefined') {
+       this.quickLoadStudent(this.studentid)
+    }
     // maybe call same function with adminnumber?
 
     // need to work on this, move student retrieval to a js file, so we can  make a call on a studentnumber

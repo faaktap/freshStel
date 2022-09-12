@@ -1,5 +1,5 @@
-const PROJECT_NAME = "zmlVschool"
-const PROJECT_VERSION = "51.5b"
+const PROJECT_NAME = "dkLearn"
+const PROJECT_VERSION = "51.5g"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -27,6 +27,7 @@ export const zmlConfig = {
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectID: PROJECT_ID,
   projectName: PROJECT_NAME,
+  reportBlurb: `DKVS:${PROJECT_VERSION}`,
   measurementID: MEASUREMENT_ID,
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line

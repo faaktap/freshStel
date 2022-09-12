@@ -50,7 +50,7 @@ export default {
   methods: {
   },
   mounted: function () {
-    this.$cs.l('StartApp : ',this.projectID)
+    console.log('StartApp : ',this.projectID)
     /*
     let payload = "WERNER SMIT"
     this.$cs.l(payload.toString('base64'))

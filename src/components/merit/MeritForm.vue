@@ -27,14 +27,15 @@
     <v-btn @click="save" color="primary"> save </v-btn>
     <v-btn @click="close" color="primary"> close </v-btn>
    </v-card-actions>
+   {{ getZml.login }}
  </v-card>
 </v-dialog>
 </template>
 
 <script>
+import { getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 import { crudTask } from "@/components/merit/crudTask.js"
-import { getters } from "@/api/store"
 import { infoSnackbar } from "@/api/GlobalActions"
 import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 //import { look } from "@/api/Lookups.js"

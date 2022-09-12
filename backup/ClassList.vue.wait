@@ -300,7 +300,7 @@ export default {
         //let teacher = !this.getZml.login.menemonic ? this.getZml.login.username : this.getZml.login.menemonic
         let teacher = this.getZml.login.menemonic ?? this.getZml.login.username
         let where = `  where teacher = 'ADMIN' or teacher = '${teacher}'`
-        if (this.getZml.login.username == 'werner') {
+        if (this.getZml.login.username == 'wer') {
           //show all the list if we login as werner
           where = ''
         }

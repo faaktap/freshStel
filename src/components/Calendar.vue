@@ -134,7 +134,7 @@
   <v-container v-else>
      srfwerwerewrwerewrwerew
   </v-container>
-  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
     <h2> Only Werner c this</h2>
     <v-row>
         <v-col cols="6" lg="3" v-for="(f,i) in sortIt" :key="i">

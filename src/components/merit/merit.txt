@@ -1,0 +1,17 @@
+ in componmenets/merit
+ MeritStart.vue
+   gebruik om alle ander merit stuff te sien
+   Merit
+ MeritForm.vue
+ MeritChip.vue
+ MeritStepper.vue
+ MeritList.vue
+ MeritLink.vue
+ MeritStart.vue
+ 
+ 
+ in componmenets/students
+ StudentMerit.vue
+   MeritList from "@/components/merit/MeritList"
+   MeritChip from "@/components/merit/MeritChip"
+   -- MeritStepper

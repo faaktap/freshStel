@@ -6,7 +6,7 @@
       tile
       height="54"
       class="d-flex"
-    >      
+    >
     <v-toolbar
        flat
        :loading="loading"
@@ -96,20 +96,20 @@
         </v-menu>
 
 
-        
+
       </v-sheet>
     </v-col>
   </v-row>
-  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
     <v-row>
         <v-col cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
         <v-card color="blue" class="ma-2 pa-1" >
-        {{ i }} {{ f.name }} - {{ f.start }} {{ f.end }} {{ f.type }} 
+        {{ i }} {{ f.name }} - {{ f.start }} {{ f.end }} {{ f.type }}
          </v-card>
         </v-col>
    </v-row>
   </v-container>
-</div>  
+</div>
 </template>
 
 <script>
@@ -138,7 +138,7 @@ export default {
   methods:{
       updateRange(whatweget) {
          console.info('Range Check', whatweget)
-         
+
       },
       loadCalendar() {
         this.getZml.calendar.forEach(ele => {
@@ -169,7 +169,7 @@ export default {
           alert('we need a studentGradeClass not,'+this.pStudentGradeClass )
           return
         }
-        //Massage the grade if it is in G08A2 to be GR08A2 
+        //Massage the grade if it is in G08A2 to be GR08A2
         //Since rooster store them like that.
         if (this.pStudentGradeClass.substr(0,2) !== 'GR') {
             this.pStudentGradeClass = this.pStudentGradeClass[0] + 'R' + this.pStudentGradeClass.substr(1)
@@ -178,7 +178,7 @@ export default {
 
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = "SELECT * FROM rooster WHERE " 
+        ts.sql = "SELECT * FROM rooster WHERE "
                + "   day1 like '%" + this.pStudentGradeClass + "%'"
                + "or day2 like '%" + this.pStudentGradeClass + "%'"
                + "or day3 like '%" + this.pStudentGradeClass + "%'"
@@ -192,16 +192,16 @@ export default {
                + "or day11 like '%" + this.pStudentGradeClass + "%'";
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
-        zmlFetch(ts, this.afterRoosterSelect);   
+        zmlFetch(ts, this.afterRoosterSelect);
       },
       getPeriodStartTime(hm,element, dateLooking) {
-         let perStart = zDate.dayType.find(dt => 
-                      dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )  
+         let perStart = zDate.dayType.find(dt =>
+                      dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )
          hm.h = parseInt(perStart.start.substr(0,2))
          hm.m = parseInt(perStart.start.substr(3,2))
       },
       subjectColor(subjectShortName) {
-        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )  
+        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
@@ -221,13 +221,13 @@ export default {
         for (let t=0; t < 7; t++) {
            template = zDate.addOneDay(template)
            //Look for template's date and link to a dayno.
-           const sday = this.getZml.calendar.find(cal => 
-              cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
+           const sday = this.getZml.calendar.find(cal =>
+              cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'
            )
            if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
            response.forEach(ele => {
              let n = ''
-             
+
              switch (sday.name.substr(0,4)) {
                case 'day1': n = ele.day1; break
                case 'day2': n = ele.day2; break
@@ -248,8 +248,8 @@ export default {
                const grade = lines[1]
                const evt = {
                        name: per + ' ' + ele.user_name + ' ' + grade
-                     , start: template.setHours(hm.h, hm.m, 0, 0) 
-                     , end:   template.setHours(hm.h, hm.m + 45, 0, 0) 
+                     , start: template.setHours(hm.h, hm.m, 0, 0)
+                     , end:   template.setHours(hm.h, hm.m + 45, 0, 0)
                      , color: this.subjectColor( n.substr(0,3) )
                      , timed: true
                      , details: n
@@ -298,7 +298,7 @@ export default {
       },
       activateCalendar() {
           //if (this.$refs.calendar !== undefined) {
-          if (this.calReady == false) {  
+          if (this.calReady == false) {
             console.info('Calendar is Ready?: ' , this.$refs.calendar)
             if (this.$refs.calendar)  this.$refs.calendar.checkChange()
             this.calReady = true
@@ -314,7 +314,7 @@ export default {
          if (!this.calReady) {
           setTimeout(() => { this.rinseRepeat() }, 4000)
          }
-      }       
+      }
     },
   computed: {
       cal () {
@@ -323,14 +323,14 @@ export default {
       nowY () {
         return this.cal ? this.cal.timeToY(this.cal.times.now) + 'px' : '-10px'
       },
-    },     
+    },
   mounted () {
       zData.initialData('Load Subject Data')
       zData.calendarData('Load Calendar Data')
       //this.events = [] //let's keep old events for now...
       this.today = new Date()
       this.today.setHours(0,0,0,0)
-      this.calToday = zDate.format(this.today,'yyyy-MM-dd') 
+      this.calToday = zDate.format(this.today,'yyyy-MM-dd')
       this.loadCalendar()
       this.loadRooster()
 

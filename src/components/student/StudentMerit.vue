@@ -6,9 +6,11 @@
    </v-card-title>
    <v-card-text >
     <v-flex xs12>
-         <merit-chip />
+      <merit-list :studentid="studentid" meritid="0"/>
     </v-flex>
-    <!-- <v-flex xs2><v-btn @click="updateDB"> update </v-btn></v-flex> -->
+    <v-flex xs12>
+         <merit-chip :studentid="studentid" />
+    </v-flex>
    </v-card-text>
    <v-card-actions>
 
@@ -17,14 +19,18 @@
 </template>
 
 <script>
-import { zData } from "@/api/zGetBackgroundData.js"
+//import { zData } from "@/api/zGetBackgroundData.js"
 import { getters } from "@/api/store";
 import MeritChip from "@/components/merit/MeritChip"
+import MeritList from "@/components/merit/MeritList"
 
 export default {
     name:"StudentMerit",
-    components:{MeritChip},
     props: ['studentid','color'],
+    components:{
+        MeritChip
+      , MeritList
+    },
     data: () => ({
       getZml: getters.getState({ object: "gZml" }) ,
       loading:false,
@@ -32,42 +38,27 @@ export default {
     }),
     methods:{
       checkDB() {
-        this.$cs.l('1',this.student)
-        this.$cs.l('2',Object.keys(this.student).length)
-        if (!Object.keys(this.student).length) {
-          let sqlStatement = `select * from dkhs_student where studentid = ${this.studentid}`
-          zData.loadSql(this.loading, sqlStatement, this.assignData)
-        } else {
-          //This student loaded already
-          this.$cs.l('studentid loaded alreday', this.student, this.studentid)
-        }
+        // this.$cs.l(this.$options.name,'1',this.student)
+        // this.$cs.l(this.$options.name,'2',Object.keys(this.student).length)
+        // if (!Object.keys(this.student).length) {
+        //   let sqlStatement = `select * from dkhs_student where studentid = ${this.studentid}`
+        //   zData.loadSql(this.loading, sqlStatement, this.assignData)
+        // } else {
+        //   //This student loaded already
+        //   this.$cs.l('student loaded already', this.student, this.studentid)
+        // }
       },
       assignData(response) {
-        this.student = response[0]
-        this.$cs.l('loaded:',this.student)
-        ///let sqlStatement = `select * from dkhs_student where studentid = ${this.studentid}`
-        ///zData.loadSql(this.loading, sqlStatement, this.assignData)
+        this.$cs.l('loaded:',response)
+        // this.student = response[0]
+        // this.$cs.l('loaded:',this.student)
       },
-      updateDB() {
-        let sqlStatement
-        alert('update merit')
-
-        zData.loadSql(this.loading, sqlStatement, this.updatedData)
-      },
-      updatedData(response) {
-        this.$cs.l('Update:',response)
-        alert('wat nou')
-      }
 
     },
     mounted: function() {
-        this.$cs.l(this.$options.name,  this.studentid)
-        if (this.studentid) this.checkDB()
+        this.$cs.l('Mount',this.$options.name,  this.studentid)
+        // if (this.studentid != 'undefined') this.checkDB()
     },
-    watch: {
-        // studentid(n,o) {
-        //     if (n != o) this.checkDB()
-        // },
-    }
+    watch: {}
 }
 </script>

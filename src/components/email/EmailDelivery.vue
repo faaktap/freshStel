@@ -12,7 +12,7 @@
  </v-data-table>
 
 
-<v-card v-if="getZml.login.username=='werner'">
+<v-card v-if="getZml.login.username=='WER'">
     WERNER
  <v-tabs v-model="tab" background-color="deep-purple accent-4" centered dark icons-and-text>
   <v-tabs-slider></v-tabs-slider>
@@ -30,7 +30,7 @@
  </v-tabs-items>
 </v-card>
 
-<v-card v-if="getZml.login.username=='werner'">
+<v-card v-if="getZml.login.username=='WER'">
     SLIDES
  <v-tabs v-model="tab" background-color="primary accent-4" centered icons-and-text>
   <v-tabs-slider></v-tabs-slider>

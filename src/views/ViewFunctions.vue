@@ -1,15 +1,15 @@
 <template>
 <div>
-<v-container v-if="getZml.login.username=='werner'">
- 
+<v-container v-if="getZml.login.username=='WER'">
+
  <v-toolbar color="primary">
-    <v-toolbar-title> 
+    <v-toolbar-title>
       <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
        <div>
          Edit Menu functions : {{ getZml.login.fullname}} / {{ getZml.login.username}}
        </div>
        <div>
-        <v-btn   small 
+        <v-btn   small
          absolute top right
          title="Click here to load functions"  @click="loadFunctions"> Refresh </v-btn>
        </div>
@@ -25,7 +25,7 @@
            hide-details
    ></v-text-field>
    <v-data-table
-     v-if="getZml.login.username=='werner'"
+     v-if="getZml.login.username=='WER'"
     :headers="functionHeader"
     :items="getZml.functions"
     :items-per-page="15"
@@ -39,7 +39,7 @@
         {{ item.icon }}</v-icon>
       </template>
     <template v-slot:[`footer.page-text`]>
-       <v-btn icon @click="insertFunc"> 
+       <v-btn icon @click="insertFunc">
            <v-icon >mdi-table-plus</v-icon>
         </v-btn>
     </template>
@@ -49,12 +49,12 @@
 
 
 
-<v-dialog v-model="showFunctionUpdate" 
-          v-if="f" 
-          xwidth="auto " 
+<v-dialog v-model="showFunctionUpdate"
+          v-if="f"
+          xwidth="auto "
           :fullscreen="$vuetify.breakpoint.smAndDown" >
   <v-card>
-    <v-card-title>  
+    <v-card-title>
       <v-card color="light-blue" class="ma-4 pa-4">
        Update Function - {{ f.functionname }} - {{ f.shortname }} - "{{ f.payload }}" - <v-icon> {{ f.icon }} </v-icon>
       </v-card>
@@ -62,49 +62,49 @@
     <v-card-text>
       <v-layout row wrap align-content-start justify-space-between class="ma-2">
         <v-flex xs10 md6>
-          <v-text-field v-model="f.functionname" 
+          <v-text-field v-model="f.functionname"
                         dense
                         label="Function Full Name"  />
         </v-flex>
         <v-flex xs10 md6>
-          <v-text-field v-model="f.shortname" 
+          <v-text-field v-model="f.shortname"
                         dense
                         label="Shortname" />
         </v-flex>
         <v-flex xs8 md6>
-         <v-radio-group v-model="f.functionaccess" 
-                        label="Access"  
+         <v-radio-group v-model="f.functionaccess"
+                        label="Access"
                         dense
                         row>
            <v-radio v-for="t in ['teacher','student','other','admin']" :key="t"  :label="t"   :value="t"  >
            </v-radio>
-         </v-radio-group>          
+         </v-radio-group>
         </v-flex>
         <v-flex xs3 md3>
-               <v-text-field v-model="f.functiontype" 
+               <v-text-field v-model="f.functiontype"
                              label="Function Type" />
         </v-flex>
         <v-flex xs6>
-          <v-text-field v-model="f.icon" 
-                        label="Icon" 
+          <v-text-field v-model="f.icon"
+                        label="Icon"
                         title="Icon to show" /><v-icon small> {{ f.icon }} </v-icon>
         </v-flex>
         <v-flex xs6>
-          <v-text-field v-model="f.sortorder" 
-                        label="Sortorder" 
+          <v-text-field v-model="f.sortorder"
+                        label="Sortorder"
                         title="Where to display" />
         </v-flex>
         <v-flex xs12>
-          <v-text-field v-model="f.payload" 
-                        label="payload" 
+          <v-text-field v-model="f.payload"
+                        label="payload"
                         title="where to fo to?" />
         </v-flex>
         <v-flex xs12 md6>
-               <v-textarea v-model="f.tip" 
+               <v-textarea v-model="f.tip"
                              label="Tip to display to user." />
-        </v-flex>        
+        </v-flex>
         <v-flex xs12 md6>
-          <v-textarea v-model="f.description" label="Description" 
+          <v-textarea v-model="f.description" label="Description"
                         title="Long text field - not used at the moment" />
         </v-flex>
       </v-layout>
@@ -140,7 +140,7 @@ export default {
           {text: 'Tip',             value: 'tip' },
           {text: 'Sort',             value: 'sortorder' },
           {text: 'icon',             value: 'icon' },
-        ],     
+        ],
     }),
     computed:{
     },
@@ -148,7 +148,7 @@ export default {
       saveFunc() {
         let ts = {}
         ts.data = this.f
-        ts.task = 'updateFunction' 
+        ts.task = 'updateFunction'
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, this.loadFunctions, this.loadError)
       },

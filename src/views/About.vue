@@ -1,8 +1,17 @@
 <template>
 <v-container fluid>
-  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+    <v-card class="ma-2" id="printMe">
+    <v-card-title class="noprint"> {{ userHeader }}</v-card-title>
+    <v-card v-html="printHeader(userHeader)" class="hide"></v-card>
+
+  <v-data-table :headers="headers" :items="desserts"
+                 sort-by="calories" class="elevation-1"
+                 :disable-items-per-page="true"
+                 page-text="Sdfsdfsdf"
+                 :disable-pagination="dPg"
+                 :hide-default-footer="hDF">
     <template v-slot:top>
-      <v-toolbar flat color="white">
+      <v-toolbar flat color="white" class="noprint">
         <v-toolbar-title>My CRUD</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
@@ -14,7 +23,7 @@
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
-<v-card-text>
+           <v-card-text>
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
@@ -38,49 +47,62 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+    <template v-slot:[`item.actions`]="{ item }">
+      <v-icon small class="mr-2 noprint" @click="editItem(item)">mdi-pencil</v-icon>
+      <v-icon small class="noprint" @click="deleteItem(item)">mdi-delete</v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
+    <template v-slot:[`body.append`]="{ headers }">
+        <tr class="noprint">
+          <td :colspan="headers.length">This is an appended row</td>
+        </tr>
+    </template>
+    <template  v-slot:footer>
+        <div class="text-center">This is a footer</div>
+    </template>
   </v-data-table>
+
+</v-card>
+
+  <v-btn @click="printIt" class="ma-2 noprint"><v-icon>mdi-print</v-icon> print </v-btn>
+  <v-btn @click="testprint" class="ma-2 noprint"><v-icon>mdi-print</v-icon> print api </v-btn>
+  <base-button-dialog class="ma-2" iconName="mdi-testtube"  buttonText="fdgesdfsdf" />
+  <v-switch v-model="small" label="small" class="noprint" />
+
+{{ getZml.persMenemonic }}
  </v-container>
 </template>
 
 <script>
+import { getters } from "@/api/store";
+
+import { printHeader, printPage, printJSON } from "@/api/zmlPrint.js"
+import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
 export default {
   name: "HelloWorld",
+  components:{
+    baseButtonDialog
+  },
   data: () => ({
+    getZml: getters.getState({ object: "gZml" }),
+
+    printHeader: printHeader,
+    userHeader: "This abour page test my User Print module",
+    dPg: false, hDF: false,
+
+    small: true,
     dialog: false,
     headers: [
-      {
-        text: "Dessert (100g serving)",
-        align: "start",
-        sortable: false,
-        value: "name",
-      },
+      { text: "Dessert (100g serving)",align: "start",sortable: false,value: "name"},
       { text: "Calories", value: "calories" },
       { text: "Fat (g)", value: "fat" },
-      { text: "Actions", value: "actions", sortable: false },
-    ],
+      { text: "Actions", value: "actions", sortable: false }],
     desserts: [],
     editedIndex: -1,
-    editedItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
+    editedItem: {name: "",calories: 0,fat: 0,carbs: 0,protein: 0},
+    defaultItem: {name: "",calories: 0,fat: 0,carbs: 0,protein: 0},
   }),
   computed: {
     formTitle() {
@@ -96,24 +118,43 @@ export default {
     this.initialize();
   },
   methods: {
+    testprint() {
+      printJSON(this.desserts, this.headers, this.userHeader)
+    },
+    async printIt() {
+        await this.tableFooterHide(true)
+        printPage('printMe', this.small)
+        this.$emit('printed')
+        this.tableFooterHide(false)
+
+    },
+    async tableFooterHide(action) {
+        this.dPg = action
+        this.hDF = action
+        await this.$nextTick();
+    },
+
     initialize() {
-      this.desserts = [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-        },
-        {
-          name: "Eclair",
-          calories: 262,
-          fat: 16.0,
-        },
-      ];
+      this.desserts = [ {name: "Frozen Yogurt",calories: 159,fat: 6.0},
+        { name: "Ice cream sandwich", calories: 237, fat: 9.0 },
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},        { name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},{ name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},{ name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},{ name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},{ name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},{ name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Eclair", calories: 262, fat: 16.0},{ name: "Eclair", calories: 262, fat: 16.0},
+        { name: "Ice cream sandwich", calories: 237, fat: 9.0 },{ name: "Ice cream sandwich", calories: 237, fat: 9.0 },
+        { name: "Ice cream sandwich", calories: 237, fat: 9.0 },{ name: "Ice cream sandwich", calories: 237, fat: 9.0 },
+        { name: "Ice cream sandwich", calories: 237, fat: 9.0 },{ name: "Ice cream sandwich", calories: 237, fat: 9.0 },
+        { name: "Ice cream sandwich", calories: 237, fat: 9.0 },{ name: "Ice cream sandwich", calories: 237, fat: 9.0 },]
     },
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
@@ -143,3 +184,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.hide {display:none;}
+</style>

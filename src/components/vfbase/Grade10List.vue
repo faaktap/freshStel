@@ -47,7 +47,7 @@
    </v-col>
   </v-row>
 
-<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+<v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
   (werner) studentList  :
   <div v-for="s in studentList" :key="s.studentid">
   <br> {{ s }}

@@ -23,7 +23,7 @@
          </v-toolbar>
 
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
-      <h1> File activity in the past month </h1>
+      <h1> File activity in the past {{ previousDays }} days.</h1>
             <v-text-field filled dense
                     class="ma-2"
                     v-model="search"

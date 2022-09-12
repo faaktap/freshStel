@@ -57,7 +57,7 @@
 
 </v-col>
 |</v-row>
-  <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
+  <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
     {{ joke || 'no joke'}}
      <v-expansion-panels>
         <v-expansion-panel>
