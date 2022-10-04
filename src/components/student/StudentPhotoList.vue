@@ -1,3 +1,6 @@
+<docs>
+Carousel of all photos linked to student. (awards and school photos)
+</docs>
 <template>
    <v-card max-width="300" class="mx-auto" v-if="studentid && photoList" :color="color" elevation="2">
      <v-card-title> Photos </v-card-title>
@@ -6,13 +9,13 @@
               :show-arrows="false"
               :hide-delimiter-background="false"
               >
-          <v-carousel-item v-for="p in photoList" :key=p.uniqno> 
+          <v-carousel-item v-for="p in photoList" :key=p.uniqno>
            <v-sheet height="100%" tile>
             <v-row  class="fill-height"
                 align="center"
                 justify="center">
              <div class="xxdisplay-3">
-              <img :src="'https://kuiliesonline.co.za/' + p.photo" 
+              <img :src="'https://kuiliesonline.co.za/' + p.photo"
                         xwidth="300" contain
                        :title="p.type + ' ' +  p.photo" >
              </div>
@@ -37,7 +40,7 @@ export default {
           if (this.studentid) {
              let sl = { task: 'plainSql'
                       , sql: 'select * from dkhs_photo where studentno = ' + this.studentid}
-             zmlFetch(sl, this.processAfterFetch); 
+             zmlFetch(sl, this.processAfterFetch);
           }
       },
       processAfterFetch(response) {

@@ -50,13 +50,38 @@ export const mer = {
      }
     })
    }
+   ,confirm: (record) =>  {
+    let sql = `update dkhs_meritstudent\
+               set persmenemonic = '${record.persmenemonic}', confirmdte = '${record.confirmdte}'\
+               where meritstudentid = ${record.meritstudentid}`
+    let p = zFetch({task:'PlainSql', sql:sql})
+    p.then((r) => {
+      console.log('CONFIRM RETURN 1',r)
+      if (r.status >= 200 && r.status <= 299) {
+        zmlLog('', mer.name, `ConfirmMS:${record.meritstudentid},${record.meritid},${record.confirmdte},${record.persmenemonic}`)
+        return r.json();
+      } else { throw Error(r.statusText) }
+    })
+  }
+   ,delete: (record) =>  {
+     let sql = `delete from dkhs_meritstudent where meritstudentid = ${record.meritstudentid}`
+     let p = zFetch({task:'PlainSql', sql:sql})
+     p.then((r) => {
+       console.log('DELETE RETURN 1',r)
+       if (r.status >= 200 && r.status <= 299) {
+         zmlLog('', mer.name, `DeleteMS:${record.studentid},${record.meritid},${record.meritdte},${record.persmenemonic}`)
+         return r.json();
+       } else { throw Error(r.statusText) }
+     })
+   }
    ,loadAllMerits: (persMenemonic, afterwardsProc) =>  {
     console.log('load all - not  only', persMenemonic)
     let sql = `select s.*, l.point
              , concat(st.surname,',', st.firstname) studentname\
              , concat(st.grade, st.gclass) studentgrade\
                from dkhs_meritstudent s, dkhs_meritlink l, dkhs_student st\
-               where l.meritid = s.meritid and s.studentid = st.studentid`
+               where l.meritid = s.meritid and s.studentid = st.studentid\
+               order by studentname ASC, confirmdte DESC`
                  //and persmenemonic = ${persMenemonic}`
     let p = zFetch({task:'PlainSql', sql:sql})
     p.then((r) => {

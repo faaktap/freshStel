@@ -1,0 +1,36 @@
+StudentPhotoList.vue
+** Carousel of all photos student have. (linked)
+
+StudentEmailList.vue
+** List of all emails linked to a student
+
+StudentLookup.vue
+** v-auto-complete -- list of all students to get someone
+
+
+Main Ou
+StudentClass.vue
+
+  PickAttendance.vue
+  ** use for a class - called form StudentClass
+  
+  
+StudentAttendance.vue
+** list of attendance records for a student.
+** work on printing
+
+StudentWiFi.vue
+** List the wifi code for the kid
+
+
+StudentGrade.vue
+
+  ListOfGrades.vue
+  ** Show a list of all grades
+  
+  
+StudentLearnAssist.vue
+StudentMerit.vue
+
+StudentNameCard.vue
+StudentSubjectList.vue

@@ -1,24 +1,35 @@
 <template>
 <v-container fluid>
 
-<base-title-expand heading="All the photos Kuiliesonline use can be displayed here.">
-These are not only student photos, but also photos we use elsewhere.
-However, I give the option to link a photo to a student, and then the system will
-use that photo as if it is that student.
-Same with personel, if it is a personel/staff photo, i will treat it as such. (as long as the linkid
-correspond to a staff number)
-<br><br><v-spacer />
-{{ quickTest }}
-</base-title-expand>
+<base-tool :toolList="[]"
+            toolbarName="School Photos"
+           :loading="loading">
+           <base-button-dialog class="ma-2"
+                       iconName="mdi-information"
+                       buttonText=""
+                       color="grey"
+                       infoText="These are not only student photos, but also photos we use elsewhere.However, I give the option to link a photo to a student, and then the system will use that photo as if it is that student.Same with personel, if it is a personel/staff photo, i will treat it as such. (as long as the linkid correspond to a staff number)"
+                       infoTitle="Help"
+           />
 
+ </base-tool>
 
+<base-tool toolbarName="Options"
+          :back="false" :background="false">
+   <base-search @clear="search=''" v-model="search" />
+   <v-spacer />
+   <v-btn-toggle xcolor="secondary" dense group v-model="showAs">
+     <v-btn value="card"><v-icon> mdi-image </v-icon></v-btn>
+     <v-btn value="list"><v-icon> mdi-view-list </v-icon></v-btn>
+   </v-btn-toggle>
+   <v-btn class="ma-2" icon @click="showAddPhoto = true"> <v-icon>mdi-camera-image</v-icon> </v-btn>
+   <v-btn class="ma-2" icon @click="executeSql"> <v-icon>mdi-refresh</v-icon> </v-btn>
+</base-tool>
 
 
  <!-- -------------------------S E A R C H , S W I T C H & D I S P L A Y-------------- -->
-   <v-card cols="12" class="col wrap text-center d-flex justify-space-between ma-0 mb-2">
-     <!--- SEARCH -->
+   <!-- <v-card cols="12" class="col wrap text-center d-flex justify-space-between ma-0 mb-2">
     <base-search @clear="search=''" v-model="search" />
-    <!--- DISPLAY -->
     <v-btn class="mt-3"
             @click="showAs='list'"
             title="Show data in a list"
@@ -33,21 +44,19 @@ correspond to a staff number)
     >
       <v-icon> mdi-card </v-icon>
     </v-btn>
-   </v-card>
+   </v-card> -->
+
    <!--- SWITCH -->
    <v-card v-if="cats && cats.length"
-            class="row wrap text-center d-flex justify-space-between ml-0 mt-1 mb-2 pl-1 pr-1">
-         <div v-for="cat in cats"
-                :key="cat.text"
-                 class="mb-2">
-           <v-switch v-model="cat.selected"
-                     hide-details
-                     ripple
-                     class="mt-1 mr-2 mb-2 ml-2"
-                    :loading="loading"
-                    :label="cat.text" >
-           </v-switch>
-         </div>
+           color="primary lighten-1"
+           class="row wrap text-center justify-space-between ml-0 pl-1 pr-1">
+           <v-switch v-for="cat in cats"
+             :key="cat.text"
+              v-model="cat.selected"
+              hide-details ripple
+              class="mt-1 mr-2 mb-2 ml-2"
+             :loading="loading"
+             :label="cat.text" />
    </v-card>
 
 
@@ -69,7 +78,7 @@ correspond to a staff number)
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
 
           >
-            <v-card-text class="ma-0 pa-0">
+            <v-card-text class="ma-0 pa-0" @click="activateBigPic('https://kuiliesonline.co.za/' + item.photo)">
                 <v-img :src="'https://kuiliesonline.co.za/' + item.photo"
                        max-height="100"
                        max-width="100"
@@ -98,7 +107,6 @@ correspond to a staff number)
       <v-data-table
             :headers="photoListHeader"
             :items="filterPhotos"
-
             :items-per-page="500"
             class="elevation-2"
             :loading="loading"
@@ -109,14 +117,11 @@ correspond to a staff number)
     </v-row>
   </v-container>
 
-<!-- Show a lookuplist of studentinfo -->
-<v-btn class="ma-2" @click="showResult = !showResult">
-    Export
-</v-btn>
 
-<v-btn class="ma-2" @click="showAddPhoto = true"> Add new Photo? </v-btn>
-<!-- {{ filterPhotos }} -->
 
+<v-dialog v-model="showBigPicture" max-width="600">
+  <v-img :src="bigPicture" height="400" contain class="ml-auto"/>
+</v-dialog>
 
 <!-- --------------------- E D I T -------------------- -->
 <v-dialog v-model="showEdit"
@@ -145,7 +150,6 @@ correspond to a staff number)
         <v-btn @click="showEdit = !showEdit">close</v-btn>
         <v-btn @click="showEdit = !showEdit">save</v-btn>
     </v-card-actions>
-
   </v-card>
 </v-dialog>
 
@@ -157,22 +161,20 @@ correspond to a staff number)
      </v-card-title>
      <v-card-text>
        <v-flex xs12>
-         <v-radio-group v-model="fileUploadCategory"
-                        label="Category"
-                        dense
-                        row>
-           <v-radio v-for="c in cats" :key="c.text"  :label="c.text"   :value="c.text"  >
-           </v-radio>
+         <v-radio-group dense row
+              v-model="fileUploadCategory"
+              label="Category">
+           <v-radio v-for="c in cats" :key="c.text" :label="c.text" :value="c.text"></v-radio>
          </v-radio-group>
         </v-flex>
-                    <upload-resized-image
-                        @file-saved="uploadedFilename"
-                        extraPath="/home/kuilieso/public_html/bib/assets/upload"
-                    />
+        <upload-resized-image
+            @file-saved="uploadedFilename"
+            extraPath="/home/kuilieso/public_html/bib/assets/upload"
+        />
      </v-card-text>
-   <v-card-actions>
-     <v-btn @click="showAddPhoto = false"> Close </v-btn>
-   </v-card-actions>
+     <v-card-actions>
+      <v-btn @click="showAddPhoto = false"> Close </v-btn>
+     </v-card-actions>
    </v-card>
 </v-dialog>
 
@@ -180,17 +182,20 @@ correspond to a staff number)
 </template>
 
 <script>
-import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import { pFetch } from '../api/zmlFetch';
 import { look } from "@/api/Lookups.js"
 import { zData } from "@/api/zGetBackgroundData.js"
-import BaseSearch from '@/components/base/BaseSearch';
+import baseSearch from '@/components/base/baseSearch';
+import baseTool from '@/components/base/baseTool.vue'
+import baseButtonDialog from '@/components/base/baseButtonDialog.vue'
 import UploadResizedImage from "@/components/UploadResizedImage.vue"
+
 export default {
     name:"AllPhotos",
     components:{
-          BaseTitleExpand
-        , BaseSearch
+        baseSearch
+        , baseTool
+        , baseButtonDialog
         , UploadResizedImage
     },
     props:['myPropNameHere'],
@@ -198,7 +203,6 @@ export default {
        search:'',
        loading:false,
        zData:zData,
-       showResult:false,
        showEdit:false,
        editRecord:{},
        photoList:[],
@@ -213,14 +217,16 @@ export default {
        sqlStatement : "SELECT p.uniqno, p.type, p.photo, p.studentno, s.surname, s.firstname, s.grade"
                     + " , s.gclass, p.studentno"
                     + " FROM dkhs_photo p"
-                    + " LEFT JOIN dkhs_student s ON p.studentno=s.studentid",
+                    + " LEFT JOIN dkhs_student s ON p.studentno=s.studentid"
+                    + " WHERE s.grade not like 'o%' or s.studentid is null "
+                    + " ORDER BY p.uniqno DESC",
        api:"https://kuiliesonline.co.za/api/candid/candidates.php",
-       showAs:'list',
+       showAs:'card',
        cats:[],
        showAddPhoto:false,
+       showBigPicture: false,
+       bigPicture: '',
        fileUploadCategory:'',
-       quickTest:[]
-
     }),
     computed: {
       filterPhotos() {
@@ -241,6 +247,10 @@ export default {
       },
     },
     methods:{
+      activateBigPic(pic) {
+        this.bigPicture = pic
+        this.showBigPicture = true
+      },
       searchFilter(tableSofar) {
         // Searching for the searchstring
         if (!tableSofar.length) return []
@@ -273,7 +283,7 @@ export default {
         })
       },
       uploadedFilename(file) {
-        this.$cs.l(file)
+        console.log(file, file.fileName.substr(26,400))
       // Information we get back..
       // fileName: "/home/zmlreken/test/DSC_7753.ewhR.jpg"
       // filePath: "/home/zmlreken/test/DSC_7753.ewhR.jpg"
@@ -285,15 +295,19 @@ export default {
          , filename: 'ford1.n4YT.jpg'
          , filePath: '/home/kuilieso/public_html/bib/assets/upload/ford1.n4YT.jpg'
          , fileName: '/home/kuilieso/public_html/bib/assets/upload/ford1.n4YT.jpg'
+                      01234567890123456789012345
       */
       // Update dkhs_photo with new name...
       // this.newFileName = file.filename
       // ....
       alert('update/add i - must still add stuff')
       this.showAddPhoto = false
-      let task = {}
-      pFetch(task)
-      .then(function (response) { this.$cs.l(response)})
+      let sql = `insert into dkhs_photo values (null,'test','${file.fileName.substr(26,400)}',0)`
+
+      zData.loadSql(this.loading, sql, this.doneLoading, this.api)
+      },
+      doneLoading(response) {
+        console.log('done loading : ', response)
       },
       executeSql() {
         this.loading = true
@@ -352,7 +366,6 @@ export default {
     mounted() {
       this.$cs.l('Start ', this.$options.name)
       this.executeSql()
-      this.quickTest = look.persMenemonicAll()
     }
 }
 

@@ -72,7 +72,7 @@ export default {
                     and a.active is null \
                     and a.capture = ${this.studentid} \
                   union all \
-                  select attendancedate, a.staff,a.location,a.period,a.sessionid 
+                  select attendancedate, a.staff,a.location,a.period,a.sessionid
 				         , 'Y', s.surname, concat(grade, gclass) grade \
                    from dkhs_student s \
                       , a_attendance_back a \
@@ -86,14 +86,13 @@ export default {
         }
       },
       processAfterFetch(response) {
-        console.log(response)
-		this.studentSurname = ''
-          if (!response.error) {
-             this.AttendanceList= response
-             this.studentSurname = `: ${response[0].surname} : ${response[0].grade}`
-          } else {
-              this.AttendanceList = []
-          }
+        this.studentSurname = ''
+        if (!response.error) {
+           this.AttendanceList= response
+           this.studentSurname = `: ${response[0].surname} : ${response[0].grade}`
+        } else {
+            this.AttendanceList = []
+        }
       }
 
     },

@@ -1,7 +1,6 @@
 <template>
 <v-card class="ma-0 pa-0"  v-if="personelRecord" elevation="0" color="">
  <!-- See https://grid.layoutit.com/ for gridlayouts -->
-
  <v-card v-if="allowEdit=='true'">
   <v-layout row wrap align-content-start justify-space-around>
     <v-flex>
@@ -17,7 +16,7 @@
 
   <!-- rgba(105, 199, 71, 0.3) -->
   <!-- rgb(205, 127, 50) -->
- <v-card max-width="230" class="ma-2 text-center"
+ <v-card max-width="210" class="ma-2 text-center"
         color="rgba(185, 156, 49, 0.9)"
         style="border-radius:50px">
   <v-card-text class="text-center">

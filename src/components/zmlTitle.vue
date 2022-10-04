@@ -4,16 +4,19 @@
     <v-btn :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
             @click="goHome()"
+            @dblclick="titleDialog = true"
             title="Go home"
             class="ma-2"
-    > 
+            color="white"
+            text
+    >
     <v-spacer />
-      <v-icon color="blue" class="ma-2"> 
+      <v-icon color="blue" class="ma-2">
          <template v-if="hover"> HS </template> <!--{{ mainIcon[curIcon + hover] }}-->
          <template v-else> DK </template>
       </v-icon>
       <div v-show="!$vuetify.breakpoint.smAndDown">
-        {{ maintitle }} 
+        {{ maintitle }}
       </div>
     </v-btn>
     </v-hover>
@@ -22,19 +25,19 @@
          style="transform: scale(0.875);transform-origin: left;"
          overlay-color="purple"
          :fullscreen="$vuetify.breakpoint.mobile">
-  <v-card class="white text--black pa-2"> 
+  <v-card class="white text--black pa-2">
    <v-card-title>
       <legend> {{titleButtonHeading}}</legend>
    </v-card-title>
-   
-   <v-card-text> 
+
+   <v-card-text>
    <v-row>
      <v-col cols="12">
-      <toolbar-buttons menuDisplay="shortcutlist" :buttonGroup="toolbars" />
+toolbar?
      </v-col>
    </v-row>
    </v-card-text>
-    
+
 
      <v-card-actions>
         <v-btn small color=primary @click="titleDialog=!titleDialog"> {{ titleButtonHeadingCloseButton }} </v-btn>
@@ -47,11 +50,10 @@
 </template>
 
 <script>
-import ToolbarButtons from '@/components/toolbarButtons'
 export default {
   name:"zmlTitle",
-  components: {ToolbarButtons},
-  props:{maintitle:String},
+  components: {},
+  props:{maintitle:{default:"kuilies online"}},
   data: () => ({
     mainIcon: ["mdi-kettle","mdi-kettle-steam-outline","mdi-kettle-steam","mdi-coffee"],
     curIcon: 1,
@@ -62,14 +64,13 @@ export default {
   methods:{
     goHome() {
       //titleDialog = !titleDialog
-      if (this.$router.currentRoute.path !== "/home") {
-            this.$router.push('/home') 
+      if (this.$router.currentRoute.path !== "/") {
+            this.$router.push('/')
       }
-
     },
-      about() {
+    about() {
         if (this.$router.currentRoute.path !== "/about") {
-            this.$router.push('/about') 
+            this.$router.push('/about')
         }
       },
   },

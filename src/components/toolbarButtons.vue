@@ -3,44 +3,42 @@
    If vertical is false, we build a list.
    If prop vertical is false, it will built the in a vertical list. via list items
    If btn.optional is 1, then we do not display it in toolbar.
-   If btn.optional is 0, then we do not display it in dropdown. 
+   If btn.optional is 0, then we do not display it in dropdown.
    Therefore - IT IS USED IN TWO PLACES!
    We call doStuff to execute any action, expect i18n translate is done in here.
 -->
 <template>
  <div>
-<!--  m= {{ $vuetify.breakpoint.mobile }} sm={{ $vuetify.breakpoint.smAndDown }} -->
-    <template v-if="menuDisplay == 'horizontal'">
-      <v-btn v-for="btn in buttons[ buttonGroup[0] ]" 
-            :key="btn.btn" 
+  <!-- && !$vuetify.breakpoint.mobile -->
+     <template v-if="menuDisplay == 'horizontal'">
+      <v-btn v-for="btn in btnGroup"
+            :key="btn.btn"
             class="ma-2"
-            :small="$vuetify.breakpoint.lgAndDown == true"
+            :small="$vuetify.breakpoint.mdAndDown == true"
             :x-small="$vuetify.breakpoint.smAndDown == true"
-            :title="btnTip(btn)" 
-            @click="doTask(btn.func)" 
-            v-show="!btn.optional == 1"> 
+            :title="btnTip(btn)"
+            @click="doTask(btn.func)"
+            v-show="!btn.optional == 1 || true">
 
-        <v-icon :small="$vuetify.breakpoint.smAndDown == true" class="ma-1">
+        <v-icon :small="$vuetify.breakpoint.smAndDown" class="ma-1">
           {{ btn.icon }}
         </v-icon>
-        <div v-if="!$vuetify.breakpoint.smAndDown">
+        <div v-if="$vuetify.breakpoint.smAndUp">
           {{ btnText(btn.btn) }}
         </div>
-
       </v-btn>
-      
-      <!--/div-->
     </template>
+
     <template v-if="menuDisplay == 'vertical'">
      <v-list color="primary">
 
       <!--subheader on dropdown, to "group" button -->
-      <!--v-subheader> 
+      <!--v-subheader>
         {{ buttonGroup }}
       </v-subheader-->
 
-      <v-list-item-group>      
-       <v-list-item v-for="btn in buttons[buttonGroup[0]]" 
+      <v-list-item-group>
+       <v-list-item v-for="btn in btnGroup"
                  :key="btn.btn"
                  v-show="btn.optional == 4">   <!--Should be 1, but we want to hide them -->
         <v-list-item-icon>
@@ -49,12 +47,12 @@
          </v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-         <v-list-item-title :title="btnTip(btn)" 
+         <v-list-item-title :title="btnTip(btn)"
                           @click="doTask(btn.func)">
           {{ btnText(btn.btn) }}
          </v-list-item-title>
        </v-list-item-content>
-      </v-list-item>   
+      </v-list-item>
      </v-list-item-group>
 
      </v-list>
@@ -64,27 +62,27 @@
        <!-- {{ menuDisplay }} -->
     <v-layout color="blue-grey lighten-5" >
       <v-flex>
-      <v-card xs12 sm6 class="pa-2"  
-              color="blue-grey lighten-5" 
+      <v-card xs12 sm6 class="pa-2"
+              color="blue-grey lighten-5"
               width="99%"
-              v-for="toolGroup in buttonGroup"  :key="toolGroup"> 
+              v-for="toolGroup in buttonGroup"  :key="toolGroup">
                <!-- {{ buttons[toolGroup] }} -->
                <i>{{ toolGroup }}</i>
         <v-layout row wrap>
         <v-flex xs12 sm6 class="pa-1"
-               v-for="btn in buttons[toolGroup]"  :key="btn.btn">   
-       <v-card max-width="400"  class="ma-2" 
+               v-for="btn in buttons[toolGroup]"  :key="btn.btn">
+       <v-card max-width="400"  class="ma-2"
                color="grey lighten-5"
-               :x-small="$vuetify.breakpoint.smAndDown == true">   
+               :x-small="$vuetify.breakpoint.smAndDown == true">
         <v-card-title>
-         <v-btn small @click="doTask(btn.func)" :title="btnTip(btn)"> 
+         <v-btn small @click="doTask(btn.func)" :title="btnTip(btn)">
            <v-icon small>{{ btn.icon }}</v-icon>
-           {{ btnText(btn.btn) }} 
+           {{ btnText(btn.btn) }}
          </v-btn>
-         
-        </v-card-title>         
+
+        </v-card-title>
        </v-card>
-      </v-flex>       
+      </v-flex>
        </v-layout>
       </v-card>
       </v-flex>
@@ -104,7 +102,7 @@ import { doStuff,buttons } from '@/api/buttons'
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 export default {
  name: "toolBarButtons",
- props:{ menuDisplay: { type:String, required:true}, 
+ props:{ menuDisplay: { type:String, required:true},
          buttonGroup: {type:Array, required:true},
        },
  components: {},
@@ -112,8 +110,8 @@ export default {
    buttons: buttons,
  }),
  methods: {
-   btnText(p1) { return this.$t('btn.' + p1) },
-   btnTip(p1) { return this.$t('btn.tip'+p1.btn) },  
+   btnText(p1) { return this.$t('btn.' + p1) || p1 },
+   btnTip(p1) { return this.$t('btn.tip'+p1.btn) || p1 },
    doTask(task) {
      /* Boring tasks about router, done in buttons.js */
      if (!doStuff(this.$router,task)) {
@@ -123,14 +121,14 @@ export default {
              infoSnackbar('Hello from snackbar!');
              this.$root.$confirm(this.Delete, this.AreYouSure, { color: 'red' })
                                .then((confirm) => {
-                                                  if (confirm) { 
+                                                  if (confirm) {
                                                     infoSnackbar('Jy het confirm! Baie mooi!')
                                                   } else {
                                                     errorSnackbar('Hoekom nie?')
                                                   }
                                  })
              break
-          default:      
+          default:
             alert('we do not understand : ' + task)
         }
      }
@@ -139,6 +137,9 @@ export default {
  computed: {
    AreYouSure()    { return this.$t('message.AreYouSure') },
    Delete()        { return this.$t('message.Delete') },
+   btnGroup() {
+    return this.buttons[ this.buttonGroup[0] ] || []
+   }
  },
  mounted: function () {
    //MNT TBB

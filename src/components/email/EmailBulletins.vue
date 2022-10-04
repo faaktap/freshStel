@@ -2,26 +2,21 @@
  <v-card class="mx-auto" elevation="2">
    <v-card-title class="headline ma-1"> Email Bulletins </v-card-title>
    <v-card-text v-if="emailList">
-    <v-row class="text-center">
-      <v-flex
-          v-for="email in emailList"
-          :key="email.deliveryid"
-          class="flex justify-space-between pb-2 mb-2"
-          >
+    <v-row>
+      <v-flex v-for="email in emailList" :key="email.deliveryid">
          <v-card class="ma-4" color="#939D44">
-         <v-card-title> {{email.subject}} </v-card-title>
-
+         <v-card-subtitle> {{email.subject}} </v-card-subtitle>
          <v-card-actions>
            <v-btn small
               @click="clickOnRow(email)">
               <v-icon> mdi-attachment </v-icon>
               Read
            </v-btn>
-           <v-badge bordered
-              color="green">
+           <v-badge bordered color="green">
              <span slot="badge"> {{email.deliveryid}} </span>
            </v-badge>
-           <v-spacer /> {{email.sentdate.substr(0,10)}}
+           <v-spacer />
+           {{email.sentdate.substr(0,10)}}
          </v-card-actions>
          </v-card>
       </v-flex>
@@ -43,26 +38,43 @@
    <v-dialog v-model="showEmail" :fullscreen="$vuetify.breakpoint.mobile" width="auto">
      <v-card class="ma-2 pa-2">
        <v-card-title>
-           <v-spacer /><v-btn icon @click="showEmail = false"><v-icon> mdi-window-close </v-icon>
+           <v-spacer />
+           <v-btn icon @click="showEmail = false"><v-icon> mdi-window-close </v-icon>
            </v-btn>
        </v-card-title>
        <v-card-text  v-html="emailHtml" />
-       <v-card-actions> <v-btn small @click="showEmail = false">
-              <v-icon> mdi-window-close </v-icon>
-              Close
-           </v-btn>
+       <v-card-actions>
+        <v-btn ripple small @click="showEmail = false">
+          <v-icon> mdi-window-close </v-icon>
+          Close
+        </v-btn>
        </v-card-actions>
      </v-card>
    </v-dialog>
 
    <v-dialog v-model="showList" color="green" :fullscreen="$vuetify.breakpoint.mobile" width="auto">
+    <v-card>
+      <v-card-title> {{ attachments }} </v-card-title>
+      <v-card-text>
+    <v-menu>
+      <template v-slot:activator="{ on, attrs }">
       <v-list>
-        <v-list-item v-for="(a,i) in attachments" :key="i">
-          <v-list-item-title @click="doit(a)">{{a.filename}}</v-list-item-title>
+        <v-list-item v-for="(a,i) in attachments" :key="i"
+                     v-bind="attrs" v-on="on">
+          <v-list-item-title  @click="doit(a)" >
+           <v-icon> mdi-file</v-icon> {{a.filename}}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
+      </template>
+    </v-menu>
+    </v-card-text>
+    </v-card>
    </v-dialog>
-
+   <v-card-actions>
+    <v-spacer />
+    <v-btn color="primary" to="/"> Home </v-btn>
+   </v-card-actions>
  </v-card>
 </template>
 
@@ -106,7 +118,7 @@ export default {
       htmlLoaded(response) {
           this.emailHtml = ''
           response.forEach(e => this.emailHtml += e.html)
-          console.log(this.emailHtml)
+          //console.log(this.emailHtml)
 
       },
       clickOnRow(e) {
@@ -155,7 +167,7 @@ export default {
         }
       }
     },
-    mounted: function() {
+    mounted()  {
         console.log(this.$options.name, this.emailSearch)
         if (this.emailSearch) {
            this.getEmails()

@@ -1,14 +1,17 @@
 <template>
  <v-container fluid>
-   <h3 class="text-center ma-2"> {{ reportHeader }} </h3>
-    <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
+
+  <base-tool :toolbarName="reportHeader"
+            :background="false"
+            :back="false"
+            >
       <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn>
-    </v-card>
-    <v-data-table
+  </base-tool>
+  <v-data-table
           v-if="filterTable.length"
           :headers="labels"
           :items="filterTable"
-    />
+   />
 
 <v-dialog v-model="showPrint" xwidth="auto" :fullscreen="$vuetify.breakpoint.smAndDown">
   <front-json-to-csv v-if="filterTable2.length"
@@ -19,9 +22,9 @@
                    :footer="realFooter"
                    :unique="unique"
                    :small="true">
-   <v-btn>
+   <!-- <v-btn>
       Download with custom title
-   </v-btn>
+   </v-btn> -->
   </front-json-to-csv>
 </v-dialog>
 
@@ -32,6 +35,7 @@
 import { zmlFetch } from '@/api/zmlFetch';
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import { errorSnackbar } from "@/api/GlobalActions"
+import baseTool from '@/components/base/baseTool.vue'
 export default {
   name: "ReportsTableSmall",
   props:{
@@ -41,7 +45,7 @@ export default {
          footer:{type:String, default:""},
          unique:{type:String, default:""}
          },
-  components: {FrontJsonToCsv},
+  components: {FrontJsonToCsv, baseTool},
   data: () => ({
       showPrint: true,
       orDTTable: [],

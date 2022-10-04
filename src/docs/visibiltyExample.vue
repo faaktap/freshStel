@@ -1,4 +1,4 @@
-<t  emplate>
+<template>
 <div>     
   <!-- Button size based on screen size -->
   <v-btn outlined :small="$vuetify.breakpoint.smAndDown" @click="formerPage">

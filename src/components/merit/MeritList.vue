@@ -3,6 +3,7 @@
  <h2 v-if="getZml.login.studentid == studentid" class="heading-1 text-center">Your Merits</h2>
  <h2 v-if="getZml.login.type != 'student'" class="heading-1 text-center">Merits for student : {{ studentid }}</h2>
 
+<v-back />
  <v-card class="ma-2" elevation="2">
         <v-card xs6 class="ma-2">
          <v-card-text>
@@ -33,11 +34,13 @@
 <script>
 import { getters } from "@/api/store"
 import { mer } from "@/components/merit/merit.js"
+import VBack from '@/components/base/VBack.vue'
 // import { infoSnackbar } from "@/api/GlobalActions"
 export default {
     name: 'MeritList',
     props: ['meritid','studentid'],
     components:{
+      VBack
     },
     data () {
       return {

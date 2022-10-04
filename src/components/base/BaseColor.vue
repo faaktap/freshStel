@@ -1,33 +1,37 @@
 <template>
 <div>
  <v-text-field dense
-          :label="label"
-          :value="value"
-          readonly
-           append-icon="mdi-format-color-fill"
-          @focus="showColor = !showColor"
-          @click:append="showColor = !showColor"
-          v-on:input="updateValue($event)"
-          :required="required"
-          :style="`bacgroundcolor:${value}`"
-          :color="value"
-          />
-          <v-card v-if="showColor" elevation="5" class="ma-2">
-           <v-color-picker
-                   dot-size="25"
-                   swatches-max-height="250"
-                   hide-mode-switch
-                   hide-inputs
-                   @input="updateValue($event)"
-                   @blur="blurEvent"
-                   :value="value"
-                   >
-           </v-color-picker>
-          </v-card>
+    class="ma-2"
+    :background-color="value"
+    :label="label"
+    :value="value"
+    prepend-icon="mdi-select-color"
+    append-icon="mdi-close"
+    @focus="showColor = !showColor"
+    @click:prepend="showColor = !showColor"
+    @click:append="updateValue(0)"
+    v-on:input="updateValue($event)"
+    :required="required"
+  >
+ </v-text-field>
+        <v-card elevation-6 v-if="showColor">
+          <v-color-picker
+              close-on-content-click
+              @change="showColor = false"
+              v-on:input="updateValue($event)"
+              :value="value"
+           show-swatches
+           swatches-max-height="100"
+         />
+         <!-- hide-canvas hide-inputs hide-mode-switch hide-sliders -->
+        </v-card>
 </div>
 </template>
 
 <script>
+//https://paulund.co.uk/use-v-model-on-custom-vue-component
+//NB Werner!!! https://vuejs.org/v2/guide/components.html#Using-v-model-on-Components
+//https://vuejs.org/v2/guide/forms.html
 export default {
   name: "BaseColor",
   props:{ label: {    type: String      },
@@ -36,16 +40,14 @@ export default {
           instructions: {type: String, default:""}
         },
   data: () => ({
-    showColor: false,
-  }),
+     showColor: false
+    }),
   methods:{
-    blurEvent(e) {
-        console.log('blur event:',e)
-    },
-    updateValue(pvalueT) {
-        console.log('update event - ' , pvalueT)
-      //this.showColor = false
-      this.$emit('input', pvalueT)
+    updateValue: function (pvalueT) {
+      console.log('update color start : ', pvalueT)
+      this.showColor = false
+      this.$emit('input', pvalueT )
+      console.log('update color end : ', pvalueT )
     }
   },
   mounted() {

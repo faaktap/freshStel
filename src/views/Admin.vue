@@ -1,22 +1,49 @@
 <template>
 <div>
+<v-toolbar color="primary" row  wrap :loading="loading">
+      Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
+      <v-spacer />
+      <base-tool-button
+               v-if="meritCount > 0"
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Merit Approval"
+               color="secondary"
+               icon="mdi-trophy-award"
+               :badge="meritCount"
+               :loading="loading"
+               :disabled="loading"
+               badgeTitle="`You have ${meritCount} merits to confirm`"
+               @click="loadYourMeritWork"
+      >Merit Approval</base-tool-button>
+      <base-tool-button
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Google Search"
+               color="secondary"
+               icon="mdi-google"
+               @click="loadGoogle"
+      >Google</base-tool-button>
+      <base-tool-button
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="EMail"
+               color="secondary"
+               icon="mdi-email"
+               title="DEKHS Email"
+               @click="loadEmail"
+      >EMail</base-tool-button>
+      <base-tool-button
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Merit Point Allocation"
+               color="secondary"
+               icon="mdi-refresh"
+               :loading="loading"
+               :disabled="loading"
+               title="Refresh this page"
+               @click="loadFunctions"
+      >Refresh</base-tool-button>
 
-<v-toolbar color="primary">
-    <v-toolbar-title>
-      <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
-       <div>
-         Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
-       </div>
-       <div>
-        <v-btn   small
-         absolute top right
-         color="blue-grey"
-         class="ma-2 white--text"
-         title="Click here to refresh"  @click="loadFunctions"> Refresh </v-btn>
-       </div>
-      </div>
-    </v-toolbar-title>
-</v-toolbar>
+  </v-toolbar>
+
+
 
 <v-row>
  <v-col cols="12">
@@ -76,24 +103,37 @@ import { infoSnackbar } from '@/api/GlobalActions';
 
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
-
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 export default {
     name:"AdminHome",
-    components:{ListTest,BaseTitleExpand},
+    components:{
+      ListTest
+      ,BaseTitleExpand
+      ,BaseToolButton
+      },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        wieOmTeWys:'Teacher',
-        showCal:false,
+        wieOmTeWys: 'Teacher',
+        showCal: false,
         cards: ['Today', 'Yesterday'],
         today: new Date(),
         tomorrow: new Date(),
         schoolday: null,
-        weekOrDay:"day",
-        joke:''
+        weekOrDay: "day",
+        joke: '',
+        meritCount: '',
+        loading: false
     }),
     computed:{
     },
     methods:{
+      loadEmail() {
+        window.open('https://outlook.office.com/mail/','_' + 'em_external')
+      },
+      loadGoogle() {
+        window.open('https://www.google.co.za/','_' + 'go_external')
+      },
+
        click(what) {
           if (doStuff(this.$router,what.payload) == 0) {
               if (what.payload.substr(0,4).toLowerCase() == 'http') {
@@ -104,7 +144,24 @@ export default {
           }
 
         },
+        loadWorkToDo() {
+          this.loading = true
+          let ts = {}
+          ts.task = 'OneValueSql'
+          ts.sql = `SELECT count(*) FROM dkhs_meritstudent WHERE confirmdte is null and persmenemonic = '${this.getZml.login.username}'`
+          ts.api = zmlConfig.apiDKHS
+          zmlFetch(ts, this.getMeritCount, this.loadError)
+        },
+        getMeritCount(response) {
+          console.log('Merit Count', response)
+          this.meritCount = response
+          this.loading = false
+        },
+        loadYourMeritWork() {
+          this.$router.push({ name: 'PersMeritList'})
+        },
         loadFunctions() {
+          this.loading = true
           let ts = {};
           ts.task = 'PlainSql';
           ts.sql = 'select * from dkhs_lfunction order by sortorder'
@@ -112,14 +169,17 @@ export default {
           zmlFetch(ts, this.showData, this.loadError)
         },
         loadError(response) {
-          // this.$cs.l(response)
-          alert(response)
+          this.$cs.l(this.$options.name,'ErrorA', response)
+          this.loading = false
         },
         showData(response) {
           this.getZml.functions = response
+          this.loadWorkToDo()
+          this.loading = false
         },
         async CallAsyncFunction() {
           if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
+            this.loading = true
            const joke = await zData.randomChuckNorris();
            this.joke = joke.value
            if  (this.joke && ( this.joke.indexOf('sex')
@@ -132,6 +192,7 @@ export default {
                             || this.joke.indexOf('bondag')
                             || this.joke.indexOf('gay'))) {
               this.joke = await zData.randomChuckNorris().value;
+              this.loading = false
            }
           }
         },

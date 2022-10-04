@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
+import HomeStart from '@/views/home/HomeStart'
 import Hover from '@/components/Hover'
 import i18nTest from '@/components/i18nTest'
 import EmptyRouterView from '@/components/EmptyRouterView'
@@ -12,7 +13,7 @@ import { zmlLog } from '@/api/zmlLog.js';
 
 Vue.use(VueRouter)
 
-const la = ["AppLayoutDefault","AppLayoutBasic","AppLayoutBlue","AppLayoutGray"]
+const la = ["AppLayoutDefault","AppLayoutBasic","AppLayoutBlue","AppLayoutGray","AppLayoutDrawer"]
 
 const routes = [
   /*
@@ -20,6 +21,13 @@ const routes = [
   { path: '/h', redirect: '/hover' },
   { path: '/1', redirect: { name: 'Werner' }},
   */
+  {
+    component: HomeStart,
+    path: '/',
+    name: 'HomeStart',
+    meta: {layout: la[3],
+    authentication: "public"}
+  },
   {
     component: Home,
     path: '/home',
@@ -35,7 +43,6 @@ const routes = [
     component: login,
     path: '/login/:forgot?',
     name: 'Login',
-    alias: '/',
     props:true,
     meta: {layout: la[3], authentication: "public"}
   },
@@ -149,7 +156,15 @@ const routes = [
     path: '/studentlist',
     name: 'studentlist',
     meta: {layout: la[3], authentication: "admin" }
-  },  {
+  },
+  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/components/student/StudentClass.vue'),
+    path: '/class/:gc?',
+    name: 'ClassList',
+    params: {title:"studentClassList",gc:{ g: "G12", c: "E1" }},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/student/StudentInfo.vue'),
     path: '/student/:studentid?',
     name: 'StudentInfo',
@@ -201,13 +216,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/Latest.vue')
     ,name: 'latest'
     ,path: '/latest/:days?'
-    ,props: true,    params: {days: 5}
+    ,props: true,    params: {days: 7}
     ,meta: {layout: la[3], authentication: "student"}
   },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/components/base/WhackAMole.vue')
     ,name: 'game'
     ,path: '/game'
+    ,meta: {layout: la[0], authentication: "public"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/FundRaiser.vue')
+    ,name: 'FundRaiser'
+    ,path: '/thermometer'
     ,meta: {layout: la[0], authentication: "public"}
   },
   {
@@ -233,13 +254,13 @@ const routes = [
     component: () => import(/* webpackChunkName: "email" */ '@/views/LogCheck.vue')
     ,name: 'checklog'
     ,path: '/checklog'
-    ,meta: {layout: la[3], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "admin"}
   },
   {
     component: () => import(/* webpackChunkName: "email" */ '@/views/EmailCheck.vue')
     ,name: 'EmailCheck'
     ,path: '/emailcheck'
-    ,meta: {layout: la[3], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "admin"}
   },
   {
     component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailDeliveryReport.vue')
@@ -265,7 +286,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
     ,name: 'ViewCampaigns'
     ,path: '/elections'
-    ,meta: {layout: la[3], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "student"}
   },
 {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewVote.vue')
@@ -273,14 +294,14 @@ const routes = [
     ,path: '/candidates/:campaignid'
     ,params: {campaignid: false}
     ,props: true
-    ,meta: {layout: la[3], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "student"}
   },
   {
     component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ApplicantRegister.vue')
     ,name: 'ApplicantRegister'
     ,path: '/applicant/:campaignid'
     ,props: true
-    ,meta: {layout: la[3], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "student"}
   },
   {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/UserList.vue')
@@ -310,7 +331,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "test" */ '@/views/AllPhotos.vue')
     ,name: 'AllPhotos'
     ,path: '/photos/:switch?'
-    ,meta: {layout: la[3], authentication: "public"}
+    ,meta: {layout: la[3], authentication: "teacher"}
   },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/calendarSetup.vue')
@@ -352,6 +373,14 @@ const routes = [
     meta: {layout: la[3], authentication: "student" }
   },
   {
+    path: '/attendance/:date?',    name: 'AttendanceView',
+    component: () => import(/* webpackChunkName: "student" */ '@/views/AttendanceView.vue'),
+    props: true,
+    params: {date: '', editmode: false},
+    meta: {layout: la[3], authentication: "admin" }
+  },
+
+  {
     component: () => import(/* webpackChunkName: "admin" */ '@/views/BookReturn.vue'),
     path: '/bookreturn',
     name: 'BookReturn',
@@ -390,12 +419,10 @@ const routes = [
     name: 'PersMeritList',
     meta: {layout: la[3], authentication: "teacher" }
   },
-
   {
-    component: () => import(/* webpackChunkName: "homework" */ '@/components/student/StudentClass.vue'),
-    path: '/class',
-    name: 'ClassList',
-    params: {title:"studentClassList",gc:{ g: "G12", c: "E1" }},
+    component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritTable.vue'),
+    path: '/merittable',
+    name: 'MeritTable',
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
@@ -405,6 +432,21 @@ const routes = [
     props:true,
     meta: {layout: la[3], authentication: "teacher" }
   },
+  {
+    component: () => import(/* webpackChunkName: "merit" */ '@/views/HelloWorld.vue'),
+    path: '/helloworld/:menemonic?',
+    name: 'HelloWorld',
+    props:true,
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "merit" */ '@/views/Attendance4.vue'),
+    path: '/attload',
+    name: 'Attendance4',
+    props:true,
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'

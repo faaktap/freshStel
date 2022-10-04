@@ -1,5 +1,6 @@
 <template>
 <div class="home">
+<!-- homeMain -->
  <v-container v-if="getZml.login.isAuthenticated==false">
 
     <hero-section name="forDB"

@@ -27,7 +27,7 @@
       {{ studentList.data.grade }}
       {{ studentList.data.gclass }}
       <!-- <br> -->
-      <v-btn small class="ma-2" color="primary"> Edit </v-btn>
+      <v-btn small class="ma-2" color="primary" @click="goToStudent"> More </v-btn>
 
       </div>
      </div>
@@ -45,6 +45,12 @@
 export default {
     name:"StudentNameCard",
     props: ['studentList','color'],
+    methods: {
+      goToStudent() {
+        //this.$router.push({ name: 'StudentInfo', params: {studentid: this.studentList.studentid, editmode: false} })
+        this.$router.push("/student/"+this.studentList.data.studentid)
+      }
+    },
     mounted() {}
 }
 </script>

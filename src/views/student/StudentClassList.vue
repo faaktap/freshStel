@@ -1,65 +1,33 @@
 <template>
 <v-container fluid>
-    <base-title-expand color="blue" heading="Student/Class Lists" >
-    <p>Here you can view current class lists, roll your own list, and at the bottom see results
-      of the Grade 10 survey for Subject Selection</p>
-    </base-title-expand>
-    <v-toolbar  dense  row  wrap
-        :collapse="$vuetify.breakpoint.smAndDown">
-        <v-app-bar-nav-icon
-          v-if="$vuetify.breakpoint.smAndDown"
-          @click.stop="drawer = !drawer"
-        >
-        </v-app-bar-nav-icon>
-        <v-navigation-drawer
-          v-model="drawer"
-          absolute
-          temporary
-        >
-        <v-dialog v-model="drawer">
-         <v-card class="ma-2 pa-2">
-          <v-btn-toggle dense v-model="toggleDisplay">
-           <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced">
-            Class/Grade Lists
-           </base-tool-button>
-           <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
-            Your Own Lists
-           </base-tool-button>
-           <base-tool-button class="mr-2" icon="mdi-school">
-            Grade 10 Subject Selections
-           </base-tool-button>
-          </v-btn-toggle>
-         </v-card>
-        </v-dialog>
-
-        </v-navigation-drawer>
-
+  <v-toolbar  dense  row  wrap color="primary">
+      Student/Class Lists
      <v-spacer></v-spacer>
-
-     <v-btn-toggle dense v-model="toggleDisplay">
-      <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced">
+     <!-- <v-btn-toggle dense v-model="toggleDisplay"> -->
+      <base-tool-button class="mr-2" icon="mdi-seat-legroom-reduced"
+                         @click="toggleDisplay=0">
         Class/Grade Lists
       </base-tool-button>
-      <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
+      <!-- <base-tool-button class="mr-2" icon="mdi-format-list-checkbox">
         Your Own Lists
-      </base-tool-button>
-      <base-tool-button class="mr-2" icon="mdi-school">
+      </base-tool-button> -->
+      <base-tool-button class="mr-2" icon="mdi-school"
+                       @click="toggleDisplay=1">
         Grade 10 Subject Selections
       </base-tool-button>
-      <base-tool-button class="mr-2" icon="mdi-brain">
+      <!-- <base-tool-button class="mr-2" icon="mdi-brain">
         Werner Test
-      </base-tool-button>
-     </v-btn-toggle>
-
-    </v-toolbar>
-
+      </base-tool-button> -->
+     <!-- </v-btn-toggle> -->
+     <v-back />
+  </v-toolbar>
 
 
 <v-container v-if="toggleDisplay == 0" fluid>
-  <v-toolbar flat color="blue" dark>
+  <!-- <v-toolbar flat color="blue" dark>
     <v-toolbar-title> General Class Lists  </v-toolbar-title>
     <v-spacer />
-  </v-toolbar>
+  </v-toolbar> -->
 
    <v-row>
    <v-col cols="12">
@@ -68,38 +36,12 @@
  </v-row>
 </v-container>
 
-
-<v-container v-if="toggleDisplay == 1" fluid>
-  <v-toolbar flat color="blue" dark>
-    <v-toolbar-title> Unique Class Lists, created by you </v-toolbar-title>
-  </v-toolbar>
-  <v-row>
-   <v-col cols="12">
-     <class-list title="" />
-  </v-col>
- </v-row>
- </v-container>
-
-
- <v-container v-if="toggleDisplay == 2" fluid>
-<!-- <base-title-expand color="white" heading="Grade 10 Subject Selection - 2023" > -->
+ <v-container v-if="toggleDisplay == 1" fluid>
  <v-row>
   <v-col cols="12">
      <grade-10-list title="Grade 10 Subject selection for 2023" />
   </v-col>
  </v-row>
-<!-- </base-title-expand> -->
- </v-container>
-
-
-<v-container v-if="toggleDisplay == 3" fluid>
-<base-title-expand color="white" heading="Werner Test" >
- <v-row>
-  <v-col cols="12">
-     <werner-test title="Grade 10 Subject selection for 2022" />
-  </v-col>
- </v-row>
-</base-title-expand>
  </v-container>
 
 <v-dialog v-model="studentInfoShow"
@@ -116,28 +58,31 @@
 
 // We need a place where the teachers has access to lists of students.
 // want them to create their own lists, and to see typical lists
-import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
-import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
-import StudentClass from '@/components/student/StudentClass.vue'
-import ClassList from '@/components/homework/ClassList.vue'
-import WernerTest from '@/components/homework/WernerTest.vue'
 import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlConfig } from '@/api/constants';
+
+//import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+import StudentClass from '@/components/student/StudentClass.vue'
+//import ClassList from '@/components/homework/ClassList.vue'
+//import WernerTest from '@/components/homework/WernerTest.vue'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import { infoSnackbar } from '@/api/GlobalActions';
 import Grade10List from '../../components/vfbase/Grade10List.vue';
+import VBack from '@/components/base/VBack.vue'
 
 export default {
     name:"StudentLists",
     components:{
         StudentClass,
-        ClassList,
+//        ClassList,
         StudentSubjectList,
         Grade10List,
-        BaseTitleExpand,
+//        BaseTitleExpand,
         BaseToolButton,
-        WernerTest
+//        WernerTest,
+        VBack
        },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),

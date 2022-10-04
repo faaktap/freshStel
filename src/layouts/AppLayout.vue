@@ -1,12 +1,10 @@
 <template>
+<!--
+  Here we read the folder layouts, and get all the files in it.
+  Then we match the filename as specified in layout
+  -->
   <component :is="layout">
-
-   <div  v-if="demo == 1" class="info">*APPLAYOUT*</div>
-    <!--transition name="fade" mode="out-in"-->
-    <slot />
-    <!--/transition-->
-   <div  v-if="demo == 1" class="info">*APPLAYOUT*</div>
-
+  <slot />
   </component>
 </template>
 
@@ -20,19 +18,16 @@ export default {
       return () => import(`@/layouts/${layout}.vue`)
     }
   },
-  data: () => ({
-    demo:1,
-  }),
   mounted: function () {
-      this.demo = zmlConfig.demo
+      console.log('appLO')
   }
 }
 </script>
 
-<style scoped>
+<!--style scoped>
 .info {
   background-color:gray;
   text-align: center;
   height: 5rem;
 }
-</style>
+</style-->

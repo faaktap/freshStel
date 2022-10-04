@@ -1,28 +1,13 @@
 <template>
 <v-container grid-list-lg v-if="subjectList.length" >
-   <!-- <v-card v-if="subjectList.length" xmax-width="500" class="mx-auto" :color="color" elevation="2">
-       <v-card-title class="headline ma-1"> Subjects </v-card-title>
-       <div v-for="s in subjectList" :key="s.studsubid" class="ma-2">
-        <v-card class="pa-2 ml-1 mr-2" :xcolor="color">
-         {{ s.subjectname }}
-         <div class="float-right">
-           {{ s.teachersurname }},
-           {{ s.teacherinitial }}
-         </div>
-        </v-card>
-       </div>
-       <v-card-text>
-       </v-card-text>
-    </v-card>
-    <v-card v-else>
-        We could not find any subjects for {{ this.studentid }}
-    </v-card> -->
-
       <v-layout row wrap>
         <v-flex v-for="s in subjectList" :key="s.studsubid" xs12 sm6 md6 lg6>
           <v-card>
             <!--v-img src="img/logo.png" height="260px "></v-img-->
-            <v-img class="float-right" width="100px" src="/img/logo.png" />
+            <!-- <v-img class="float-right" width="100px" src="/img/logo.png" /> -->
+            <v-card class="float-right ma-2" height="50" width="50">
+             <z-show name="persphoto" :id="lookupPersid(s.teachersurname, s.teacherinitial)" />
+            </v-card>
 
             <v-card-title primary-title class='blue--text wordbreak'>
               {{s.subjectname}}
@@ -51,26 +36,46 @@
           </v-card>
         </v-flex>
       </v-layout>
+      <!-- {{ lookupPersid('smit','w') }} -->
  </v-container>
 </template>
 
 <script>
+import { getters } from "@/api/store";
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
-//import PersonelNameCardDemo from '@/components/staff/PersonelNameCardDemo.vue'
+//import { finder } from '@/api/finder.js';
+import ZShow from '@/components/base/ZShow.vue'
 export default {
     name:"StudentSubjectCard",
     props: ['studentid', 'color'],
-    //components: {PersonelNameCardDemo},
+    components: {
+      //PersonelNameCardDemo,
+      ZShow
+    },
     data: () => ({
-     subjectList:{},
+      subjectList:{},
+      persMenemonic: getters.getState({ object: "gZml" }).persMenemonic
     }),
+    computed: {
+    },
     methods:{
+      lookupPersid(surname, initial) {
+          let idx = this.persMenemonic.findIndex(e => {
+              //console.log(e.surname.toLowerCase() , surname.toLowerCase() , e.name.substr(0,1).toLowerCase(), initial.toLowerCase())
+              return e.surname.toLowerCase() == surname.toLowerCase() && e.name.substr(0,1).toLowerCase() == initial.toLowerCase()
+          })
+          if (idx > -1) {
+            return this.persMenemonic[idx].persid
+          } else {
+            return this.persMenemonic[1].persid
+          }
+      },
       showTeacher(surnameAndInit) {
         console.log('pushing for ', surnameAndInit)
         this.$router.push({ name: 'PersonelCard', params: {persName: surnameAndInit, editmode: false} })
       },
-        loadStudentSubject() {
+      loadStudentSubject() {
             this.subjectList.length = 0
             if (this.studentid) {
                let ts = {}
@@ -79,10 +84,10 @@ export default {
                ts.api = zmlConfig.apiDKHS
                zmlFetch(ts, this.assignData);
             }
-        },
-        assignData(response){
-            this.subjectList = response
-        }
+      },
+      assignData(response){
+        this.subjectList = response
+      },
     },
     mounted: function() {
         if (this.studentid) {

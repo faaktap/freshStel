@@ -1,0 +1,73 @@
+<template>
+ <div>
+ <!------------------------------------------- N A V I G A T I O N  D R A W E R -->
+ <zml-nav-bar :passDrawer="localDrawer"
+               @clipped="clipped = $event"
+               @fixed="fixed = $event" />
+
+ <!------------------------------------------- A P P   B A R -->
+ <v-app-bar
+   :clipped-left="clipped"
+   fixed
+   app
+ >
+   <v-app-bar-nav-icon @click.stop="localDrawer = !localDrawer">
+     <v-icon>mdi-hamburger</v-icon>
+   </v-app-bar-nav-icon>
+   <v-toolbar-title>
+     xxx{{ title }}
+   </v-toolbar-title>
+   <v-spacer />
+   <hover-button :fab="false"
+                 :dropItems="[{title:`Look at me, i'm a Title!`}
+                             ,{title:`Another Entry`}
+                             ,{title:`These will do nothing yet`}
+                             ]"
+                  title="Drop Button"
+                  color="white darken-2" />
+   <v-spacer />
+   <v-btn fab small to="/"><v-icon>mdi-home</v-icon></v-btn>
+ </v-app-bar>
+ </div>
+</template>
+
+<script>
+import HoverButton from '@/components/HoverButton'
+import ZmlNavBar from '@/layouts/ZmlNavBar'
+
+export default {
+  name:'appLayoutLinks',
+  components:{HoverButton, ZmlNavBar},
+  data () {
+    return {
+      localDrawer: true,
+      fixed: true,
+      clipped: true,
+      username: "Uncle Facebook",
+      title: 'Werner se Layout'
+    }
+  },
+  computed: {
+     showAll() {
+       return "clipped = " + this.clipped + "<br>"
+            + "drawer = " + this.localDrawer + "<br>"
+            + "fixedDrawer = " + this.fixedDrawer + "<br>"
+            + "fixed Footer = " + this.fixed + "<br>"
+            + "miniVariant = " + this.miniVariant + "<br>"
+            + "right = " + this.right + "<br>"
+            + "dark = " + this.$vuetify.theme.dark + "<br>"
+     }
+  },
+  mounted() {
+    console.log('z:', this.$options.name)
+
+  }
+}
+</script>
+
+
+<style>
+html {
+  font-family: "Roboto";
+}
+</style>

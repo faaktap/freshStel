@@ -1,6 +1,6 @@
 <template>
 <div>
-
+<!--hometeacher-->
 <v-toolbar color="primary">
     <v-toolbar-title>
       <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
@@ -36,10 +36,10 @@
 </v-col>
 |</v-row>
 
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
+    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WIE'">
        <v-btn href="http://kuiliesonline.co.za/cw-mail/"> Online Mass Mail </v-btn>
     </div>
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
+    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WIE'">
         HT
         <v-btn to="/viewfunctions"> functions </v-btn>
         <v-btn to="/dkhsawards"> awards </v-btn>

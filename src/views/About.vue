@@ -1,10 +1,70 @@
 <template>
 <v-container fluid>
-    <v-card class="ma-2" id="printMe">
-    <v-card-title class="noprint"> {{ userHeader }}</v-card-title>
-    <v-card v-html="printHeader(userHeader)" class="hide"></v-card>
 
-  <v-data-table :headers="headers" :items="desserts"
+  <v-row style="background-color:LightSalmon;" class="pa-4 ma-4">
+   <p> base-button-dialog</p>
+   <base-button-dialog class="ma-2" iconName="mdi-printer"  buttonText="ZAPME" />
+   <base-button-dialog class="ma-2" buttonText="ZAPME2" />
+   <base-button-dialog class="ma-2" iconName="mdi-printer"  buttonText="" />
+   <base-button-dialog class="ma-2"
+                       iconName="mdi-information"
+                       buttonText=""
+                       color="info"
+                       infoText="Some info we need to tell client about"
+                       infoTitle="Help"
+   />
+   <hr />
+   <p> base-search</p>
+   <base-search v-model="testString" />
+  </v-row>
+
+  <v-row style="background-color:Lavender;" class="pa-4 ma-4">
+   <p>Show-col-size</p> <show-col-size :hide="true" />
+  </v-row>
+
+  <v-row style="background-color:Silver;" class="pa-4 ma-4">
+    <v-col cols="12">
+ <base-tool :toolList="[{name:'Button1', color:'secondary', icon:'mdi-coffee'},{icon:'mdi-waze'},{name:'button3'},{color:'black',icon:'mdi-printer'}]"
+            toolbarName="Name of Toolbar a bit longer than usual"
+            :loading="loading"
+            @toolClick="listenToToolbar"/>
+ <base-search v-model="testString" @clear="testString=''" />
+ <v-btn @click="loading = !loading"> loading </v-btn> {{loading}}
+ <base-tool :toolList="[{name:'Merit Approval', color:'accent', icon:'mdi-trophy', badge:2},{icon:'mdi-waze', color:'accent'},{name:'button3', color:'accent'},{color:'accent',icon:'mdi-printer', color:'white'}]"
+            toolbarName="Name of Toolbar a bit longer than usual"
+            :loading="loading"
+            @toolClick="listenToToolbar"/>
+
+ <base-tool :toolList="[]"
+            toolbarName="This is my tooblar vlanky"
+            :loading="loading"
+            background="true">
+            sdfwsdfsdfsdf
+ </base-tool>
+
+    </v-col>
+
+  </v-row>
+  <v-row style="background-color:LightGreen;" class="pa-4 ma-4">
+  </v-row>
+
+  <v-row style="background-color:Wheat;" class="pa-4 ma-4">
+  </v-row>
+
+  <v-row style="background-color:LightCyan;" class="pa-4 ma-4">
+  </v-row>
+
+  <v-row style="background-color:LightSteelBlue;" class="pa-4 ma-4">
+  </v-row>
+
+
+<v-row>
+ <v-col cols="12">
+  <p> test printing , edit and delete.. with builtin v-dialog</p>
+  <v-card class="ma-2" id="printMe">
+   <v-card-title class="noprint"> {{ userHeader }}</v-card-title>
+    <v-card v-html="printHeader(userHeader)" class="hide"></v-card>
+    <v-data-table :headers="headers" :items="desserts"
                  sort-by="calories" class="elevation-1"
                  :disable-items-per-page="true"
                  page-text="Sdfsdfsdf"
@@ -63,14 +123,14 @@
         <div class="text-center">This is a footer</div>
     </template>
   </v-data-table>
-
 </v-card>
 
   <v-btn @click="printIt" class="ma-2 noprint"><v-icon>mdi-print</v-icon> print </v-btn>
   <v-btn @click="testprint" class="ma-2 noprint"><v-icon>mdi-print</v-icon> print api </v-btn>
   <base-button-dialog class="ma-2" iconName="mdi-testtube"  buttonText="fdgesdfsdf" />
   <v-switch v-model="small" label="small" class="noprint" />
-
+  </v-col>
+</v-row>
 {{ getZml.persMenemonic }}
  </v-container>
 </template>
@@ -80,10 +140,16 @@ import { getters } from "@/api/store";
 
 import { printHeader, printPage, printJSON } from "@/api/zmlPrint.js"
 import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
+import baseSearch from "@/components/base/baseSearch.vue"
+import ShowColSize from "@/components/base/ShowColSize.vue"
+import baseTool from "@/components/base/baseTool.vue"
 export default {
   name: "HelloWorld",
   components:{
-    baseButtonDialog
+     baseButtonDialog
+    ,baseSearch
+    ,ShowColSize
+    ,baseTool
   },
   data: () => ({
     getZml: getters.getState({ object: "gZml" }),
@@ -91,6 +157,10 @@ export default {
     printHeader: printHeader,
     userHeader: "This abour page test my User Print module",
     dPg: false, hDF: false,
+
+    testString: '',
+    loading: false,
+    togVar: false,
 
     small: true,
     dialog: false,
@@ -118,6 +188,13 @@ export default {
     this.initialize();
   },
   methods: {
+    listenToToolbar(e1,e2) {
+      console.log(e1,e2)
+    },
+    listenToToggle(e1,e2) {
+      console.log(e1,e2)
+    },
+
     testprint() {
       printJSON(this.desserts, this.headers, this.userHeader)
     },
@@ -185,6 +262,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.hide {display:none;}
-</style>

@@ -1,4 +1,8 @@
 <template>
+<!--
+use for a class - called form StudentClass
+-->
+
 <v-card>
   <v-card-title> {{ title }} </v-card-title>
   <v-card-text>

@@ -1,28 +1,39 @@
+<docs>
+The idea is to create a button, that will show a dialog when pressed.
+Eventually the text could be read from the database?
+Like helptext.
+</docs>
+
 <template>
-<div>
-<v-btn icon="iconName.length>3 ? true : false" @click="show=!show">
-<slot>
-    xxx
-</slot>
-    <v-dialog v-model="show">
-        <v-card><v-card-title>Some Info </v-card-title>
-        <v-card-text> sdfjlk sdajflkasdf lkafsdlkgjsdfg </v-card-text>
-        </v-card>
+<v-btn :color="color" :icon="(iconName.length > 3 && buttonText.length == 0) ? true : false" @click="show=!show">
+ <v-icon v-if="iconName.length > 3"> {{ iconName }} </v-icon>
+ {{ buttonText }}
+    <v-dialog v-model="show" max-width="400" style="position:relative">
+     <v-card max-width="400">
+      <v-card-title>
+        <span> {{ infoTitle }} </span>
+        <v-spacer />
+        <v-menu>
+         <template v-slot:activator="{ on, attrs }">
+           <v-btn icon v-bind="attrs" v-on="on" @click="show = false"><v-icon>mdi-close</v-icon></v-btn>
+         </template>
+        </v-menu>
+      </v-card-title>
+      <v-card-text> {{ infoText }} </v-card-text>
+     </v-card>
     </v-dialog>
 </v-btn>
-    <v-icon v-if="iconName.length > 3"> {{ iconName}} </v-icon>
-     {{ buttonText }}
-     {{ iconName.length > 3 }}
-
-</div>
-</template>
+ </template>
 
 <script>
 export default {
-    name:"tester",
+    name:"BaseButtonDialog",
     props:{
         buttonText:{type:String, default:'pressme'},
         iconName:{type:String, default:''},
+        infoText:{type:String, default:'Please supply some text'},
+        infoTitle:{type:String, default:'Please supply a title'},
+        color:{type: String, default: ''}
     },
     data: () => ({
      show:false

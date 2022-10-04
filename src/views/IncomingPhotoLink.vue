@@ -1,34 +1,62 @@
 <template>
 <v-container fluid>
+ <base-tool :toolList="[]"
+            toolbarName="Incoming Photos Linking System"
+           :loading="loading">
+            <v-btn icon @click="showResult = !showResult">
+            E
+           </v-btn>
+           <base-button-dialog class="ma-2"
+                       iconName="mdi-information"
+                       buttonText=""
+                       color="grey"
+                       :infoText="`Anyone with this link can link a student to a photo.\
+                       Just click on the photo or assign button, and you can select a student from the list.`"
+                       infoTitle="Help"
+           />
+ </base-tool>
 
-<base-title-expand heading="Incoming Student Photo Assignment">
-Ask some of the personel and students to help the photographer to identify the person in the photo.
-<br>
-Click on the "ALL" button to see all the photos and click on the "Not Linked" button to view
-those we are still looking to assign.
-<br>
-If you click anywhere on the picture, you can type in a name via a lookup
-</base-title-expand>
+ <base-tool
+            toolbarName="Options"
+           :background="false"
+            back="false"
+            >
 
-<v-btn @click="show='all'" class="ma-2"> All </v-btn>
-<v-btn @click="show='notlinked'" class="ma-2"> Not Linked </v-btn>
-<v-data-table
+   <v-btn-toggle  color="secondary" dense group v-model="showAs" mandatory>
+     <v-btn value="card"><v-icon> mdi-card </v-icon></v-btn>
+     <v-btn value="table"><v-icon> mdi-image </v-icon></v-btn>
+   </v-btn-toggle>
+   <v-btn small @click="show='all'" class="ma-2" title="show the linked ones as well"> All </v-btn>
+   <v-btn small @click="show='notlinked'" class="ma-2" title="Only show ones not linked yet"> Not Linked </v-btn>
+
+ </base-tool>
+
+ <v-data-table
+    v-if="showAs == 'table'"
     :headers="photoListHeader"
     :items="photoListFilter"
     :items-per-page="50"
     class="elevation-2"
     @click:row="clickOnRow">
-    <!-- https://kuiliesonline.co.za/ -->
     <template v-slot:[`item.filepath`]="{ item }">
-        <v-img :src="'https://kuiliesonline.co.za/' + item.filepath" height="300" contain/>
+        <v-img :src="'https://kuiliesonline.co.za/' + item.filepath" height="100" contain/>
     </template>
-</v-data-table>
+ </v-data-table>
 
+ <div v-if="showAs == 'card'">
+   <v-layout row wrap>
+      <v-card v-for="pho in photoListFilter" :key="pho.id" max-width="240">
+         <v-card-title>
+            {{pho.student || '??'}}
+            <v-btn small @click="clickOnRow(pho)"> Assign </v-btn>
+         </v-card-title>
+         <v-card-text>
+            <v-img :src=" 'https://kuiliesonline.co.za/' + pho.filepath" max-width="230" />
+         </v-card-text>
+      </v-card>
+   </v-layout>
+ </div>
 
-<!-- Show a lookuplist of studentinfo -->
-<v-btn @click="showResult = !showResult">
-    Show Data for Export
-</v-btn>
 
 <v-dialog v-model="showLookup"
           max-width="400"
@@ -70,14 +98,20 @@ If you click anywhere on the picture, you can type in a name via a lookup
 </template>
 
 <script>
-import BaseTitleExpand from '../components/base/BaseTitleExpand.vue'
 import StudentLookup from '../components/student/StudentLookup.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import { zData } from "@/api/zGetBackgroundData.js"
+import baseTool from '@/components/base/baseTool.vue'
+import baseButtonDialog from '@/components/base/baseButtonDialog.vue'
 export default {
     name:"IncomingPhotoLink",
-    components:{BaseTitleExpand, FrontJsonToCsv,StudentLookup},
-    props:['myPropNameHere'],
+    components:{
+        FrontJsonToCsv
+      , StudentLookup
+      , baseTool
+      , baseButtonDialog
+    },
+    props:{},
     data: () => ({
        loading:false,
        zData:zData,
@@ -102,6 +136,7 @@ export default {
                     + "order by p.studentid desc, filename",
        api:'https://kuiliesonline.co.za/api/dkhs/dkhs.php',
        show:'missing',
+       showAs:'card'
     }),
     computed: {
        photoListFilter() {

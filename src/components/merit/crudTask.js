@@ -7,6 +7,7 @@ import { look } from "@/api/Lookups.js"
 export const crudTask = {
     hello: (p1) => {console.log('hello from (JS) ' , crudTask.name,p1)}
    ,name: "JSCrudTasks"
+   ,description: "Try to fix it to easily edit lookups"
    ,reportError: (response) => {
       if (response !== undefined && response.errorcode && response.errorcode != 0) {
         console.log(crudTask.name,'DbErr:',response)
@@ -52,14 +53,13 @@ export const crudTask = {
                ,back : record.back
                ,forward : record.forward
                ,meritid : record.meritid
-               ,userid : record.userid
                }
      ts.data.bind = {
           id: record.id
          ,title: record.title ? record.title.trim() : null
          ,description: record.description ? record.description.trim() : null
          ,meritid: record.meritid
-         ,userid: record.userid
+         ,userid: 1
          }
      ts.sql = `update dkhs_meritlevel\
                   set title = :title\
@@ -75,12 +75,12 @@ export const crudTask = {
      gzp.meritLevel[idx].merit = record.meritid
      gzp.meritLevel[idx].title = record.title
      gzp.meritLevel[idx].description = record.description
-     gzp.meritLevel[idx].userid = record.userid
+     //gzp.meritLevel[idx].userid = record.userid
 
 
    }
    ,load: (entityTableName) => {
-     console.log('load crudData : ', entityTableName)
+    console.log('load crudData : ', entityTableName)
     let gzp = getters.getState({ object: "gZml" })
     switch (entityTableName) {
      case "merit":
@@ -92,8 +92,6 @@ export const crudTask = {
 
 }
 
-
-
 function doneFetch (response) {
   console.log('doneFetch:', response)
   if ( response.error ) {
@@ -104,9 +102,11 @@ function doneFetch (response) {
 }
 
 function errorFetch (response) {
-  console.log('xexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxrror:', response)
+  //console.log('crudTask:errorFetch', response)
+  console.log(crudTask.name,'FetchErr:',response)
   errorSnackbar('We had an error saving your data!' + response.error)
 }
+
 // this works ok , but objects live in same place lots of times...
 /*
 const haveSameData = function (obj1, obj2) {

@@ -1,19 +1,23 @@
 <template>
 <!-- Must make dialog persistent - otherwise value get's confused. -->
-<v-dialog v-model="showIt" :fullscreen="$vuetify.breakpoint.mobile" xmax-width="600">
- <v-card  class="pa-5 ma-2">
-  <v-card-title>
-    Merit Level Edit
-    <small v-if="currentRecord">{{ currentRecord }}</small>
+<v-dialog v-model="showIt" :fullscreen="$vuetify.breakpoint.mobile" max-width="400">
+ <v-card  max-width="400" color="white" style="position: relative;">
+  <v-card-title xclass="text-md-h4 d-xs-none d-sm-block wordbreak text-center">
+    <span>Merit Level Edit xxxx</span>
+    <v-menu bottom left>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon v-bind="attrs" v-on="on" @click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-menu>
   </v-card-title>
+
    <v-card class="pa-2" v-if="currentRecord">
     <v-layout row wrap align-content-start justify-space-between>
-     <!-- <v-text-field v-model="currentRecord.id" label="id" readonly outlined class="ma-2"/>
-     <v-text-field v-model="currentRecord.back" label="back" readonly filled class="ma-2"/>
-     <v-text-field v-model="currentRecord.forward" label="forward" readonly filled class="ma-2"/> -->
-     <personel-menemonic class="my-2"
+     <!-- <personel-menemonic class="my-2"
                          :value="currentRecord.owner"
-                         @userid="currentRecord.userid = $event"/>
+                         @userid="currentRecord.userid = $event"/> -->
      <v-text-field v-model="currentRecord.title" label="title" filled class="ma-2"/>
      <v-text-field v-if="currentRecord.forward == 0"
                    v-model="currentRecord.meritid"
@@ -27,7 +31,6 @@
     <v-btn @click="save" color="primary"> save </v-btn>
     <v-btn @click="close" color="primary"> close </v-btn>
    </v-card-actions>
-   {{ getZml.login }}
  </v-card>
 </v-dialog>
 </template>
@@ -37,11 +40,10 @@ import { getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 import { crudTask } from "@/components/merit/crudTask.js"
 import { infoSnackbar } from "@/api/GlobalActions"
-import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
-//import { look } from "@/api/Lookups.js"
+// import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 export default {
     name: 'MeritForm',
-    components:{ PersonelMenemonic},
+//    components:{ PersonelMenemonic},
     props:{
        id:String,
       },

@@ -5,14 +5,14 @@
 </v-container>
 
 <v-container v-else fluid>
-<v-toolbar  dense  row  wrap
-           :collapse="$vuetify.breakpoint.smAndDown">
+ <v-toolbar  dense  row  wrap>
     <v-spacer></v-spacer>
     <base-tool-button
        v-if="studentList.length"
        icon="mdi-select-group"
        class="mr-2"
        title="Click to view attendance list"
+       color="green"
        @click="attendancePrep"
     >
       ATTENDANCE
@@ -37,7 +37,7 @@
     </base-tool-button>
    <base-tool-button v-if="studentList.length"
         title="Trying to get images to print"
-        @click="doPrint('x12345')"
+        @click="doPrint()"
     >
      T
     </base-tool-button>
@@ -77,11 +77,11 @@
             <v-layout>
              <v-flex xs1 class="ml-2"> {{ index+1 }}  </v-flex>
              <v-flex xs3 v-show="showPhotoList==true">
-              <v-img :src="'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=' + s.studentid"
+              <z-show name="studentphoto" :id="s.studentid" />
+              <!-- <v-img :src="'https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=' + s.studentid"
                       height="100"
                       contain
-                     :title="s.studentid">
-              </v-img>
+                     :title="s.studentid" /> -->
              </v-flex>
              <v-flex xs8 class="ma-2">
               {{ s.surname }}, {{ s.firstname}}
@@ -109,7 +109,6 @@
     </v-card>
    </v-col>
   </v-row>
-
 
 <!-- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
   (werner) studentList  :
@@ -140,7 +139,9 @@
 </template>
 
 <script>
-import { doPrint } from "@/api/DoPrint"
+//import { doPrint } from "@/api/DoPrint"
+//import { printJSON,printJSONBig } from "@/api/zmlPrint.js"
+import { printJSON } from "@/api/zmlPrint.js"
 import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
@@ -150,6 +151,7 @@ import PickAttendance from '@/components/student/PickAttendance.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import zmlCloseButton from '@/components/zmlCloseButton.vue'
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+import ZShow from '@/components/base/ZShow.vue'
 
 
 export default {
@@ -162,10 +164,10 @@ export default {
        ,StudentNameCard
        ,BaseToolButton
        ,PickAttendance
+       ,ZShow
     },
     computed: {},
     data: () => ({
-        doPrint:doPrint,
         getZml: getters.getState({ object: "gZml" }),
         gradeClass:{},
         studentList:[],
@@ -180,6 +182,11 @@ export default {
         attendanceList:[],
     }),
     methods:{
+      doPrint() {
+         let head = [{text:'id', value:'studentid'},{test:"surname", value:'surname'},
+                     {text:"firstname", value:"firstname"}]
+        printJSON(this.studentList, head, 'Student List : ' + this.gradeClass.g + this.gradeClass.c)
+      },
       attendancePrep() {
         this.showAttendance = !this.showAttendance
         if (this.showAttendance == false) {
@@ -244,7 +251,7 @@ export default {
       console.log('SC(mounted)1 : ', this.$options.name)
       console.log('SC(mounted)2 : ', this.$router.params)
       console.log('SC(mounted)3 : ', this.gc)
-      if (this.gc && this.gc.c & this.gc.g) {
+      if (this.gc && this.gc.c && this.gc.g) {
         // {"g": "G08", "c": "E1" }
         console.log('gc exist', this.gc)
         this.gradeClass = {g:this.gc.g, c:this.gc.c}

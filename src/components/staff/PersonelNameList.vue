@@ -5,7 +5,7 @@
  <v-card v-if="allowEdit==true">
   <v-layout row wrap align-content-start justify-space-between>
     <v-flex>
-      <v-card color="blue accent-1" class="ma-2 pa-5"> 
+      <v-card color="blue accent-1" class="ma-2 pa-5">
         Actions
         <v-btn small class="float-right" @click="addPersonel">
          Add
@@ -31,11 +31,11 @@
     @click:row="updatePersonel"
   >
       <template v-slot:[`item.data.heidiid`]="{ item }">
-        <v-btn class="mx-2" 
-               small 
+        <v-btn class="mx-2"
+               small
                title="Click here to edit"
                @click="updatePersonel(item)">
-          <v-icon dark>mdi-account-edit</v-icon> 
+          <v-icon dark>mdi-account-edit</v-icon>
         </v-btn>
       </template>
       <template v-slot:top>
@@ -48,7 +48,7 @@
             add a button here to insert?
         </v-card>
       </template> -->
-  </v-data-table>   
+  </v-data-table>
 
 
 <v-dialog v-model="showPersPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
@@ -57,17 +57,17 @@
                    :csv-title="'My Test csv title'">
    <v-btn>
       Download with custom title
-   </v-btn> 
+   </v-btn>
   </front-json-to-csv>
 </v-dialog>
 
- <v-dialog v-model="showPersUpdate" 
-          v-if="showPersUpdate && pers" 
+ <v-dialog v-model="showPersUpdate"
+          v-if="showPersUpdate && pers"
           xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown" >
   <personel-edit @savePers="savePers" :pers="pers.data">   </personel-edit>
  </v-dialog>
 
- </v-container>   
+ </v-container>
 </template>
 
 <script>
@@ -81,23 +81,23 @@ export default {
     props: ['staffList','allowEdit'],
     data: () => ({
       showPersUpdate:false,
-      showPersPrint:false,      
+      showPersPrint:false,
       pers:null,
       titles:['Mnr','Mr','Mev','Me','Ms','Mej','Miss','Dr','Prof','Rev'],
       workarea:['Finance','Admin','Teacher','Support','Graadhoof','Ontvangs','Sport'],
       staffHeaders: [
           {text: 'id',              value: 'data.persid' },
-          {text: 'username',        value: 'data.menemonic' },          
-          {text: 'WCG School ID',   value: 'data.wcgschoolsid' },
-          {text: 'Grade',   value: 'data.registergrade' },
-          {text: 'Class',   value: 'data.registerclass' },
+          {text: 'username',        value: 'data.menemonic' },
+          {text: 'Work Area',   value: 'data.workarea' },
+          {text: 'Menemonic',   value: 'data.menemonic' },
           {text: 'Surname',         value: 'data.surname' },
           {text: 'Name',            value: 'data.name' },
           {text: 'Room',            value: 'data.room' },
           {text: 'Email',           value: 'data.email' },
           {text: 'Contact Number',  value: 'data.contactnumber' },
+          {text: 'Grade',       value: 'data.registergrade' },
           {text: "action",          value: "data.heidiid", sortable: false }
-        ],    
+        ],
        jsonList:[],
    }),
     methods:{
@@ -107,7 +107,7 @@ export default {
       addPersonel(){
            this.pers = { data: { persid: null
                    , username: null
-                   , menemonic: null 
+                   , menemonic: null
                    , staffid: null
                    , heidiid: 123
                    , registergrade: null
@@ -115,7 +115,7 @@ export default {
                    , subjectid: null
                    , gender : 'male'
                    , surname: null
-                   , name: null   
+                   , name: null
                    , title: null
                    , contactnumber: null
                    , workarea: null
@@ -145,12 +145,12 @@ export default {
         ts.task = 'updateStaff';
         ts.data = this.pers.data
         ts.api = zmlConfig.apiDKHS
-        zmlFetch(ts, this.afterUpload, this.errorSave);       
-        
+        zmlFetch(ts, this.afterUpload, this.errorSave);
+
       },
       afterUpload(response) {
         if (response.error) {
-           alert(response.error)  
+           alert(response.error)
         } else {
            this.showPersUpdate = false
         }
@@ -174,6 +174,6 @@ export default {
               this.jsonList.push(ele.data)
           });
       }
-    },    
+    },
 }
 </script>

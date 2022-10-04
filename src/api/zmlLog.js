@@ -1,5 +1,6 @@
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
+import { zFetch } from '@/api/zmlFetch';
 // eslint-disable-next-line
 function zmlLog(user, pagename,logobj, callback,errcallback) {
     zmlConfig.cl('incoming task for LOG = ' , pagename)
@@ -11,13 +12,10 @@ function zmlLog(user, pagename,logobj, callback,errcallback) {
         task.task = 'dolog'
         task.status = 'trying'
         task.api =  zmlConfig. apiDKHS
-        let apiConfig = {method: 'POST',
-                  headers: {'Accept': 'application/json'
-                         , 'Content-Type': 'application/json;charset=UTF-8'},
-                  body: JSON.stringify(task)}
-
-        fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
-        .then(response => response.json())
+        zFetch(task)
+        .then((r) => {
+            if (r.status >= 200 && r.status <= 299) {return r.json() } else {throw Error(r.statusText)}
+        })
         .then(response => {
            if (callback) callback(response,task);
            zmlConfig.cl('ZF: after log callback for ',task.task);
@@ -25,6 +23,7 @@ function zmlLog(user, pagename,logobj, callback,errcallback) {
         .catch((err)=>{
             zmlConfig.cl('ZF: Errorname : ',task.task , 'Error:' , err, task);
             if (errcallback) errcallback(err);
+            alert('We have lost our way....Data or Connection problem.')
         });
     }
 export {zmlLog};

@@ -1,0 +1,193 @@
+<template>
+<v-container fluid>
+
+  <v-row style="background-color:LightGreen;" class="pa-4 ma-4">
+        <v-chip @click="start(0)" v-show="selItem.length >= 1" > {{ selItem[0] }} </v-chip>
+        <v-chip v-show="selItem.length >= 2" > {{ selItem[1] }} </v-chip>
+        <v-chip v-show="selItem.length >= 3" > {{ selItem[2] }} </v-chip>
+        {{selItem.length}} >= 1 -> {{ selItem.length >= 1 }} <br>
+        selItem.length >= 2 -> {{ selItem.length >= 2 }} <br>
+        selItem.length >= 3 -> {{ selItem.length >= 3 }}
+        {{ subject.length}}
+  </v-row>
+
+
+ <v-row>
+  <v-col cols="12">
+   <v-card class="ma-2" id="printMe">
+    <v-card-title class="noprint"> Select stuff </v-card-title>
+     <v-data-table :headers="headers" :items="showData"
+                 :loading="loading"
+                 class="elevation-1"
+                 :disable-items-per-page="true"
+                 page-text="Sdfsdfsdf"
+                 :disable-pagination="true"
+                 :hide-default-footer="true"
+                 @click:row="selectItem">
+      <template v-slot:[`top`]>
+        <base-search v-model="searchString" @clear="searchString=''" />
+            selItem : {{ selItem }} <br>  {{ selItem.length }} <br>Current:  {{ current }}
+      </template>
+     </v-data-table>
+     {{ grade }}
+     <br>{{ items }}
+   </v-card>
+  </v-col>
+ </v-row>
+</v-container>
+</template>
+
+<script>
+import { getters } from "@/api/store";
+import { zmlFetch } from '@/api/zmlFetch';
+import baseSearch from "@/components/base/baseSearch.vue"
+
+export default {
+  name: "HelloWorld",
+  components:{
+    baseSearch
+  },
+  data: () => ({
+    getZml: getters.getState({ object: "gZml" }),
+    loading: false,
+    current: '',
+    searchString:'',
+    teachers:[],
+    teachersHead:[{text:'teacher', value:'teacher'},{text:'count', value:'count'}],
+    grade:[],
+    gradeHead:[{text:'grade', value:'grade'},{text:'count', value:'count'}],
+    subject:[],
+    subjectHead:[{text:'subject', value:'subjectname'},{text:'count', value:'count'},{text:'From', value:'gc1'},{text:'To', value:'gc2'}],
+    items:[],
+    headers:[],
+    selItem:[],
+  }),
+  computed: {
+    showData() {
+        if (this.searchString == '') return this.items || []
+        if (this.current == 'teachers')
+           return this.items.filter(e => e.teacher.toLowerCase().includes(this.searchString.toLowerCase()) )
+        if (this.current == 'grade')
+           return this.items.filter(e => e.grade.toLowerCase().includes(this.searchString.toLowerCase()) )
+        if (this.current == 'subject')
+           return this.items.filter(e => e.subjectname.toLowerCase().includes(this.searchString.toLowerCase()) )
+
+        return this.items || []
+
+    }
+  },
+  watch: {
+  },
+  created() {
+    this.loadTeacher();
+  },
+  methods: {
+    start(selNo) {
+      this.searchString = ''
+      if (selNo == 0) {
+        this.selItem = []
+        this.current = ''
+        this.loadTeacher()
+      }
+    },
+    selectItem(e1,e2) {
+        console.log('select item : ', this.current,e2.item)
+        switch(this.current) {
+            case 'teachers':
+                this.selItem.push(e2.item.teacher)
+                this.loadGrade()
+                break
+            case 'grade':
+                this.selItem.push(e2.item.grade)
+                this.loadSubject()
+                break
+            case 'subject':
+                this.selItem.push(e2.item.subjectname)
+                this.loadStudents()
+                break
+            default:
+                alert('case is not handling : ' + this.current)
+        }
+        console.log('select item DONE: ', this.current,this.selItem)
+
+    },
+    loadStudents() {
+        console.log('load students,', this.selItem)
+
+
+    },
+    loadTeacher() {
+        this.loading = true
+        let ts = {task: 'PlainSql',
+               sql: `SELECT teacher, count(*) count FROM dkhs_studsub group by teacher`
+             }
+        zmlFetch(ts, this.loadTeacherData)
+    },
+    loadTeacherData(response) {
+        this.teachers = response
+        this.doSwitch('teachers')
+        this.loading = false
+        console.log('teachers = ', response)
+    },
+    loadGrade() {
+        this.loading = true
+        let ts = {task: 'PlainSql',
+               sql: `SELECT l.grade, count(*) count \
+                     FROM dkhs_studsub s, dkhs_student l \
+                     WHERE s.studentid = l.studentid \
+                     and teacher = '${ this.selItem[0] }' \
+                     group by l.grade`
+             }
+        zmlFetch(ts, this.loadGradeData)
+    },
+    loadGradeData(response) {
+        this.grade = response
+        this.doSwitch('grade')
+        this.loading = false
+        console.log('grade = ', response)
+    },
+    loadSubject() {
+        this.loading = true
+        let ts = {task: 'PlainSql',
+               sql: `SELECT s.subjectname, s.ckey,min(gclass) gc1, max(gclass) gc2, count(*) count \
+  FROM dkhs_studsub s, dkhs_student l \
+  WHERE s.studentid = l.studentid \
+  and teacher = '${ this.selItem[0] }' \
+  and grade = '${ this.selItem[1] }' \
+  group by s.subjectname, s.ckey`
+             }
+        zmlFetch(ts, this.loadSubjectData)
+    },
+    loadSubjectData(response) {
+        this.subject = response
+        this.doSwitch('subject')
+        this.loading = false
+        console.log('subject = ', response)
+    },
+    doSwitch(current) {
+        console.log('do switch ', current)
+        // We need to clear searchString for next batch
+        this.searchString = ''
+        switch(current){
+            case 'teachers':
+              this.items = this.teachers
+              this.headers = this.teachersHead
+              break
+            case 'grade':
+              this.items = this.grade
+              this.headers = this.gradeHead
+              break
+            case  'subject':
+              this.items = this.subject
+              this.headers = this.subjectHead
+              break
+            default:
+              alert('not the yet' + current)
+        }
+        this.current = current
+    }
+
+  },
+}
+</script>
+

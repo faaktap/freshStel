@@ -1,39 +1,29 @@
 <template>
- <v-container v-if="userList && getZml.login.isAuthenticated">
-  <v-row>
-   <v-col cols="12">
-    <h1> Registered Users {{ userList.length}} </h1>
-    <v-card class="mx-auto">
-     <v-container>
-      <v-layout>
-       <v-flex>
-        <v-text-field
-           v-model="search"
-           append-icon="mdi-magnify"
-           label="Search"
-           single-line
-           hide-details
-        />
-       </v-flex>
-       <v-flex>
-         <v-btn @click="showResult = !showResult" small class="float-right ma-2">
-           <v-icon small> mdi-export </v-icon>
-          Export
-         </v-btn>
-         <v-btn @click="getLogs"
-                      title="Click here to refresh all users who have logged in"
-                      class="float-right ma-2"
-                      small
-         ><v-icon small>mdi-refresh</v-icon>
-         Refresh
-         </v-btn>
-         </v-flex>
-      </v-layout>
-      <v-row dense>
-       <v-col cols="12">
-        <v-card color="purple lighten-5">
-          <div>
-           <v-data-table
+<v-container fluid>
+ <base-tool :toolbarName="`Registered Users ${ userList.length || 0}`"
+           :loading="tableLoading"
+            >
+            <v-btn icon
+                   @click="showExport = !showExport"
+                   title="Export user data"
+            >
+            E
+           </v-btn>
+           <v-btn @click="getUsersAndLogs"
+                   title="Click here to refresh all users who have logged in"
+                   icon
+           ><v-icon>mdi-refresh</v-icon>
+           </v-btn>
+ </base-tool>
+ <base-tool toolbarName="Options"
+          :back="false" :background="false">
+   <v-spacer />
+   <base-search @clear="search=''" v-model="search" />
+ </base-tool>
+
+ <v-container v-if="getZml.login.isAuthenticated" fluid>
+
+            <v-data-table
             v-if="userList && userList.length > 0"
             :headers="userHeader"
             :items="userList"
@@ -55,32 +45,17 @@
               <v-icon dark>mdi-lock-reset</v-icon>
              </v-btn>
             </template>
-            <template v-slot:top>
-             <v-card color="green darken-1" align="center" class="ma-2 pa-2">
-              First time and last time and how many times a user has created a log entry
-             </v-card>
-            </template>
-            <!-- <template v-slot:[`footer.page-text`]>
-             <v-card color="green darken-1" align="center" class="ma-2 pa-2">
-             </v-card>
-            </template> -->
            </v-data-table>
-          </div>
-        </v-card>
-       </v-col>
-      </v-row>
+
+     <user-edit v-if="'userid' in curItem" :u="curItem" />
      </v-container>
-    </v-card>
-   </v-col>
-  </v-row>
 
-  <user-edit v-if="'userid' in curItem" :u="curItem" />
 
-  <v-dialog v-model="showResult" fullscreen>
-     <v-card color="red" v-if="showResult && userList">
+    <v-dialog v-model="showExport" fullscreen>
+     <v-card color="red" v-if="showExport && userList">
       <front-json-to-csv :json-data="userList"
                          :csv-title="'User List'"
-                         @hideModal="showResult = false">
+                         @hideModal="showExport = false">
       </front-json-to-csv>
      </v-card>
   </v-dialog>
@@ -125,17 +100,19 @@ import { getters } from "@/api/store";
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions';
 import UserEdit from '@/views/UserEdit.vue'
 import { zmlLog } from '../api/zmlLog';
+import baseTool from '@/components/base/baseTool.vue'
+import baseSearch from '@/components/base/baseSearch.vue';
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 export default {
     name:"UserList",
     props: [],
-    components: {UserEdit, FrontJsonToCsv},
+    components: {UserEdit, FrontJsonToCsv, baseTool, baseSearch},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         showPasswordChange:false,
         curItem:{},
         search:null,
-        userList:null,
+        userList:[],
         tableLoading:false,
         userHeader: [
           {text: 'User',             value: 'user_name' },
@@ -148,7 +125,7 @@ export default {
           {text: 'Email',       value: 'user_email' },
           {text: "reset",             value: "action", sortable: false }
         ],
-        showResult:false,
+        showExport:false,
     }),
     methods:{
       dblClickOnTableRow(e1,e2) {
@@ -161,7 +138,7 @@ export default {
         this.curItem = data
         //this.$cs.l(data)
       },
-      getLogs() {
+      getUsersAndLogs() {
         this.tableLoading = true
         let sl = { task: 'plainSql'
                  , sql: `SELECT u.userid,u.user_name\
@@ -205,8 +182,8 @@ ORDER BY last DESC`}
       }
 
     },
-    mounted: function() {
-      this.getLogs()
+    mounted() {
+      this.getUsersAndLogs()
     },
     watch: {
     }

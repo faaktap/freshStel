@@ -1,11 +1,23 @@
 <template>
 <v-container fluid>
- <v-row  v-if="showSelection">
-  <v-col cols="12">
-   <v-card elevation="-2">
-    <v-container fluid color="gray--text text--lighten-5">
-     <v-row >
-      <v-col>
+
+<base-tool :toolList="[]"
+            toolbarName="Reinette se afrol lyste vir eksamen"
+           :loading="loading"
+            >
+            <v-btn icon @click="showExport = !showExport">
+            E
+           </v-btn>
+</base-tool>
+
+
+<v-container v-if="showSelection" fluid color="gray--text text--lighten-5">
+<base-tool
+            toolbarName="Options"
+           :background="false"
+            back="false"
+            >
+
        <v-text-field
            v-model="search"
            append-icon="mdi-magnify"
@@ -13,33 +25,22 @@
            single-line
            hide-details
        />
-      </v-col>
-      <v-col>
-<!------------------SWITCH------------------------------------------->
-       <v-card class="col wrap text-center d-flex justify-space-between ml-0 mt-1 mb-2 pl-1 pr-1">
-           <v-switch v-model="g12" hide-details class="mt-1 mr-2 mb-2 ml-2" label="G12"></v-switch>
-           <v-switch v-model="g11" hide-details class="mt-1 mr-2 mb-2 ml-2" label="G11"></v-switch>
-           <v-switch v-model="g10" hide-details class="mt-1 mr-2 mb-2 ml-2" label="G10"></v-switch>
-           <v-switch v-model="g9" hide-details class="mt-1 mr-2 mb-2 ml-2" label="G9"></v-switch>
-           <v-switch v-model="g8" hide-details class="mt-1 mr-2 mb-2 ml-2" label="G8"></v-switch>
-       </v-card>
-<!-------------------TABLE------------------------------------------>
-      </v-col>
-     </v-row>
-     <v-row dense>
-      <v-col cols="12">
-       <v-card color="blue lighten-5" class="ma-1">
-        <div>
-         <v-card class="text-center ma-2 pa-2" color="primary gray--text text--lighten-3">
-            Eksamen Vraestel Afrol Klasse
-         </v-card>
-         <v-data-table class="elevation-1"
+       <v-spacer />
+           <v-switch inset dense color="warning" v-model="g12" hide-details class="mr-2 ml-2" label="12" />
+           <v-switch inset dense color="warning" v-model="g11" hide-details class="mr-2 ml-2" label="11" />
+           <v-switch inset dense color="warning" v-model="g10" hide-details class="mr-2 ml-2" label="10" />
+           <v-switch inset dense color="warning" v-model="g9"  hide-details class="mr-2 ml-2" label="9" />
+           <v-switch inset dense color="warning" v-model="g8"  hide-details class="mr-2 ml-2" label="8" />
+
+</base-tool>
+
+      <v-data-table class="elevation-1"
                  :headers="subjectHeader"
                  :items="subjectListFilter"
                  :items-per-page="30"
                  :search="search"
                  @dblclick:row="doubleClickOnTableRow"
-         >
+      >
          <!--https://blog.devgenius.io/vuetify-edit-table-content-cd57d11ae850-->
          <template v-slot:[`top`]>
           <v-dialog v-model="dialogEdit" max-width="500px">
@@ -80,36 +81,46 @@
          <template v-slot:no-data>
           <v-btn color="primary">No Data to display</v-btn>
          </template>
-        </v-data-table>
-        </div>
-       </v-card>
-      </v-col>
-     </v-row>
-    </v-container>
-   </v-card>
-  </v-col>
- </v-row>
+      </v-data-table>
+  </v-container>
 
+
+<!-- ----------------------------SUB SELECTION ----------------------------------------------- -->
   <v-row v-else>
    <v-col cols="12">
     <v-card class="text-center ma-2 pa-4" color="primary">
       <span class="text-md-h4 text-bold"> Spesifieke Eksamen Vraestel Studente Lys</span>
-       <v-btn class="float-right" @click="showSelection = true"> Back to Selection </v-btn>
+      <v-btn icon class="float-right"
+            @click="showSelection = true"
+            title="Go back to all entries..">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
     </v-card>
 
      <reports-table-small
-       v-if="sqlSelect"
+        v-if="sqlSelect"
        :reportHeader="reportHeader"
        :sqlSelect="sqlSelect"
        :footer="makeAFooter"
-       unique="exmPrintLst"
+        unique="exmPrintLst"
      />
        <v-card class="text-center ma-2 pa-4" color="primary">
             Spesifieke Eksamen Vraestel Studente Lys se Einde
-            <v-btn class="float-right" @click="showSelection = true"> Back to Selection </v-btn>
+            <v-btn icon class="float-right" @click="showSelection = true">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
        </v-card>
     </v-col>
   </v-row>
+
+<v-dialog v-model="showExport">
+ <v-card color="red" v-if="showExport">
+  <front-json-to-csv :json-data="subjectListFilter"
+                     :csv-title="'Reinette se Data vir Eksamen'"
+                     @hideModal="showExport = false">
+  </front-json-to-csv>
+ </v-card>
+</v-dialog>
 
 
 </v-container>
@@ -119,9 +130,12 @@
 import { getters } from "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch';
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
+import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import ReportsTableSmall from '@/components/ReportsTableSmall.vue'
 import AutoSelRoom from '@/components/AutoSelRoom.vue'
 import BaseDate from "@/components/base/BaseDate.vue"
+import baseTool from '@/components/base/baseTool.vue'
+
 export default {
  name: "EksamenDruk",
   props:{},
@@ -130,9 +144,13 @@ export default {
     //ZAutoPlace,
     AutoSelRoom ,
     BaseDate,
+    baseTool,
+    FrontJsonToCsv
   },
   data: () => ({
+   showExport: false,
    dialogEdit:false,
+   loading:false,
    editedIndex: -1,
    editedItem: {},
    getZml: getters.getState({ object: "gZml" }),
@@ -215,11 +233,13 @@ export default {
       }
       if (this.updateSql) {
          let ts = {task: 'PlainSql',sql: this.updateSql}
+         this.loading = true
          zmlFetch(ts, this.noNeedToDoAnything)
       }
       this.dialogEdit = false
     },
     noNeedToDoAnything(response) {
+        this.loading = false
         if (response.errorcode !== 0) {
           alert('some error occured on update')
           console.error('after update error: ', response)
@@ -266,6 +286,7 @@ export default {
      this.hello(this.selectedForPrint)
     },
     loadData(response) {
+      this.loading = false
       this.subjectList = []
       if (response !== undefined && response.errorcode && response.errorcode != 0) {
         alert('we had a loading error :-(')
@@ -312,8 +333,11 @@ export default {
     }
   },
   mounted: function() {
+    this.loading = true
     let ts = {task: 'PlainSql',
-               sql: 'select id, subjectname,teacher,examdate,venue,grade,totalstudents from dkhs_subjectgroup order by grade, subjectname, teacher'
+               sql: `select id, subjectname,teacher,examdate,venue,grade,totalstudents \
+                    from dkhs_subjectgroup \
+                    order by grade, subjectname, teacher`
              }
     zmlFetch(ts, this.loadData)
   }

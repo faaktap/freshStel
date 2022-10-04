@@ -97,6 +97,14 @@
   </v-hover>
  </v-col><!-- Else End-->
      </v-row>
+    <v-overlay
+      :opacity="1"
+      :value="overlay"
+    >
+      <v-progress-circular indeterminate size="64">
+        Loading...
+      </v-progress-circular>
+    </v-overlay>
 
     <v-row>
      <v-col>
@@ -198,6 +206,7 @@ export default {
       showPassword: false,
       showProfile: false,
       hideForgotButton: false,
+      overlay: true
   }),
   methods: {
     getData() {
@@ -547,6 +556,7 @@ export default {
   },
   mounted: function () {
     this.loadFromLocalStorage()
+    this.overlay=false
     if ('forgot' in this.$route.params && this.$route.params.forgot) {
       this.hideForgotButton = true
       // this.$cs.l('forgot = ', this.$route.params.forgot)

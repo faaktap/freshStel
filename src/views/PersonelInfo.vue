@@ -55,19 +55,20 @@
         />
   </template>
   <template v-if="showAs == 'card' && ['admin','teacher'].includes(getZml.login.type)">
-  <v-layout row wrap align-content-start justify-start class="ma-1">
+  <v-layout row wrap align-content-start justify-start>
     <v-flex xs12 md6 lg4  v-for="stf in filteredItems" :key="stf.persid">
        <personel-name-card :personelRecord="stf"
                            @pictureUpload="loadAPicture"
                            :allowEdit="['admin','teacher'].includes(getZml.login.type)"
                            :showAs="showAs"
+                           class="ma-2 pa-2"
        />
     </v-flex>
   </v-layout>
   </template>
   <template v-if="showAs == 'picture'">
-  <v-layout row wrap align-content-start justify-start class="ma-1">
-    <v-flex xs12 md6 lg4  v-for="stf in filteredItems" :key="stf.persid">
+  <v-layout row wrap align-content-start justify-start class="ma-2">
+    <v-flex  v-for="stf in filteredItems" :key="stf.persid" class="ma-1">
        <personel-name-picture :personelRecord="stf"
                            :allowEdit="['admin','teacher'].includes(getZml.login.type)"
                            :showAs="showAs"

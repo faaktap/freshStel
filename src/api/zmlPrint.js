@@ -96,6 +96,24 @@ export function printJSON(table, header, title) {
     //gridStyle: "border: 1px solid #3971A5;  text-align: center;",
 }
 
+export function printJSONBig(table, header, title) {
+  let properties = cleanUp(header)
+  printJS({
+      printable: table,
+      type: "json",
+      properties: properties,
+      repeatTableHeader: true,
+      gridHeaderStyle: "color: black;  border: 1px solid #3971A5;font-weight: bold",
+      gridStyle: 'border: 1px solid lightgray; margin-bottom: -1px;',
+      header: zmlHeader() + ' ' + title || '..no title',
+      style: ".ltrd { direction: ltr; text-align: right; } * { font-size: 115%; }",
+      showModal: true,
+      modalMessage: 'Retrieving Document...',
+      documentTitle: 'DKLearnDoc'
+  })
+  //gridStyle: "border: 1px solid #3971A5;  text-align: center;",
+}
+
 export function printPage( htmlRef, small ) {
 
   //Here we pick up all the styles and send it to printJS - does not work so well

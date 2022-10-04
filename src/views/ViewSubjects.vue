@@ -1,9 +1,16 @@
 <template>
   <v-container>
    <v-row><v-col cols="12">
-     <v-card class="ma-2 text-center" >
+
+<v-toolbar  dense  row  wrap color="primary">
+      School Subjects
+      <v-spacer />
+      <v-back />
+</v-toolbar>
+
+     <!-- <v-card class="ma-2 text-center" >
      <h1> School Subjects </h1>
-     </v-card>
+     </v-card> -->
 
     <v-card class="mx-auto">
        <v-container>
@@ -36,7 +43,7 @@
     @click:row="onButtonClick"
   >
       <template v-slot:[`item.action`]="{ item }">
-        <v-btn class="mx-2" 
+        <v-btn class="mx-2"
                icon
                :title="item.color"
                @click="onButtonClick(item)">
@@ -44,7 +51,7 @@
           <v-icon dark>mdi-coffee</v-icon>
           </template>
           <template v-else>
-            <v-icon dark :color="item.color">mdi-heart-box</v-icon> 
+            <v-icon dark :color="item.color">mdi-heart-box</v-icon>
           </template>
         </v-btn>
       </template>
@@ -56,15 +63,15 @@
       <template v-slot:[`footer.page-text`]>
          <v-btn @click="getSubjects"
                 title="Click here to refresh subjects"
-         ><v-icon>mdi-table-refresh</v-icon></v-btn> 
-       <v-btn icon @click="insertSubject"> 
+         ><v-icon>mdi-table-refresh</v-icon></v-btn>
+       <v-btn icon @click="insertSubject">
            <v-icon >mdi-table-plus</v-icon>
         </v-btn>
       </template>
-  </v-data-table>       
+  </v-data-table>
 
                  </div>
-               
+
              </v-card>
            </v-col>
          </v-row>
@@ -76,8 +83,8 @@
       :sub="curItem"
       @saveSubject="saveSubject"
       />
-</v-dialog>   
-  </v-container>   
+</v-dialog>
+  </v-container>
 </template>
 
 
@@ -87,9 +94,10 @@ import { zmlConfig } from '@/api/constants'
 import { zmlFetch } from "@/api/zmlFetch"
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions'
 import SubjectEdit from '@/components/learn/SubjectEdit'
+import VBack from '@/components/base/VBack.vue'
 export default {
     name:"ViewSubjects",
-    components:{SubjectEdit},
+    components:{SubjectEdit, VBack},
     props: [],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -101,11 +109,11 @@ export default {
         logHeader: [
           {text: 'Shortname',             value: 'shortname' },
           {text: 'Description',         value: 'description' },
-          {text: 'Beskrywing',         value: 'beskrywing' },                    
+          {text: 'Beskrywing',         value: 'beskrywing' },
           {text: 'linkid',             value: 'linksubjectid' },
           {text: 'Sort',             value: 'sortorder' },
           {text: "edit",             value: "action", sortable: false }
-        ]     
+        ]
     }),
     methods:{
       onButtonClick(data) {
@@ -116,13 +124,13 @@ export default {
       insertSubject() {
         for (const key of Object.entries(this.curItem)) {
           this.curItem[key] = ''
-        }        
+        }
         this.showSubjectsChange = true
       },
       saveSubject(data) {
         let ts = {}
         ts.data = data
-        ts.task = 'saveSubject' 
+        ts.task = 'saveSubject'
         ts.api = zmlConfig.apiDKHS
         zmlFetch(ts, this.getSubjects, this.processError)
         this.showSubjectsChange = false

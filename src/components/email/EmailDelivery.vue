@@ -70,7 +70,13 @@
      </v-form-base>
     </v-card-text>
     <v-card-actions>
+
     <v-btn @click="mailIt" class="ma-2" primary> Mail </v-btn>
+    <v-text-field v-model="emailListRecord.email"
+                  title="You can alter the email address here"
+                  solo dense label="TO:"
+                  class="mt-6" color="red" />
+
     <v-spacer />
     <v-btn @click="showEmail = false" class="ma-2"> Close </v-btn>
     </v-card-actions>

@@ -6,6 +6,13 @@ import router from './router'
 //import VueFriendlyIframe from 'vue-friendly-iframe';
 //Vue.component('vue-friendly-iframe', VueFriendlyIframe);
 
+//https://html2canvas.hertzen.com/
+// used in fundraiser.vue
+// eslint-disable-next-line
+import VueHtml2Canvas from 'vue-html2canvas'
+import "regenerator-runtime/runtime"
+Vue.use(VueHtml2Canvas)
+
 import AppLayout from '@/layouts/AppLayout'
 Vue.component('AppLayout', AppLayout)
 

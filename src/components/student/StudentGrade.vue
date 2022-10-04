@@ -3,8 +3,9 @@
  <!--show-col-size /-->
  <v-col cols="2">
     <v-btn @click="showGrades = !showGrades">
+      <v-icon small color="green"> mdi-chair-school </v-icon>
         {{ gradeClass.g }} {{ gradeClass.c }}
-     </v-btn> <!-- {{ showGrades }} -->
+     </v-btn>
  </v-col>
  <v-col cols="8">
    <list-of-grades
@@ -19,7 +20,6 @@
 <script>
 import ListOfGrades from '@/components/student/ListOfGrades.vue'
 import { getters } from "@/api/store";
-//import ShowColSize from '@/components/base/ShowColSize';
 export default {
     name:"StudentGrade",
     props:['gc'],    //lets add a prop here to see if ity will work

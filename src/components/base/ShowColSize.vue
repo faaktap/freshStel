@@ -1,5 +1,5 @@
 <template>
-<v-container fluid style="display:none">
+<v-container fluid :class="c">
 <v-row>
    <v-row v-for="i in 12" :key="i">
       <v-col cols="1" style="background-color:#2E7D32;">{{i}}</v-col>
@@ -19,9 +19,18 @@
      <template v-if="$vuetify.breakpoint.lgAndUp"> lgAndUp  </template>
    </v-col>
    <v-col cols="12" style="background-color:red;">
-       vb.name={{ $vuetify.breakpoint.name }} , 
+       vb.name={{ $vuetify.breakpoint.name }} ,
        vmBnumber={{ $vuetify.mobileBreakpoint }}
    </v-col>
 </v-row>
 </v-container>
 </template>
+<script>
+export default {
+   name:"ShowColSize",
+   props:{hide:{default: false}},
+   computed: {
+      c() { return this.hide ? 'd-none' : 'd-inline' }
+   }
+}
+</script>

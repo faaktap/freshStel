@@ -1,12 +1,11 @@
 <template>
   <v-app id="app">
-
-   <AppLayout :key="projectID" >
-    <v-container fluid>
-
-      <!--transition name="fade" mode="out-in"-->
-        <router-view/>
-      <!--/transition-->
+   <app-layout :key="projectID" >
+   <v-container fluid>
+      <router-view>
+      </router-view>
+   </v-container>
+   </app-layout>
 
     <v-snackbar
       top centered
@@ -22,10 +21,6 @@
         >Close</v-btn>
       </template>
     </v-snackbar>
-
-    </v-container>
-   </AppLayout>
-
     <confirm ref="confirm"></confirm>
   </v-app>
 </template>
@@ -33,7 +28,6 @@
 
 <script>
 import { getters } from "@/api/store"
-//import { ls } from "@/api/localStorage.js"
 import { zmlConfig } from '@/api/constants'
 import confirm from "@/api/DialogConfirm"
 import EventBus, { ACTIONS } from '@/api/event-bus'
@@ -84,3 +78,8 @@ export default {
   }
 };
 </script>
+
+<style>
+.hide {display:none;}
+.noprint {display:none}
+</style>

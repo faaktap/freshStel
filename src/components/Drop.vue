@@ -5,7 +5,8 @@
  We handle text, html, url and files at the moment, and will display and alert if there is something else
 -->
 <div>
-  <v-card
+  <v-card elevation="0"
+    style="background-color: transparent;"
     title="drop zone"
     :class="computedDropZone"
     @drop.prevent="xonDrop"
@@ -15,7 +16,6 @@
   >
   <template v-if="dragging==true"> {{ description }} </template>
     <slot />
-
   </v-card>
 
 </div>

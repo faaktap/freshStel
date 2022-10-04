@@ -1,10 +1,11 @@
 {
  "buttongroups": ["tool","login"],
- "wait": [{ "btn":"about"       ,"tip":"2"                  ,"func":"/about"      ,"icon":"mdi-coffee","optional":3,"acc":"none"}],
- "tool": [{ "btn":"home"        ,"tip":"1"                 ,"func":"/"           ,"icon":"mdi-home","optional":1,"acc":"all"}
-         ,{ "btn":"Educational_Resources"     ,"tip":"Google Drive"         ,"func":"/drive" ,"icon":"mdi-school","optional":0,"acc":"all"}
+ "wait": [{ "btn":"about"       ,"tip":"2"                  ,"func":"/about"      ,"icon":"mdi-coffee","optional":1,"acc":"none"},
+          { "btn":"home"        ,"tip":"1"                 ,"func":"/"           ,"icon":"mdi-home","optional":3,"acc":"all"},
+          { "btn":"help"        ,"tip":"7"                  ,"func":"/help"       ,"icon":"mdi-help","optional":3,"acc":"all"}],
+ "tool": [{ "btn":"Educational_Resources"     ,"tip":"Google Drive"         ,"func":"/drive" ,"icon":"mdi-school","optional":0,"acc":"all"}
          ,{ "btn":"admin"       ,"tip":"4"                  ,"func":"/admin"      ,"icon":"mdi-account-network","optional":0,"acc":"all"}
-         ,{ "btn":"help"        ,"tip":"7"                  ,"func":"/help"       ,"icon":"mdi-help","optional":1,"acc":"all"}
+
        ] ,
  "right": [{ "btn":"rightmenubutton"    ,"tip":"Click here to see menu","func":"drop","icon":"mdi-hamburger","optional":0,"acc":"all"}
         ],

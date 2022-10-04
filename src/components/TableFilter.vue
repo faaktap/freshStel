@@ -110,14 +110,14 @@ import { zmlFetch } from '@/api/zmlFetch';
 import { getters } from "@/api/store"
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 //import { notLoggedInSnackbar } from "@/api/GlobalActions"
-import BaseSearch from '@/components/base/BaseSearch.vue';
+import baseSearch from '@/components/base/baseSearch.vue';
 import { errorSnackbar, infoSnackbar } from "@/api/GlobalActions"
 
 export default {
   name: "TableFilter",
 
   components: {FrontJsonToCsv
-            , BaseSearch
+             , baseSearch
             },
 
   data: () => ({

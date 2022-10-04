@@ -67,6 +67,8 @@ export const zData = {
             ts.data.logintype = getters.getState({ object: "gZml" }).login.type
 
             zmlFetch(ts, finishedLoadingBasic, errorLoading)
+        } else {
+            if (afterwardsFunction) afterwardsFunction()
         }
         return "something";
     },

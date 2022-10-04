@@ -1,34 +1,25 @@
 <template>
-  <div>
-    <v-toolbar  dense  row  wrap>
-    <v-spacer></v-spacer>
-    <v-btn-toggle dense v-model="toggleDisplay">
-        <base-tool-button class="mr-2">
+<div>
+ <base-tool :toolbarName="`File activity in the past ${previousDays || 0} days.`"
+           :loading="loading"
+ >
+     <v-btn-toggle v-model="toggleDisplay">
+        <base-tool-button>
            <template v-if="!$vuetify.breakpoint.smAndDown">Grade </template> 8
         </base-tool-button>
-        <base-tool-button class="mr-2">
-         Grade 9
-        </base-tool-button>
-        <base-tool-button class="mr-2">
-        Grade 10
-        </base-tool-button>
-        <base-tool-button class="mr-2">
-        Grade 11
-        </base-tool-button>
-        <base-tool-button class="mr-2">
-        Grade 12
-        </base-tool-button>
+        <base-tool-button>         Grade 9        </base-tool-button>
+        <base-tool-button>        Grade 10        </base-tool-button>
+        <base-tool-button>        Grade 11        </base-tool-button>
+        <base-tool-button>        Grade 12        </base-tool-button>
       </v-btn-toggle>
-
-         </v-toolbar>
-
-      <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
-      <h1> File activity in the past {{ previousDays }} days.</h1>
+ </base-tool>
             <v-text-field filled dense
                     class="ma-2"
                     v-model="search"
                     append-icon="mdi-close"
                    @click:append="search = ''"
+                   single-line hide-details
+                   prepend-icon="mdi-magnify"
                     placeholder="search"/>
 
             <v-data-table
@@ -52,16 +43,17 @@
 import { getters } from  "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch'
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+import baseTool from '@/components/base/baseTool.vue'
 export default {
-    components: {BaseToolButton
-
+    components: {
+      BaseToolButton,
+      baseTool
     },
     props: ['days'],
     data () {
       return {
         getZml: getters.getState({ object:"gZml" }),
         uniqid:0,
-        progress:false,
         timerHandle:null,
         dataSequence:false,
         tData:[],
@@ -94,7 +86,7 @@ export default {
    },
    methods: {
      loadData() {
-      this.progress = true
+      this.loading = true
       let ts = {}
       ts.api = 'https://kuiliesonline.co.za/api/file/zmlDir.php'
       ts.path = '/home/kuilieso/public_html/Subjects'
@@ -105,6 +97,7 @@ export default {
      loadError(error) {
        this.$cs.l('load files:', error)
        this.loading = false
+       alert('we cannot read the data')
      },
      processData(response) {
       let filter = response.filter(function (e) {
@@ -121,7 +114,7 @@ export default {
             return !e.path.includes('WERNER');
       })
       this.$cs.l(this.tData.length)
-      this.progress = false
+      this.loading = false
       this.tData.forEach(e => {
          let pos1 = e.ppath.indexOf("/");
          let pos2 = e.ppath.indexOf("/", pos1 + 1);
@@ -132,7 +125,7 @@ export default {
       this.tData = filter
       this.tData.sort((a,b) => b.date.localeCompare(a.date));
       this.$cs.l('Latest Full Set - SORTED:',this.tData)
-      this.progress = false
+      this.loading = false
       this.loading = false
      },
      clickOnTableRow(p1) {

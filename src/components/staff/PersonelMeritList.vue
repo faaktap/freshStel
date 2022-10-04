@@ -1,28 +1,44 @@
 <template>
-<v-container fluid class="mb-2" v-if="getZml.login.type != 'student'">
-
-{{ getZml.login.username }}
- <v-card class="ma-2" elevation="2">
-    <v-card-title class="heading-2 text-center">
-       Merits to Be Confirmed
-    </v-card-title>
-    <v-card class="col wrap text-center d-flex justify-space-between ml-0 mt-1 mb-2 pl-1 pr-1">
+<v-container fluid class="mb-2">
+  <v-toolbar  row  wrap color="primary">
+      Merits to Be Confirmed
+      <v-spacer />
         <v-switch v-model="notconfirmed"
                   hide-details
                   class="mt-1 mr-2 mb-2 ml-2"
-                  :label="notconfirmed ? 'Showing only not Confirmed' : 'Showing All'"></v-switch>
+                  :label="notconfirmed ? 'Showing only not Confirmed' : 'Showing All Merits'"></v-switch>
 
         <v-switch v-model="onlyYou"
                   hide-details
                   class="mt-1 mr-2 mb-2 ml-2"
-                  :label="onlyYou ? `Showing only for ${persMenemonic}` : 'Showing All'"></v-switch>
+                  :label="onlyYou ? `Showing only for ${persMenemonic}` : 'Showing All Personel'"></v-switch>
+        <v-switch v-model="allowDelete"
+                  hide-details
+                  class="mt-1 mr-2 mb-2 ml-2"
+                  :label="allowDelete ? `Delete any Merit` : 'No delete'"></v-switch>
+         <v-btn icon @click="printList"> <v-icon color="white" > mdi-printer </v-icon></v-btn>
+         <v-back />
+  </v-toolbar>
+  <v-card  class="ma-2" elevation="2" v-if="getZml.login.type != 'student'">
+    <!-- <v-card-title class="heading-2 text-center">
+       Merits to Be Confirmed
+    </v-card-title> -->
+    <!-- <v-card class="col wrap text-center d-flex justify-space-between ml-0 mt-1 mb-2 pl-1 pr-1">
+        <v-switch v-model="notconfirmed"
+                  hide-details
+                  class="mt-1 mr-2 mb-2 ml-2"
+                  :label="notconfirmed ? 'Showing only not Confirmed' : 'Showing All Merits'"></v-switch>
+
+        <v-switch v-model="onlyYou"
+                  hide-details
+                  class="mt-1 mr-2 mb-2 ml-2"
+                  :label="onlyYou ? `Showing only for ${persMenemonic}` : 'Showing All Personel'"></v-switch>
         <v-switch v-model="allowDelete"
                   hide-details
                   class="mt-1 mr-2 mb-2 ml-2"
                   :label="allowDelete ? `Delete any Merit` : 'No delete'"></v-switch>
 
-        <!-- <v-switch v-model="onlyYou" hide-details class="mt-1 mr-2 mb-2 ml-2" label="onlyYou"></v-switch> -->
-     </v-card>
+     </v-card> -->
 
         <v-card xs6 class="ma-2">
          <v-card-text>
@@ -30,11 +46,16 @@
              :headers="headers"
              :items="meritListFilter"
              mobile-breakpoint="0"
+             @dblclick:row="meritDblClick"
            >
-           <template v-slot:[`item.action`]="{ item }" >
-             <v-icon v-if="!item.confirmdte" small class="mr-2" @click="iconUpdate(item)">mdi-lock</v-icon>
+           <template v-slot:[`item.actions`]="{ item }" >
+             <v-icon v-if="!item.confirmdte" small class="mr-2"
+                    @click="iconUpdate(item)"
+                    title="Confirm Merit">mdi-lock</v-icon>
              <!-- <v-icon v-if="!item.confirmdte" small class="mr-2" @click="iconApprove(item)" color="green">mdi-check-decagram</v-icon> -->
-             <v-icon v-if="allowDelete" small class="mr-2" @click="iconDelete(item)" color="red">mdi-delete</v-icon>
+             <v-icon v-if="allowDelete" small class="mr-2"
+                    @click="iconDelete(item)" color="red"
+                    title="Delete Merit">mdi-delete</v-icon>
            </template>
 
             <template v-slot:[`footer.page-text`]>
@@ -50,7 +71,47 @@
 
          </v-card-text>
         </v-card>
-        <v-card v-if="getZml.login.username=='WER'"> onlyWerner:{{ meritList }} </v-card>
+        <v-card v-if="getZml.login.username=='WER'"> onlyWER:{{ meritList }} </v-card>
+
+   <v-dialog v-model="showDialog" max-width="400" color="secondary" style="position: relative;">
+   <v-card>
+          <v-card-title>
+            <span> {{ currentRec.studentname }} </span>
+            <v-spacer></v-spacer>
+            <v-menu bottom left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" v-on="on"
+                      @click="showDialog = !showDialog">
+                      <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+            </v-menu>
+          </v-card-title>
+      <v-card-subtitle> {{ currentRec.description }}</v-card-subtitle>
+      <v-card-text>
+
+        {{ currentRec.meritid }},
+        {{ currentRec.meritstudentid }},
+        {{ currentRec.studentid }}<br>
+        {{ currentRec.persmenemonic }}<br>
+        {{ currentRec.confirmdte }}<br>
+
+      </v-card-text>
+      <v-card-actions>
+          <v-btn small class="mr-2"
+                 @click="iconUpdate(currentRec)"
+                 title="Confirm Merit"><v-icon>mdi-lock</v-icon>Confirm</v-btn>
+          <v-spacer/>
+          <v-btn v-if="allowDelete" small class="mr-2"
+                @click="iconDelete(currentRec)"
+                title="Delete Merit"><v-icon color="red">mdi-delete</v-icon>Delete </v-btn>
+      </v-card-actions>
+    </v-card>
+   </v-dialog>
+
+  </v-card>
+  <v-card v-else>
+    You are logged on as {{ getZml.login.username }}
   </v-card>
 </v-container>
 </template>
@@ -59,19 +120,24 @@
 import { getters } from "@/api/store"
 import { mer } from "@/components/merit/merit.js"
 // import { infoSnackbar } from "@/api/GlobalActions"
+import { printJSON } from "@/api/zmlPrint.js"
+//import zmlCloseButton from '@/components/zmlCloseButton.vue'
+import VBack from '@/components/base/VBack.vue'
 export default {
     name: 'PersonelMeritList',
     props: [],
     components:{
+       VBack
     },
     data () {
       return {
+        items:[{title:'11'},{title:'22'}],
         getZml: getters.getState({ object: "gZml" }),
         persMenemonic: '',
         notconfirmed: true,
         onlyYou: false,
         allowDelete: false,
-        studentData: 0,
+        currentRec: 0,
         meritList:[],
         // headers: [{ text:"id", value: "meritstudentid", align: "left"},
         //          { text:"meritdte", value: "meritdte", align: "center"},
@@ -79,27 +145,22 @@ export default {
         //          { text:"confirm", value: "confirmdte", align: "center"},
         //          { text:"teacher", value: "persmenemonic", align: "center"},
         //          { text:"point", value: "point", align: "center"}],
+        showDialog: false
 
     }},
     computed:{
       totals() {
-
-         //return this.meritList.reduce((a, b) => ({e: total * e.point})
          return this.meritList.reduce( (accum,item) => accum + parseInt(item.point),0)
       },
       meritListFilter() {
-        //return this.meritList || []
-        //console.log('filter = ', this.notconfirmed, this.onlyYou)
         let result = []
         if (this.notconfirmed == true) {
            result = this.meritList.filter(e => !e.confirmdte) || []
         } else {
            result = this.meritList || []
         }
-        //console.log('filter = ', this.notconfirmed, this.onlyYou, result.length)
         if (this.onlyYou == true) {
            return result.filter(e => {
-            //console.log(e.persmenemonic ,this.persMenemonic)
             return e.persmenemonic == this.persMenemonic
             } )
         }
@@ -113,40 +174,58 @@ export default {
             return [{ text:"student", value: "studentname", align: "center"},
                  { text:"description", value: "description", align: "left"},
                  { text:"confirm", value: "confirmdte", align: "center"},
-                 { text: "Actions", sortable: false, value: "action" }]
+                 { text: "Actions", sortable: false, value: "actions" }]
           case 'md':
           case 'lg':
           case 'xl':
             return [
-                 { text:"student", value: "studentname", align: "center"},
-                 { text:"grade", value: "studentgrade", align: "center"},
+                 { text:"student", value: "studentname", align: "left"},
+                 { text:"grade", value: "studentgrade", align: "left"},
                  { text:"meritdte", value: "meritdte", align: "center"},
                  { text:"description", value: "description", align: "left"},
                  { text:"confirmed", value: "confirmdte", align: "center"},
-                 { text:"confirmer", value: "persmenemonic", align: "center"},
-                 { text: "Actions", sortable: false, value: "action" }
+                 { text:"confirmer", value: "persmenemonic", align: "left"},
+                 { text: "actions", sortable: false, value: "actions" }
                  ]
         }
         return [{ text:"id", value: "meritstudentid", align: "left"}]
       }
     },
     methods:{
-        iconUpdate(e) {
-          console.log('upd',e)
+      printList() {
+        printJSON(this.meritListFilter, this.headers, 'Merit Confirm List')
+      },
+      meritDblClick(e1,e2) {
+        this.currentRec = e2.item
+        console.log('dblclick',e1,e2)
+        this.showDialog = true
+        console.log('dblclick item',e2.item)
+        //alert('show v0dailog wih option to confirm a person')
+      },
+      iconUpdate(e) {
           let idx = this.meritList.indexOf(e)
-          console.log('f = ' , this.meritList[idx])
           this.meritList[idx].confirmdte = Intl.DateTimeFormat('en-ZA').format(new Date())
-        },
-        iconApprove(e) {            console.log('app',e)        },
-        iconDelete(e) {            console.log('del',e)        },
-        initialize(response) {
+          this.meritList[idx].persmenemonic = this.persMenemonic
+          mer.confirm(this.meritList[idx])
+          this.showDialog = false
+      },
+      iconApprove(e) {            console.log('app',e)        },
+        iconDelete(e) {
+            let idx = this.meritList.indexOf(e)
+            if (idx > -1) {
+                mer.delete(e)
+                this.meritList.splice(idx,1)
+            }
+            this.showDialog = false
+      },
+      initialize(response) {
             this.$cs.l('initialize  ', response)
             this.meritList = response;
             //alert('now we get studentid and staff and date')
-        },
-        goBack() {
-            this.$router.back()
-        },
+      },
+      goBack() {
+          this.$router.back()
+      },
 
     },
     mounted() {

@@ -9,7 +9,7 @@ function client(endpoint, {body, ...customConfig} = {}) {
     headers: {
       ...headers,
       ...customConfig.headers,
-    },
+    }
   }
   if (body) {
     config.body = JSON.stringify(body)

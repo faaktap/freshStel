@@ -1,6 +1,7 @@
 <template>
-   <v-text-field filled
-                 class="ma-2" dense 
+   <v-text-field class="pt-2 xmt-2"
+                 single-line hide-details
+                 prepend-icon="mdi-magnify"
                  append-icon="mdi-close"
                  placeholder="search"
                 :value="value"
@@ -11,7 +12,7 @@
 
 <script>
 export default {
-  name: "BaseSearch",
+  name: "baseSearch",
  props: {
       value: {
         type: String,
@@ -22,6 +23,6 @@ export default {
       updateValue: function (event) {
         this.$emit('input', event)
       }
-  }  
+  }
 }
 </script>

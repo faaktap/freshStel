@@ -1,5 +1,16 @@
 <template>
 <v-container fluid>
+<v-row>
+  <v-col cols="12">
+    <v-toolbar   row  wrap color="primary">
+      Merit Score Allocation Section
+      <v-spacer />
+      <v-btn icon @click="testprint"> <v-icon> mdi-printer </v-icon></v-btn>
+      <v-back />
+  </v-toolbar>
+  </v-col>
+</v-row>
+
  <v-row>
   <v-col cols="12">
    <v-card elevation="-2">
@@ -14,24 +25,11 @@
            hide-details
        />
       </v-col>
-      <v-col>
-<!------------------SWITCH------------------------------------------->
-       <v-card class="col wrap text-center d-flex justify-space-between ml-0 mt-1 mb-2 pl-1 pr-1">
-        <div class="ma-2">Merit Point Allocation</div>
-        <v-btn icon @click="testprint" class="ma-2"> <v-icon> mdi-printer </v-icon> </v-btn>
-       </v-card>
-<!-------------------TABLE------------------------------------------>
-      </v-col>
      </v-row>
+
      <v-row dense>
       <v-col cols="12">
        <v-card color="blue lighten-5" class="ma-1">
-        <div>
-         <v-card  color="primary gray--text text--lighten-3">
-          <v-card-title class="text-center ma-2 pa-2">
-            Merit Score Allocation Section
-          </v-card-title>
-         </v-card>
          <v-data-table class="elevation-1"
                  :headers="meritHeader"
                  :items="meritListFilter"
@@ -66,30 +64,19 @@
          </template>
          <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-          <v-icon small class="mr-2" @click="doubleClickOnTableRow(item)">mdi-spade</v-icon>
+          <!-- <v-icon small class="mr-2" @click="doubleClickOnTableRow(item)">mdi-spade</v-icon> -->
          </template>
          <template v-slot:no-data>
           <v-btn color="primary">No Data to display</v-btn>
          </template>
         </v-data-table>
-        </div>
        </v-card>
       </v-col>
      </v-row>
     </v-container>
    </v-card>
   </v-col>
- <!-- <v-dialog v-model="showPrint" xwidth="auto" :fullscreen="$vuetify.breakpoint.smAndDown">
-  <front-json-to-csv v-if="filterMeritList.length"
-                   :json-data="filterMeritList"
-                   :csv-title="reportHeader"
-                   @hideModal="showPrint = false">
-   <v-btn>
-      Download with custom title
-   </v-btn>
-  </front-json-to-csv>
-</v-dialog>-->
-</v-row>
+ </v-row>
 
 
 
@@ -103,10 +90,12 @@ import { zmlFetch } from '@/api/zmlFetch';
 //import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 //import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import { printJSON } from "@/api/zmlPrint.js"
+import VBack from '@/components/base/VBack.vue'
 export default {
  name: "meritLink",
   props:{},
   components: {
+    VBack
 //    FrontJsonToCsv
 //    ReportsTableSmall
 //   ReportsTable

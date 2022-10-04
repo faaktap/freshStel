@@ -1,5 +1,5 @@
 <template>
- <v-btn  icon small
+ <v-btn  icon xxsmall
          absolute top right
          title="Click here to close"
          @click="$emit('btn-click')"

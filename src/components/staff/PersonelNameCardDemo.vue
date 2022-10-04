@@ -62,9 +62,8 @@
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
-import { zFetch } from '@/api/zmlFetch.js';
 import { getters } from "@/api/store";
+import { finder } from "@/api/finder.js";
 export default {
     name:"PersonelNameCardDemo",
     props: ['persName'],
@@ -72,73 +71,27 @@ export default {
       persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
       loggedIn:getters.getState({ object: "gZml" }).login.username,
       persRec: { photo:'', surname:'', name:'', contactnumber:'' },
-      srch: null,
+      //srch: null,
    }),
     methods:{
-      findPersonel() {
-        //check if we have a username
-        let len = this.persName.length
-        this.scrh = ''
-        for (const e of this.persMenemonic)  {
-          //console.log(e.user_name,'|', e.user_name.substr(0,len).toUpperCase(),'|', this.persName.toUpperCase())
-          if (e.user_name.substr(0,len).toUpperCase() == this.persName.toUpperCase()) {
-            this.srch = `menemonic = '${this.persName}'`
-            break
-          }
-          console.log('persid')
-          if (e.persid == this.persName) {
-            this.srch = `persid = ${this.persName}`
-            break
-          }
-
-          const srchSurname = e.surname ? e.surname.toUpperCase() : ''
-          const srchInit = e.name ? `${e.name.substr(0,1).toUpperCase()}` : ''
-          const compareIt = `${srchSurname}, ${srchInit}`
-          console.log(compareIt, this.persName, srchInit)
-          if (compareIt == this.persName.toUpperCase()) {
-            this.srch = `persid = ${e.persid}`
-            break
-          }
-        }
-        if (this.srch) {
-          this.loadPers(this.srch)
-        } else
-          //we checked persid, and menemonic, found nada, let's look at surname?
-          //alert('we did not find this staff member')
-          this.persRec = null
-      },
-      loadPers(srch) {
-        zFetch({task: 'PlainSql',
-                  sql: `select * from dkhs_personel where ${srch}`,
-                  api: zmlConfig.apiDKHS
-        })
-        .then((r) => {
-            if (r.status >= 200 && r.status <= 299) {return r.json() } else {throw Error(r.statusText)}
-        })
-        .then((response) => {
-            if (!response) { throw Error('no staff') }
-            console.log(response)
-            this.persRec = response[0]
-            console.log(this.persRec)
-        })
-        .catch((error) => {
-            console.log(error)
-            alert('err!');
-        })
-    },
+      answer(response) {
+        this.persRec = response
+      }
     },
     mounted: function() {
         if (this.persName) {
-          console.log('work out what we want....' , this.persName, this.persMenemonic.length)
-          this.findPersonel()
+           console.log('work out what we want....' , this.persName, this.persMenemonic.length)
+           //this.findPersonel(this.persName)
+           finder.findPersonel(this.persName, this.answer)
+
         } else {
-        this.persRec.surname = 2
-        this.persRec.name = 3
-        this.persRec.contactnumber =4
-        this.persRec.room = 5
-        this.persRec.workarea =6
-        this.persRec.email =6
-        this.persRec.changedate= 5
+           this.persRec.surname = 2
+           this.persRec.name = 3
+           this.persRec.contactnumber =4
+           this.persRec.room = 5
+           this.persRec.workarea =6
+           this.persRec.email =6
+           this.persRec.changedate= 5
 
         }
     },
