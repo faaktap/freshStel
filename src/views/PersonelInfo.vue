@@ -2,20 +2,21 @@
 <!-- custom filters on v-data-table search explained... https://www.front.id/en/articles/vuetify-achieve-multiple-filtering-data-table-component-->
 <div>
 
-<v-row>
-    <v-col xs-12 lg-12>
-       <v-toolbar flat color="primary" dark class="mb-4">
-        <v-toolbar-title>
-            De Kuilen High School Personel
-        </v-toolbar-title>
-        <v-spacer />
-        <v-btn small @click="loadPersonelList">
-           <v-icon> mdi-refresh </v-icon>
-           refresh
-        </v-btn>
-       </v-toolbar>
-    </v-col>
-  </v-row>
+<base-tool
+            toolbarName="De Kuilen High School Personel"
+           :background="false"
+            >
+          <v-btn small @click="showAs='list'" class="mr-2" title="Show as a list">
+                        <v-icon> mdi-view-list </v-icon>          </v-btn>
+          <v-btn small  @click="showAs='card'"  class="mr-2">
+                       <v-icon> mdi-card </v-icon>          </v-btn>
+          <v-btn small @click="showAs='picture'"  class="mr-2" title="Show only picture">
+                       <v-icon> mdi-image </v-icon>          </v-btn>
+          <v-btn small @click="loadPersonelList" class="mr-2" title="refresh - reflect new changes">
+                       <v-icon> mdi-refresh </v-icon>          </v-btn>
+
+
+</base-tool>
 
 <v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
   <v-layout>
@@ -25,19 +26,6 @@
             v-model="searchInfo" solo clearable
             @click:clear="searchInfo = ''"
        />
-
-      </v-col>
-      <v-col xs12 md6>
-        <v-btn @click="showAs='list'">
-          <v-icon> mdi-view-list </v-icon>
-        </v-btn>
-        <v-btn @click="showAs='card'">
-          <v-icon> mdi-card </v-icon>
-        </v-btn>
-        <v-btn @click="showAs='picture'">
-          <v-icon> mdi-image </v-icon>
-        </v-btn>
-
       </v-col>
   </v-layout>
  <v-divider />
@@ -108,10 +96,13 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
+import baseTool from '@/components/base/baseTool.vue'
+
 import PersonelNameCard from '@/components/staff/PersonelNameCard.vue'
 import PersonelNameList from '@/components/staff/PersonelNameList.vue'
 import PersonelNamePicture from '@/components/staff/PersonelNamePicture.vue'
 import UploadResizedImage from "@/components/UploadResizedImage.vue"
+
 // import zmlPictureLoad from '@/components/zmlPictureLoad.vue'
 
 export default {
@@ -121,6 +112,7 @@ export default {
            , PersonelNameList
            , PersonelNamePicture
            , UploadResizedImage
+           , baseTool
            },
  data: () => ({
   personelRec:null,
@@ -129,7 +121,8 @@ export default {
   personelList:[],
   searchInfo:'',
   showAs:'picture',
-  newFileName:''
+  newFileName:'',
+  loading:false,
  }),
  computed: {
   filteredItems: function() {
@@ -176,6 +169,7 @@ export default {
   },
   afterUpload(response) {
     console.log('Finished with upload, doing a refresh?',response)
+    this.loading = true
     let ts = {}
     ts.task = 'PlainSql'
     ts.sql = `insert into dkhs_photo values (null, 'pers', '${this.newFileName}',${this.personelRec.data.persid})`
@@ -184,8 +178,10 @@ export default {
   },
   afterInsert(response) {
     console.log('finished with insert : ', response)
+    this.loading = false
   },
   loadPersonelList() {
+    this.loading = true
     let ts = {};
     ts.task = 'PlainSql';
     ts.sql = `select * from dkhs_personel where room != 'WEG' or workarea != 'WEG' order by surname, name`
@@ -194,6 +190,7 @@ export default {
   },
   afterAllStaffLoaded(response) {
     this.personelList = []
+    this.loading = false
     response.forEach(ele => {
        if (ele) {
           const data = {data:ele}

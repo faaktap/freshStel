@@ -6,13 +6,16 @@
 
 <v-container v-else fluid>
  <v-toolbar  dense  row  wrap>
+    Student Class List
+        <span v-if="!studentList.length"> - (Select a class below) </span>
+        <span v-else> : {{this.gradeClass.g}} -  {{this.gradeClass.c}} </span>
     <v-spacer></v-spacer>
     <base-tool-button
        v-if="studentList.length"
        icon="mdi-select-group"
        class="mr-2"
        title="Click to view attendance list"
-       color="green"
+       xxcolor="green"
        @click="attendancePrep"
     >
       ATTENDANCE
@@ -232,7 +235,7 @@ export default {
          , idno, GROUP_CONCAT(email) emails\
          FROM dkhs_student s\
          left join m_subscriber m on s.studentid = m.impnumber and m.outid is null\
-         where grade = '${this.gradeClass.g}'\
+         where grade like '${this.gradeClass.g}'\
          and gclass = '${this.gradeClass.c}'\
          group by studentid, surname, firstname, grade, gclass, idno\
          order by s.surname, s.firstname`

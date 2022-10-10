@@ -9,12 +9,12 @@
 <!-------------------TABLE------------------------------------------>
         <v-card  elevation="6">
          <v-card-title class="text-center"> UserName : {{ user_name }}
-            <v-btn x-small @click="showMore = !showMore" text> more </v-btn>
+            <v-btn x-small @click="refresh();showMore = !showMore" text> more </v-btn>
          </v-card-title>
          <v-card-text>
           <v-simple-table v-if="entityTable.length">
            <thead>
-            <tr><th>Per</th>
+            <tr><th></th>
                 <th :class="showMore ? 'ma-2 pa-2' : 'mx-0 px-0'">Day 1</th>
                 <th :class="showMore ? 'mx-2 px-2' : 'mx-0 px-0'">Day 2</th>
                 <th :class="showMore ? 'mx-2 px-2' : 'mx-0 px-0'">Day 3</th>
@@ -108,10 +108,11 @@ export default {
     tableDone(response) {
       this.loading = false
       if ('error' in response) {
+        this.entityTable = []
         for (let i=1; i<9; i++) {
           let bday = []
             for (let j=1; j<12; j++) {
-              bday.push( `AF` )
+              bday.push( `P${i}` )
             }
             this.entityTable.push({user_name: 'ANY',
                                    periodno: i ,
@@ -124,16 +125,16 @@ export default {
         this.entityTable = response
         this.entityTable.forEach(e => {
             e.bday = []
-            e.bday[1] = e.day1 ?  e.day1 : 'AFAF'
-            e.bday[2] = e.day2 ?  e.day2 : 'AFAF'
-            e.bday[3] = e.day3 ?  e.day3 : 'AFAF'
-            e.bday[4] = e.day4 ?  e.day4 : 'AFAF'
-            e.bday[5] = e.day5 ?  e.day5 : 'AFAF'
-            e.bday[6] = e.day6 ?  e.day6 : 'AFAF'
-            e.bday[7] = e.day7 ?  e.day7 : 'AFAF'
-            e.bday[8] = e.day8 ?  e.day8 : 'AFAF'
-            e.bday[9] = e.day9 ?  e.day9 : 'AFAF'
-            e.bday[10] = e.day10 ?  e.day10 : 'AFAF'
+            e.bday[1] = e.day1 ?  e.day1 : 'AF'
+            e.bday[2] = e.day2 ?  e.day2 : 'AF'
+            e.bday[3] = e.day3 ?  e.day3 : 'AF'
+            e.bday[4] = e.day4 ?  e.day4 : 'AF'
+            e.bday[5] = e.day5 ?  e.day5 : 'AF'
+            e.bday[6] = e.day6 ?  e.day6 : 'AF'
+            e.bday[7] = e.day7 ?  e.day7 : 'AF'
+            e.bday[8] = e.day8 ?  e.day8 : 'AF'
+            e.bday[9] = e.day9 ?  e.day9 : 'AF'
+            e.bday[10] = e.day10 ?  e.day10 : 'AF'
         })
       }
       console.log('is it here?',this.entityTable)
@@ -206,11 +207,13 @@ export default {
      if (!this.user_name) {
        infoSnackbar("We need a UserName! - Please select staff (Responsible Person)")
      }
-     this.refresh()
+     //this.refresh()
+     this.tableDone({error:'error'})
   },
   watch:{
     user_name() {
-     this.refresh()
+     //this.refresh()
+     this.tableDone({error:'error'})
     }
   }
 }

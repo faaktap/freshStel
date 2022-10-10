@@ -41,6 +41,7 @@ export function doStuff(tr,task) {
         case "/merit":
         case "/meritstart":
         case "/meritedit":
+        case "/attload":
             return zmlReRoute(tr, task)
 
         default:

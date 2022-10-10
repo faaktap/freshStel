@@ -151,12 +151,27 @@ const routes = [
     ,name: 'ViewSubjects'
     ,path: '/subjects'
     ,meta: {layout: la[3], authentication: "admin"}
-  },    {
-    component: () => import(/* webpackChunkName: "homework" */ '@/views/student/StudentClassList.vue'),
+  },
+  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/views/student/MainStudentClassList.vue'),
     path: '/studentlist',
     name: 'studentlist',
     meta: {layout: la[3], authentication: "admin" }
   },
+  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/components/student/TeacherClassList.vue'),
+    path: '/teacherlist',
+    name: 'teacherlist',
+    meta: {layout: la[3], authentication: "admin" },
+  },
+  {
+    component: () => import(/* webpackChunkName: "homework" */ '@/components/homework/TeacherClassEdit.vue'),
+    path: '/tce/:listID?',
+    name: 'TeacherClassEdit',
+    props:true,
+    meta: {layout: la[3], authentication: "admin" }
+  },
+
   {
     component: () => import(/* webpackChunkName: "homework" */ '@/components/student/StudentClass.vue'),
     path: '/class/:gc?',
@@ -367,14 +382,14 @@ const routes = [
   },
   {
     path: '/att/:studentid?',    name: 'StudentAttendance',
-    component: () => import(/* webpackChunkName: "student" */ '@/components/student/StudentAttendance.vue'),
+    component: () => import(/* webpackChunkName: "attendance" */ '@/components/student/StudentAttendance.vue'),
     props: true,
     params: {studentid: 17033, editmode: false},
     meta: {layout: la[3], authentication: "student" }
   },
   {
     path: '/attendance/:date?',    name: 'AttendanceView',
-    component: () => import(/* webpackChunkName: "student" */ '@/views/AttendanceView.vue'),
+    component: () => import(/* webpackChunkName: "attendance" */ '@/views/AttendanceView.vue'),
     props: true,
     params: {date: '', editmode: false},
     meta: {layout: la[3], authentication: "admin" }
@@ -433,20 +448,43 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "merit" */ '@/views/HelloWorld.vue'),
+    component: () => import(/* webpackChunkName: "attendance" */ '@/views/HelloWorld.vue'),
     path: '/helloworld/:menemonic?',
     name: 'HelloWorld',
     props:true,
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "merit" */ '@/views/Attendance4.vue'),
+    component: () => import(/* webpackChunkName: "attendance" */ '@/views/Attendance4.vue'),
     path: '/attload',
     name: 'Attendance4',
     props:true,
     meta: {layout: la[3], authentication: "teacher" }
   },
-
+  {
+    component: () => import(/* webpackChunkName: "attendance" */ '@/components/student/StudentAttendanceList.vue'),
+    path: '/attendanceadd',
+    name: 'AttendanceList',
+    props:true,
+    params: {studentList: [],attendanceDetail: {staffSurname:'', location:'', period:'', }},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "attendance" */ '@/components/student/StudentAttendanceView.vue'),
+    path: '/attview',
+    name: 'AttendanceView',
+    props:true,
+    params: {},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "attendance" */ '@/components/student/StudentAttendanceSession.vue'),
+    path: '/attsession/:sessionid?',
+    name: 'AttendanceSession',
+    props:true,
+    params: {sessionid:0},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')
     ,name: 'ErrorPage'

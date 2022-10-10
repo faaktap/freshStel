@@ -1,0 +1,205 @@
+<template>
+<div>
+<v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
+    You are not logged in, or you are not a teacher!
+</v-container>
+
+<v-container v-else fluid>
+
+ <v-toolbar  dense  row  wrap>
+   Other Class Lists as needed by Teachers
+    <v-spacer></v-spacer>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Search"
+      single-line
+      hide-details
+      class="ma-2"
+    />
+    <v-select
+      v-model="gradeList"
+      :items="otherGradeOptions"
+      label="Select Grade(s)"
+      multiple
+      class="ma-2 mt-7"
+    >
+     <template v-slot:selection="{ item, index }">
+        <v-chip v-if="index === 0"> <span>{{ item }}</span> </v-chip>
+        <span v-if="index === 1" class="grey--text caption" >(+{{ value.length - 1 }} others)</span>
+     </template>
+    </v-select>
+      <v-btn class="ma-2" icon @click="newList" title="Create a new list" color="primary"> <v-icon>mdi-database-plus</v-icon> New </v-btn>
+      <v-btn class="ma-2" icon @click="initialize"> <v-icon>mdi-refresh</v-icon> </v-btn>
+ </v-toolbar>
+</v-container>
+
+<v-container fluid>
+  <v-layout row wrap align-content-start justify-space-between class="ma-2 pa-2">
+  <v-card v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3" elevation="4">
+    <v-card-title>{{ t.teacher }}  </v-card-title>
+    <p>{{ t.listname }}</p>
+    <v-card-actions>
+      <v-btn small @click="loadList(t.id)" color="primary"> View </v-btn>
+      <v-btn small @click="editListName(t.id)" color="primary"> Edit </v-btn>
+      <v-spacer />
+      <span class="float-right text-caption"> {{ t.id }} </span>
+    </v-card-actions>
+  </v-card>
+  </v-layout>
+    <v-dialog v-model="showForm"  :fullscreen="$vuetify.breakpoint.mobile" width="50%">
+      <v-card  class="ma-2 pa-2">
+        <v-card-title> {{ formTitle }} </v-card-title>
+        <v-card-text column align-content-start justify-space-around>
+          <v-text-field v-model="rec.listname" label="List Name" outlined dense />
+          <v-text-field v-model="rec.teacher" label="Teacher" outlined dense disabled/>
+          <v-combobox v-model="rec.grade" :items="otherGradeOptions" label="grade"/>
+          <v-radio-group v-model="rec.share" label="Shared" outlined dense  row>
+            <v-radio label="Yes" value="Y" />
+            <v-radio label="No" value="N" />
+          </v-radio-group>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn small @click="save" color="primary"> save </v-btn>
+          <v-btn small @click="showForm = false"> ignore </v-btn>
+          <v-spacer />
+          <v-btn small @click="basedOnOtherList = true"> Based on other list </v-btn>
+        </v-card-actions>
+        <v-card-text v-if="basedOnOtherList">
+           <v-btn class="ma-1" v-for="t in tList" :key="t.id" @click="addStudentsToList(t.id)"> {{ t.listname }} </v-btn>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+</v-container>
+
+<!-- <teacher-class-edit :listID="passedListID" /> -->
+
+ tList =  {{ tList }}
+
+<!-- <v-container fluid>
+ <v-row>
+  <v-col cols="12" sm="6">
+   <subject-display-short />
+  </v-col>
+ </v-row>
+</v-container> -->
+
+</div>
+</template>
+
+
+<script>
+import { zmlFetch } from '@/api/zmlFetch.js';
+import { getters } from "@/api/store";
+import { clWork } from "@/components/homework/ClassListWork.js"
+import { zData } from "@/api/zGetBackgroundData.js"
+import { ls } from "@/api/localStorage.js"
+const ADD_LIST_TITLE = "Create New List"
+export default {
+  name: "TeacherClassList",
+  props:{},
+  components: {},
+  data: () => ({
+    gradeList: [],
+    otherGradeOptions:['G07','G08','G09','G10','G11','G12'],
+    getZml: getters.getState({ object: "gZml" }),
+    search:'',
+    tList:[],
+    rec:{listname:''},
+    formTitle:'',
+    showForm: false,
+    passedListID:'',
+    basedOnOtherList:false
+  }),
+  methods:{
+    initialize() {
+      console.log('initialize')
+      this.gradeList = ls.load('zmlTCL-GradeList')
+      this.search = ls.load('zmlTCL-Search')
+      let ts = {}
+      ts.task = 'PlainSql'
+      ts.sql = "select * from hw_classlist"
+      zmlFetch(ts, this.loadData, this.errorLoading)
+    },
+    newList() {
+      let pers = this.getZml.persMenemonic.find(e=> e.userid == this.getZml.login.userid)
+      if (! ('name' in pers)) {
+        alert('error')
+        return
+      }
+      this.rec.teacher = pers.name.substr(0,1).toUpperCase() + ' ' + pers.surname.toUpperCase()
+      this.rec.listname = 'type new name here'
+      this.rec.grade = 'G10'
+      this.rec.share = 'Y'
+      this.formTitle = ADD_LIST_TITLE
+      this.showForm = true
+    },
+    editListName(listID) {
+      this.rec = this.tList.find(e => e.id == listID)
+      this.formTitle = "Edit : " + listID
+      this.showForm = true
+    },
+    addStudentsToList(id) {
+      alert('we want to add all students belonging to list ' + id + ' to our list ' + this.rec.id)
+      if (!this.rec.id) {
+        alert('not yet')
+        return
+      }
+      clWork.addStudentsToList(this.rec.id, id)
+      this.showForm = false
+    },
+    save() {
+      if (this.formTitle == ADD_LIST_TITLE) {
+         clWork.addList(this.rec)
+      } else {
+         clWork.updateList(this.rec)
+      }
+      this.showForm = false
+    },
+    loadData(response) {
+      console.log('loaddata')
+      this.tList = response
+    },
+    errorLoading(response) {
+      alert('some error')
+      console.log('error on fetch', response)
+    },
+    loadList(listID) {
+      ls.save('zmlTCL-GradeList',this.gradeList)
+      ls.save('zmlTCL-Search',this.search)
+      this.passedListID = listID
+      this.$router.push({ name: 'TeacherClassEdit', params: {listID: listID}})
+    },
+
+  },
+  computed:{
+   teacherListFilter() {
+      if (!this.tList.length) return [];
+      let answer = this.tList
+
+      if (this.gradeList.length > 0 && this.gradeList.length < 4) {
+         answer = this.tList.filter( ele => this.gradeList.some(e => (e == ele.grade) ))
+      }
+
+      if (this.search.length ) {
+        let newanswer = answer.filter(ele => {
+          //console.log(ele.teacher.toUpperCase(),this.search.toUpperCase() )
+          if (ele.teacher.toUpperCase().indexOf(this.search.toUpperCase()) > -1) return true
+          if (ele.listname.toUpperCase().indexOf(this.search.toUpperCase()) > -1) return true
+          if (ele.id.indexOf(this.search) > -1) return true
+          if (ele.create_timestamp.indexOf(this.search) > -1) return true
+          return false
+        });
+        //alert('search must still be implemented')
+        answer = newanswer
+      }
+      return answer
+    }
+  },
+  mounted() {
+    console.log(this.$options.name, 'Mounted')
+    zData.initialData('Load Subject Data', this.initialize)
+  }
+}
+
+</script>
