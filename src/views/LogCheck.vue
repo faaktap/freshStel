@@ -137,6 +137,13 @@ export default {
        let colArr = ['']
        this.logList = this.filterColumns(response, colArr)
        this.progress = false
+
+       //this.logList.forEach - reduce to distinct users
+       //Use loglines and add all users in an array
+       let output = this.logList.map( (s) => (s.user) );
+       //Use it to create ditinct users
+       let distinctUsers = [...new Set(output)]
+       console.log('ddddddddddddddddddddddddd',distinctUsers)
      },
      filterColumns(resp,colArray) {
        console.log(colArray)

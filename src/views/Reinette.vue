@@ -22,8 +22,11 @@
            v-model="search"
            append-icon="mdi-magnify"
            label="Search"
+           color="white"
            single-line
-           hide-details
+           class="mt-3"
+           xxhide-details
+           clearable
        />
        <v-spacer />
            <v-switch inset dense color="warning" v-model="g12" hide-details class="mr-2 ml-2" label="12" />
@@ -75,8 +78,8 @@
          </v-dialog>
          </template>
          <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-          <v-icon small class="mr-2" @click="doubleClickOnTableRow(item)">mdi-printer</v-icon>
+          <v-icon sxxmall class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+          <v-icon smxxall class="mr-2" @click="printList(item)">mdi-printer</v-icon>
          </template>
          <template v-slot:no-data>
           <v-btn color="primary">No Data to display</v-btn>
@@ -129,7 +132,7 @@
 <script>
 import { getters } from "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch';
-import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
+//import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import ReportsTableSmall from '@/components/ReportsTableSmall.vue'
 import AutoSelRoom from '@/components/AutoSelRoom.vue'
@@ -217,7 +220,7 @@ export default {
       return d instanceof Date && !isNaN(d);
     },
     save () {
-      console.log('save it', e, this.editedIndex , this.editedItem)
+      //console.log('save it', e, this.editedIndex , this.editedItem) -- this gave "Reference Error: Cannot access e before inizialiation! (only in Okt 2022)"
       let e = this.editedItem
       this.updateSql = null
       if (e.venue && e.venue.length > 9) {
@@ -268,15 +271,12 @@ export default {
         this.editedIndex = -1;
       });
     },
+
     doubleClickOnTableRow(i) {
-      if (!i.venue) {
-        infoSnackbar('Please provide a venue, by clicking on the venue button or column.')
-        return
-      }
-      if (!i.examdate) {
-        errorSnackbar('We need an examination date before we print, click on the examdate column or button')
-        //return
-      }
+      console.log(i)
+      return  // do not allow double click at the moment
+    },
+    printList(i) {
       this.selectedForPrint = {subject: i.subjectname
                              , grade: i.grade
                              , teacher: i.teacher

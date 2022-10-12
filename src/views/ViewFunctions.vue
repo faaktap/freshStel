@@ -46,6 +46,18 @@
 
   </v-data-table>
 </v-container>
+<v-container v-else>
+  <v-card class="ma-2 pa-2">
+    <v-card-title> Functions </v-card-title>
+    <v-card-text> You are not allowed here... </v-card-text>
+    <v-card-actions>
+    <v-spacer />
+    <v-btn v-bind="attrs" v-on="on" @click="$router.back()" title="Go Back">
+          <v-icon>mdi-close</v-icon> Back
+   </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-container>
 
 
 

@@ -271,19 +271,19 @@ export default {
            //alert(this.getZml.login.grade)
            this.getZml.login.grade  = this.getZml.login.grade.slice(0,2).padStart(2,'0')
            //alert(this.getZml.login.grade)
-           this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }})
+           this.$router.push({ name: 'HomeStart' , meta: {layout: "AppLayoutDefault" }})
            break;
         }
         case 'teacher':
         {
           // this.$cs.l(this.$options.name,'p-push teacher')
-          this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }});
+          this.$router.push({ name: 'HomeStart' , meta: {layout: "AppLayoutDefault" }});
           break;
         }
         case 'admin' :
         {
           // this.$cs.l(this.$options.name,'p-push admin')
-          this.$router.push({ name: 'Home' , meta: {layout: "AppLayoutDefault" }});
+          this.$router.push({ name: 'HomeStart' , meta: {layout: "AppLayoutDefault" }});
           break;
         }
         default:

@@ -1,5 +1,24 @@
 // eslint-disable-next-line
-function makeAWait(milisecs,nextProc,parm1, parm2 ,parm3) {
+
+export function uploadFiles(fileUploader,files,updateProgress) {
+  files.forEach(file => {
+    console.log(file);
+    if (file.ignore == false) {
+       let fr = new FileReader()
+       fr.onload = function(response) {
+         makeAWait(2000,fileUploader,response, file)
+       };
+       fr.onerror = function(response,file) {
+         console.log('res - Some Error!' ,file,response);
+       };
+       fr.onprogress = updateProgress;
+       fr.readAsDataURL(file);
+    }
+  });
+}
+
+
+export function makeAWait (milisecs,nextProc,parm1, parm2 ,parm3) {
  let openWin = new Promise((resolve) => {
    let wagbietjie = setTimeout(() => {
      console.log('makewait timeout',openWin)
@@ -15,10 +34,9 @@ function makeAWait(milisecs,nextProc,parm1, parm2 ,parm3) {
 }
 
 
-function addToQueue(receivedFilesReal,fileList) {
+export function addToQueue (receivedFilesReal,fileList) {
   console.log('recfilesinaddtoq',receivedFiles)
   const receivedFiles = [...receivedFilesReal]
-
   if (receivedFiles.length == 0) {
       return 100
   }
@@ -51,21 +69,5 @@ function addToQueue(receivedFilesReal,fileList) {
 }
 
 
-function uploadFiles(fileUploader,files,updateProgress) {
-  files.forEach(file => {
-    if (file.ignore == false) {
-       let fr = new FileReader()
-       fr.onload = function(response) {
-         makeAWait(2000,fileUploader,response, file)
-       };
-       fr.onerror = function(response,file) {
-         console.log('res - Some Error!' ,file,response);
-       };
-       fr.onprogress = updateProgress;
-       fr.readAsDataURL(file);
-    }
-  });
-}
 
-
-export {makeAWait, addToQueue, uploadFiles }
+// export {makeAWait, addToQueue, uploadFiles }

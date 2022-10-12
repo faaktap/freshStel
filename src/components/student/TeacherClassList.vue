@@ -24,18 +24,34 @@
       multiple
       class="ma-2 mt-7"
     >
-     <template v-slot:selection="{ item, index }">
+     <!-- <template v-slot:selection="{ item, index }">
         <v-chip v-if="index === 0"> <span>{{ item }}</span> </v-chip>
-        <span v-if="index === 1" class="grey--text caption" >(+{{ value.length - 1 }} others)</span>
-     </template>
+        <span v-if="index === 1" class="grey--text caption" >(+{{ gradeList.length - 1 }} others)</span>
+     </template> -->
     </v-select>
+
+    <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
+    <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+
       <v-btn class="ma-2" icon @click="newList" title="Create a new list" color="primary"> <v-icon>mdi-database-plus</v-icon> New </v-btn>
       <v-btn class="ma-2" icon @click="initialize"> <v-icon>mdi-refresh</v-icon> </v-btn>
  </v-toolbar>
 </v-container>
 
 <v-container fluid>
-  <v-layout row wrap align-content-start justify-space-between class="ma-2 pa-2">
+  <v-layout v-if="showAs=='list'" row wrap align-content-start justify-space-between class="ma-2 pa-2">
+    <v-simple-table>
+      <tr><th>id</th><th>teacher</th><th>listname</th><th></th>
+      <tr v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3">
+        <td class="pa-2 ma-2">{{ t.id }}</td>
+        <td class="ma-2" >{{ t.teacher }}</td>
+        <td class="ma-2 pa-2">{{ t.listname }}</td>
+        <td> <v-btn small @click="loadList(t.id)" color="primary" class="ma-2"> View </v-btn>
+             <v-btn small @click="editListName(t.id)" color="primary" class="ma-2 pa-2"> Edit </v-btn></td>
+      </tr>
+    </v-simple-table>
+  </v-layout>
+  <v-layout v-if="showAs=='card'" row wrap align-content-start justify-space-between class="ma-2 pa-2">
   <v-card v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3" elevation="4">
     <v-card-title>{{ t.teacher }}  </v-card-title>
     <p>{{ t.listname }}</p>
@@ -74,7 +90,7 @@
 
 <!-- <teacher-class-edit :listID="passedListID" /> -->
 
- tList =  {{ tList }}
+ <!-- tList =  {{ tList }} -->
 
 <!-- <v-container fluid>
  <v-row>
@@ -103,13 +119,14 @@ export default {
     gradeList: [],
     otherGradeOptions:['G07','G08','G09','G10','G11','G12'],
     getZml: getters.getState({ object: "gZml" }),
-    search:'',
-    tList:[],
-    rec:{listname:''},
-    formTitle:'',
+    search: '',
+    tList: [],
+    rec: {listname:''},
+    formTitle: '',
     showForm: false,
-    passedListID:'',
-    basedOnOtherList:false
+    passedListID: '',
+    basedOnOtherList: false,
+    showAs: 'list'
   }),
   methods:{
     initialize() {

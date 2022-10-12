@@ -97,9 +97,10 @@
 </template>
 
 <script>
+
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch';
-import { makeAWait, uploadFiles, addToQueue } from '@/api/fileUploadHelper.js'
+//import { makeAWait, uploadFiles, addToQueue } from '@/api/fileUploadHelper.js'
 import { errorSnackbar } from '@/api/GlobalActions'
   export default {
     name: "UploadMachine",
@@ -171,7 +172,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
         cheatArray.push(e)
         this.mes('adding files from ', cheatArray)
         this.mes('adding files to ', this.files)
-        await makeAWait(1000,addToQueue, cheatArray, this.files, this.busy)
+        await makeAWait(1000,this.addToQueue, cheatArray, this.files, this.busy)
         this.inputFiles = null
         this.busy = false
       },
@@ -182,7 +183,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
         // this.$cs.l('addFile',e.dataTransfer.files)
         // this.$cs.l('addFile #',e.dataTransfer.files.length)
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-           await makeAWait(1000,addToQueue,e.dataTransfer.files, this.files, this.busy)
+           await makeAWait(1000,this.addToQueue,e.dataTransfer.files, this.files, this.busy)
         } else {
           this.$cs.l('Houston we have a prbolem!!!!')
         }
@@ -235,6 +236,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
          this.debugList[i] = this.files[i];
         }
         await makeAWait(1000,uploadFiles,this.startUpload, this.files, this.progressProg)
+        console.log('DEBUG:After makeAWait in initiateUpload')
       },
       progressProg(data) {
           this.$cs.l('received data from progress : ', data, data.lengthComputable)
@@ -251,6 +253,7 @@ import { errorSnackbar } from '@/api/GlobalActions'
       },
       startUpload(fileData, fdet) {
         // We receive two parameters from our uploadFiles worker
+        console.log('DEBUG:StartUpload',fdet)
          let trans = {}
          trans.extrapath =  this.uploadPath //"/Test/werner"
          trans.name = fdet.name
@@ -263,9 +266,11 @@ import { errorSnackbar } from '@/api/GlobalActions'
          zmlFetch(trans,this.doneWithUpload, this.errorWithUpload)
       },
       doneWithUpload(response) {
+        console.log('DEBUG:DoneWithUpload')
         if (response.filename == 'undefined') {
            return
         }
+        console.log('DEBUG:DoneWithUpload - GOODFILENAME?')
         //
         // do whatever you want to do after the upload.... and then delete file from list
         //
@@ -308,7 +313,43 @@ import { errorSnackbar } from '@/api/GlobalActions'
         const i = Math.floor(Math.log(bytes) / Math.log(k));
 
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+      },
+  addToQueue (receivedFilesReal,fileList) {
+  console.log('recfilesinaddtoq',receivedFiles)
+  // Uncaught ReferenceError: Cannot access 'receivedFiles' before initialization 347 webpack-internal:....
+  // Had to change ReceivedFiles to a var to get past this error.
+  // see https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/190
+  var receivedFiles = [...receivedFilesReal]
+  if (receivedFiles.length == 0) {
+      return 100
+  }
+  let problemFiles = 0
+  receivedFiles.forEach(file => {
+    file.ignore = false
+    //check if in list already
+    fileList.forEach(already => {
+      if (file.name == already.name)  {
+        problemFiles += 1
+        file.ignore = true
       }
+    })
+    file.done = false
+
+    if (!file.type && file.size%4096 == 0) {
+      // The file is a folder
+      file.ignore = true
+    }
+    console.log('file.name',file.name)
+    if (file.ignore == false) {
+      file.ext = ''
+      file.ext = file.name.split('.').pop().toLowerCase()
+      file.realname = file.name
+      fileList.push(file);
+    }
+  })
+  console.log('ProblemFiles in Add2Q is : ' , problemFiles)
+  return problemFiles
+    }
     },
     mounted() {
       // https://www.vuescript.com/vue-js-drag-drop-uploader-vue-transmit/
@@ -324,4 +365,39 @@ import { errorSnackbar } from '@/api/GlobalActions'
 
     }
   }
+
+
+function uploadFiles(fileUploader,files,updateProgress) {
+  files.forEach(file => {
+    console.log(file);
+    if (file.ignore == false) {
+       let fr = new FileReader()
+       fr.onload = function(response) {
+         makeAWait(10,fileUploader,response, file)
+       };
+       fr.onerror = function(response,file) {
+         console.log('res - Some Error!' ,file,response);
+       };
+       fr.onprogress = updateProgress;
+       fr.readAsDataURL(file);
+    }
+  });
+}
+
+
+function makeAWait (milisecs,nextProc,parm1, parm2 ,parm3) {
+ let openWin = new Promise((resolve) => {
+   let wagbietjie = setTimeout(() => {
+     console.log('makewait timeout',openWin)
+     clearTimeout(wagbietjie)
+     resolve( nextProc(parm1,parm2, parm3 ))
+     if (parm3 ) {
+        console.log('Parm3 after tm',parm3)
+        parm3=false
+     }
+   }, milisecs)
+ })
+ console.log('makewait',openWin)
+}
+
 </script>

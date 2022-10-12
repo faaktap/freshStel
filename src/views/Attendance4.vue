@@ -5,6 +5,10 @@
    <p>
     Attendance lists are beinge read from classlists. So whenever you add  a classlist, that list will be selectable here.
     Once you have selected a day, period, classroom, person and list, you will be taken to the list where you can mark students as absent, etc.
+
+    {{ login }}
+    <br>
+    {{ persMenemonic}}
     </p>
   </base-title-expand>
 
@@ -12,12 +16,15 @@
            :toolbarName="`Attendance 4 ${login.fullname} / ${ login.username}`"
            :loading="loading"
             >
-            <v-btn icon @click="viewAttendance"
+            <v-btn  @click="viewAttendance"
                    title="View previous Attendance Records"
-            > <v-icon>mdi-view-agenda-outline</v-icon> </v-btn>
+            > <v-icon>mdi-view-agenda-outline</v-icon>
+              View Records
+            </v-btn>
             <v-btn icon @click="playSound"> <v-icon>mdi-cellphone-sound</v-icon> </v-btn>
 </base-tool>
 <!-- {{place}} -->
+
   <v-row>
    <v-col cols="12" md="12">
     <div v-if="period && tListObj && 'grade' in tListObj" class="text-caption text-center">
@@ -36,8 +43,12 @@
         label="Responsible Person"
         prepend-inner-icon="mdi-human"
         outlined
-        xdense
+        clearable
+
        />
+       <!-- append-icon="mdi-close"
+        @click:append="mdi-close"
+        @click:clear-->
        <v-combobox
         class="ma-2"
         v-model="location"
@@ -46,7 +57,7 @@
         :title="locationTitle"
         prepend-inner-icon="mdi-office-building"
         outlined
-        xdense
+        clearable
         @click.once="userSelectedLocation"
         @blur="userSelectedLocation"
        >
@@ -54,22 +65,10 @@
          {{ item }}
           <!-- {{ item.grade }} {{ item.subjectname}} {{ item.ckey }} {{ item.mingc }} {{ item.maxgc }} [ {{ item.students}} ] -->
        </template>
-
        </v-combobox>
-       <v-combobox
-        class="ma-2"
-        v-model="period"
-        :items="periodList"
-        label="Period"
-        outlined
-        xdense
-        prepend-icon="mdi-timetable"
-        append-icon="mdi-magnify"
-        @click:prepend="showRooster = true"
-        @click:append="showRooster = true"
-        @click.once="userSelectedSomething"
-       />
-       <v-text-field v-model="day" outlined class="ma-2" label="Day" disabled/>
+
+       <v-btn class="ma-2 mt-4"   @click="showRooster = true"> <v-icon> mdi-timetable</v-icon></v-btn>
+
        <v-combobox
         class="ma-2"
         v-if="tList && tList.length"
@@ -93,6 +92,7 @@
        </template>
        </v-combobox>
 
+
        <v-card v-else class="mt-3 pa-2" height="50" color="red lighten-2">
         <v-icon> mdi-info </v-icon>
         There are no teacherLists avaliable for {{ surname }} <v-btn small title="See all lists" @click="showAllLists"> More </v-btn>
@@ -104,6 +104,20 @@
         To add a new list, go to "Class Lists" There are no teacherLists avaliable for {{ surname }} <v-btn small title="See all lists" @click="showAllLists"> More </v-btn>
        </v-card>
 
+       <v-combobox
+        class="ma-2"
+        v-model="period"
+        :items="periodList"
+        label="Period"
+        outlined
+        clearable
+        disabled
+        append-icon="mdi-magnify"
+        @click:append="showRooster = true"
+        @click.once="userSelectedSomething"
+       />
+       <v-text-field v-model="day" outlined class="ma-2" label="Day" disabled/>
+
       </v-layout>
 
      </v-card-text>
@@ -111,7 +125,7 @@
       <v-spacer />
       <v-btn @click="areWeReady" class="ma-2" color="primary"> Continue </v-btn>
      </v-card-actions>
-     <v-card-actions v-else> Be sure and fill all options, click <v-btn icon small @click="showRooster=true"><v-icon small>mdi-timetable</v-icon></v-btn>
+     <v-card-actions v-else> Be sure and fill all options, click <v-btn icon @click="showRooster=true"><v-icon>mdi-timetable</v-icon></v-btn>
      to set the day. </v-card-actions>
    </v-card>
   </v-col>
@@ -189,6 +203,9 @@ export default {
         console.log('ASSIGNING LOOKUP VALUES')
         this.persMenemonic.forEach(e => {
              this.staffList.push({name:e.user_name + ' ' + e.surname + ' ' + e.name.substr(0,1), persid: e.persid})
+             if (e.user_name == this.login.username) {
+                this.responsiblePerson = {name:e.user_name + ' ' + e.surname + ' ' + e.name.substr(0,1), persid: e.persid}
+             }
              if (e.room && e.room != 'WEG') {
                this.locationList.push(e.room)
              }
@@ -196,9 +213,7 @@ export default {
         this.locationList.sort()
         this.locationList.push('Admin')
         this.locationList.push('TEST')
-        if (this.login.userid) {
-          this.responsiblePerson = this.persMenemonic.find(e => e.persid == this.login.userid)
-        }
+        console.log('assigned to responsible person on initialize : ', this.responsiblePerson)
 
       },
       viewAttendance() {
@@ -269,7 +284,7 @@ export default {
       loadTeacherListData(response) {
         console.log('we did get passed sql !!')
         if ('error' in response && response.error.length > 10) {
-          if (response.error.findIndex('no rows returned') > -1) {
+          if (response.error.indexOf('no rows returned') > -1) {
             this.tList = []
             this.tListObj = []
           }
@@ -342,13 +357,12 @@ export default {
       },
     },
     mounted() {
+      zmlLog(null, "Att4Tanya " + this.responsiblePerson, 'Started')
       zData.initialData('Load Important Data', this.initialize)
-      zmlLog('ATT4Start', JSON.stringify({vers:"latest4Tanya",staff: this.responsiblePerson}))
       if (this.place.length < 4) {
         this.place = ls.load('zmlPlace')
       }
       this.loading = false
-      //this.initialize()
     },
     watch:{
       responsiblePerson() {
@@ -364,3 +378,14 @@ export default {
     }
 }
 </script>
+
+<wait>
+ONS HET NIE PERSID in login nie - dalk maar daar insit, so ek moet dit van persMenemonic kry...
+         let idx = this.persMenemonic.findIndex(e => e.menemonic == this.login.menemonic)
+         if (idx > -1) {
+           this.menemonic = this.persMenemonic[idx].user_name
+           this.surname = this.persMenemonic[idx].surname
+           this.location = this.persMenemonic[idx].room
+           this.responsiblePerson = {name: this.persMenemonic[idx].name, persid: this.persMenemonic[idx].persid}
+         }
+</wait>

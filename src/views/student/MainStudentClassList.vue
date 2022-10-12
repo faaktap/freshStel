@@ -32,18 +32,12 @@
 
 <!-- THIS IS TEACHERS OWN LISTS -->
 <v-container v-if="toggleDisplay == 2" fluid>
-  <h1> Lists you create yourself </h1>
 <teacher-class-list />
 </v-container>
 
 <!-- THIS IS NORMAL G10A2 or G12A1 lists -->
 <v-container v-if="toggleDisplay == 0" fluid>
-
-   <v-row>
-   <v-col cols="12">
      <student-class title="dkhs" />
-  </v-col>
- </v-row>
 </v-container>
 
 <!-- THIS IS GRADE 10 SUBJECT SELECTION LIST -->

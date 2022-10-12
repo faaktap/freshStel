@@ -1,6 +1,7 @@
 import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
+//import { now } from 'core-js/core/date';
 
 export const tableWork = {
     name:'tableAttendance',
@@ -26,8 +27,19 @@ export const tableWork = {
            table.splice(index,1);
         }
     },
-    getData: (key, pCallback) => {
-        console.log(key)
+    getData: (key, pCallback, passedSearchDate ) => {
+        console.log('getDATA:',key, passedSearchDate)
+        let searchDate
+        if (!passedSearchDate) {
+            let today = new Date()
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
+            searchDate = `${yyyy}-${mm}-${dd}`
+        } else {
+            searchDate = passedSearchDate
+        }
+        console.log('We are searching on : ', searchDate)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = `select a.attendanceid,\
@@ -41,8 +53,8 @@ export const tableWork = {
         concat(s.grade,s.gclass) grade \
  from dkhs_student s\
     , a_attendance a\
- where a.capture = s.studentid and a.attendancedate\
-   and attendancedate like concat(substr(now(),1,11),'%')
+ where a.capture = s.studentid \
+   and attendancedate like '${searchDate}%' \
  order by a.attendancedate desc, a.period ,a.staff, a.location`
         ts.api = zmlConfig.apiPath
         zmlFetch(ts, pCallback, errorFetch)

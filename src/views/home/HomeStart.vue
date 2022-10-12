@@ -83,7 +83,7 @@
 
  <v-btn class="ma-2" color="primary" to="/attload"> Attendance </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/thermometer"> BaroMeter </v-btn>
+ <v-btn class="ma-2" color="primary" to="/attendance"> Old Attendance View </v-btn>
 </base-title-expand>
 </v-container>
 </v-parallax>
@@ -121,25 +121,19 @@ export default {
   },
   methods:{
     getQuote() {
-      let qapi = 'https://www.stands4.com/services/v2/quotes.php?uid=10940&tokenid=PPXqm1ptp4XIRUuZ&searchtype=RANDOM&format=json'
-      //{"result":{"quote":"For some, life is about \"being Cool\" while for others its about \"being Hot\". While there is room for both, we must avoid \"being Lukewarm\".","author":"Vijay Samuel Benjamin"}}
-
-      let apiConfig = {method: 'GET',
-                       headers: {'Accept': 'application/json'
-                              , 'Content-Type': 'application/json'},
-                       body: ''}
-      fetch(qapi, apiConfig)
-      .then(response => response.json())
+      let token = {headers: {'Authorization': 'Token 4f9248d8208d5554e8f508d126eaada5ad4b9ca6'}}
+      let apiUrl = 'https://api.paperquotes.com/apiv1/quotes/?qod'
+      let requestFetch = function() { return fetch.apply(this, arguments);}
+      requestFetch(apiUrl, token)
+      .then((response) => {return response.json();})
       .then((data) => {
-           this.q.quote = data.quote
-           this.q.author = data.author
+        console.log(data);
+        console.log(data.results.length);
+        let r = Math.floor(Math.random() * 5)
+        this.q.quote = data.results[r].quote
+        this.q.author = data.results[r].author
       })
-      .catch(err => {
-        console.log('some error :', err)
-      })
-
-
-    }
+    },
   },
   created() {
     this.getQuote()
@@ -150,7 +144,7 @@ export default {
    console.log('Start (index.vue): ', this.$options.name)
    console.log(process)
    //var env = process.env.NODE_ENV || 'development';
-   zmlLog('testuser', 'AttendanceStart',{version: zmlConfig.projectID} )
+   zmlLog(null, 'HomeStart',{version: zmlConfig.projectID} )
   },
   watch:{
   }

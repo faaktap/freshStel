@@ -1,0 +1,92 @@
+component: () => import(/* webpackChunkName: "test" */ '../components/vfbase/vfbasetest'),
+component: () => import(/* webpackChunkName: "test" */ '../views/test/WernerTest'),
+component: () => import(/* webpackChunkName: "test" */ '@/test/TestUpload.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/components/TextColorPicker.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/views/calendarSetup.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/components/Calendar.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/views/Reports.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/views/test/AKandidate.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/views/test/Bland2.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/views/test/FlexGridStuff.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/components/base/WhackAMole.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/components/FundRaiser.vue')
+component: () => import(/* webpackChunkName: "test" */ '@/views/test/baseTabAndEdit.vue')
+component: () => import(/* webpackChunkName: "admin" */ '@/views/IncomingPhotoLink.vue')
+component: () => import(/* webpackChunkName: "admin" */ '@/views/AllPhotos.vue')
+
+
+
+
+component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardCarousel.vue')
+component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),
+component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/StudentAwardTable.vue'),
+component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardEdit.vue'),
+
+component: () => import(/* webpackChunkName: "pers" */ '@/components/student/StudentAttendance.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/views/AttendanceView.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/views/HelloWorld.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/views/Attendance4.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/student/StudentAttendanceList.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/student/StudentAttendanceView.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/student/StudentAttendanceSession.vue'),
+
+component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+
+component: () => import(/* webpackChunkName: "pers" */ '@/views/new/FolderEdit.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/views/LoadHomework.vue')
+component: () => import(/* webpackChunkName: "pers" */ '../components/vfbase/skool'),
+
+component: () => import(/* webpackChunkName: "home" */ '@/views/Admin'),
+
+component: () => import(/* webpackChunkName: "bates" */ '../views/bates/Outline.vue'),
+
+
+
+component: () => import(/* webpackChunkName: "pers" */ '@/views/ViewSubjects.vue')
+component: () => import(/* webpackChunkName: "pers" */ '@/views/student/MainStudentClassList.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/student/TeacherClassList.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/homework/TeacherClassEdit.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/student/StudentClass.vue'),
+
+component: () => import(/* webpackChunkName: "admin" */ '@/views/student/StudentInfo.vue'),
+component: () => import(/* webpackChunkName: "admin" */ '@/components/student/StudentLookup.vue'),
+component: () => import(/* webpackChunkName: "admin" */ '@/components/student/StudentClass.vue'),
+component: () => import(/* webpackChunkName: "admin" */ '@/views/ViewFunctions.vue'),
+component: () => import(/* webpackChunkName: "admin" */ '@/views/UserList.vue')
+component: () => import(/* webpackChunkName: "admin" */ '@/views/BookReturn.vue'),
+
+component: () => import(/* webpackChunkName: "pers" */ '@/views/PersonelInfo.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelNameCardDemo.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelMenemonic.vue'),
+component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelLookup.vue'),
+
+
+component: () => import(/* webpackChunkName: "learn" */ '@/views/learn/Latest.vue')
+
+component: () => import(/* webpackChunkName: "email" */ '@/views/test/StreamLineDB.vue')
+component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailBulletins.vue')
+component: () => import(/* webpackChunkName: "email" */ '@/views/LogCheck.vue')
+component: () => import(/* webpackChunkName: "email" */ '@/views/EmailCheck.vue')
+component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailDeliveryReport.vue')
+component: () => import(/* webpackChunkName: "email" */ '@/views/EmailsSent.vue'),
+
+component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewCampaigns.vue')
+component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ViewVote.vue')
+component: () => import(/* webpackChunkName: "vote" */ '@/views/vote/ApplicantRegister.vue')
+
+
+
+component: () => import(/* webpackChunkName: "pers" */ '@/views/Reinette.vue')
+
+component: () => import(/* webpackChunkName: "student" */ '@/components/student/StudentWiFi.vue'),
+
+
+
+component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritStepper.vue'),
+component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritPoint.vue'),
+component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritStart.vue'),
+component: () => import(/* webpackChunkName: "merit" */ '@/components/staff/PersonelMeritList.vue'),
+component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritTable.vue'),
+component: () => import(/* webpackChunkName: "merit" */ '@/components/merit/MeritForm.vue'),
+
+component: () => import(/* webpackChunkName: "test" */ '@/views/ErrorPage.vue')

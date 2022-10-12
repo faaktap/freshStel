@@ -3,7 +3,9 @@
        Copied from TableAttendance under nuxt-attendance (freshNuxt)
 -->
   <v-container fluid>
-
+<base-title-expand color="white" heading="ATTENDANCE LISTS (OLD)">
+ Nie regtig oud nie, maar met ou metode geneem. Word nog deur June en Jackie gebruik, en ook deur paar onderwysers...
+</base-title-expand>
   <v-toolbar  dense  row  wrap color="primary">
       Attendance Data
      <v-spacer />
@@ -23,16 +25,19 @@
         class="ma-2"
         append-icon="mdi-close"
         @click:append="room = ''" />
-      <v-text-field
+      <v-combobox
+        v-if="periodTable.length"
         v-model="period"
         label="Period"
+        :items="periodTable"
+        item-text="period"
+        item-value="period"
         outlined
         dense
         class="ma-2"
         append-icon="mdi-close"
         @click:append="period = ''" />
-
-       <base-date v-model="searchDate" :curValue="searchDate" label="" />
+       <base-date v-model="searchDate" :curValue="searchDate" instructions="FA" label="" />
     </v-card>
 
     <v-progress-linear
@@ -67,7 +72,7 @@
             </template>
 
            </v-data-table>
-           {{ periodTable }}
+
          </v-card>
        </v-col>
     </v-row>
@@ -99,6 +104,7 @@ import { tableWork } from "@/views/AttendanceView.js"
 
 // import TableStockCategoryForm from "@/components/crud/TableStockCategoryForm"
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import BaseSearch from '@/components/base/baseSearch.vue'
 import BaseDate from '@/components/base/BaseDate.vue'
 import VBack from '@/components/base/VBack.vue'
@@ -110,6 +116,7 @@ export default {
             , BaseSearch
             , VBack
             , BaseDate
+            , BaseTitleExpand
             },
 
   data: () => ({
@@ -142,39 +149,21 @@ export default {
     entityTableFilter() {
       //If the table is empty - return blank
       if (!this.entityTable.length) return []
+      if (this.period.period == '' && this.room == '') return this.entityTable
+
       let workTable = this.entityTable
-      let dlen = this.searchDate.length
-
       //Search for multiple queries in one loop - fast as possible
-      workTable = this.entityTable.filter(e =>
-        (!this.period || e.period == this.period)
-        &&
-        (!this.room || e.location == this.room)
-        &&
-        (!this.searchDate || e.attendancedate.substring(0,dlen) === this.searchDate)
+      workTable = this.entityTable.filter(e => {
+        if (this.period.period && this.period.period.length && e.period != this.period.period) return false
+        if (this.room.length && e.location.substr(0,this.room.length) != this.room) return false
+        return true
+       }
       )
-
-      // if (this.room && this.period && this.searchDate) {
-      //   workTable = this.entityTable.filter(e => e.period == this.period
-      //                                         && e.location == this.room
-      //                                         && e.attendancedate.substring(0,dlen) === this.searchDate)
-      // } else if (this.room && this.searchDate) {
-      //   workTable = this.entityTable.filter(e => e.location == this.room
-      //                                         && e.attendancedate.substring(0,dlen) === this.searchDate)
-      // } else if (this.room && this.period) {
-      //   workTable = this.entityTable.filter(e => e.location == this.room
-      //                                         && e.period == this.period )
-      // } else if (this.room ) {
-      //   workTable = this.entityTable.filter(e => e.location == this.room)
-      // } else if (this.searchDate ) {
-      //   workTable = this.entityTable.filter(e => e.attendancedate.substring(0,dlen) === this.searchDate)
-      // }
       return workTable
     }
   },
   methods: {
     retrieveForEditing(item) {
-      console.log('retrie4edit',item)
       let index = tableWork.getIndex(item.attendanceid,this.entityTable)
       if (index !== -1) {
         this.updateMessage = 'Edit'
@@ -193,7 +182,7 @@ export default {
     },
     tableDonePeriod(response) {
       this.loading = false
-      this.PeriodTable = response
+      this.periodTable = response
     },
     //--------------------------------------------------------------------------------
     clickOnForm(editTable,method){
@@ -215,8 +204,10 @@ export default {
       //If we have an error, report and wait.
       console.log('reponse error?',response)
       this.loading = true
-      tableWork.getData('load'+this.$options.name, this.tableDone)
-      tableWork.getPeriod('loadPer'+this.$options.name, this.tableDonePeriod)
+      tableWork.getData('load'+this.$options.name, this.tableDone, this.searchDate)
+      if (this.periodTable.length < 2) {
+          tableWork.getPeriod('loadPer'+this.$options.name, this.tableDonePeriod)
+      }
     },
   },
   mounted() {
@@ -226,7 +217,13 @@ export default {
      let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
      let yyyy = today.getFullYear();
      this.searchDate = `${yyyy}-${mm}-${dd}`
-     this.refresh()
+     //this.refresh()
+  },
+  watch:{
+    searchDate() {
+      console.log('new search on watch' + this.searchDate)
+      this.refresh()
+    }
   }
 }
 </script>
