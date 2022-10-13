@@ -189,7 +189,7 @@ import { ls } from "@/api/localStorage.js"
 
 export default {
     name: "login",
-    props: {},
+    props: ['errorMessage'],
     components: {},
     computed: {
     },
@@ -571,6 +571,9 @@ export default {
       ts.task = 'plainSql'
       ts.sql = `UPDATE dkhs_learner SET user_password = 'passWord' where user_name = '${this.loginObj.username}'`
       zmlFetch(ts, this.testResp, this.testResp)
+    }
+    if (this.errorMessage) {
+      infoSnackbar(this.errorMessage)
     }
   }
 }

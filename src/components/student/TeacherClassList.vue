@@ -39,9 +39,12 @@
 </v-container>
 
 <v-container fluid>
-  <v-layout v-if="showAs=='list'" row wrap align-content-start justify-space-between class="ma-2 pa-2">
-    <v-simple-table>
-      <tr><th>id</th><th>teacher</th><th>listname</th><th></th>
+  <!-- <v-layout v-if="showAs=='list'" row wrap align-content-start justify-space-between class="ma-2 pa-2"> -->
+    <v-simple-table v-if="showAs=='list'">
+      <thead>
+      <tr><th>id</th><th>teacher</th><th>listname</th><th></th></tr>
+      </thead>
+      <tbody>
       <tr v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3">
         <td class="pa-2 ma-2">{{ t.id }}</td>
         <td class="ma-2" >{{ t.teacher }}</td>
@@ -49,8 +52,9 @@
         <td> <v-btn small @click="loadList(t.id)" color="primary" class="ma-2"> View </v-btn>
              <v-btn small @click="editListName(t.id)" color="primary" class="ma-2 pa-2"> Edit </v-btn></td>
       </tr>
+      </tbody>
     </v-simple-table>
-  </v-layout>
+  <!-- </v-layout> -->
   <v-layout v-if="showAs=='card'" row wrap align-content-start justify-space-between class="ma-2 pa-2">
   <v-card v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3" elevation="4">
     <v-card-title>{{ t.teacher }}  </v-card-title>

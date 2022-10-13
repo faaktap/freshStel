@@ -50,12 +50,14 @@
 
 
      <v-simple-table v-if="showAs=='list'">
+      <tbody>
       <tr v-for="sl in studentList" :key="sl.studentid">
         <td> {{ sl.studentid }}</td>
         <td> {{ sl.surname }}</td>
         <td> {{ sl.firstname }}</td>
         <td> {{ sl.grade }}, {{ sl.gclass }}</td>
       </tr>
+      </tbody>
      </v-simple-table>
    </v-card-text>
    <v-card-text v-else>

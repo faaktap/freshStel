@@ -40,6 +40,7 @@ const routes = [
     path: '/login/:forgot?',
     name: 'Login',
     props:true,
+    params: {errorMessage:''},
     meta: {layout: la[3], authentication: "public"}
   },
   {
@@ -416,6 +417,12 @@ router.beforeEach((to, from,next) => {
       Vue.prototype.$cs.l('R - ForceLogin')
       next({name: 'Login', meta:{message:'Bad Authentication for ' + to.name}})
     } else if (to.meta.authentication == 'teacher' && userType == 'student' && to.name != 'Login') {
+      Vue.prototype.$cs.l('R - ForceLogin - student not allowed')
+      next({name: 'Login'
+          , props: { errorMessage: 'there was an error' }
+          , meta:{message:'Bad Authentication for ' + to.name}})
+    }
+    else if (to.meta.authentication == 'admin' && userType == 'student' && to.name != 'Login') {
       Vue.prototype.$cs.l('R - ForceLogin - student not allowed')
       next({name: 'Login'
           , props: { errorMessage: 'there was an error' }

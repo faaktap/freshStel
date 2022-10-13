@@ -249,10 +249,11 @@ export default {
     mounted: function() {
         this.$cs.l('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
         this.studentid = this.getZml.login.schoolno
-        if (this.getZml.login.grade.length == 2 ) {
-           this.gradeToShow.g = 'G'.concat(this.getZml.login.grade)
+        console.log('grade',this.getZml.login.grade,this.getZml.login.grade.length)
+        if (this.getZml.login.grade.length == 3 ) {
+           this.gradeToShow.g = this.getZml.login.grade
         } else {
-           this.gradeToShow.g = 'G0'.concat(this.getZml.login.grade)
+           this.gradeToShow.g = 'G'.concat(this.getZml.login.grade)
         }
         this.$cs.l(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
         this.gradeToShow.c = this.getZml.login.gclass

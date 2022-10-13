@@ -127,8 +127,8 @@ export default {
       requestFetch(apiUrl, token)
       .then((response) => {return response.json();})
       .then((data) => {
-        console.log(data);
-        console.log(data.results.length);
+        //console.log(data);
+        //console.log(data.results.length);
         let r = Math.floor(Math.random() * 5)
         this.q.quote = data.results[r].quote
         this.q.author = data.results[r].author
@@ -141,8 +141,8 @@ export default {
   mounted() {
    //require('dotenv').config()
    // zData.l('starting', this.$options.name,zData.someGlobals, 'Calling zData as a test.')
-   console.log('Start (index.vue): ', this.$options.name)
-   console.log(process)
+   this.$cs.l('M',this.$options.name)
+   console.log('Process=',process)
    //var env = process.env.NODE_ENV || 'development';
    zmlLog(null, 'HomeStart',{version: zmlConfig.projectID} )
   },

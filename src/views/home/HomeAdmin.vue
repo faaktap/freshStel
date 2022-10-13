@@ -131,6 +131,7 @@
         </v-expansion-panel>
      </v-expansion-panels>
       </div>
+<list-test-buttons />
 </div>
 </template>
 
@@ -150,11 +151,15 @@ import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 
 //Werner test
 import { zDate } from '@/api/zDate.js';
+import ListTestButtons from '@/components/ListTestButtons.vue';
 //import { loadCalendar } from '@/api/loadCalendar.js';
 
 export default {
     name:"AdminHome",
-    components:{EmailList, Calendar,PersonelMenemonic, ListTest,BaseTitleExpand, zmlDataTable},
+    components:{EmailList, Calendar,PersonelMenemonic, ListTest,BaseTitleExpand
+             , zmlDataTable
+             , ListTestButtons
+    },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         wieOmTeWys:'Teacher',
@@ -281,6 +286,7 @@ export default {
         },
     },
     mounted() {
+        this.$cs.l('M',this.$options.name)
         this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
         this.CallAsyncFunction()
 

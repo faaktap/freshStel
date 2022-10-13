@@ -24,7 +24,15 @@
       </v-list-item-group>
     </v-list>
     <v-divider></v-divider>
-
+    <v-btn text x-small title="Buttons" @click="buttons = !buttons"> .. </v-btn>
+    <v-card v-if="buttons">
+      <v-btn icon v-for="l in functionList"
+            :key="l.functionid"
+            :title="l.functionname"
+            @click="click(l)">
+         <v-icon :color="cardColor(l.functionaccess)" v-text="l.icon"></v-icon>
+      </v-btn>
+    </v-card>
    </v-card>
    </transition>
   </v-container>
@@ -39,7 +47,8 @@ export default {
   props: ["functiongroup"],
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
-      showMore:false
+      showMore:false,
+      buttons: false,
   }),
   computed:{
     functionList() {
