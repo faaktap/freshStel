@@ -13,7 +13,7 @@
 <v-container v-else fluid>
  <v-toolbar  dense  row >
    <span class="d-none d-sm-block"> Session {{ sessionid }}  </span>
-   <v-spacer/>Day:{{ detail[0] }} Period:{{ detail[1] }} Room:{{ place.concatsearch }}
+   <v-spacer/>Day:{{ detail[0] }} Period:{{ detail[1] }} Room:{{ place }}
     <v-spacer></v-spacer>
     <v-btn icon small class="ma-2" @click="showPhotoList = !showPhotoList" title="show Thumbnails"><v-icon>mdi-image</v-icon></v-btn>
     <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
@@ -21,7 +21,6 @@
     <v-back/>
  </v-toolbar>
 </v-container>
-
 
 <v-container class="mt-2" fluid>
  <v-row>
@@ -54,7 +53,7 @@
               <v-layout justify-space-between>
               <span class="ma-2" v-if="'grade' in s"> {{ s.grade }}{{ s.gclass }} </span>
               <v-spacer />
-              <span class="ma-2"> {{ s.status }} </span>
+              <v-btn small class="ma-2" @click="edit(s.attendanceid)"> {{ s.status }} </v-btn>
               </v-layout>
              </v-card-actions>
           </v-card>
@@ -85,7 +84,9 @@
           <td class="ma-2"> {{ s.studentid}} </td>
           <td class="ma-2"> {{ s.attendancedate.substr(0,16) }} </td>
           <td class="ma-2"> {{ s.period }} </td>
-          <td class="ma-2" :style="s.status == 'Present' ? 'color:green' : 'background-color:lavender'"> {{ s.status }} </td>
+          <td class="ma-2" :style="s.status == 'Present' ? 'color:green' : 'background-color:lavender'">
+             <v-btn @click="edit(s.attendanceid)" small class="ma-2"> {{ s.status }} </v-btn>
+          </td>
           <td  class="ma-2" v-show="showPhotoList==true"><z-show name="studentphoto" :id="s.studentid" height="44" /> </td>
         </tr>
         </tbody>
@@ -94,20 +95,42 @@
    </v-col>
   </v-row>
 </v-container>
+<v-dialog v-model="showEditDialog" :fullscreen="$vuetify.breakpoint.smAndDown" width="350" >
+  <v-card class="ma-2 pa-2">
+    <v-card-title class="text-center" align="center"> Change status for
+      <p class="text-h4 text--primary">{{ slRec.surname }}</p>
+    </v-card-title>
+    <v-card-text>
+      {{ slRec.surname }}, {{ slRec.firstname }}<br>
+      {{ slRec.attendancedate }}, {{ slRec.grade }}{{ slRec.gclass }}
+      <v-radio-group dense v-model="slRec.status" class="ma-0 pl-5 pa-3">
+            <v-radio v-for="c in checkList" :key="c"  :label="c"
+                    :value="c"
+                    class="ma-0 pa-0" />
+      </v-radio-group>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn small class="ma-2" @click="showEditDialog = false"> ignore </v-btn>
+      <v-spacer />
+      <v-btn small class="ma-2" color="primary" @click="save"> save </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
 </div>
 </template>
 
 <script>
-import { zmlFetch } from '@/api/zmlFetch.js';
+import { zmlFetch } from '@/api/zmlFetch.js'
 import { getters } from "@/api/store"
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import ZShow from '@/components/base/ZShow.vue'
 import VBack from '@/components/base/VBack.vue'
-//import { AttWork } from '@/components/student/AttWork.js'
+import { AttWork } from '@/components/student/AttWork.js'
+import { infoSnackbar } from '@/api/GlobalActions';
 
 export default {
     name:"StudentAttendanceSession",
-    props:["sessionid"],
+    props:["sessionid", "place"],
     components:{
        ZShow
       ,VBack
@@ -123,7 +146,10 @@ export default {
         refreshKey: 0,
         showAs: 'card',
         detail:'',
-        place:{concatsearch:'', name:'?'}
+        showEditDialog:false,
+        slRec:{},
+        checkList: ["Present","Absent", "Late", "Ignore"],
+        originalStatus: ''
     }),
     computed: {
       studentTally() {
@@ -141,6 +167,32 @@ export default {
       },
     },
     methods:{
+      save() {
+         if (this.originalStatus == this.slRec.status) {
+           console.log('no status change')
+         } else {
+           //Check if it's today's date
+            let currentDateWithFormat = new Date().toJSON().slice(0,10)   //.replace(/-/g,'/'); no need to change - to /
+            if (currentDateWithFormat != this.slRec.attendancedate.slice(0,10) && this.getZml.login.username != 'WER') {
+              infoSnackbar(`We can only change a status on the same day! ${this.slRec.attendancedate.slice(0,10)}`, "red")
+              this.slRec.status = this.originalStatus
+            } else {
+              AttWork.updateAttendance(this.slRec)
+            }
+         }
+         this.showEditDialog = false
+      },
+      edit(attendanceid) {
+        console.log('editing:', attendanceid)
+        this.slRec = this.studentList.find(e => e.attendanceid == attendanceid)
+        //get the attendance, and allow to change..
+        if ('attendanceid' in this.slRec) {
+          this.showEditDialog = true
+          this.originalStatus = this.slRec.status
+        } else {
+          console.log('some error on find slRec=', this.slRec,'SL=', this.studentList)
+        }
+      },
       commitChanges() {
          //if (AttWork.saveAttendance(this.studentListReal, this.studentList, this.attendanceDetail) == 'DONE')  this.confirmSound.play()
          this.$router.back()
@@ -169,12 +221,7 @@ export default {
       this.detail = this.sessionid.split(".");
       console.log(this.detail.length)
       if (this.detail.length == 3) {
-        console.log (this.detail[2].indexOf('-') )
-        console.log (this.detail[2].substr(0,2))
         this.detail[2] = this.detail[2].substr(0,this.detail[2].indexOf('-'))
-        if (this.getZml.place.length > 0) {
-          this.place = this.getZml.place.find(e => e.placeid == this.detail[2])
-        }
       }
     },
     watch: {

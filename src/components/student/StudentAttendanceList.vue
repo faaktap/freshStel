@@ -137,7 +137,7 @@ import VBack from '@/components/base/VBack.vue'
 import { AttWork } from '@/components/student/AttWork.js'
 
 export default {
-    name:"StudentBasicList",
+    name:"StudentAttendanceList",
     props:["studentList", "attendanceDetail","checkList"],
     components:{
        ZShow

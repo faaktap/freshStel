@@ -52,9 +52,9 @@
      </v-card>
    </v-dialog>
 
-   <v-dialog v-model="showList" color="green" :fullscreen="$vuetify.breakpoint.mobile" width="auto">
+   <v-dialog v-model="showList" color="green" :fullscreen="$vuetify.breakpoint.smAndDown" width="auto">
     <v-card>
-      <v-card-title> {{ attachments }} </v-card-title>
+      <v-card-title> Attachments </v-card-title>
       <v-card-text>
     <v-menu>
       <template v-slot:activator="{ on, attrs }">

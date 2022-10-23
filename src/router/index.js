@@ -365,6 +365,13 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
+    component: () => import(/* webpackChunkName: "atten" */ '@/views/Reports.vue'),
+    path: '/reports',
+    name: 'Reports',
+    props:true,
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
     component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentAttendanceSession.vue'),
     path: '/attsession/:sessionid?',
     name: 'AttendanceSession',

@@ -1,7 +1,7 @@
 <template>
+   <!-- prepend-icon="mdi-magnify" -->
    <v-text-field class="pt-2 xmt-2"
                  single-line hide-details
-                 prepend-icon="mdi-magnify"
                  append-icon="mdi-close"
                  placeholder="search"
                 :value="value"

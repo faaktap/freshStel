@@ -83,8 +83,8 @@ export default {
     jsonData: {type: Array, required: true },
     csvTitle: {type: String, default:'whatever'},
     footer: {type: String, default:''},
-    small: {type: Boolean, default: false},
-    unique: {type: String, default:''},
+    small: {type: Boolean, default: false}, //make the report smaller
+    unique: {type: String, default:''},  //saving the selected columns if we have an unique name
   },
   data: () => ({
     labels:[],

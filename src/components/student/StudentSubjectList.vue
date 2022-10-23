@@ -1,6 +1,21 @@
 <template>
 <v-container grid-list-lg v-if="subjectList.length" >
-      <v-layout row wrap>
+   <v-toolbar dense row>
+    <v-toolbar-title>
+      <span class="d-none d-sm-block"> Student Subject </span>
+    </v-toolbar-title>
+    <v-overlay v-if="loading" :value="loading">
+      <v-progress-circular indeterminate size="84">
+        Thinking ...
+      </v-progress-circular>
+    </v-overlay>
+    <v-spacer />
+     <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
+     <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+
+   </v-toolbar>
+
+     <v-layout row wrap v-if="showAs == 'card'">
         <v-flex v-for="s in subjectList" :key="s.studsubid" xs12 sm6 md6 lg6>
           <v-card>
             <!--v-img src="img/logo.png" height="260px "></v-img-->
@@ -36,6 +51,19 @@
           </v-card>
         </v-flex>
       </v-layout>
+      <v-simple-table v-if="showAs=='list'">
+      <thead>
+        <tr><th>teacher</th><th>subjectname</th><th>ckey</th><th>subjectid</th></tr>
+      </thead>
+      <tbody>
+      <tr v-for="s in subjectList" :key="s.studsubid" xs12 sm6 md6 lg6>
+        <td> {{ s.teachersurname}}, {{s.teacherinitial}}</td>
+        <td> {{s.subjectname}}</td>
+        <td> {{ s.ckey }}</td>
+        <td> {{ s.subjectid }}</td>
+      </tr>
+      </tbody>
+     </v-simple-table>
       <!-- {{ lookupPersid('smit','w') }} -->
  </v-container>
 </template>
@@ -55,7 +83,9 @@ export default {
     },
     data: () => ({
       subjectList:{},
-      persMenemonic: getters.getState({ object: "gZml" }).persMenemonic
+      persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
+      loading: false,
+      showAs: 'card'
     }),
     computed: {
     },
@@ -78,6 +108,7 @@ export default {
       loadStudentSubject() {
             this.subjectList.length = 0
             if (this.studentid) {
+               this.loading = true
                let ts = {}
                ts.task = 'PlainSql'
                ts.sql = "select *  from dkhs_studsub where studentid = " + this.studentid
@@ -87,6 +118,7 @@ export default {
       },
       assignData(response){
         this.subjectList = response
+        this.loading = false
       },
     },
     mounted: function() {

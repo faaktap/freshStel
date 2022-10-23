@@ -1,16 +1,16 @@
 <template>
 <v-parallax background height="1000px" src="img/school.jpg" xclass="filter-img" >
 <v-container fluid justify="center" align="center" class="xfilter-div mt-5 pa-5" >
- <v-layout wrap> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
-  <v-row>
-    <v-col cols="12">
-     <v-card class="justify-center" color="rgba(106, 196, 226, 0.7)">
+ <v-layout wrap class="ma-0"> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
+  <!-- <v-row>
+    <v-col cols="12"> -->
+     <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.7)">
      <v-card-title  class="blue--text">
-      <dkhs-logo   class="ma-2 pa-1" :width="range[1]" :height="range[0]"  />
-      <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-2 pa-1" :width="range[1]" :height="range[0]" />
-      <dkhs-i-logo v-show="!$vuetify.breakpoint.mobile" class="ma-2 pa-1" :width="range[1]" :height="range[0]" />
-      <v-card color="light-blue lighten-4 green--text"
-             :class="{'text-caption': $vuetify.breakpoint.smAndDown, 'text-h2': $vuetify.breakpoint.lgAndUp, 'text-h4': $vuetify.breakpoint.md}"
+      <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
+      <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />
+      <dkhs-i-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />
+      <v-card color="light-blue lighten-4 blue--text"
+             :class="{'text-caption': $vuetify.breakpoint.smAndDown, 'text-h4': $vuetify.breakpoint.lgAndUp, 'text-h5': $vuetify.breakpoint.md}"
              class="pa-2"
              >
           KUILIES VIRTUAL SCHOOL
@@ -19,17 +19,17 @@
      <v-card-text>
         <v-row>
         <v-col cols="12" md="6">
-          <v-card class="ma-2 pa-2">
-          <p><ul>Mission
-             <li>Allow students to access class material after hours.</li>
-             <li>Allow teachers to supply class material.</li>
-             <li>Allow admin and teacher to lookup student information.</li>
-             <li>Allow admin and teacher to create Attendance Records.</li>
-             <li>Allow parents to register and check emails.</li>
+          <v-card class="ma-0 pa-1">
+          <p><ul><strong>Mission</strong>
+             <li>Allow students to <v-btn x-small text to="folder">access</v-btn> class material after hours.</li>
+             <li>Allow teachers to <v-btn x-small text to="folder">supply</v-btn> class material.</li>
+             <li>Allow admin and teacher to lookup <v-btn x-small text to="student">student</v-btn> information.</li>
+             <li>Allow admin and teacher to <v-btn x-small text to="attload">create</v-btn> Attendance Records.</li>
+             <li>Allow parents to register and check <v-btn x-small text to="newsletters/d"> emails </v-btn>.</li>
              </ul>
           </p>
           </v-card>
-          <blockquote class="blockquote darken-3 purple--text ma-3" cite="Shakespeare">
+          <blockquote class="blockquote darken-3 purple--text ma-1" cite="Shakespeare">
             {{ q.quote }}
            – {{ q.author }}
           </blockquote>
@@ -68,9 +68,6 @@
           </v-btn>
       </v-card-actions>
     </v-card>
-
-  </v-col>
- </v-row>
 </v-layout>
 <base-title-expand class="ma-0 pt-1 px-0" heading="More">
  <v-btn class="ma-2" color="primary" to="/newsletters/2022"> Newsletters </v-btn>

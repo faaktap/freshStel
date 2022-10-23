@@ -14,6 +14,7 @@ export function doStuff(tr,task) {
         case "/selectgrade":
             return zmlReRoute(tr, task + "/Grade")
         case "/hover":
+        case "/reports":
         case "/translate":
         case "/login":
         case "/att":

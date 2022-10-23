@@ -1,29 +1,38 @@
 <template>
-<v-container fluid>
+<!--
+  We only do and show count here, the actual select are passed to basetablereport
+  -->
+<div>
+  <v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
+    You are not logged in, or you are not a teacher!
+</v-container>
+<v-container v-else fluid>
+   <v-toolbar dense row>
+    <v-toolbar-title>
+      <span class="d-none d-sm-block"> Quick Reporting  </span>
+    </v-toolbar-title>
+    <v-overlay v-if="loading" :value="loading">
+      <v-progress-circular indeterminate size="84">
+        Thinking ...
+      </v-progress-circular>
+    </v-overlay>
+
+   <v-spacer/>
+   <template v-slot:extension>
+      <v-tabs v-model="tab" align-with-title>
+        <v-tabs-slider color="yellow"></v-tabs-slider>
+        <v-tab v-for="rep in reports" :key="rep.id">
+          {{ rep.name }}
+        </v-tab>
+      </v-tabs>
+   </template>
+   <v-spacer/>
+   <v-back/>
+ </v-toolbar>
+
  <v-card>
-    <v-toolbar
-      color="cyan"
-      dark
-      flat
-    >  
-    <v-toolbar-title>Your Reports</v-toolbar-title>
-     <v-spacer></v-spacer>
-     <template v-slot:extension>
-        <v-tabs
-          v-model="tab"
-          align-with-title
-        >
-          <v-tabs-slider color="yellow"></v-tabs-slider>
-
-          <v-tab v-for="item in items" :key="item.id">
-            {{ item.menu }}
-          </v-tab>
-        </v-tabs>
-     </template>
-    </v-toolbar>
-
     <v-tabs-items v-model="tab">
-      <v-tab-item v-for="item in items" :key="item.id" :href="item.id">
+      <v-tab-item v-for="rep in reports" :key="rep.id" :href="rep.id">
         <v-card flat>
           <v-card-actions>
             <!-- <template v-if="tab == 0">
@@ -43,7 +52,7 @@
             </template> -->
           </v-card-actions>
           <v-card-title>
-            {{ item.answer }}
+            {{ rep.answer }}
           </v-card-title>
           <v-card-actions>
             <v-btn small @click="build"> showReport </v-btn>
@@ -52,168 +61,169 @@
       </v-tab-item>
     </v-tabs-items>
   </v-card>
-
-  <reports-table v-if="sqlSelect"
+ <base-table-report  v-if="sqlSelect"
      :reportHeader="reportHeader"
      :sqlSelect="sqlSelect"
-     />
+  />
 </v-container>
+</div>
 </template>
 
 <script>
-//import ZAutoPers from '@/components/fields/ZAutoPers.vue'
-//import ZAutoPlace from '@/components/fields/ZAutoPlace.vue'
-//import ZAutoItemType from '@/components/fields/ZAutoItemType.vue'
-import ReportsTable from '@/components/ReportsTable.vue'
+//import ReportsTable from '@/components/ReportsTable.vue'
+import BaseTableReport from    '@/components/base/baseTableReport'
+import VBack from '@/components/base/VBack.vue'
 import { zmlFetch } from '@/api/zmlFetch.js'
 import { getters } from "@/api/store";
+
 export default {
   name: 'Report',
   components:{
-    // ZAutoPers,
-    // ZAutoPlace,
-    // ZAutoItemType,
-    ReportsTable
+    BaseTableReport,
+    VBack
   },
   data: () => ({
+    loading: false,
     getZml: getters.getState({ object: "gZml" }),
     show: false,
     tab:null,
-    items: [
-          {id:0,menu:'Examination Print Lists' ,f:null
-               ,sql:"SELECT count(*) items from dkhs_student s WHERE s.grade like "
-               ,answer:'select a grade and subject', obj:{}},
-          {id:1,menu:'Itemlist for person',f:null
-               ,sql:"SELECT count(*) items from s_stock s WHERE s.originalownerid = "
-               ,answer:'select a person', obj:{}},
-          {id:2,menu:'Itemlist for a itemtype' ,f:null
-               ,sql:"SELECT count(*) items from s_stock s WHERE s.typeid = "
-               ,answer:'select an item', obj:{}},
-          {id:3,menu:'Eben List' ,f:null
-               ,sql:`SELECT count(*) FROM s_stock s`
-               ,answer:'Show All', obj:{}}
-
+    reports: [
+          { id:0
+          , name:'LearnAssist (Bursey) List'
+          , f:null
+          , sql:"SELECT count(*) items from dkhs_student s, dkhs_learnassist l WHERE l.studentid = s.studentid"
+          , sqlReport:`SELECT s.schoolno, s.surname, s.firstname, s.grade, s.gclass from dkhs_student s, dkhs_learnassist l WHERE l.studentid = s.studentid ORDER BY s.grade, s.gclass`
+          , answer:'', obj:{}, count:null
+          },
+          { id:1
+          , name:'Students using KuiliesOnline',f:null
+          , sql:"SELECT count(*) items FROM dkhs_learner l, dkhs_student s WHERE s.studentid = l.user_name"
+          , sqlReport:`SELECT l.user_name,l.user_fullname,  s.surname , substr(firstlogindate,1,10) first, substr(lastlogindate,1,10) last , logins, s.grade\
+ FROM dkhs_learner l, dkhs_student s \
+ WHERE s.studentid = l.user_name`
+            ,answer:'', obj:{}, count:null
+          },
+          { id:2
+          , name:'Your Logs' ,f:null
+          , sql:'SELECT count(*) items from dkhs_log'
+          , sqlReport:`SELECT * FROM dkhs_log where user = **username** order by log_id desc`
+          , answer:'', obj:{}, count:null
+          },
+          { id:3,name:'Test' ,f:null
+          , sql:`SELECT count(*) items FROM s_stock s`
+          , sqlReport:`SELECT s.stockid, s.typeid, s.name, s.userid, s.originalownerid FROM s_stock s`
+          , answer:'Show All', obj:{}, count:null
+          },
+          { id:4, name:'Absentees', f:null
+          , sql:'select count(*) items from a_attendance'
+          , sqlReport:`select * from (\
+ select staff\
+     , location\
+     , 0 period\
+     , period status\
+     , concat(s.surname,', ',s.firstname) student\
+     , concat(s.grade,s.gclass) grade\
+     , attendancedate \
+ from a_attendance a, dkhs_student s\
+ where substr(attendancedate ,1,8) = substr(now(),1,8)\
+ and period = 'Late'\
+ and s.studentid = a.capture \
+union all \
+ select menemonic staff\
+     , sp.name\
+     , period\
+     , status\
+     , concat(s.surname,', ',s.firstname) student\
+     , concat(s.grade,s.gclass) grade\
+     , attendancedate\
+ from dkhs_attendance a, dkhs_learner l, dkhs_personel p, s_place sp, dkhs_student s\
+ where substr(attendancedate ,1,8) = substr(now(),1,8)\
+  and status not in ('Present','Ignore')\
+  and a.userid = l.userid\
+  and p.menemonic = l.user_name\
+  and sp.placeid = a.placeid\
+  and s.studentid = a.studentid ) aa \
+order by attendancedate desc`
+          , answer:'Show Them', obj:{}, count:null
+          }
         ],
     reportValueToCount:[],
     sqlSelect:null,
     reportHeader:null
-
   }),
-  computed:{
-  },
+  computed:{},
   methods: {
     objectSelected(e) {
       console.log('objSelected = ',e)
-      this.items[this.tab].obj = e
+      this.reports[this.tab].obj = e
     },
     getCount() {
-      let ts = {}
-      ts.task = 'PlainSql'
-      // assign the sql with 'placeid =' to sql, and add the id
-      ts.sql = `${this.items[this.tab].sql} ${this.reportValueToCount[this.tab]}`
-      zmlFetch(ts, this.showCount)
+      if (this.reports[this.tab].count == null) {
+        this.loading = true
+        let ts = {}
+        ts.task = 'PlainSql'
+        // assign the sql with 'placeid =' to sql, and add the id
+        ts.sql = `${this.reports[this.tab].sql}` // ${this.reportValueToCount[this.tab]}`
+        zmlFetch(ts, this.updateCount)
+      } else {
+        this.showCount()
+      }
     },
-    showCount(response) {
-      console.log('showCount start',this.items[this.tab].obj)
+    updateCount(response) {
+      this.loading = false
+      this.reports[this.tab].count = response[0].items
+      this.showCount()
+    },
+    showCount() {
       switch (this.tab) {
         case 0:
-          this.items[this.tab].answer = `For location ${this.items[this.tab].obj.name} (${this.items[this.tab].obj.description}) we found ${response[0].items} item(s)`
+          this.reports[this.tab].answer = `For learnassist report we found ${this.reports[this.tab].count} item(s)`
           break
         case 1:
-          this.items[this.tab].answer = `For person ${this.items[this.tab].obj.fullname} we found ${response[0].items} item(s)`
+          this.reports[this.tab].answer = `Students using KuiliesOnline : ${this.reports[this.tab].count} `
           break
         case 2:
-          this.items[this.tab].answer = `For itemtype ${this.items[this.tab].obj.name} we found ${response[0].items} item(s)`
+          this.reports[this.tab].answer = `Show your logs : All : ${this.reports[this.tab].count}`
           break
         case 3:
-          this.items[this.tab].answer = `Eben List :  we found ${response[0].items} item(s)`
+          this.reports[this.tab].answer = `Eben List :  we found ${this.reports[this.tab].count} item(s)`
+          break
+        case 4:
+          this.reports[this.tab].answer = `Absentees :  we found ${this.reports[this.tab].count} item(s)`
           break
 
       }
-      console.log('tab = ', this.tab, 'count = ', response[0], this.items[this.tab].answer)
     },
     build(u) {
       console.log('build base on this.tab',u)
       switch (this.tab) {
         case 0:
-         this.sqlSelect =
-    `SELECT ifnull(c.name,t.catid) category\
-         , s.name\
-         , ifnull(p1.public_preferredname,'?') Responsible\
-         , ifnull(t.name,s.typeid) itemtype\
-         , s.serialno\
-         , s.quantity\
-     FROM s_stock s\
-     LEFT JOIN dkhs_personel p1 on p1.persid = s.originalownerid\
-     LEFT JOIN s_itemtype t on  t.typeid = s.typeid\
-     LEFT JOIN s_place p on s.placeid = p.placeid\
-     LEFT JOIN s_category c on t.catid = c.catid\
-     WHERE s.price >= 0\
-     and s.placeid = ${this.items[this.tab].obj.placeid}\
-     ORDER BY s.name`
-     //         , ifnull(p.name,s.placeid) place\
-         this.reportHeader = this.items[this.tab].menu + ':' +this.items[this.tab].obj.name  // this.items[this.tab].answer
+         this.sqlSelect = this.reports[this.tab].sqlReport
+         this.reportHeader = this.reports[this.tab].name
          break
         case 1:
-         this.sqlSelect =
-    `SELECT ifnull(c.name,t.catid) category\
-         , s.name\
-         , ifnull(p.name,s.placeid) place\
-         , ifnull(t.name,s.typeid) itemtype\
-         , s.serialno\
-         , s.quantity\
-     FROM s_stock s\
-     LEFT JOIN dkhs_personel p1 on p1.persid = s.originalownerid\
-     LEFT JOIN s_itemtype t on  t.typeid = s.typeid\
-     LEFT JOIN s_place p on s.placeid = p.placeid\
-     LEFT JOIN s_category c on t.catid = c.catid\
-     WHERE s.price >= 0\
-     and s.originalownerid = ${this.items[this.tab].obj.persid}\
-     ORDER BY s.name`
-         this.reportHeader = this.items[this.tab].menu + ' : ' +this.items[this.tab].obj.fullname //this.reportHeader = this.items[this.tab].answer
+         this.sqlSelect = this.reports[this.tab].sqlReport
+         this.reportHeader = this.reports[this.tab].name
          break
         case 2:
-         this.sqlSelect =
-    `SELECT ifnull(c.name,t.catid) category\
-         , ifnull(t.name,s.typeid) itemtype\
-         , ifnull(p.name,s.placeid) place\
-         , ifnull(p1.public_preferredname,'?') Responsible\
-         , s.serialno\
-         , s.quantity\
-     FROM s_stock s\
-     LEFT JOIN dkhs_personel p1 on p1.persid = s.originalownerid\
-     LEFT JOIN s_itemtype t on  t.typeid = s.typeid\
-     LEFT JOIN s_place p on s.placeid = p.placeid\
-     LEFT JOIN s_category c on t.catid = c.catid\
-     WHERE s.price >= 0\
-     and s.typeid = ${this.items[this.tab].obj.typeid}\
-     ORDER BY s.name`
-         this.reportHeader = this.items[this.tab].menu + ' : ' + this.items[this.tab].obj.name //this.reportHeader = this.items[this.tab].answer
+         this.sqlSelect = `select log_id, log_dte, ip, referer, user, function, replace(replace(details,'\\/','/'),'"','') details from dkhs_log \
+             where user = '${this.getZml.login.username}' ORDER BY log_id DESC`
+         this.reportHeader = this.reports[this.tab].name + ' : ' + this.getZml.login.username
          break
         case 3:
-         this.sqlSelect = `SELECT s.stockid, s.typeid, s.name, s.userid, s.originalownerid\
-        , s.devalid, s.placeid, s.name, s.datereceived\
-        , ifnull(p1.public_preferredname,'?') Responsible\
-        , ifnull(p.name,s.placeid) place\
-        , ifnull(d.rulename,s.devalid) rulename\
-        , ifnull(t.name,s.typeid) itemtype\
-        , ifnull(c.name,t.catid) category\
-        , s.serialno, s.quantity, s.price\
-    FROM s_stock s
-    LEFT JOIN dkhs_personel p1 on p1.persid = s.originalownerid
-    LEFT JOIN s_devaluation d on s.devalid = d.devalid
-    LEFT JOIN s_itemtype t on  t.typeid = s.typeid
-    LEFT JOIN s_place p on s.placeid = p.placeid
-    LEFT JOIN s_category c on t.catid = c.catid
-  ORDER BY s.stockid DESC`
+         this.sqlSelect = this.reports[this.tab].sqlReport
          this.reportHeader = 'Eben Pretorius se Lys'
+         break
+        case 4:
+         this.sqlSelect = this.reports[this.tab].sqlReport
+         this.reportHeader = 'Absentees/Late/Etc'
          break
       }
     },
 
   },
   mounted() {
-    this.items.forEach( e => e.f = this.getCount)
+    this.getCount()
     if (this.getZml.place.length == 0 || this.getZml.owner.length == 0) {
       //They have been nowhere else = but should not be a problem
     }
@@ -222,9 +232,10 @@ export default {
   watch:{
     tab() {
       console.log('new tab = ', this.tab)
+      this.getCount()
     },
     reportValueToCount() {
-      this.items[this.tab].f()
+      this.reports[this.tab].f()
     },
 
   }

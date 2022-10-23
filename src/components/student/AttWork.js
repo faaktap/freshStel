@@ -1,7 +1,7 @@
 // import { getters } from "@/api/store";
 import { errorSnackbar } from '@/api/GlobalActions';
 import { zFetch } from '@/api/zmlFetch';
-//import { zmlLog } from '@/api/zmlLog.js';
+import { zmlLog } from '@/api/zmlLog.js';
 
 export const AttWork = {
     hello: (p1) => {console.log('hello from (StudentAttendanceList.JS) ' , p1)}
@@ -24,6 +24,18 @@ export const AttWork = {
     console.log("ERROR : " +  response)
    }
    ,descriptionForThisSession: ""
+   ,updateAttendance: (slRec) => {
+       if (slRec.attendanceid == parseInt(slRec.attendanceid) ) {
+         let sql = `update dkhs_attendance set status = '${slRec.status}'\
+         , attendancedate = '${slRec.attendancedate}'
+         where attendanceid = ${slRec.attendanceid}`
+         AttWork.executeSql(sql)
+         zmlLog('', 'AttWork:Status', `${slRec.studentid},${slRec.attendanceid},${slRec.status}`)
+         return "DONE"
+       } else {
+         return "ID NOT NUMBER"
+       }
+   }
    ,saveAttendance: (studentList, presentList, attDet) => {
        console.log('start transaction',attDet.userid, attDet.placeid, attDet.sessionID)
       let sql = ''

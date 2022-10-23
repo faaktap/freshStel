@@ -1,5 +1,5 @@
 const PROJECT_NAME = "dkLearn"
-const PROJECT_VERSION = "52.0h"
+const PROJECT_VERSION = "52.0k"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -87,10 +87,6 @@ export const getContrast = function (hexcolor){
 	return (yiq >= 128) ? 'black' : 'white';
 
 };
-
-//add it to vue file like this.
-//import { zmlConfig } from '@/api/constants.js'
-
 //------------------------------------------
 //Anyplace you want to use my zmlConfig.cl.
 //------------------------------------------
