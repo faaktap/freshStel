@@ -1,5 +1,13 @@
 <template>
     <v-container>
+  <base-tool toolbarName="Email Lookup"
+            :background="false"
+            :back="true"
+  >
+      <!-- <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn> -->
+      <!-- <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn> -->
+  </base-tool>
+
      <base-title-expand :heading="subHeading" openOrClose="open" color="gray lighten-2">
        <subscriber-edit :subid="localSubID" @subscriberChange="subscriberChange" />
      </base-title-expand>
@@ -14,13 +22,14 @@
 </template>
 
 <script>
+import baseTool from '@/components/base/baseTool.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import SubscriberEdit from "@/components/email/SubscriberEdit"
 import EmailDelivery from "@/components/email/EmailDelivery"
 
 export default {
     name:'EmailsSent',
-    components:{BaseTitleExpand, SubscriberEdit,EmailDelivery},
+    components:{baseTool, BaseTitleExpand, SubscriberEdit,EmailDelivery},
     props:['subid'],
     data: () => ({
       subHeading:'Email Subscribers',

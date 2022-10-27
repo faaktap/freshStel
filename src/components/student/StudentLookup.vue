@@ -118,6 +118,7 @@ export default {
         }
         this.list.sort((a,b) => a.studentid - b.studentid)
         this.loadingItems = false;
+        this.$emit("liveEntered", this.list)
     },
     listLoadError(response) {
         this.loadingItems = false;

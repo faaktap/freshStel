@@ -28,8 +28,9 @@
    Attendance for {{ attendanceDetail.staffSurname }} on Day/Period {{attendanceDetail.day}}-{{ attendanceDetail.period}} at Class {{ attendanceDetail.location}}
     from list {{ attendanceDetail.other.listname}}
     <v-spacer></v-spacer>
-      <v-btn small @click="reset('Ignore')" class="ma-2" title="Mark all as ignore"> I </v-btn>
-      <v-btn small @click="reset('Present')" class="ma-2" title="Mark all as Present"> P </v-btn>
+      <v-btn small icon @click="reset('Ignore')" class="ma-2" title="Mark all as ignore"> I </v-btn>
+      <v-btn small icon @click="reset('Present')" class="ma-2" title="Mark all as Present"> P </v-btn>
+      <v-btn small icon @click="reset('Absent')" class="ma-2" title="Mark all as Present"> A </v-btn>
       <v-btn icon small @click="showAdd = true" class="ma-2" title="Add a Student">
         <v-icon>mdi-database-plus </v-icon>
       </v-btn>
@@ -42,7 +43,7 @@
 
 <v-container class="mt-2" fluid>
  <v-row>
-  <v-col cols="12" v-if="studentList && studentList.length">
+  <v-col cols="12" v-if="studentListReal && studentListReal.length">
    <v-card color="gray lighten-3" class="ma-2" id="x12345">
     <v-card-title v-if="'staffSurname' in attendanceDetail" class="heading text-center">
       <!-- <slot> </slot> -->
@@ -56,8 +57,7 @@
       <v-row>
 
         <v-col cols="12" md="4" lg="3"
-               v-for="(s,index) in studentListReal"
-              :key="s.studentid">
+               v-for="(s,index) in studentListReal" :key="s.studentid">
            <v-card :color="studentCardColor(index)"
                   class="ma-1 pl-2"
                   @click="quickShow = s.studentid">
@@ -148,7 +148,6 @@ export default {
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         gradeClass:{},
-        singleStudent:{data:''},
         showPhotoList:null,
         hover:null,
         hoverStart:null,
@@ -183,8 +182,14 @@ export default {
         return tally
       },
       studentListReal() {
+        this.refreshKey
         if (this.addList.length) {
-          return this.studentList.concat(this.addList)
+          //return this.studentList.concat(this.addList) //did not work? might be refreshkey
+          if (this.studentList.length) {
+             return this.addList.concat(this.studentList)
+          } else {
+             return this.addList
+          }
         } else {
           return this.studentList
         }
@@ -192,6 +197,24 @@ export default {
 
     },
     methods:{
+      xxstudentListReal() {
+        this.refreshKey
+        console.log('cccccccccccccccccccccc1')
+        if (this.addList.length) {
+          //return this.studentList.concat(this.addList)
+          console.log('cccccccccccccccccccccc2')
+          if (this.studentList.length) {
+            console.log('cccccccccccccccccccccc3')
+             return this.addList.concat(this.studentList)
+          } else {
+            console.log('cccccccccccccccccccccc4')
+             return this.addList
+          }
+        } else {
+          console.log('cccccccccccccccccccccc5')
+          return this.studentList
+        }
+      },
       reset(text) {
         this.ss.fill(text)
         console.log('fill=', this.ss)
@@ -211,9 +234,11 @@ export default {
         }
       },
       handCapture(studentReceived) {
+        console.log('handcap (received):', this.stud)
         this.stud = studentReceived
       },
       addStudent() {
+        console.log('Adding in list:', this.stud.data)
         this.addList.push(this.stud.data)
         this.ss.push('Present')
         this.showAdd = false

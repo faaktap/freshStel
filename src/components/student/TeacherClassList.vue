@@ -135,8 +135,10 @@ export default {
   methods:{
     initialize() {
       console.log('initialize')
-      this.gradeList = ls.load('zmlTCL-GradeList')
-      this.search = ls.load('zmlTCL-Search')
+      if (ls.test('zmlTCL-GradeList') && ls.test('zmlTCL-Search')) {
+        this.gradeList = ls.load('zmlTCL-GradeList')
+        this.search = ls.load('zmlTCL-Search')
+      }
       let ts = {}
       ts.task = 'PlainSql'
       ts.sql = "select * from hw_classlist"

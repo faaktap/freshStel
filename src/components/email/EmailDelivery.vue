@@ -1,5 +1,12 @@
 <template>
 <v-container>
+  <base-tool toolbarName="Email Delivery"
+            :background="false"
+            :back="true"
+  >
+      <!-- <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn> -->
+      <!-- <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn> -->
+  </base-tool>
 
  <v-data-table
     :headers="emailListHeader"
@@ -92,13 +99,14 @@
 
 <script>
 import VFormBase from "@/components/vfbase/VFormBase.vue"
+import baseTool from '@/components/base/baseTool.vue'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { zData } from "@/api/zGetBackgroundData.js"
 import { emailModel } from "./emlModel.js"
 import { getters } from "@/api/store";
 export default {
     name:'EmailsSent',
-    components:{VFormBase},
+    components:{VFormBase, baseTool},
     props:['subid'],
     data: () => ({
       getZml : getters.getState({ object: "gZml" }),

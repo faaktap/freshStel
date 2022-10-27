@@ -1,5 +1,13 @@
 <template>
  <v-container>
+    <base-tool toolbarName="Email Delivery Report"
+            :background="false"
+            :back="true"
+  >
+      <!-- <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn> -->
+      <!-- <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn> -->
+  </base-tool>
+
     <v-progress-linear
         :active="progress"
         :indeterminate="progress"
@@ -31,6 +39,7 @@
 <script>
 import { getters } from  "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch'
+import baseTool from '@/components/base/baseTool.vue'
 import BaseTableEdit from    '@/components/base/baseTableEdit.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
@@ -39,6 +48,7 @@ export default {
     components: {
         BaseTableEdit
        ,FrontJsonToCsv
+       ,baseTool
     },
     props: ['deliverid'],
     data () {
@@ -55,7 +65,7 @@ export default {
                , processor: this.loadEmailStatus
                , sql:''
         },
-        emailDeliveryList:{},
+        emailDeliveryList:[],
         deliveryid:0,
         showResult:false
       }

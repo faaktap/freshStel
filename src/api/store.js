@@ -47,6 +47,7 @@ const state = Vue.observable({
            meritLevel:[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
            persMenemonic:[],   //SELECT user_name, userid FROM `dkhs_learner` WHERE user_type = 'teacher'
            place: [],  //p.placeid, p.name, w.name workarea, p.description,p.ownerid concat(p.name, ' - ',w.name) concatsearch"
+           thisday: null
           }
     });
 

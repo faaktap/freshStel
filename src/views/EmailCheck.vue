@@ -1,5 +1,13 @@
 <template>
   <div>
+    <base-tool toolbarName="Email Delivery Check"
+            :background="false"
+            :back="true"
+  >
+      <!-- <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn> -->
+      <!-- <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn> -->
+  </base-tool>
+
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
          <base-table-edit
                      :tList="emailStatusList"
@@ -8,9 +16,9 @@
                      @edit="tableDblClick"
                      @select="tableSelect"
          />
-      <v-btn @click="loadAllData"
+      <!-- <v-btn @click="loadAllData"
              title="Click here to load delivery summary."
-      > Refresh Email List </v-btn>
+      > Refresh Email List </v-btn> -->
   </div>
 </template>
 
@@ -18,10 +26,12 @@
 import { getters } from  "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch'
 import BaseTableEdit from    '@/components/base/baseTableEdit'
+import baseTool from '@/components/base/baseTool.vue'
 const  WAIT = 0, READY = 1,  BUSY = 2,  DONE = 3
 export default {
     components: {
         BaseTableEdit
+      , baseTool
     },
     props: [],
     data () {
@@ -44,11 +54,14 @@ export default {
                      where m.deliveryid = s.deliveryid \
                      group by s.deliveryid desc, s.status`
                 },
-        emailStatusList:{},
+        emailStatusList:[],
        }
 
    },
    computed: {
+   },
+   mounted() {
+    this.loadAllData()
    },
    methods: {
      tableDblClick(evt,item) {

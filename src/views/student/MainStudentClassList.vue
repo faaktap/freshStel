@@ -92,7 +92,9 @@ export default {
     mounted() {
       //this.loadData();
       //Check what was last toggleDisplay, and set it again
-      this.toggleDisplay = ls.load('teacherToggleDisplay')
+      if (ls.test('teacherToggleDisplay')) {
+         this.toggleDisplay = ls.load('teacherToggleDisplay')
+      }
       console.log('this.toggleDispla' , this.toggleDisplay)
 
     },

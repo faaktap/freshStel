@@ -99,7 +99,7 @@ function finishedLoadingBasic (response) {
 
     if (response.place.length > 5) {
       getters.getState({ object: "gZml" }).place = response.place;
-      ls.save('zmlPlace', response.place)
+      ls.save('lookupPlace', response.place)
     }
 
     // will be empty when not a student

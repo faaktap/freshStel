@@ -65,6 +65,7 @@ export default {
       },
       showBack() {
         if (this.back == undefined) return true
+        if (this.back == true) return true
         return false
       },
       showImg() {

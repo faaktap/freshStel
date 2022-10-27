@@ -23,9 +23,15 @@ export const ls = {
        return
     },
     test: (name) => {
-      if (localStorage.getItem(name)) {
-        return true
-      }
+      if (name.length > 3 && name.substr(0,3).toUpperCase() == zml.toUpperCase()) {
+         if (localStorage.getItem(name)) {
+            return true
+         }
+      } else {
+        if (localStorage.getItem('zml'+name)) {
+          return true
+        }
+    }
       return false
     },
     load: (name) => {

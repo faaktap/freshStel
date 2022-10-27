@@ -9,8 +9,6 @@
                breakup2="20"
                color="pink darken-3"
                />
-  <hr />
-
   <v-toolbar v-if="!$route.params.studentid" color="primary" class="my-toolbar">
     <v-toolbar-title>
       <template v-if="!searchMore">
@@ -23,21 +21,34 @@
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-switch v-model="searchMore"
+                v-if="!$vuetify.breakpoint.smAndDown"
+                class="mt-4"
                 color="secondary"
                 :label="`Search more than Surname: ${searchMore}`"
       />
+      <v-back />
     </v-toolbar-items>
   </v-toolbar>
-
+  <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quick(l.data.studentid)">
+    {{ l.data.firstname }} {{ l.data.surname }} {{ l.data.grade }}
+  </v-chip>
   <v-container fluid>
+
        <student-lookup
           v-if="!$route.params.studentid"
           v-model="blahblah"
           @dataEntered="studentFound"
+          @liveEntered="currentView"
           :searchMore="searchMore" />
-       {{ blahblah }}
+
+      <base-tool
+             v-if="studentList"
+            :toolbarName="'Admin Number : ' + studentList.data.studentid"
+            :background="false"
+            :back="true"
+      >
+      </base-tool>
       <div id="printMe">
-       <div v-if="studentList"> Admin Number : {{ studentList.data.studentid }} </div>
 
        <!-- <base-title-expand v-if="studentList" heading="Basic Student Info"> -->
           <student-name-card v-if="studentList" :studentList="studentList" color="blue lighten-2" />
@@ -109,6 +120,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import HeroSection from "@/views/sections/HeroSection"
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import baseTool from '@/components/base/baseTool.vue'
 import StudentLookup from '@/components/student/StudentLookup'
 import StudentNameCard from '@/components/student/StudentNameCard'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
@@ -117,6 +129,7 @@ import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentAttendance from '@/components/student/StudentAttendance'
 import StudentLearnAssist from '@/components/student/StudentLearnAssist'
 import StudentMerit from '@/components/student/StudentMerit'
+import VBack from '@/components/base/VBack.vue'
 
 import { printHeader, printPage} from "@/api/zmlPrint.js"
 
@@ -133,6 +146,8 @@ components: {HeroSection
            , StudentLearnAssist
            , StudentMerit
            , BaseTitleExpand
+           , baseTool
+           , VBack
            },
 data: () => ({
   printHeader: printHeader,
@@ -141,21 +156,15 @@ data: () => ({
   searchMore: true,
   blahblah: '',
   getZml: getters.getState({ object:"gZml" }),
-teachers:[
-        {firstName:'Jon', lastName:'Doe', specialty:'PE', ms:' University of Georgia',
-         msc:'University of Georgia', src:'https://source.unsplash.com/kmuch3JGPUM'},
-        {firstName:'Maria', lastName:'Doe', specialty:'Philology', ms:'University of Atlanta',
-         msc:'University of Atlanta ', src:'https://randomuser.me/api/portraits/women/3.jpg'},
-        {firstName:'Jon', lastName:'Jon', specialty:'Mathematics', ms:'University of Michigan',
-         msc:'University of Michigan', src:'https://source.unsplash.com/Jy4ELSGPHTc'},
-        {firstName:'Peter', lastName:'Xavier', specialty:'Mathematics',
-         ms:'University of Miami', msc:'University of Miami',
-         src:'https://randomuser.me/api/portraits/men/71.jpg'},
-        {firstName:'Peter', lastName:'Miros', specialty:'Mathematics', ms:'University of Miami',
-         msc:'Georgetown University', src:'https://randomuser.me/api/portraits/men/20.jpg'},
-      ]
+  live: [],
+  teachers: [{firstName:'Jon', lastName:'Doe', specialty:'PE', ms:' University of Georgia',
+              msc:'University of Georgia', src:'https://source.unsplash.com/kmuch3JGPUM'},
+            ]
 }),
 methods: {
+  currentView(list) {
+    this.live = list
+  },
    printIt() {
       printPage('printMe', true)
       this.$emit('printed')
@@ -163,6 +172,9 @@ methods: {
   IDs(value) {
     if (value.data == 'undefined') return;
     this.studentIDs = value;
+  },
+  quick(id) {
+    this.$router.push({ name: 'StudentInfo', params: {studentid: id, editmode: false}})
   },
   studentFound(value) {
     if (value.data == 'undefined') return;

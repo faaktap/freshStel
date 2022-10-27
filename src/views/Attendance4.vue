@@ -1,7 +1,7 @@
 <template>
 <!-- this.$router.push({ name: 'AttendanceList' -->
  <div>
-   <base-title-expand color="white" heading="ATTENDANCE CLASS LIST SELECT">
+  <base-title-expand color="white" heading="ATTENDANCE CLASS LIST SELECT">
    <p>
     Attendance lists are beinge read from classlists. So whenever you add  a classlist, that list will be selectable here.
     Once you have selected a day, period, classroom, person and list, you will be taken to the list where you can mark students as absent, etc.
@@ -12,30 +12,36 @@
     </p>
   </base-title-expand>
 
-<base-tool :toolList="[]"
+  <base-tool :toolList="[]"
            :toolbarName="`Attendance 4 ${login.fullname} / ${ login.username}`"
            :loading="loading"
-            >
+           :background="false"
+           :back="true"
+  >
+    <div v-if="period && tListObj && 'grade' in tListObj && $vuetify.breakpoint.smAndUp" class="text-caption text-center">
+     {{ login.userid }}, {{ location }}-{{ placeid }}, {{ period }}, {{ day }}, {{ tListObj.grade }}, {{ tListObj.subjectname }}, sID={{ sessionID }}
+    </div>
+   <v-spacer />
             <v-btn  @click="viewAttendance"
                    title="View previous Attendance Records"
             > <v-icon>mdi-view-agenda-outline</v-icon>
               View Records
             </v-btn>
+
+
             <v-btn icon @click="playSound"> <v-icon>mdi-cellphone-sound</v-icon> </v-btn>
 </base-tool>
 <!-- {{place}} -->
 
   <v-row>
    <v-col cols="12" md="12">
-    <div v-if="period && tListObj && 'grade' in tListObj" class="text-caption text-center">
-     {{ login.userid }}, {{ location }}-{{ placeid }}, {{ period }}, {{ day }}, {{ tListObj.grade }}, {{ tListObj.subjectname }}, sID={{ sessionID }}
-    </div>
     <v-card class="ma-2" elevation="2" loading="!loading">
      <v-card-title> Attendance Information Needed </v-card-title>
      <v-card-text>
-      <v-layout wrap justify-space-between>
+      <v-layout wrap justify-space-around>
+
        <v-combobox
-        class="ma-2"
+        class="ma-1"
         v-model="responsiblePerson"
         :items="staffList"
         item-value="persid"
@@ -44,13 +50,11 @@
         prepend-inner-icon="mdi-human"
         outlined
         clearable
-
+        dense
        />
-       <!-- append-icon="mdi-close"
-        @click:append="mdi-close"
-        @click:clear-->
+
        <v-combobox
-        class="ma-2"
+        class="ma-1"
         v-model="location"
         :items="locationList"
         label="Location"
@@ -60,17 +64,42 @@
         clearable
         @click.once="userSelectedLocation"
         @blur="userSelectedLocation"
+        dense
        >
         <template slot="selection" slot-scope="{item}">  <!-- DISPLAY , item-text -->
          {{ item }}
-          <!-- {{ item.grade }} {{ item.subjectname}} {{ item.ckey }} {{ item.mingc }} {{ item.maxgc }} [ {{ item.students}} ] -->
        </template>
        </v-combobox>
 
-       <v-btn class="ma-2 mt-4"   @click="showRooster = true"> <v-icon> mdi-timetable</v-icon></v-btn>
+       <!-- <v-btn class="ma-1 mt-4"   @click="showRooster = true"> <v-icon> mdi-timetable</v-icon></v-btn> -->
+
 
        <v-combobox
-        class="ma-2"
+        class="ma-1"
+        v-model="period"
+        label="Period"
+        :items="periodList"
+        outlined
+        clearable
+        append-icon="mdi-magnify"
+        @click:append="showRooster = true"
+        @click.once="userSelectedSomething"
+        dense
+       />
+       <v-text-field
+        class="ma-1"
+        v-model="day"
+        outlined
+        label="Day" max-width="60" min-width="60"
+        append-icon="mdi-magnify"
+        clearable
+        @click:append="showRooster = true"
+        dense
+       />
+
+
+       <v-combobox
+        class="ma-1"
         v-if="tList && tList.length"
         v-model="tListObj"
         :items="tList"
@@ -78,18 +107,17 @@
         prepend-inner-icon="mdi-pen-plus"
         outlined
         @click.once="userSelectedSomething"
+        dense
        >
-       <template slot="append-outer">
+        <!-- <template slot="append-outer">
         TL
-       </template>
-       <template slot="item" slot-scope="{item}"> <!-- ITEM DISPLAY (DROP DOWN ) -->
-          <!-- {{ item.grade }}, {{ item.subjectname}} - {{ item.ckey }} {{ item.mingc }} {{ item.maxgc }} -->
+        </template> -->
+        <template slot="item" slot-scope="{item}"> <!-- ITEM DISPLAY (DROP DOWN ) -->
           {{ item.listname }}
-       </template>
-       <template slot="selection" slot-scope="{item}">  <!-- DISPLAY , item-text -->
-       {{ item.listname }}
-          <!-- {{ item.grade }} {{ item.subjectname}} {{ item.ckey }} {{ item.mingc }} {{ item.maxgc }} [ {{ item.students}} ] -->
-       </template>
+        </template>
+        <template slot="selection" slot-scope="{item}">  <!-- DISPLAY , item-text -->
+         {{ item.listname }}
+        </template>
        </v-combobox>
 
 
@@ -103,20 +131,6 @@
         <v-icon> mdi-info </v-icon>
         To add a new list, go to "Class Lists" There are no teacherLists avaliable for {{ surname }} <v-btn small title="See all lists" @click="showAllLists"> More </v-btn>
        </v-card>
-
-       <v-combobox
-        class="ma-2"
-        v-model="period"
-        :items="periodList"
-        label="Period"
-        outlined
-        clearable
-        disabled
-        append-icon="mdi-magnify"
-        @click:append="showRooster = true"
-        @click.once="userSelectedSomething"
-       />
-       <v-text-field v-model="day" outlined class="ma-2" label="Day" disabled/>
 
       </v-layout>
 
@@ -149,7 +163,7 @@ import { ls } from "@/api/localStorage.js"
 import baseTool from '@/components/base/baseTool.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import rooster from "@/components/learn/rooster.vue"
-import { infoSnackbar } from '../api/GlobalActions';
+import { errorSnackbar, infoSnackbar } from '../api/GlobalActions';
 export default {
     name:'Attendance4',
     transition: 'page-slide',
@@ -195,6 +209,7 @@ export default {
     },
     methods: {
       initialize() {
+        this.loading = false
         if (this.persMenemonic.length < 10) {
           infoSnackbar('we are not done yet???')
         }
@@ -235,11 +250,14 @@ export default {
          }
          this.checkIfAllSelected()
       },
-      userSelectedLocation(e1,e2){
-        this.curPlace = this.place.find(e => e.name.trim().toUpperCase() == this.location.trim().toUpperCase())
-        console.log('location select fired:', e1,e2,this.curPlace)
+      userSelectedLocation(){
+        this.curPlace = this.place.find(e => {
+          if (e.name.trim().toUpperCase() == this.location.trim().toUpperCase()) return true
+        })
+        console.log('userSelectedLocation() fired:',this.curPlace)
         if (!this.curPlace) {
           console.log('we did not get a lookup value!!!!', this.curPlace)
+          errorSnackbar('That location is not familiar to me?')
           this.location = ''
           this.placeid = ''
           return
@@ -255,6 +273,12 @@ export default {
       checkIfAllSelected() {
         if (this.day && this.period && this.placeid) {
           this.sessionID = `${this.day}.${this.period}.${this.placeid}-${Math.floor(Math.random()*1615).toString(5)}`
+          console.log('Saving our variables for later use!')
+          ls.save('attPeriod',this.period)
+          ls.save('attPlaceID',this.placeid)
+          ls.save('attDay',this.day)
+        } else {
+          console.log(`All not selected yet ..  Day${this.day}.Per${this.period}.Place${this.placeid}-`)
         }
       },
       showAllLists() {
@@ -358,17 +382,27 @@ export default {
     },
     mounted() {
       zmlLog(null, "Att4Tanya " + this.responsiblePerson, 'Started')
+      //Load lookups for place if not loaded yet....
+      if (this.place.length < 4 && ls.test('lookupPlace')) this.place = ls.load('lookupPlace')
+
+      console.log('CHECK SAVE BEFORE : ', ls.test('attPeriod'), ls.test('attDay'), ls.test('attPlaceID'))
+      if (!this.period && ls.test('attPeriod'))        this.period = ls.load('attPeriod')
+      if (!this.day && ls.test('attDay')) this.day = ls.load('attDay')
+      if (!this.placeid && ls.test('attPlaceID')) this.placeid = ls.load('attPlaceID')
+      console.log('CHECK SAVE AFTER : ', this.period, this.day, this.placeid)
+      this.loading = true
       zData.initialData('Load Important Data', this.initialize)
-      if (this.place.length < 4) {
-        this.place = ls.load('zmlPlace')
-      }
-      this.loading = false
     },
     watch:{
       responsiblePerson() {
         this.userSelectedStaff()
       },
       period() {
+        if (this.period && this.day && this.placeid) {
+            this.checkIfAllSelected()
+        }
+      },
+      day() {
         if (this.period && this.day && this.placeid) {
             this.checkIfAllSelected()
         }

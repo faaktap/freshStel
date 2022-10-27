@@ -1,17 +1,16 @@
 <template>
 <!--https://kuiliesonline.co.za/api/candid/candidates.php?task=photo&studentno=20003-->
-   <v-card v-if="studentList" class="mx-auto" :color="color" elevation="2" xtile>
+   <v-card v-if="studentList" :color="color" elevation="2">
      <div class="d-flex flex-no-wrap justify-space-between ma-2">
       <div>
-        <v-card-title class="headline">
-          <strong>{{ studentList.data.surname }}</strong>
+        <v-card-title class="font-weight-light wordbreak text-justify ma-3"> <!--xxclass="headline"-->
+          {{ studentList.data.surname }} {{ studentList.data.firstname }}
         </v-card-title>
-        <v-card-subtitle class="headline">
-            <b>{{ studentList.data.firstname }}</b>
-            <v-simple-table class="body-1 pt-2 ma-2 pa-2">
-            <tr><td> admin &nbsp;</td><td> {{ studentList.data.studentid }} </td></tr>
-            <tr><td> id  &nbsp;</td> <td>{{ studentList.data.idno }} </td></tr>
-            <tr><td> name  &nbsp;</td> <td>{{ studentList.data.firstname }} {{ studentList.data.surname }}</td></tr>
+        <v-card-subtitle >
+            <v-simple-table class="body-1 ma-2 pa-2">
+            <tr><td v-if="!$vuetify.breakpoint.smAndDown"> admin &nbsp;</td><td> {{ studentList.data.studentid }} </td></tr>
+            <tr><td v-if="!$vuetify.breakpoint.smAndDown"> id  &nbsp;</td> <td>{{ studentList.data.idno }} </td></tr>
+            <tr><td v-if="!$vuetify.breakpoint.smAndDown"> name  &nbsp;</td> <td>{{ studentList.data.firstname }} {{ studentList.data.surname }}</td></tr>
             </v-simple-table>
         </v-card-subtitle>
         </div>
@@ -23,12 +22,10 @@
          contain>
         </v-img>
       </v-avatar>
-      <br>
+      <v-card class="ma-2 pa-2" elevation="2">
       {{ studentList.data.grade }}
       {{ studentList.data.gclass }}
-      <!-- <br> -->
-      <v-btn small class="ma-2" color="primary" @click="goToStudent"> More </v-btn>
-
+      </v-card>
       </div>
      </div>
      <v-card-text>
@@ -46,10 +43,9 @@ export default {
     name:"StudentNameCard",
     props: ['studentList','color'],
     methods: {
-      goToStudent() {
-        //this.$router.push({ name: 'StudentInfo', params: {studentid: this.studentList.studentid, editmode: false} })
-        this.$router.push("/student/"+this.studentList.data.studentid)
-      }
+      // goToStudent() {
+      //   this.$router.push("/student/"+this.studentList.data.studentid)
+      // }
     },
     mounted() {}
 }
