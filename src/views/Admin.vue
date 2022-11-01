@@ -4,7 +4,7 @@
       Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
       <v-spacer />
       <base-tool-button
-               v-if="meritCount > 0"
+               xv-if="meritCount > 0"
                class="mt-1 mr-2 mb-2 ml-2"
                label="Merit Approval"
                color="secondary"
@@ -15,32 +15,6 @@
                badgeTitle="`You have ${meritCount} merits to confirm`"
                @click="loadYourMeritWork"
       >Merit Approval</base-tool-button>
-      <base-tool-button
-               class="mt-1 mr-2 mb-2 ml-2"
-               label="Google Search"
-               color="secondary"
-               icon="mdi-google"
-               @click="loadGoogle"
-      >Google</base-tool-button>
-      <base-tool-button
-               class="mt-1 mr-2 mb-2 ml-2"
-               label="EMail"
-               color="secondary"
-               icon="mdi-email"
-               title="DEKHS Email"
-               @click="loadEmail"
-      >EMail</base-tool-button>
-      <base-tool-button
-               class="mt-1 mr-2 mb-2 ml-2"
-               label="Merit Point Allocation"
-               color="secondary"
-               icon="mdi-refresh"
-               :loading="loading"
-               :disabled="loading"
-               title="Refresh this page"
-               @click="loadFunctions"
-      >Refresh</base-tool-button>
-
   </v-toolbar>
 
 
@@ -127,13 +101,6 @@ export default {
     computed:{
     },
     methods:{
-      loadEmail() {
-        window.open('https://outlook.office.com/mail/','_' + 'em_external')
-      },
-      loadGoogle() {
-        window.open('https://www.google.co.za/','_' + 'go_external')
-      },
-
        click(what) {
           if (doStuff(this.$router,what.payload) == 0) {
               if (what.payload.substr(0,4).toLowerCase() == 'http') {
@@ -159,14 +126,6 @@ export default {
         },
         loadYourMeritWork() {
           this.$router.push({ name: 'PersMeritList'})
-        },
-        loadFunctions() {
-          this.loading = true
-          let ts = {};
-          ts.task = 'PlainSql';
-          ts.sql = 'select * from dkhs_lfunction order by sortorder'
-          ts.api = zmlConfig.apiDKHS
-          zmlFetch(ts, this.showData, this.loadError)
         },
         loadError(response) {
           this.$cs.l(this.$options.name,'ErrorA', response)

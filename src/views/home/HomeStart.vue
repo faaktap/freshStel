@@ -1,10 +1,8 @@
 <template>
 <v-parallax background height="1000px" src="img/school.jpg" xclass="filter-img" >
-<v-container fluid justify="center" align="center" class="xfilter-div mt-5 pa-5" >
+<v-container fluid justify="center" align="center" class="filter-div mt-5 pa-5" >
  <v-layout wrap class="ma-0"> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
-  <!-- <v-row>
-    <v-col cols="12"> -->
-     <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.7)">
+   <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.7)">
      <v-card-title  class="blue--text">
       <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
       <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />
@@ -31,7 +29,7 @@
           </v-card>
           <blockquote class="blockquote darken-3 purple--text ma-1" cite="Shakespeare">
             {{ q.quote }}
-           – {{ q.author }}
+           <span v-if="q.author">– {{ q.author }}</span>
           </blockquote>
 
           </v-col>
@@ -67,7 +65,7 @@
             Continue
           </v-btn>
       </v-card-actions>
-    </v-card>
+   </v-card>
 </v-layout>
 <base-title-expand class="ma-0 pt-1 px-0" heading="More">
  <v-btn class="ma-2" color="primary" to="/newsletters/2022"> Newsletters </v-btn>

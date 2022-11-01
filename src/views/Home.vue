@@ -1,7 +1,7 @@
 <template>
 <div class="home">
 <!-- homeMain -->
- <v-container v-if="getZml.login.isAuthenticated==false">
+ <v-container v-if="getZml.login.isAuthenticated==false" fluid>
 
     <hero-section name="forDB"
        bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
@@ -9,14 +9,13 @@
     >
     </hero-section>
     <v-card class="text-center ma-3 pa-3">
-    <!-- <v-btn color="success" @click="setAuth"> Login </v-btn> -->
     <login />
     </v-card>
 
  </v-container>
 
 
- <v-container v-if="getZml.login.type=='student'">
+ <v-container v-if="getZml.login.type=='student'" fluid>
   <hero-section name="forDB"
                bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
                title="Student's Home"
@@ -28,25 +27,12 @@
   </v-container>
 
 
-  <v-container v-show="getZml.login.type=='teacher'">
+  <v-container v-show="getZml.login.type=='teacher' || getZml.login.type=='admin'">
   <hero-section name="forDB"
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
-               title="Teacher's Home"
+               title="Teacher & Admin Home"
                color="indigo darken-2"
                />
-  <hr />
-  <teacher-home />
-  </v-container>
-
-
-
-
-  <v-container v-show="getZml.login.type=='admin'">
-  <hero-section name="forDB"
-               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
-               title="Admin's Home"
-               color="indigo darken-2"/>
-  <hr />
   <admin-home />
   </v-container>
 
@@ -63,7 +49,6 @@
 import { getters } from "@/api/store"
 import { doStuff,buttons } from '@/api/buttons'
 import HeroSection from "@/views/sections/HeroSection.vue"
-import TeacherHome from "@/views/home/HomeTeacher"
 import StudentHome from "@/views/home/HomeStudent"
 import AdminHome from "@/views/home/HomeAdmin"
 import Login from '@/components/Login'
@@ -73,7 +58,6 @@ export default {
   components: {
              HeroSection
            , AdminHome
-           , TeacherHome
            , StudentHome
            , Login
   },

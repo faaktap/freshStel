@@ -1,37 +1,54 @@
 <template>
-<div v-if="getZml.login.isAuthenticated">
+<v-container fluid v-if="getZml.login.isAuthenticated">
 <!-- homeadmin -->
-<v-toolbar color="primary">
-    <v-toolbar-title>
-      <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
-       <div>
-         Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
-       </div>
-       <div>
-        <v-btn   small
-         absolute top right
-         color="blue-grey"
-         class="ma-2 white--text"
-         title="Click here to refresh"
-         @click="loadFunctions">
-          Refresh
-         </v-btn>
-       </div>
-      </div>
-    </v-toolbar-title>
-</v-toolbar>
+  <base-tool :toolList="[]"
+           toolbarName="Menu for Admin & Teachers"
+           :loading="loading"
+           :background="false"
+           :back="true"
+  >
+        <v-btn
+         icon class="ma-4 "
+         title="Change menu listing (All, Student, Admin,Teacher)"
+         @click="changeType"
+        >
+          <v-icon> {{menuType}} </v-icon>
+        </v-btn>
 
-<v-row>
- <v-col cols="12">
-     <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students">
-     <v-container fluid>
-           <list-test functiongroup="admin" />
-           <!-- </v-col><v-col cols="12" md="6"> -->
-           <list-test functiongroup="teacher" />
-           <!-- </v-col><v-col cols="12" md="6"> -->
-           <list-test functiongroup="student" />
-     </v-container>
-     </base-title-expand>
+        <v-btn
+         icon class="ma-2"
+         title="Allow search in menu"
+         @click="menuSearch = !menuSearch"
+        >
+          <v-icon> mdi-card-search </v-icon>
+        </v-btn>
+
+        <v-btn
+         icon class="ma-2"
+         title="Make the menu listing appear smaller or larger"
+         @click="menuSmall =! menuSmall"
+        >
+          <v-icon v-show="menuSmall"> S </v-icon>
+          <v-icon v-show="!menuSmall"> L </v-icon>
+        </v-btn>
+        <v-btn
+         icon class="ma-2"
+         title="Show more information about menu items"
+         @click="menuInfo = !menuInfo"
+        >
+          <v-icon> mdi-information </v-icon>
+        </v-btn>
+        <v-btn
+         icon class="ma-2"
+         title="Click here to refresh"
+         @click="loadFunctions"
+        >
+          <v-icon> mdi-refresh </v-icon>
+        </v-btn>
+  </base-tool>
+
+<list-test-buttons :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
+
 
      <base-title-expand heading="Calendar (Click here to view your day!) ">
      <v-row>
@@ -52,11 +69,7 @@
 
      </base-title-expand>
 
-</v-col>
-<v-col cols="12">
 
-</v-col>
-|</v-row>
   <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
     {{ joke || 'no joke'}}
      <v-expansion-panels>
@@ -131,8 +144,8 @@
         </v-expansion-panel>
      </v-expansion-panels>
       </div>
-<list-test-buttons />
-</div>
+
+</v-container>
 </template>
 
 <script>
@@ -148,7 +161,7 @@ import zmlDataTable from '@/components/zmlDataTable.vue'
 import { zData } from '@/api/zGetBackgroundData.js';
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
-
+import baseTool from '@/components/base/baseTool.vue'
 //Werner test
 import { zDate } from '@/api/zDate.js';
 import ListTestButtons from '@/components/ListTestButtons.vue';
@@ -159,6 +172,7 @@ export default {
     components:{EmailList, Calendar,PersonelMenemonic, ListTest,BaseTitleExpand
              , zmlDataTable
              , ListTestButtons
+             , baseTool
     },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -169,12 +183,25 @@ export default {
         tomorrow: new Date(),
         schoolday: null,
         joke:'no joke',
-        vtabs: '1'
+        vtabs: '1',
+        loading:false,
+        menuInfo: false,
+        menuSmall: false,
+        menuType: 'all',
+        menuSearch:false,
     }),
     computed:{
     },
     methods:{
+      changeType() {
+        if (this.menuType == 'all') { this.menuType = 'admin'; return}
+        if (this.menuType == 'admin') { this.menuType = 'teacher'; return}
+        if (this.menuType == 'teacher') { this.menuType = 'student'; return}
+        if (this.menuType == 'student') { this.menuType = 'other'; return}
+        if (this.menuType == 'other') { this.menuType = 'all'; return}
+      },
       dayNum(forDate) {
+        this.loading = true
         let year = forDate.getFullYear();
         let month = forDate.getMonth() + 1; //JS month start at 0
         let day = forDate.getDate();
@@ -192,6 +219,7 @@ export default {
         })
         .then(data => {
           console.log('Assign to pb', data)
+          this.loading = false
         })
 
       },
@@ -210,6 +238,7 @@ export default {
         //let dayType, days
         let sql = 'select * from dkhs_holiday'
         console.log('start:',sql)
+        this.loading = true
         zFetch({task:'PlainSql', sql:sql, api:zmlConfig.apiDKHS})
         .then((r) => {
                       console.log(sql, r)
@@ -224,6 +253,7 @@ export default {
           publicHolidays = data
           publicHolidays.forEach(e => {
              e.realdate =  zDate.setDateYMD(e.fulldate)
+             this.loading = false
              // console.log(e)
           });
           console.log(publicHolidays)
@@ -231,6 +261,7 @@ export default {
         .catch(err => {
           console.log('Fetch Error:',err)
           if (err == "TypeError: Failed to fetch") alert('kuilies is away')
+          this.loading = false
         })
         console.log('check check dayNum = ')
       },
@@ -253,6 +284,7 @@ export default {
 
         },
         loadFunctions() {
+           this.loading = true
            let ts = {};
            ts.task = 'PlainSql';
            ts.sql = 'select * from dkhs_lfunction order by sortorder'
@@ -261,13 +293,16 @@ export default {
         },
         loadError(response) {
             //this.$cs.l(response)
+            this.loading = false
             alert(response)
         },
         showData(response) {
            this.getZml.functions = response
+           this.loading = false
         },
         async CallAsyncFunction() {
           if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
+           this.loading = true
            let joke = await zData.randomChuckNorris();
            this.joke = joke.value
            if  (this.joke && ( this.joke.indexOf('sex')
@@ -282,6 +317,7 @@ export default {
                joke = await zData.randomChuckNorris();
                this.joke = joke.value
            }
+           this.loading = false
           }
         },
     },
@@ -289,6 +325,7 @@ export default {
         this.$cs.l('M',this.$options.name)
         this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
         this.CallAsyncFunction()
+        this.menuType = this.getZml.login.type
 
     }
 }

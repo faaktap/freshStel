@@ -1,32 +1,117 @@
 <template>
-    <v-card v-if="functionList.length" class="ma-2 pa-2">
-      <v-btn icon v-for="l in functionList"
-            :key="l.functionid"
-            :title="l.functionname"
-            @click="click(l)"
-            dark >
-         <v-icon :color="cardColor(l.functionaccess)" v-text="l.icon"></v-icon>
+<v-container fluid class="play">
+<v-layout v-if="functionList.length"
+          row wrap justify-space-between
+
+          class="ma-1 pa-1">
+
+        <base-search  style="flex-grow: 8"
+                      v-show="functionSearch"
+                      class="ma-2 text-uppercase"
+                      v-model="search"
+                      @clear="search=''" />
+
+    <v-card outlined
+            :class="small ? 'ma-1 pa-0' : 'ma-2 pa-2'"
+            v-for="l in searchList" :key="l.functionid"
+    >
+
+      <v-btn v-if="!info"
+             text
+            :title="l.description"
+            :x-small="small"
+            :small="!small"
+             @click="click(l)"
+      >
+        <v-icon :color="cardColor(l.functionaccess)" class="mr-2" v-text="l.icon"></v-icon>
+         {{ l.functionname }}
       </v-btn>
+
+      <v-card-text v-else>
+        <!-- here we show imore info about the button -->
+        <v-btn
+           :x-small="small" :small="!small"
+           :title="l.tip"
+           @click="click(l)"
+        >
+         <v-icon :color="cardColor(l.functionaccess)" class="mr-2" v-text="l.icon"></v-icon>
+         {{ l.functionname }}
+        </v-btn>
+
+        <p class="text-center ma-2 pa-2">
+         <span class="text-h5 ma-2 pa-2">{{ l.shortname }} </span>
+         <br>
+         <i  v-show="l.description"><small>Title:</small>{{ l.description }}</i><br>
+         <span v-show="l.tip"><small>Tip:</small>{{ l.tip }}</span>
+        </p>
+
+
+      </v-card-text>
+
    </v-card>
+</v-layout>
+</v-container>
 </template>
 
 <script>
 import { getters } from "@/api/store";
 import { doStuff } from '@/api/buttons'
+import baseSearch from '@/components/base/baseSearch.vue'
 export default {
   name: "ListTestButtons",
+  props: ['info','small', 'type', 'functionSearch'],
+  components:{baseSearch},
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
       showMore:false,
       buttons: false,
+      loading:false,
+      search:''
   }),
   computed:{
+    searchList() {
+        if (this.search.length == 0) return this.functionList
+        return this.filterByValue(this.functionList, this.search)
+        //return this.filterByValue(this.getZml.functions, this.search)
+    },
     functionList() {
         if(!this.getZml.functions.length) return []
-        return this.getZml.functions
+        if (this.type == 'all') return this.getZml.functions
+        if (this.type == 'admin') this.getZml.functions.filter(e => e.functionaccess == 'teacher' || e.functionaccess == 'admin')
+        return this.getZml.functions.filter(e => e.functionaccess == this.type)
+    },
+    studentList() {
+        if(!this.getZml.functions.length) return []
+        return this.getZml.functions.filter(e => e.functionaccess == 'student')
+    },
+    teacherList() {
+        if(!this.getZml.functions.length) return []
+        return this.getZml.functions.filter(e => e.functionaccess == 'teacher' || e.functionaccess == 'admin')
+    },
+    adminList() {
+        if(!this.getZml.functions.length) return []
+        return this.getZml.functions.filter(e => e.functionaccess == 'admin')
     }
+
   },
   methods:{
+       filterStringArray(array, value) {
+          return array.filter((data) =>  JSON.stringify(data).toLowerCase().indexOf(value.toLowerCase()) !== -1);
+       }    ,
+       filterByValue(array, string) {
+        //Clean out any null values
+        const good = array.map((obj) => Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== null)));
+        //filter on array, with some and includes
+        let ret = good.filter(o => {
+             return Object.keys(o).some(k => {
+                return o[k].toLowerCase().includes(string.toLowerCase() )
+              })
+        })
+        return ret
+       },
+       showInfo(des) {
+        alert(des)
+       },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "purple lighten-2"
@@ -56,3 +141,27 @@ export default {
    }
 };
 </script>
+
+<style scoped>
+      .play {
+       background-color: blueviolet;
+       opacity: 0.8;
+       background-image:  linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777);
+      }
+      .bgcontainer {
+        height: 100vh;
+        width: 50%;
+        background-color: #ea4335;
+        transition: all 0.70s ease-in-out;
+      }
+      .bgcontainer:hover{
+        width: 100%
+      }
+      .weird {
+       background-color: #e5e5f7;
+       opacity: 0.8;
+       background-image:  linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777);
+       background-size: 20px 35px;
+       background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
+      }
+</style>

@@ -1,9 +1,9 @@
 <template>
    <section id="hero-alt" v-if="!$vuetify.breakpoint.smAndDown">
-     <v-sheet max-width="100%" 
+     <v-sheet max-width="100%"
               :color="color"
               justify="space-around"
-              class="text-center" align="center">
+              class="text-center ma-0 pa-0" align="center">
       <v-img
         :height="$vuetify.breakpoint.mdAndUp ? breakup1 : breakup2"
         :gradient="gradient"
@@ -45,11 +45,11 @@
           align="center"
           v-if="herotext"
           class="ma-8 fill-height text-justify white--text">
-          <v-col cols=12> 
+          <v-col cols=12>
             <h2> {{ herotext }}</h2>
-            
+
             <p v-html="moretext"> </p>
-            <v-btn v-if="herobutton" :to="func" :title="herotext"> 
+            <v-btn v-if="herobutton" :to="func" :title="herotext">
               <v-icon> {{icon}}</v-icon>
               {{ herobutton }}
             </v-btn>
@@ -65,7 +65,7 @@
     HexToRGBA,
     RGBAtoCSS,
   } from 'vuetify/lib/util/colorUtils'
-  
+
 
   export default {
     name: 'SectionHeroAlt',
@@ -86,7 +86,7 @@
     },
 
     data: () => ({
-      
+
     }),
 
     computed: {
@@ -100,7 +100,7 @@
         return this.bgpicture ? this.bgpicture : "https://www.zmlrekenaars.co.za/test/img/wall001.jpg"
       },
       herotitle () {
-       return this.title ? this.title   : "heroTitle for section" 
+       return this.title ? this.title   : "heroTitle for section"
       },
       herotext () {
        return this.text ? this.text : ""

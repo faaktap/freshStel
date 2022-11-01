@@ -1,31 +1,34 @@
 <template>
 <div>
 <v-container v-if="getZml.login.username=='WER'">
-
- <v-toolbar color="primary">
-    <v-toolbar-title>
-      <div class="d-flex flex-no-wrap justify-space-between pr-4 ">
-       <div>
-         Edit Menu functions : {{ getZml.login.fullname}} / {{ getZml.login.username}}
-       </div>
-       <div>
-        <v-btn   small
-         absolute top right
-         title="Click here to load functions"  @click="loadFunctions"> Refresh </v-btn>
-       </div>
-      </div>
-    </v-toolbar-title>
-</v-toolbar>
-{{ selected }}
-  <v-text-field
+  <base-tool :toolbarName="`Edit Menu functions : ${ getZml.login.fullname} / ${ getZml.login.username}`"
+            :background="false"
+            :back="true"
+  >
+      <!-- <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn> -->
+      <!-- <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn> -->
+        <v-btn
+         icon
+         title="Show as buttons or List"
+         @click="menuSmall =! menuSmall"
+        >
+          <v-icon v-show="menuSmall"> S </v-icon>
+          <v-icon v-show="!menuSmall"> L </v-icon>
+        </v-btn>
+        <v-btn icon
+         title="Click here to load or refresh functions"  @click="loadFunctions">
+         <v-icon> mdi-refresh</v-icon>
+        </v-btn>
+  </base-tool>
+  <v-card     v-if="menuSmall==false">
+   <v-text-field
            v-model="search"
            append-icon="mdi-magnify"
            label="Search"
            single-line
            hide-details
    ></v-text-field>
-   <v-data-table
-     v-if="getZml.login.username=='WER'"
+    <v-data-table
     :headers="functionHeader"
     :items="getZml.functions"
     :items-per-page="15"
@@ -43,9 +46,13 @@
            <v-icon >mdi-table-plus</v-icon>
         </v-btn>
     </template>
-
   </v-data-table>
+  </v-card>
+  <v-card v-else>
+    <h1> Some thing buttonish?</h1>
+  </v-card>
 </v-container>
+
 <v-container v-else>
   <v-card class="ma-2 pa-2">
     <v-card-title> Functions </v-card-title>
@@ -60,7 +67,6 @@
 </v-container>
 
 
-
 <v-dialog v-model="showFunctionUpdate"
           v-if="f"
           xwidth="auto "
@@ -72,7 +78,7 @@
       </v-card>
     </v-card-title>
     <v-card-text>
-      <v-layout row wrap align-content-start justify-space-between class="ma-2">
+      <v-layout row wrap align-content-start justify-space-between class="ma-1">
         <v-flex xs10 md6>
           <v-text-field v-model="f.functionname"
                         dense
@@ -87,8 +93,9 @@
          <v-radio-group v-model="f.functionaccess"
                         label="Access"
                         dense
+                        class="ma-0"
                         row>
-           <v-radio v-for="t in ['teacher','student','other','admin']" :key="t"  :label="t"   :value="t"  >
+           <v-radio v-for="t in ['teacher','student','other','admin','super']" :key="t"  :label="t"   :value="t"  class="ma-0">
            </v-radio>
          </v-radio-group>
         </v-flex>
@@ -122,7 +129,9 @@
       </v-layout>
     </v-card-text>
     <v-card-actions>
-     <v-btn @click="saveFunc"> Save </v-btn>
+      <v-btn @click="showFunctionUpdate = false"> Cancel </v-btn>
+      <v-spacer />
+      <v-btn @click="saveFunc" color="primary"> Save </v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
@@ -130,13 +139,14 @@
 </template>
 
 <script>
+import baseTool from '@/components/base/baseTool.vue'
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { doStuff } from '@/api/buttons'
 export default {
     name:"ViewFunctions",
-    components:{},
+    components:{baseTool},
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
         search:null,
@@ -153,6 +163,7 @@ export default {
           {text: 'Sort',             value: 'sortorder' },
           {text: 'icon',             value: 'icon' },
         ],
+        menuSmall: false
     }),
     computed:{
     },

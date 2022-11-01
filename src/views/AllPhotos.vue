@@ -78,7 +78,7 @@
                   :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
 
           >
-            <v-card-text class="ma-0 pa-0" @click="activateBigPic('https://kuiliesonline.co.za/' + item.photo)">
+            <v-card-text class="ma-0 pa-0" @click="activateBigPic(item)">
                 <v-img :src="'https://kuiliesonline.co.za/' + item.photo"
                        max-height="100"
                        max-width="100"
@@ -119,16 +119,30 @@
 
 
 
-<v-dialog v-model="showBigPicture" max-width="600">
-  <v-img :src="bigPicture" height="400" contain class="ml-auto"/>
+<v-dialog v-model="showBigPicture" max-width="600" transition="dialog-bottom-transition">
+  <v-card>
+    <v-card-title>
+      <v-menu top right>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon v-bind="attrs" v-on="on" @click="showBigPicture=false" title="Go Back">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-menu>
+    {{ bigPictureInfo.type }}
+   </v-card-title>
+  <v-img :src="bigPicture" height="400" contain class="ma-2 xxml-auto"/>
+  <v-card-text class="text-center"><span> {{ bigPictureInfo.uniqno }} - {{ bigPictureInfo.photo  }} </span></v-card-text>
+  </v-card>
 </v-dialog>
 
 <!-- --------------------- E D I T -------------------- -->
 <v-dialog v-model="showEdit"
           transition="dialog-bottom-transition"
           retain-focus
-          style="overflow-y-hidden">
+          xstyle="overflow-y-hidden">
   <v-card color="white">
+
     <v-card-title class="text-h5 grey lighten-2">
       Edit Photo information
     </v-card-title>
@@ -226,6 +240,7 @@ export default {
        showAddPhoto:false,
        showBigPicture: false,
        bigPicture: '',
+       bigPictureInfo:{},
        fileUploadCategory:'',
     }),
     computed: {
@@ -247,8 +262,9 @@ export default {
       },
     },
     methods:{
-      activateBigPic(pic) {
-        this.bigPicture = pic
+      activateBigPic(item) {
+        this.bigPicture = 'https://kuiliesonline.co.za/' + item.photo
+        this.bigPictureInfo = item
         this.showBigPicture = true
       },
       searchFilter(tableSofar) {

@@ -7,7 +7,7 @@
     You are not logged in, or you are not a teacher!
 </v-container>
 <v-container v-else fluid>
-   <v-toolbar dense row>
+   <v-toolbar dense row color="primary" dark>
     <v-toolbar-title>
       <span class="d-none d-sm-block"> Quick Reporting  </span>
     </v-toolbar-title>
@@ -145,6 +145,12 @@ union all \
   and s.studentid = a.studentid ) aa \
 order by attendancedate desc`
           , answer:'Show Them', obj:{}, count:null
+          },
+          //SELECT studentid, surname, firstname, concat(grade, gclass) grade, idno, note FROM dkhs_student where grade like 'G%'order by grade desc, gclass, surname
+          { id:5, name:'All Students', f:null
+          , sql:'SELECT count(*) items FROM dkhs_student where grade like "G%"'
+          , sqlReport:`SELECT studentid, surname, firstname, concat(grade, gclass) grade, idno, note FROM dkhs_student where grade like 'G%' order by grade desc, gclass, surname`
+          , answer:'Show Them', obj:{}, count:null
           }
         ],
     reportValueToCount:[],
@@ -191,6 +197,9 @@ order by attendancedate desc`
         case 4:
           this.reports[this.tab].answer = `Absentees :  we found ${this.reports[this.tab].count} item(s)`
           break
+        case 5:
+          this.reports[this.tab].answer = `Students :  we found ${this.reports[this.tab].count} item(s)`
+          break
 
       }
     },
@@ -218,6 +227,11 @@ order by attendancedate desc`
          this.sqlSelect = this.reports[this.tab].sqlReport
          this.reportHeader = 'Absentees/Late/Etc'
          break
+        case 5:
+         this.sqlSelect = this.reports[this.tab].sqlReport
+         this.reportHeader = 'Students'
+         break
+
       }
     },
 
