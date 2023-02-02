@@ -40,7 +40,7 @@
     <v-card-text>
       <v-simple-table>
         <tr><td>Merit Points </td> <td> Adjust how much each merit is worth</td></tr>
-        <tr><td>Merit Approval </td> <td> Confirm merits added by students themselves</td></tr>
+        <tr><td>Merit Confirmation </td> <td> Confirm merits added by students themselves</td></tr>
         <tr><td>Merit Edit </td> <td> Edit the wording of merits.</td></tr>
 
       </v-simple-table>

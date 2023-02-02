@@ -1,3 +1,33 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@faaktap 
+faaktap
+/
+fresh
+Private
+Cannot fork because you own this repository and are not a member of any organizations.
+Code
+Issues
+1
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+fresh/src/components/ListTestButtons.vue
+@faaktap
+faaktap BeforeMainMenu
+Latest commit 2a24fc8 on Nov 1, 2022
+ History
+ 1 contributor
+167 lines (154 sloc)  6.17 KB
 
 <template>
 <v-container fluid class="play">
@@ -164,3 +194,18 @@ export default {
        background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
       }
 </style>
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+fresh/ListTestButtons.vue at master · faaktap/fresh

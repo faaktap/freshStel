@@ -17,32 +17,10 @@
   <v-toolbar elevation="3"
              color="primary"
              :src="showImg ? 'img\\toolbar.jpg' : ''"
-             :collapse="$vuetify.breakpoint.smAndDown"
              class="ml-0 mr-0 pl-0 pr-0 mb-4">
-    <v-app-bar-nav-icon @click="appBar = !appBar"> </v-app-bar-nav-icon>
     <v-toolbar-title v-if="toolbarName">
       {{ toolbarName }}
     </v-toolbar-title>
-<v-navigation-drawer
-        floating
-        v-model="appBar"
-        absolute
-        temporary
-      >
-      <v-card>
-        <v-list
-          dense
-          rounded
-        >
-        <v-list-item v-for="(t,i) in toolList" :key="t.name" @click="$emit('toolClick',t.task||t.name||t.icon||i)">
-         <v-list-item-content>
-          <v-list-item-title>{{ t.task||t.name||t.icon||i }}</v-list-item-title>
-        </v-list-item-content>
-
-        </v-list-item>
-        </v-list>
-      </v-card>
-</v-navigation-drawer>
     <v-overlay v-if="loading" :value="loading">
       <v-progress-circular indeterminate size="84">
         Thinking ...
@@ -81,9 +59,6 @@ export default {
     name:"baseTool",
     props:["toolList","toolbarName","loading","background","back"],
     components:{VBack},
-    data: () => ({
-        appBar: false
-    }),
     computed: {
       grootGenoeg() {
         return this.$vuetify.breakpoint.smAndUp && this.toolList.length

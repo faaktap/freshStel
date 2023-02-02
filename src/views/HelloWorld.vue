@@ -1,5 +1,33 @@
 <template>
 <v-container fluid>
+ <!-- Printing stundet numbers for photographs -->
+ <!--
+ <v-row  v-if="studentData.length">
+   <v-col v-for="e in studentData"
+         :key="e.studentid"
+   >
+    <v-card elevation="1">
+      <v-row class="ma-0 pa-0">
+       <v-col cols="12" class="ma-0 pa-0">
+        <span class="text-h2"> {{ e.studentid }} </span>
+       </v-col>
+       <v-col cols="12" class="ma-0 pa-0">
+        <span class="text-caption">
+        {{ e.surname.substr(0,14) }},{{e.firstname.substr(0,4)}}.{{e.gclass}}
+        </span>
+       </v-col>
+      </v-row>
+    </v-card>
+   </v-col>
+ </v-row>
+ -->
+
+
+  <b>email,contactno,schoolno,studentsurname, studentname,parentsurname,parentname,gclass,date, time </b><br>
+  <v-card v-for="d in quizData" :key="d.dateEntered">
+    <br> {{ d.schoolno || 0}}, {{ d.surname}}, {{ d.name }}, "{{d.gclass }}", {{d.parentsurname }}, {{ d.parentname }},{{ d.email }}, "{{d.contactno}}",{{d.date}}, {{d.time}}
+  </v-card>
+
      <!-- <v-card>
      <v-card-title> Attendance Information Needed </v-card-title>
      <v-card-text>
@@ -87,6 +115,8 @@ import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import baseSearch from "@/components/base/baseSearch.vue"
 
+//import { g10 } from '@/components/vfbase/Grade10List.js';
+
 export default {
   name: "HelloWorld",
   components:{
@@ -106,6 +136,8 @@ export default {
     items:[],
     headers:[],
     selItem:[],
+    quizData:[],
+    studentData:[],
   }),
   computed: {
     showData() {
@@ -125,8 +157,32 @@ export default {
   },
   created() {
     this.loadTeacher();
+    //g10.getAllQuiz('all',this.loadData)
+    //this.loadStudent();
   },
   methods: {
+    loadStudent() {
+        this.loading = true
+        let ts = {task: 'PlainSql',
+               sql: `SELECT studentid, surname,firstname,grade,gclass from dkhs_student where grade = 'G08' order by surname, firstname, gclass`
+             }
+        zmlFetch(ts, this.loadStudentData)
+    },
+    loadStudentData(response) {
+      this.studentData = response
+    },
+    loadData(response) {
+        if (response == "[null]") {
+          alert('No Data Yet!')
+          return
+        }
+        this.quizData = JSON.parse( response )
+        //2023-01-19T15:57:57.205Z
+        this.quizData.forEach(e => {
+          e.date = e.dateEntered.substring(0,10)
+          e.time = e.dateEntered.substring(11,19)
+        })
+      },
     start(selNo) {
       this.searchString = ''
       if (selNo == 0) {
@@ -236,3 +292,44 @@ export default {
 }
 </script>
 
+<style scoped>
+  .print-break-page {
+       page-break-after: always;
+  }
+
+@media print {
+  body {
+    overflow: auto;
+    height: auto;
+  }
+  .scroll-y {
+     height: auto;
+     overflow: visible;
+  }
+  .print-break-page {
+       page-break-after: always;
+  }
+
+  /*
+   * Note, forced page breaks are only for testing when content is insufficient
+   */
+  .page_content__print_break {
+    page-break-after: always;
+    break-after: always;
+  }
+
+  .footer_content {
+    visibility: show;
+    opacity: 1;
+    filter: alpha(opacity=100);
+
+    position: fixed;
+    bottom: 0;
+  }
+
+  .footer_content::after {
+    counter-increment: page_number;
+    content: "Page:" counter(page_number);
+  }
+}
+</style>

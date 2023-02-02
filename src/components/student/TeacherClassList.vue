@@ -49,8 +49,8 @@
         <td class="pa-2 ma-2">{{ t.id }}</td>
         <td class="ma-2" >{{ t.teacher }}</td>
         <td class="ma-2 pa-2">{{ t.listname }}</td>
-        <td> <v-btn small @click="loadList(t.id)" color="primary" class="ma-2"> View </v-btn>
-             <v-btn small @click="editListName(t.id)" color="primary" class="ma-2 pa-2"> Edit </v-btn></td>
+        <td> <v-btn small @click="loadList(t.id)" title="View or Add Students in List" color="primary" class="ma-2"> View </v-btn>
+             <v-btn small @click="editListName(t.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn></td>
       </tr>
       </tbody>
     </v-simple-table>

@@ -47,11 +47,11 @@ export const clWork = {
     return 'DONE'
    },
    updateList: (listObj) => {
-    let sql = `update hw_classlist '
-               set listname = '${listObj.listname}'
-               , share = '${listObj.share}'
-               , grade = '${listObj.grade}'
-               ) where id = ${listObj.id}`
+    let sql = `update hw_classlist \
+                 set listname = '${listObj.listname}'\
+               , share = '${listObj.share}'\
+               , grade = '${listObj.grade}'\
+               where id = ${listObj.id}`
     clWork.executeSql(sql)
     return 'DONE'
    },

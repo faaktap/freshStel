@@ -92,7 +92,7 @@ function finishedLoadingBasic (response) {
     l('finishedLoadingBasic', response)
     getters.getState({ object: "gZml" }).subjects = response.subjects;
     
-
+    // getters.getState({ object: "gZml" }).folders = response.folders;
     getters.getState({ object: "gZml" }).functions = response.functions;
     
     // add in a proper way - "other at the bottom

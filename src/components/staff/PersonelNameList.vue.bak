@@ -2,18 +2,23 @@
 <v-container  v-if="staffList" fluid>
  <!-- See https://grid.layoutit.com/ for gridlayouts -->
 
-  <v-toolbar v-if="allowEdit==true" dense  row  wrap color="primary">
-    Actions
-      <v-spacer />
-        <v-btn small class="ma-2" @click="addPersonel">
+ <v-card v-if="allowEdit==true">
+  <v-layout row wrap align-content-start justify-space-between>
+    <v-flex>
+      <v-card color="blue accent-1" class="ma-2 pa-5">
+        Actions
+        <v-btn small class="float-right" @click="addPersonel">
          Add
         </v-btn>
-        <v-btn small class="ma-2" @click="printPersonel">
+        <v-btn small class="float-right" @click="printPersonel">
          Print
         </v-btn>
-  </v-toolbar>
+      </v-card>
+    </v-flex>
+  </v-layout>
+ </v-card>
 
-  <v-data-table
+   <v-data-table
     v-if="staffList"
     :headers="staffHeaders"
     :items="staffList"
@@ -38,13 +43,17 @@
             {{ staffList.length }} entries
         </v-card>
       </template>
+<!--      <template v-slot:[`footer.page-text`]>
+        <v-card color="green darken-1" align="center" class="ma-2 pa-2">
+            add a button here to insert?
+        </v-card>
+      </template> -->
   </v-data-table>
 
 
 <v-dialog v-model="showPersPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
   <front-json-to-csv v-if="jsonList"
                    :json-data="jsonList"
-                   @hideModal="showPersPrint = false"
                    :csv-title="'My Test csv title'">
    <v-btn>
       Download with custom title

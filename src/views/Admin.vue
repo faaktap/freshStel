@@ -136,6 +136,15 @@ export default {
           this.loadWorkToDo()
           this.loading = false
         },
+        loadFunctions() {
+           if (this.getZml.functions.length) return
+           this.loading = true
+           let ts = {};
+           ts.task = 'PlainSql';
+           ts.sql = 'select * from dkhs_lfunction order by sortorder'
+           ts.api = zmlConfig.apiDKHS
+           zmlFetch(ts, this.showData, this.loadError)
+        },
         async CallAsyncFunction() {
           if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
             this.loading = true

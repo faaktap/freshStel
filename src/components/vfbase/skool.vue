@@ -2,7 +2,9 @@
 <v-row>
   <!--v-btn @click="testDeStruct"> testDeStruct </v-btn-->
  <v-col v-if="!closingDateIsInTheFuture()" cols="12" col-md="6" class="text-center">
-   <strong>Subject selection for Grade 9's for next year is either open yet, or closed already</strong>
+  <v-card color="warning" class="mt-4 pa-3" dark>
+   <h3><v-icon large>mdi-exclamation</v-icon> Subject selection for Grade 9's for next year is either open yet, or closed already</h3>
+  </v-card>
  </v-col>
  <v-col v-else cols="12" col-md="6" >
   <v-card color="white" elevation="6" class="mx-6 pa-4" ref="includeInEmail">
@@ -105,7 +107,12 @@
  </v-card>
     </v-col>
     <v-col cols="12">
-      <h4 class="text-center">End of Grade 10 Subject Selection {{ year }} </h4><br>
+      <v-card color="primary" dark>
+      <h4 class="text-center ma-4 pa-4">
+        <v-icon>mdi-information</v-icon>
+        End of Grade 10 Subject Selection {{ year }}
+      </h4>
+      </v-card>
 <!--
   <v-btn @click="saveFile"> save schema File as test.json </v-btn>
   {{ valid }} {{ myModel }}

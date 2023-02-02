@@ -19,7 +19,9 @@
 
    <v-spacer/>
    <template v-slot:extension>
-      <v-tabs v-model="tab" align-with-title>
+      <v-tabs v-model="tab"
+              @change="tabSelected"
+              align-with-title  show-arrows>
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab v-for="rep in reports" :key="rep.id">
           {{ rep.name }}
@@ -32,7 +34,7 @@
 
  <v-card>
     <v-tabs-items v-model="tab">
-      <v-tab-item v-for="rep in reports" :key="rep.id" :href="rep.id">
+      <v-tab-item  v-for="rep in reports" :key="rep.id" :href="rep.id">
         <v-card flat>
           <v-card-actions>
             <!-- <template v-if="tab == 0">
@@ -55,7 +57,7 @@
             {{ rep.answer }}
           </v-card-title>
           <v-card-actions>
-            <v-btn small @click="build"> showReport </v-btn>
+            <v-btn small @click="build(rep)"> showReport </v-btn>
           </v-card-actions>
         </v-card>
       </v-tab-item>
@@ -65,6 +67,9 @@
      :reportHeader="reportHeader"
      :sqlSelect="sqlSelect"
   />
+  <div  v-if="getZml.login.username == 'WER'">
+    {{ reports}}
+  </div>
 </v-container>
 </div>
 </template>
@@ -87,169 +92,115 @@ export default {
     getZml: getters.getState({ object: "gZml" }),
     show: false,
     tab:null,
-    reports: [
-          { id:0
-          , name:'LearnAssist (Bursey) List'
-          , f:null
-          , sql:"SELECT count(*) items from dkhs_student s, dkhs_learnassist l WHERE l.studentid = s.studentid"
-          , sqlReport:`SELECT s.schoolno, s.surname, s.firstname, s.grade, s.gclass from dkhs_student s, dkhs_learnassist l WHERE l.studentid = s.studentid ORDER BY s.grade, s.gclass`
-          , answer:'', obj:{}, count:null
-          },
-          { id:1
-          , name:'Students using KuiliesOnline',f:null
-          , sql:"SELECT count(*) items FROM dkhs_learner l, dkhs_student s WHERE s.studentid = l.user_name"
-          , sqlReport:`SELECT l.user_name,l.user_fullname,  s.surname , substr(firstlogindate,1,10) first, substr(lastlogindate,1,10) last , logins, s.grade\
- FROM dkhs_learner l, dkhs_student s \
- WHERE s.studentid = l.user_name`
-            ,answer:'', obj:{}, count:null
-          },
-          { id:2
-          , name:'Your Logs' ,f:null
-          , sql:'SELECT count(*) items from dkhs_log'
-          , sqlReport:`SELECT * FROM dkhs_log where user = **username** order by log_id desc`
-          , answer:'', obj:{}, count:null
-          },
-          { id:3,name:'Test' ,f:null
-          , sql:`SELECT count(*) items FROM s_stock s`
-          , sqlReport:`SELECT s.stockid, s.typeid, s.name, s.userid, s.originalownerid FROM s_stock s`
-          , answer:'Show All', obj:{}, count:null
-          },
-          { id:4, name:'Absentees', f:null
-          , sql:'select count(*) items from a_attendance'
-          , sqlReport:`select * from (\
- select staff\
-     , location\
-     , 0 period\
-     , period status\
-     , concat(s.surname,', ',s.firstname) student\
-     , concat(s.grade,s.gclass) grade\
-     , attendancedate \
- from a_attendance a, dkhs_student s\
- where substr(attendancedate ,1,8) = substr(now(),1,8)\
- and period = 'Late'\
- and s.studentid = a.capture \
-union all \
- select menemonic staff\
-     , sp.name\
-     , period\
-     , status\
-     , concat(s.surname,', ',s.firstname) student\
-     , concat(s.grade,s.gclass) grade\
-     , attendancedate\
- from dkhs_attendance a, dkhs_learner l, dkhs_personel p, s_place sp, dkhs_student s\
- where substr(attendancedate ,1,8) = substr(now(),1,8)\
-  and status not in ('Present','Ignore')\
-  and a.userid = l.userid\
-  and p.menemonic = l.user_name\
-  and sp.placeid = a.placeid\
-  and s.studentid = a.studentid ) aa \
-order by attendancedate desc`
-          , answer:'Show Them', obj:{}, count:null
-          },
-          //SELECT studentid, surname, firstname, concat(grade, gclass) grade, idno, note FROM dkhs_student where grade like 'G%'order by grade desc, gclass, surname
-          { id:5, name:'All Students', f:null
-          , sql:'SELECT count(*) items FROM dkhs_student where grade like "G%"'
-          , sqlReport:`SELECT studentid, surname, firstname, concat(grade, gclass) grade, idno, note FROM dkhs_student where grade like 'G%' order by grade desc, gclass, surname`
-          , answer:'Show Them', obj:{}, count:null
-          }
-        ],
+    curReport:{},
+    reports: [{id:0, answer:'', ans:'', sqlCount:'', sqlReports:'', order:0}],
     reportValueToCount:[],
     sqlSelect:null,
     reportHeader:null
   }),
   computed:{},
   methods: {
+    tabSelected(tabNo) {
+      if (this.reports,length < 2) this.loadInitialData()
+      this.tab = tabNo
+      this.sqlSelect = ''
+      this.curReport = this.reports[tabNo]
+      this.reports[tabNo].answer = 'dd'
+      this.curReport.answer = "cc"
+      console.log('tab selected:',tabNo, this.curReport.name)
+      this.getCount()
+    },
+
+    //Not used = but would be nice if we can have string interpolation call a function when we need it.
+    //javascript template strings with string interpolation
+    //also read https://stackoverflow.com/questions/22607806/defer-execution-for-es6-template-literals#comment112302403_22619256 aandagtig
+    //also cool : https://www.sitepoint.com/community/t/string-template-literal-with-object-keys-map/385295/7
+    template(strings, ...keys) {
+        console.log('template: ', strings, keys)
+        return (...values) => {
+          const dict = values[values.length - 1] || {}
+          const result = [strings[0]]
+          keys.forEach((key, i) => {
+            const value = Number.isInteger(key) ? values[key] : dict[key]
+            result.push(value, strings[i + 1])
+          });
+          return result.join("");
+        }
+    },
+    fmt([fisrt, ...rest], ...tags) {
+     return values => rest.reduce((acc, curr, i) => {
+       return acc + values[tags[i]] + curr;
+     }, fisrt);
+    },
+
     objectSelected(e) {
       console.log('objSelected = ',e)
-      this.reports[this.tab].obj = e
+      this.curReport.obj = e
+    },
+    saveToDatabase(o) {// only used once to populate DB (dkhs_reports)
+      let ts = {}
+      ts.task = 'PlainSql'
+      ts.sql = `insert into dkhs_reports values (${o.id}, ${o.order}, "${o.name}", "${o.sql}", "${o.sqlReport}",null)`
+      console.log(ts.sql)
+      zmlFetch(ts, this.doneAdd )
     },
     getCount() {
-      if (this.reports[this.tab].count == null) {
+      if (this.curReport.count == null) {
         this.loading = true
         let ts = {}
         ts.task = 'PlainSql'
-        // assign the sql with 'placeid =' to sql, and add the id
-        ts.sql = `${this.reports[this.tab].sql}` // ${this.reportValueToCount[this.tab]}`
+        ts.sql = this.curReport.sqlcount
         zmlFetch(ts, this.updateCount)
+        //this.saveToDatabase(this.curReport)
       } else {
         this.showCount()
       }
     },
     updateCount(response) {
       this.loading = false
-      this.reports[this.tab].count = response[0].items
+      this.curReport.count = response[0].items
       this.showCount()
     },
     showCount() {
-      switch (this.tab) {
-        case 0:
-          this.reports[this.tab].answer = `For learnassist report we found ${this.reports[this.tab].count} item(s)`
-          break
-        case 1:
-          this.reports[this.tab].answer = `Students using KuiliesOnline : ${this.reports[this.tab].count} `
-          break
-        case 2:
-          this.reports[this.tab].answer = `Show your logs : All : ${this.reports[this.tab].count}`
-          break
-        case 3:
-          this.reports[this.tab].answer = `Eben List :  we found ${this.reports[this.tab].count} item(s)`
-          break
-        case 4:
-          this.reports[this.tab].answer = `Absentees :  we found ${this.reports[this.tab].count} item(s)`
-          break
-        case 5:
-          this.reports[this.tab].answer = `Students :  we found ${this.reports[this.tab].count} item(s)`
-          break
+      this.reports[this.tab].answer = this.curReport.ans.replaceAll('**items**', this.curReport.count)
+      console.log('replace items', this.curReport.answer, this.curReport.ans, this.curReport.count)
 
-      }
+      //play
+      // let a = this.fmt`Test with ${0}, ${1}, ${2} and ${0} again`(['A', 'B', 'C']);
+      // console.log(a)
+      // let s = 'Test with ${0}, ${1}, ${2} and ${0} again'
+      // let b = this.fmt`${s}`(['A', 'B', 'C']);
+      // console.log(b)
     },
-    build(u) {
-      console.log('build base on this.tab',u)
-      switch (this.tab) {
-        case 0:
-         this.sqlSelect = this.reports[this.tab].sqlReport
-         this.reportHeader = this.reports[this.tab].name
-         break
-        case 1:
-         this.sqlSelect = this.reports[this.tab].sqlReport
-         this.reportHeader = this.reports[this.tab].name
-         break
-        case 2:
-         this.sqlSelect = `select log_id, log_dte, ip, referer, user, function, replace(replace(details,'\\/','/'),'"','') details from dkhs_log \
-             where user = '${this.getZml.login.username}' ORDER BY log_id DESC`
-         this.reportHeader = this.reports[this.tab].name + ' : ' + this.getZml.login.username
-         break
-        case 3:
-         this.sqlSelect = this.reports[this.tab].sqlReport
-         this.reportHeader = 'Eben Pretorius se Lys'
-         break
-        case 4:
-         this.sqlSelect = this.reports[this.tab].sqlReport
-         this.reportHeader = 'Absentees/Late/Etc'
-         break
-        case 5:
-         this.sqlSelect = this.reports[this.tab].sqlReport
-         this.reportHeader = 'Students'
-         break
-
-      }
+    build(u1,u2) {
+      console.log('build base on this.tab',u1,u2)
+      this.sqlSelect = this.curReport.sqlreport.replaceAll('**username**', this.getZml.login.username)
+      this.reportHeader = this.curReport.name
+      console.log('sqlRep=',this.sqlSelect)
     },
-
-  },
-  mounted() {
-    this.getCount()
-    if (this.getZml.place.length == 0 || this.getZml.owner.length == 0) {
-      //They have been nowhere else = but should not be a problem
+    initialize(response) {
+      response.forEach(e =>  e.answer = 'bb')
+      this.reports = response
+      this.reports.sort((a,b) => a.order - b.order)
+      this.reports.forEach(e =>  e.answer = 'ee')
+      this.getCount()
+    },
+    loadInitialData() {
+      let ts = {task: 'PlainSql',sql: 'select * from dkhs_reports'}
+      zmlFetch(ts, this.initialize )
     }
 
   },
+  mounted() {
+    if (this.getZml.place.length == 0 || this.getZml.owner.length == 0) {
+      //They have been nowhere else = but should not be a problem
+    }
+    this.loadInitialData()
+
+  },
   watch:{
-    tab() {
-      console.log('new tab = ', this.tab)
-      this.getCount()
-    },
     reportValueToCount() {
-      this.reports[this.tab].f()
+      this.curReport.f()
     },
 
   }

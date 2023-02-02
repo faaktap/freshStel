@@ -47,8 +47,7 @@
         </v-btn>
   </base-tool>
 
-<list-test-buttons :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
-
+  <list-test-buttons :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
 
      <base-title-expand heading="Calendar (Click here to view your day!) ">
      <v-row>
@@ -323,9 +322,11 @@ export default {
     },
     mounted() {
         this.$cs.l('M',this.$options.name)
+        if (!this.getZml.functions.length) this.loadFunctions()
         this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
         this.CallAsyncFunction()
         this.menuType = this.getZml.login.type
+
 
     }
 }

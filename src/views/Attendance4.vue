@@ -98,28 +98,35 @@
        />
 
 
-       <v-combobox
+       <v-autocomplete
         class="ma-1"
         v-if="tList && tList.length"
         v-model="tListObj"
         :items="tList"
         label="Attendance List"
+
+        item-text="listname"
+
+
         prepend-inner-icon="mdi-pen-plus"
+        append-outer-icon="mdi-magnify"
         outlined
         @click.once="userSelectedSomething"
+        @click:append-outer="showChoosy = true"
         dense
        >
         <!-- <template slot="append-outer">
         TL
         </template> -->
-        <template slot="item" slot-scope="{item}"> <!-- ITEM DISPLAY (DROP DOWN ) -->
-          {{ item.listname }}
+        <!-- ITEM DISPLAY (DROP DOWN ) -->
+        <template slot="item" slot-scope="{item}">
+          {{ item.listname }} - {{ item.grade }}
         </template>
-        <template slot="selection" slot-scope="{item}">  <!-- DISPLAY , item-text -->
+        <!-- DISPLAY , item-text -->
+        <!-- <template slot="selection" slot-scope="{item}">
          {{ item.listname }}
-        </template>
-       </v-combobox>
-
+        </template> -->
+       </v-autocomplete>
 
        <v-card v-else class="mt-3 pa-2" height="50" color="red lighten-2">
         <v-icon> mdi-info </v-icon>
@@ -150,6 +157,12 @@
            @selected="roosterSelected" />
 </v-dialog>
 
+<v-dialog v-model="showChoosy"  width="450" :fullscreen="$vuetify.breakpoint.smAndDown">
+     <choosy v-model="choosyStuff"
+             :items="tList"
+             @objectSelected="showChoosy = false" />
+</v-dialog>
+
  </div>
 </template>
 
@@ -163,6 +176,7 @@ import { ls } from "@/api/localStorage.js"
 import baseTool from '@/components/base/baseTool.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import rooster from "@/components/learn/rooster.vue"
+import Choosy from '@/components/Choosy.vue'
 import { errorSnackbar, infoSnackbar } from '../api/GlobalActions';
 export default {
     name:'Attendance4',
@@ -171,6 +185,7 @@ export default {
       rooster
     , baseTool
     , BaseTitleExpand
+    , Choosy
     },
     data: () => ({
        loading: false,
@@ -179,6 +194,9 @@ export default {
        responsiblePerson:'',
        surname:'',
        menemonic:null,
+
+       choosyStuff: '',
+       showChoosy: false,
 
        place: getters.getState({ object: "gZml" }).place,
        curPlace: {},
@@ -293,15 +311,16 @@ export default {
              }
         zmlFetch(ts, this.loadTeacherListData, this.errorLoading)
       },
-      loadTeacherLists() {
+      async loadTeacherLists() {
         console.log('loading teacher list for', this.surname)
         this.loading = true
         //s.listname , s.ckey, s.grade
         let ts = {task: 'PlainSql',
                sql: `SELECT *\
                       FROM hw_classlist s\
-                     WHERE upper(substr(teacher,instr(teacher,' ')+1))  = upper('${this.surname}')\
-                     order by s.grade`
+                     WHERE upper(substr(teacher,instr(teacher,' ')+1))  = upper('${this.surname}')
+                        OR share = 'Y' \
+                     order by s.grade, teacher`
              }
         zmlFetch(ts, this.loadTeacherListData, this.errorLoading)
       },
@@ -392,6 +411,7 @@ export default {
       console.log('CHECK SAVE AFTER : ', this.period, this.day, this.placeid)
       this.loading = true
       zData.initialData('Load Important Data', this.initialize)
+      this.loadTeacherLists()
     },
     watch:{
       responsiblePerson() {
