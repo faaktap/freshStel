@@ -33,9 +33,7 @@
 <script>
 import { zmlFetch } from '@/api/zmlFetch';
 import { errorSnackbar } from "@/api/GlobalActions"
-import { printJSON } from "@/api/zmlPrint.js"
 import baseTool from '@/components/base/baseTool.vue'
-//import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 export default {
   name: "BaseTableReport",
   props:{
@@ -62,16 +60,11 @@ export default {
     }
   },
   methods:{
-    testJSON() {
-      this.$router.push({ name: 'BasePrintTable', params: {reportHeader: this.reportHeader, unique:this.unique, orDTTable: this.orDTTable} })
-    },
-
     doPrint() {
-      this.testJSON()
-      alert('check it out')
-      if (this.entity=='anyvalue-takeifout') {
-      printJSON(this.orDTTable, this.labels, this.reportHeader)
-      }
+       this.$router.push({ name: 'BasePrintTable', params: {reportHeader: this.reportHeader, unique:this.unique, orDTTable: this.orDTTable} })
+      // alert('check it out')
+      // if (this.entity=='anyvalue-takeifout') {
+      // printJSON(this.orDTTable, this.labels, this.reportHeader)
     },
     getData () {
       //console.log(this.$options.name,'getdata', this.sqlSelect)
