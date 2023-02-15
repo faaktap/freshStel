@@ -10,7 +10,7 @@
         <span v-if="!studentList.length"> - (Select a class below) </span>
         <span v-else> : {{this.gradeClass.g}} -  {{this.gradeClass.c}} </span>
     <v-spacer></v-spacer>
-    <base-tool-button
+    <!-- <base-tool-button
        v-if="studentList.length"
        icon="mdi-select-group"
        class="mr-2"
@@ -19,7 +19,7 @@
        @click="attendancePrep"
     >
       ATTENDANCE
-    </base-tool-button>
+    </base-tool-button> -->
     <base-tool-button
        v-if="studentList.length"
        icon="mdi-file-export"
@@ -194,7 +194,7 @@ export default {
         this.showAttendance = !this.showAttendance
         if (this.showAttendance == false) {
           this.attendanceList.length = 0
-          this.classListHeader = `Student List for ${this.gradeClass.g}${this.gradeClass.c}`
+          this.classListHeader = `Student Attendance List for ${this.gradeClass.g}${this.gradeClass.c}`
         }
       },
       attSelected(aList,aProp) {

@@ -45,13 +45,12 @@ export default {
       AttendanceList:null,
       atendanceHeader: [
         //{text: 'id',       align: 'start',  value: 'attendanceid' },
-          {text: 'Date',  align: 'start',  value: 'attendancedate' },
-          {text: 'Session',    align: 'start',  value: 'sessionid' },
+          {text: 'Date and Time',  align: 'start',  value: 'attendancedate' },
           {text: 'Teacher',    align: 'start',  value: 'staff' },
           {text: 'Room',   align: 'start',  value: 'location' },
           {text: 'Period', align: 'start',  value: 'period' },
-          {text: 'Archived',    align: 'start',  value: 'archived' },
-
+          {text: 'Class',    align: 'start',  value: 'gclass' },
+          {text: 'Grade',    align: 'start',  value: 'grade' },
         ],
       showResult:false
     }),
@@ -62,25 +61,25 @@ export default {
       getAttendance() {
         if (this.studentid) {
            let sl = { task: 'plainSql'
-                    , sql:
-                `select sessionid,attendancedate, staff, location, period, archived, surname, grade from (\
-                  select attendancedate, a.staff,a.location,a.period,a.sessionid
-   				         , 'N' archived, s.surname, concat(grade, gclass) grade \
-                   from dkhs_student s \
-                      , a_attendance a \
-                  where a.capture = s.studentid \
-                    and a.active is null \
-                    and a.capture = ${this.studentid} \
-                  union all \
-                  select attendancedate, a.staff,a.location,a.period,a.sessionid
-				         , 'Y', s.surname, concat(grade, gclass) grade \
-                   from dkhs_student s \
-                      , a_attendance_back a \
-                  where a.capture = s.studentid \
-                    and a.active is null \
-                    and a.capture = ${this.studentid} \
-                    ) d \
-                 order by attendancedate DESC`
+                    , sql:`select * from v_attendance where studentid = ${this.studentid}`
+// `select sessionid,attendancedate, staff, location, period, archived, surname, grade from (\
+//   select attendancedate, a.staff,a.location,a.period,a.sessionid
+//    , 'N' archived, s.surname, concat(grade, gclass) grade \
+//    from dkhs_student s \
+//       , a_attendance a \
+//   where a.capture = s.studentid \
+//     and a.active is null \
+//     and a.capture = ${this.studentid} \
+//   union all \
+//   select attendancedate, a.staff,a.location,a.period,a.sessionid
+//  , 'Y', s.surname, concat(grade, gclass) grade \
+//    from dkhs_student s \
+//       , a_attendance_back a \
+//   where a.capture = s.studentid \
+//     and a.active is null \
+//     and a.capture = ${this.studentid} \
+//     ) d \
+//  order by attendancedate DESC`
            }
            zmlFetch(sl, this.processAfterFetch);
         }

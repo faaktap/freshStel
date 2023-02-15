@@ -1,4 +1,3 @@
-
 <template>
 <v-container fluid class="play">
 <v-layout v-if="functionList.length"
@@ -6,7 +5,8 @@
 
           class="ma-1 pa-1">
 
-        <base-search  style="flex-grow: 8"
+        <base-search  id="thesearch"
+                      style="flex-grow: 8"
                       v-show="functionSearch"
                       class="ma-2 text-uppercase"
                       v-model="search"
@@ -28,7 +28,7 @@
          {{ l.functionname }}
       </v-btn>
 
-      <v-card-text v-else>
+      <v-card-text v-else :class="small ? 'ma-1 pa-0' : 'ma-2 pa-2'">
         <!-- here we show imore info about the button -->
         <v-btn
            :x-small="small" :small="!small"
@@ -57,6 +57,7 @@
 <script>
 import { getters } from "@/api/store";
 import { doStuff } from '@/api/buttons'
+import { ls } from "@/api/localStorage.js"
 import baseSearch from '@/components/base/baseSearch.vue'
 export default {
   name: "ListTestButtons",
@@ -93,6 +94,7 @@ export default {
         if(!this.getZml.functions.length) return []
         return this.getZml.functions.filter(e => e.functionaccess == 'admin')
     }
+
   },
   methods:{
        filterStringArray(array, value) {
@@ -131,12 +133,20 @@ export default {
         },
    },
    mounted() {
-    console.log('M',this.$options.name)
     this.$cs.l('M',this.$options.name)
+    if (this.getZml.functions.length == 0) {
+       this.getZml.functions = ls.load('zmlFuncs')
+    }
    },
+
    created() {
     console.log('C',this.$options.name)
     this.$cs.l('C',this.$options.name)
+   },
+   watch:{
+       baseSearch() {
+        document.getElementById("theSearch").focus()
+       }
    }
 };
 </script>

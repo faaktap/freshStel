@@ -15,34 +15,47 @@
   (don't think my users will understan collapse)
   -->
   <v-toolbar elevation="3"
-             color="primary"
+             :color="color || 'primary'"
              :src="showImg ? 'img\\toolbar.jpg' : ''"
-             :collapse="$vuetify.breakpoint.smAndDown"
+             :collapse="$vuetify.breakpoint.mobile"
+             dense
              class="ml-0 mr-0 pl-0 pr-0 mb-4">
-    <v-app-bar-nav-icon @click="appBar = !appBar"> </v-app-bar-nav-icon>
+    <v-app-bar-nav-icon
+        v-if="toolList && toolList.length > 0"
+        @click="appBar = !appBar"
+    >
+    <v-icon> mdi-menu</v-icon>
+    </v-app-bar-nav-icon>
     <v-toolbar-title v-if="toolbarName">
       {{ toolbarName }}
     </v-toolbar-title>
-<v-navigation-drawer
+<v-dialog
         floating
+        :fullscreen="false"
         v-model="appBar"
-        absolute
         temporary
+        width="500"
       >
       <v-card>
         <v-list
           dense
           rounded
         >
-        <v-list-item v-for="(t,i) in toolList" :key="t.name" @click="$emit('toolClick',t.task||t.name||t.icon||i)">
+        <v-list-item v-for="(t,i) in toolList" :key="t.name" @click="$emit('toolClick',t.task || t.name || t.icon || i);appBar=false">
          <v-list-item-content>
-          <v-list-item-title>{{ t.task||t.name||t.icon||i }}</v-list-item-title>
+          <v-list-item-title>
+            <v-icon v-if="t.icon" color="t.color || 'white'">     {{t.icon || i }} </v-icon>
+            <span v-if="'name' in t"> {{ t.name }} </span>
+            <span v-else> {{ t }} </span>
+          </v-list-item-title>
+
         </v-list-item-content>
 
         </v-list-item>
         </v-list>
+        {{ toolList }}
       </v-card>
-</v-navigation-drawer>
+</v-dialog>
     <v-overlay v-if="loading" :value="loading">
       <v-progress-circular indeterminate size="84">
         Thinking ...
@@ -51,7 +64,7 @@
     <v-spacer />
     <!-- <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp && toolList.length" class="ma-2 pa=2"> -->
 
-         <v-btn small class="mr-1"
+         <v-btn small class="ml-1 pa-1"
                 v-for="(t,i) in toolList" :key="t.name"
                 :color="t.color || 'white'"
                 :icon="(!grootGenoeg || !t.name) ? true : false"
@@ -79,14 +92,14 @@
 import VBack from '@/components/base/VBack.vue'
 export default {
     name:"baseTool",
-    props:["toolList","toolbarName","loading","background","back"],
+    props:["toolList","toolbarName","loading","background","back","color"],
     components:{VBack},
     data: () => ({
         appBar: false
     }),
     computed: {
       grootGenoeg() {
-        return this.$vuetify.breakpoint.smAndUp && this.toolList.length
+        return this.$vuetify.breakpoint.mobile && this.toolList.length
       },
       showBack() {
         if (this.back == undefined) return true

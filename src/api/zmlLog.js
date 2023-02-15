@@ -23,7 +23,7 @@ function zmlLog(user, pagename,logobj, callback,errcallback) {
         .catch((err)=>{
             zmlConfig.cl('ZF: Errorname : ',task.task , 'Error:' , err, task);
             if (errcallback) errcallback(err);
-            alert('We have lost our way....Data or Connection problem.')
+            console.log('We have lost our way....Data or Connection problem.')
         });
     }
 export {zmlLog};

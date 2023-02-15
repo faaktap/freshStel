@@ -2,8 +2,10 @@
   <v-app id="app">
    <app-layout :key="projectID" >
    <v-container fluid>
+     <keep-alive :max="10">
       <router-view>
       </router-view>
+     </keep-alive> 
    </v-container>
    </app-layout>
 
@@ -31,6 +33,7 @@ import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants'
 import confirm from "@/api/DialogConfirm"
 import EventBus, { ACTIONS } from '@/api/event-bus'
+import { ls } from "@/api/localStorage.js"
 export default {
   name: 'ZmlApp',
   components: {confirm},
@@ -61,6 +64,16 @@ export default {
     console.log('answer = ', t)
     */
 
+   //Check if a reload is needed (if the version number changed)
+   let curVersion = ls.load('zmlVersion')
+   this.$cs.l(curVersion, '!=' , zmlConfig.projectID)
+   if (curVersion != zmlConfig.projectID) {
+    ls.save('zmlVersion', zmlConfig.projectID)
+    this.$cs.l('Reload on new Version')
+    location.reload();
+   } else {
+    this.$cs.l('Version is good - continue')
+   }
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open

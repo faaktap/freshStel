@@ -1,15 +1,15 @@
 <template>
-<div>
-<v-dialog v-model="contactDialog" 
+
+<v-dialog v-model="contactDialog"
          @keydown.esc="contactDialog = !contactDialog"
          style="transform: scale(0.875);transform-origin: left;"
-         overlay-color="red"
+         overlay-color="blue"
          :fullscreen="$vuetify.breakpoint.mobile">
  <v-form v-model="valid">
-  <v-card class="white text--black pa-4"> 
+  <v-card class="white text--black pa-4">
    <v-row>
      <v-col cols="12">
-      <legend>wserwerwerwerwerwer</legend>
+      <legend>{{ title }}</legend>
      </v-col>
      <v-col cols="8" md="4">
       <v-text-field v-model="name" label="Name" :rules="nameRules" required />
@@ -24,21 +24,21 @@
         <v-textarea  v-model="message" label="Message" />
      </v-col>
      <v-card-actions>
-        <v-btn color=primary @click="sendMail"> Submit your Email </v-btn>
-        <v-btn color=primary @click="contactDialog = false"> Cancel the Email </v-btn>
+        <v-btn color="primary" @click="sendMail" class="mr-2">
+          <v-icon small class="mr-1"> mdi-send</v-icon> Submit your Email </v-btn>
+        <v-btn color="error" title="Esc will also work" @click="contactDialog = false">
+          <v-icon> mdi-cancel</v-icon> Cancel the Email </v-btn>
      </v-card-actions>
    </v-row>
   </v-card>
  </v-form>
 </v-dialog>
-</div>
+
 </template>
 
 <script>
 import { zmlMail } from '@/api/zmlMail';
-import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
-import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 export default {
   name: "ContactForm",
   data: () => ({
@@ -58,15 +58,20 @@ export default {
       phone: '',
       radioGroup: '',
       message: '',
-    }),   
+      title: '',
+      loading: false
+    }),
     methods:{
-        open() {
-          this.contactDialog = true;
+        open(title, name, email) {
+          console.log('contactForm', title, name)
+          this.contactDialog = true
+          this.title = title
+          this.name = name || ''
+          this.email = email || ''
         },
         sendMail() {
           if (this.valid == false) {
-            //alert('Some fields are not filled in properly!');
-            errorSnackbar('Some fields are not filled in properly!');
+            this.$root.$snacker('Some fields are not filled in properly!','red darken-2','2000')
           } else {
             let heading = "<h2> Email Enquiry from KovsieWas Website</h2>";
             heading += "<div><table><tr><td>Phone:<td>" + this.phone;
@@ -81,27 +86,31 @@ export default {
                      ,subject:"Navraag aan ZmlRekenaars / Enquiry to ZmlComputers"
                      ,email_from: "werner@zmlrekenaars.co.za"
                      ,attachments: []
-                    };
+            };
+            this.loading = true
             zmlMail(ts,this.emailSend);
          }
         },
         emailSend(response) {
+          this.loading = false
           if (response.errorcode == 0) {
-             this.contactDialog = false;  
+             this.contactDialog = false;
              this.message = '';
              this.email = '';
              this.phone = '';
-             infoSnackbar('Thanks, your email was sent!');
+             //infoSnackbar('Thanks, your email was sent!');
+             this.$root.$snacker('Thanks, your email was sent!','green');
           } else {
-             errorSnackbar('Problem, your email was NOT sent!');
+             //errorSnackbar('Problem, your email was NOT sent!');
+             this.$root.$snacker('Problem, your email was NOT sent!','red')
              alert(response);
-             zmlConfig.cl(response);
+             this.$cs.l(response);
           }
 
         }
     },
-    mounted: function () { 
-      zmlConfig.cl('CFmount : ', this.$options.name , 'c=',this.$children.length);
+    mounted: function () {
+      this.$cs.l('CFmount : ', this.$options.name , 'c=',this.$children.length);
     },
     watch: {
      getZml: {

@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    
+
     <link rel="icon" href="/favicon.ico">
-    
+
     <title>Kuilies Online - DK High School Online Training</title>
     <meta name="author" content="Werner ZMLRekenaars">
     <meta name="description" content="Online Classroom for learners at De Kuilen High School">
@@ -17,20 +17,53 @@
     <meta name="twitter:label1" content="Created by" />
     <meta name="twitter:data1" content="Werner Smit" />
     <meta property="og:url" content="https://kuiliesonline.co.za/virtual-school">
-    
-   
-    <link rel="preconnect" href="https://fonts.gstatic.com">    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">        
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Noto+Sans+JP:wght@400;500&display=swap" >
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-   
+<style>
+ .zloader {
+  position: absolute;
+  left: 50%;  top: 50%;  z-index: 1;  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;  width: 120px;  height: 120px;
+  animation: spin 2s linear infinite;
+}
+#q {
+  position: absolute;  left: 60%;  top: 40%;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
   </head>
   <body>
     <noscript>
       <strong>Online Classroom for learners at De Kuilen High School (DK-ONLINE) need JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    
+    <div class="zloader" id="zloader"></div>
+    <small><i><p id="q"></p></i></small>
+
     <div id="app"></div>
     <!-- built files will be auto injected -->
+<script>
+  let qr = localStorage.getItem('quote');
+  if (qr) {
+    let q =  JSON.parse(qr);
+    console.log(q);
+    document.getElementById("q").innerText = q.quote;
+  } else {
+    console.log('quote not loaded');
+  }
+
+  window.addEventListener('load'
+    , function() {document.getElementById("zloader").style.display = "none";}
+    , false
+    );
+</script>
   </body>
 </html>

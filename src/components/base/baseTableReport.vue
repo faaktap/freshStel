@@ -62,8 +62,16 @@ export default {
     }
   },
   methods:{
+    testJSON() {
+      this.$router.push({ name: 'BasePrintTable', params: {reportHeader: this.reportHeader, unique:this.unique, orDTTable: this.orDTTable} })
+    },
+
     doPrint() {
-        printJSON(this.orDTTable, this.labels, this.reportHeader)
+      this.testJSON()
+      alert('check it out')
+      if (this.entity=='anyvalue-takeifout') {
+      printJSON(this.orDTTable, this.labels, this.reportHeader)
+      }
     },
     getData () {
       //console.log(this.$options.name,'getdata', this.sqlSelect)

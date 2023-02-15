@@ -3,7 +3,7 @@
 <v-dialog v-model="showIt" :fullscreen="$vuetify.breakpoint.mobile" max-width="400">
  <v-card  max-width="400" color="white" style="position: relative;">
   <v-card-title xclass="text-md-h4 d-xs-none d-sm-block wordbreak text-center">
-    <span>Merit Level Edit xxxx</span>
+    <span>Merit Level Edit (Still to be completed)</span>
     <v-menu bottom left>
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon v-bind="attrs" v-on="on" @click="close">

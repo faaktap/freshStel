@@ -19,15 +19,16 @@ How does this work?
 6. When user click on one, we return the id.
 A. The search function, use the itemdisplay to get data to display in dropdown
    -->
- <div v-if="itemObj && itemObj.length > 0">
+ <!-- <div v-if="itemObj && itemObj.length > 0"> -->
    <!-- filled, outlined,solo, solo-inverted, flat-->
     <v-autocomplete
+        v-if="itemObj && itemObj.length > 0"
         cache-items
         clearable
         open-on-clear
         message
         v-model="what"
-        v-on:input="$emit('input', what)"
+        v-on:input="inputDone"
         :value="searchText"
         :search-input.sync="search"
         :items="itemObj"
@@ -53,50 +54,63 @@ A. The search function, use the itemdisplay to get data to display in dropdown
   </template>-->
     </v-autocomplete> <!--//return-object -->
 
-</div>
+<!-- </div> -->
 </template>
 
 
 <script>
-import { getters } from "@/api/store"
-import { zData } from "@/api/zGetBackgroundData.js"
+//import { getters } from "@/api/store"
+import { ls } from "@/api/localStorage.js"
+//import { zData } from "@/api/zGetBackgroundData.js"
 export default {
-   name: "PersObjectPickList",
-   props: {itemObj: {type: Array,required:true}
+  name: "AutoSelRoom",
+  props: {itemObj: {type: Array,required:true}
           ,asLabel: {type:String, default:'xxxx'}
           ,initialValue: {default:1}
           },
-   data: () => ({
+  data: () => ({
     search: null,
     what: null,
+    obj: {},
+    saveIni:'ASRoom'
   }),
   computed: {
     searchText() {
       return this.itemObj[0] || ''
     },
     itemDisplay() {
-        //return "this.itemToShow";
-        //return item => item.name + ' — ' + item.workarea +  ' - ' + item.description
         return item => item.name + ' - ' + item.description
     }
   },
   methods: {
+    inputDone() {
+      this.$emit('input', this.what);
+      this.$emit('objInput', this.itemObj[0])
+      ls.save(this.saveIni, this.what)
+    },
     finished() {
        this.what = this.itemObj.find(item => item.name == this.initialValue)
+       console.log(this.$options.name,'finished',this.initialValue)
     }
   },
   mounted() {
-    if (getters.getState({ object: "gZml" }).place.length < 5) {
-       zData.initialData('hallo', this.finished)
-    } else {
-        this.finished()
-    }
+    //Check if place loaded, otherwise load from ini, otherwise from mysql
+    // if (getters.getState({ object: "gZml" }).place.length < 5) {
+    //   getters.getState({ object: "gZml" }).place = ls.load('lookupPlace')
+    //   if (getters.getState({ object: "gZml" }).place.length < 5)  {
+    //     zData.initialData('hallo', this.finished)
+    //   }
+    //   return
+    // }
+    this.finished()
    },
 
   watch: {
-    initialValue(n,o) {
-       console.log('W',this.$options.name,o,n)
-       this.what = this.itemObj.find(item => item.name == this.initialValue)
+    //initialValue(n,o) {
+    initialValue() {
+       //console.log(this.$options.name,'watch',o,n)
+       //this.what = this.itemObj.find(item => item.name == this.initialValue)
+       this.finished()
     }
    }
 }

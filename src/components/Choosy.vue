@@ -72,8 +72,6 @@ export default {
      this.cat.length = 0
      const distinctBy = (prop, arr) => [...new Set(arr.map(o => o[prop]))]
      this.cat = distinctBy('grade', this.items)
-     alert(this.items.length)
-     console.log(this.cat)
 
   }
 }

@@ -1,6 +1,6 @@
 // import { getters } from "@/api/store";
 import { errorSnackbar } from '@/api/GlobalActions';
-import { zFetch } from '@/api/zmlFetch';
+import { zFetch, zmlFetch } from '@/api/zmlFetch';
 //import { zmlLog } from '@/api/zmlLog.js';
 
 export const clWork = {
@@ -22,6 +22,62 @@ export const clWork = {
    }
    ,showError: (response) => {
     console.log("ERROR : " +  response)
+   }
+   ,getList: (listID, doneProcedure) => {
+    //fetch a list form hw_classlist
+      let sn = { task: 'plainSql' , sql:`select * from  hw_classlist where id = ${listID}`}
+      zmlFetch(sn, doneProcedure)
+   }
+   ,getTheTickList( doneProcedure ) {
+      let sn = { task: 'plainSql', sql:`SELECT * FROM  dkhs_tickjdoc`}
+      zmlFetch(sn, doneProcedure)
+   }
+   ,getAllGeneralLists( doneProcedure ) {
+       let sn = { task: 'PlainSql', sql:`SELECT tgl.genlistid, tgl.classlistid, tgl.userid, tgl.placeid\
+         , tgl.listdate, tgl.note, p.name location, l.user_name teacher, cl.listname\
+      FROM dkhs_genlist tgl\
+      LEFT JOIN hw_classlist cl on cl.id = tgl.classlistid\
+      LEFT JOIN dkhs_learner l on l.userid = tgl.userid\
+      LEFT JOIN s_place p on p.placeid = tgl.placeid`}
+      zmlFetch(sn, doneProcedure)
+   }
+   ,getGeneralList: (listID, doneProcedure) => {
+    //fetch a list form hw_classlist
+      let sn = { task: 'plainSql' , sql:`select * from  dkhs_genlist where genlistid = ${listID}`}
+      zmlFetch(sn, doneProcedure)
+   },
+   saveGenList: (studentListReal, studentItem, listDetail) => {
+    console.log('SAVEGENLIST')
+    console.log('studentListReal:', studentListReal)
+    console.log('studentItem:', studentItem)
+    console.log('listDetail:', listDetail)
+
+   },
+   addGenList: (newList,basicList, afterwardsProcedure) => {
+      let listName = newList.description + ' (' + newList.name + ')'
+      console.log('addGenList',newList,basicList, afterwardsProcedure, listName)
+      let optionsAndMore = JSON.stringify(newList)
+      let sql = `insert into dkhs_genlist values(null\
+      , ${basicList.id}\
+      , '${listName}'\
+      , ${basicList.userid}\
+      , null\
+      , '${basicList.share}'\
+      , '${basicList.grade}'\
+      , substr(now(),1,10)\
+      , '${optionsAndMore}'\
+      , ''\
+      )`
+      clWork.executeSql(sql)
+   }
+   ,getStudentsInList: (listID, doneProcedure) => {
+    //fetch a list of students from hw_classliststudents
+      let sl = { task: 'plainSql'
+                , sql:`select l.studentid,s.*  from dkhs_student s, hw_classliststudent l \
+                        where l.classlistid = ${listID} and l.studentid = s.studentid \
+                     order by s.surname, s.firstname, s.studentid`
+      }
+      zmlFetch(sl, doneProcedure)
    }
    ,descriptionForThisSession: ""
    ,addToList: (listID, studentid) => {
@@ -51,6 +107,7 @@ export const clWork = {
                  set listname = '${listObj.listname}'\
                , share = '${listObj.share}'\
                , grade = '${listObj.grade}'\
+               , jdocstructure = '${listObj.jdocstructure}'\
                where id = ${listObj.id}`
     clWork.executeSql(sql)
     return 'DONE'

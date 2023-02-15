@@ -1,8 +1,8 @@
 <template>
 <v-parallax background height="1000px" src="img/school.jpg" class="filter-img" >
-<v-container fluid justify="center" align="center" xclass="filter-div mt-5 pa-5" >
- <v-layout wrap class="ma-0"> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
-   <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.4)">
+<v-container justify="center" align="center"  xclass="filter-div mt-5 pa-5" >
+ <v-layout wrap class="ma-2"> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
+   <v-card class="justify-center ma-1 pa-1" color="rgba(106, 196, 226, 0.4)">
      <v-card-title  class="blue--text">
       <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
       <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />
@@ -27,7 +27,11 @@
              </ul>
           </p>
           </v-card>
-          <blockquote class="blockquote darken-3 purple--text ma-1" cite="Shakespeare">
+          <blockquote class="blockquote darken-3 purple--text ma-2 pa-2"
+                      @mouseover="hover = true"
+                      @mouseleave="hover = false"
+                     :class="{ active: hover }"
+                      cite="Shakespeare">
             {{ q.quote }}
            <span v-if="q.author">– {{ q.author }}</span>
           </blockquote>
@@ -67,18 +71,19 @@
       </v-card-actions>
    </v-card>
 </v-layout>
-<base-title-expand class="ma-0 pt-1 px-0" heading="More">
+<base-title-expand class="ma-0 pt-1 px-0" heading="More"  color="rgba(106, 196, 226, 0.4)">
  <v-btn class="ma-2" color="primary" to="/newsletters/202"> Newsletters </v-btn>
 
  <v-btn class="ma-2" color="primary" to="/personel"> Teachers & Supporting Staff </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/virtualawards"> Awards </v-btn>
+ <!-- <v-btn class="ma-2" color="primary" to="/virtualawards"> Awards </v-btn> -->
 
  <v-btn class="ma-2" color="primary" to="/latest/100"> Latest Uploads </v-btn>
 
  <v-btn class="ma-2" color="primary" to="/attload"> Attendance </v-btn>
 
  <v-btn class="ma-2" color="primary" to="/attendance"> Old Attendance View </v-btn>
+
 </base-title-expand>
 </v-container>
 </v-parallax>
@@ -107,13 +112,16 @@ export default {
   data: () => ({
      range:[130,150],
      q :{quote:'And this our life, exempt from public haunt, finds tongues in trees, books in running brooks, sermons in stones, and good in everything.'
-        ,author:'Shakespeare'}
+        ,author:'Shakespeare'},
+     hover:false
   }),
   computed: {
       ran() {
         return Math.floor(Math.random() * 4)
       }
   },
+  activated() {     console.log(this.$options.name,' - activated')  },
+  deactivated() {     console.log(this.$options.name,' - deactivated')  },
   methods:{
     getQuote() {
       let token = {headers: {'Authorization': 'Token 4f9248d8208d5554e8f508d126eaada5ad4b9ca6'}}
@@ -127,6 +135,7 @@ export default {
         let r = Math.floor(Math.random() * 5)
         this.q.quote = data.results[r].quote
         this.q.author = data.results[r].author
+        localStorage.setItem('quote', JSON.stringify(this.q))
       })
     },
   },
@@ -175,5 +184,8 @@ export default {
     opacity: 0;
 
   }
+  .active {
+  background: white;
+ }
 
 </style>

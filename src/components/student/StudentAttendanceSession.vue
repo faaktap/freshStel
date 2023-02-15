@@ -2,6 +2,8 @@
 <div>
 
 <base-title-expand color="white" heading="ATTENDANCE VIEW SESSION">
+<p>We display all filled in attendance for a selected event here. An event is created when an attendace session is started, and a teacher, day, period, date
+  and class was selected </p>
    <p>Shall we allow them to edit? Might be a bit tricky, maybe just change status and allow delete?</p>
    {{ studentTally }}
   </base-title-expand>
@@ -77,14 +79,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="s in studentList" :key="s.studentid" :style="s.status == 'Present' ? 'color:gray' : 'background-color:lavender'">
+        <tr v-for="s in studentList" :key="s.studentid" :style="s.status == 'Present' ? 'color:gray' : 'background-color:red'">
           <td class="ma-2"> {{ s.attendanceid }} </td>
           <td class="ma-2"> {{ s.surname}} </td>
           <td class="ma-2"> {{ s.firstname}} </td>
           <td class="ma-2"> {{ s.studentid}} </td>
           <td class="ma-2"> {{ s.attendancedate.substr(0,16) }} </td>
           <td class="ma-2"> {{ s.period }} </td>
-          <td class="ma-2" :style="s.status == 'Present' ? 'color:green' : 'background-color:lavender'">
+          <td class="ma-2" :color="s.status == 'Present' ? 'color:green' : 'background-color:lavender'">
              <v-btn @click="edit(s.attendanceid)" small class="ma-2"> {{ s.status }} </v-btn>
           </td>
           <td  class="ma-2" v-show="showPhotoList==true"><z-show name="studentphoto" :id="s.studentid" height="44" /> </td>

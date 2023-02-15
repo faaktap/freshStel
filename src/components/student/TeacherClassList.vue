@@ -49,8 +49,10 @@
         <td class="pa-2 ma-2">{{ t.id }}</td>
         <td class="ma-2" >{{ t.teacher }}</td>
         <td class="ma-2 pa-2">{{ t.listname }}</td>
-        <td> <v-btn small @click="loadList(t.id)" title="View or Add Students in List" color="primary" class="ma-2"> View </v-btn>
-             <v-btn small @click="editListName(t.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn></td>
+        <td> <v-btn x-small @click="loadList(t.id)" title="View or Add Students in List" color="primary" class="ma-2"> View </v-btn>
+             <v-btn x-small @click="editListName(t.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn>
+
+        </td>
       </tr>
       </tbody>
     </v-simple-table>
@@ -67,6 +69,8 @@
     </v-card-actions>
   </v-card>
   </v-layout>
+
+
     <v-dialog v-model="showForm"  :fullscreen="$vuetify.breakpoint.mobile" width="50%">
       <v-card  class="ma-2 pa-2">
         <v-card-title> {{ formTitle }} </v-card-title>
@@ -83,13 +87,20 @@
           <v-btn small @click="save" color="primary"> save </v-btn>
           <v-btn small @click="showForm = false"> ignore </v-btn>
           <v-spacer />
-          <v-btn small @click="basedOnOtherList = true"> Based on other list </v-btn>
+          <v-btn v-if="rec.id"
+                 small @click="basedOnOtherList = !basedOnOtherList"
+                 title="Add students based on other list, you can delete some of them later"
+                 class="primary">
+                Add All Students from other List
+          </v-btn>
         </v-card-actions>
+        <v-textarea v-model="rec.jdocstructure" label="Other List Criteria" outlined dense />
         <v-card-text v-if="basedOnOtherList">
            <v-btn class="ma-1" v-for="t in tList" :key="t.id" @click="addStudentsToList(t.id)"> {{ t.listname }} </v-btn>
         </v-card-text>
       </v-card>
     </v-dialog>
+
 </v-container>
 
 <!-- <teacher-class-edit :listID="passedListID" /> -->
@@ -114,6 +125,7 @@ import { getters } from "@/api/store";
 import { clWork } from "@/components/homework/ClassListWork.js"
 import { zData } from "@/api/zGetBackgroundData.js"
 import { ls } from "@/api/localStorage.js"
+import { infoSnackbar } from '../../api/GlobalActions';
 const ADD_LIST_TITLE = "Create New List"
 export default {
   name: "TeacherClassList",
@@ -130,14 +142,14 @@ export default {
     showForm: false,
     passedListID: '',
     basedOnOtherList: false,
-    showAs: 'list'
+    showAs: 'list',
   }),
   methods:{
     initialize() {
       console.log('initialize')
       if (ls.test('zmlTCL-GradeList') && ls.test('zmlTCL-Search')) {
         this.gradeList = ls.load('zmlTCL-GradeList')
-        this.search = ls.load('zmlTCL-Search')
+        this.search = ''
       }
       let ts = {}
       ts.task = 'PlainSql'
@@ -147,11 +159,14 @@ export default {
     newList() {
       let pers = this.getZml.persMenemonic.find(e=> e.userid == this.getZml.login.userid)
       if (! ('name' in pers)) {
-        alert('error')
+        alert('error - we do not have a good personel list - cannot add anything')
         return
       }
+      console.log(pers)
       this.rec.teacher = pers.name.substr(0,1).toUpperCase() + ' ' + pers.surname.toUpperCase()
-      this.rec.listname = 'type new name here'
+      this.rec.id = 0
+      this.rec.listname = 'Please type your listname here (' + pers.user_name + ')'
+      this.defaultListname = this.rec.listname
       this.rec.grade = 'G10'
       this.rec.share = 'Y'
       this.formTitle = ADD_LIST_TITLE
@@ -163,18 +178,27 @@ export default {
       this.showForm = true
     },
     addStudentsToList(id) {
+      if (!this.rec.listname || this.rec.listname == this.defaultListname) {
+        infoSnackbar('please fill in a new name, and make sure all other information is filled in, we wil')
+        this.basedOnOtherList = false
+        return
+      }
       alert('we want to add all students belonging to list ' + id + ' to our list ' + this.rec.id)
       if (!this.rec.id) {
-        alert('not yet')
+        alert('not yet - list not created yet!')
+        this.basedOnOtherList = false
         return
       }
       clWork.addStudentsToList(this.rec.id, id)
       this.showForm = false
+      this.basedOnOtherList = false
     },
     save() {
       if (this.formTitle == ADD_LIST_TITLE) {
          clWork.addList(this.rec)
       } else {
+         //if (this.rec.jdocstructure) this.rec.jdocstructure = JSON.stringify(this.rec.jdocstructure)
+         // alert('Before save:' + this.rec.jdocstructure)
          clWork.updateList(this.rec)
       }
       this.showForm = false
@@ -189,7 +213,6 @@ export default {
     },
     loadList(listID) {
       ls.save('zmlTCL-GradeList',this.gradeList)
-      ls.save('zmlTCL-Search',this.search)
       this.passedListID = listID
       this.$router.push({ name: 'TeacherClassEdit', params: {listID: listID}})
     },

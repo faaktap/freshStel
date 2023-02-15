@@ -1,16 +1,16 @@
 <template>
-  <v-container v-if="tHeader.length && tList.length">
+  <v-container fluid v-if="tHeader.length && tList.length">
    <v-row >
     <v-col cols="12" v-if="tHeading">
      <h1 class="text-center grey--text"> {{ tHeading }} </h1>
     </v-col>
-    <v-col cols="12">   
+    <v-col cols="12">
      <v-card xcolor="deep-purple">
        <v-container fluid>
          <v-layout color="gray--text text--lighten-5">
          <v-flex>
         <v-text-field
-           
+
            v-model="search"
            append-icon="mdi-magnify"
            label="Search"
@@ -29,26 +29,26 @@
                  v-if="tList && tHeader.length > 0"
                  :headers="tHeader"
                  :items="tList"
-                 :items-per-page="5"
+                 :items-per-page="itemsPerPage"
                  :search="search"
                   class="elevation-1"
                  color="purple lighten-3"
                  multi-sort
                  @click:row="clickOnTableRow"
-                 @dblclick:row.prevent="doubleClickOnTableRow"                 
+                 @dblclick:row.prevent="doubleClickOnTableRow"
                 >
-                 <template v-slot:footer>
-                   <v-card class="ma-4"> 
+                 <!-- <template v-slot:footer>
+                   <v-card class="ma-4">
                     <v-card-text class="green lighten-4">
-                    Kliek op die klein ronde dingetjie om data te verander, die op en af pyl om te skuif, en die 
+                    Kliek op die klein ronde dingetjie om data te verander, die op en af pyl om te skuif, en die
                     snaakse + teken onder regs om iets by te voeg.
                     </v-card-text>
                    </v-card>
-                 </template>
+                 </template> -->
                  <template v-slot:[`footer.page-text`]>
                    <v-btn icon @click="allocate()"><v-icon >mdi-table-plus</v-icon></v-btn>
                  </template>
-                </v-data-table> 
+                </v-data-table>
                </div>
               </v-card>
            </v-col>
@@ -57,19 +57,25 @@
      </v-card>
     </v-col>
   </v-row>
- </v-container>   
+ </v-container>
 </template>
 
 
 <script>
 export default {
     name:"BaseTableEdit",
-    props: ['tList', 'tHeading', 'bHeading'],
+    props: {
+    tList: {type: Array, required: true },
+    tHeading: {type: String, default:'table heading'},
+    bHeading: {type: String, default:'table B heading'},
+    itemsPerPage: {type: Number, default:20},
+    },
+    //props: ['tList', 'tHeading', 'bHeading','itemsPerPage'],
     data: () => ({
         curItem:{},
         search:null,
         tableLoading:false,
-        tHeader: []      
+        tHeader: []
     }),
     methods:{
       allocate() {

@@ -2,9 +2,9 @@
 Carousel of all photos linked to student. (awards and school photos)
 </docs>
 <template>
-   <v-card max-width="300" class="mx-auto" v-if="studentid && photoList" :color="color" elevation="2">
+   <v-card max-width="300" class="mx-auto" v-if="studentid" :color="color" elevation="2">
      <v-card-title> Photos </v-card-title>
-     <v-card-text>
+     <v-card-text v-if="photoList.length">
         <v-carousel
               :show-arrows="false"
               :hide-delimiter-background="false"
@@ -24,6 +24,9 @@ Carousel of all photos linked to student. (awards and school photos)
           </v-carousel-item>
           </v-carousel>
       </v-card-text>
+      <v-card-text v-else>
+        NO PHOTOS AVALIABLE
+      </v-card-text>
      </v-card>
 
 </template>
@@ -33,7 +36,7 @@ export default {
     name:"StudentPhotoList",
     props: ['studentid','color'],
     data: () => ({
-      photoList:null,
+      photoList:[],
     }),
     methods:{
       getPhotos() {

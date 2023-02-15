@@ -118,10 +118,15 @@
                <v-text-field v-model="pers.workemail"
                              label="School Email" />
         </v-flex>
-        <v-flex xs6 md6>
+        <v-flex xs6 md6 lg3>
                <v-text-field v-model="pers.wcgschoolsid"
                              label="WCGSCHOOLS username for wifi" />
         </v-flex>
+        <v-flex xs6 md6 lg3>
+               <v-text-field v-model="pers.IDNumber"
+                             label="IDNumber" />
+        </v-flex>
+
         </v-layout>
         </v-flex>
 
@@ -169,7 +174,17 @@
       <v-layout row wrap align-content-start justify-space-between>
        <v-flex>
         <v-card color="light-blue accent-1" class="ma-4 pa-4">
-          End of Form <v-btn small class="float-right" @click="savePers"> Save </v-btn>(ESC to Exit)
+         <v-card-actions>
+          End of Form
+          <span class="text-caption xxfloat-right ml-2">
+            p{{ pers.persid }}
+            s{{ pers.staffid }}
+            h{{ pers.heidiid }}
+            {{ pers.menemonic }} {{pers.username }}
+           </span>
+          <v-spacer />
+          <v-btn small class="float-right" @click="savePers"> Save </v-btn>(ESC to Exit)
+         </v-card-actions>
         </v-card>
        </v-flex>
       </v-layout>

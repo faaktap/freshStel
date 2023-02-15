@@ -94,9 +94,9 @@
               @onload="onload"
               @load="load"
               :src="httpsrc" />
-      <small class="text-caption">4</small>              
+      <small class="text-caption">4</small>
   </template>
-  
+
 
 <!-------------------------------------GOOGLE READER------------->
   <template v-else-if="['document', 'doc','ebook','pdf'].includes(typeExtName)">
@@ -184,6 +184,7 @@ export default {
       screenheight() {
         return screen.height+"px"
       },
+
       httpsrc() {
         if (this.src.includes('/home/')) {
            let cleanPath = this.src.replace('/home/kuilieso/public_html', '')

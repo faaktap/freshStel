@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+  <v-container fluid>
   <base-tool toolbarName="Email Lookup"
             :background="false"
             :back="true"

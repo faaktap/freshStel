@@ -37,7 +37,7 @@ Vue.prototype.$playSound = (path, volume = .5) => {
 export const cs = {
   // eslint-disable-next-line
   l: (...args) => {
-       // console.log(...args);
+        console.log(...args);
     },
   scrollToTop: (containerID) => {
       let e = document.getElementById(containerID || "app")

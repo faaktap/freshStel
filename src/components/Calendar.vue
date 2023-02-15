@@ -1,5 +1,6 @@
 <template>
 <v-card class="ma-0 pa-0" color="white">
+EVENTS: {{ events }}
   <v-row v-if="incomingMenemonic">
     <v-col>
     <v-sheet
@@ -214,7 +215,7 @@ export default {
       loadRooster(){
         this.selectedOpen = false
         this.personeelMenemonic = this.incomingMenemonic
-        if (!this.personeelMenemonic) this.personeelMenemonic = 'WIE'
+        if (!this.personeelMenemonic) this.personeelMenemonic = 'TVRB'
 
 /*      we have GROEN as a menemonic - so cannot do this test
         if (this.personeelMenemonic.substr(0,2) == 'GR') {

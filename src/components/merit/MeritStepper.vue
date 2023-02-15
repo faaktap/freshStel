@@ -51,7 +51,7 @@ import { getters } from "@/api/store"
 import { mer } from "@/components/merit/merit.js"
 import { infoSnackbar } from "@/api/GlobalActions"
 import StudentLookup from "@/components/student/StudentLookup.vue"
-import AutoSelPers from '@/components/AutoSelPers.vue'
+import AutoSelPers from '@/components/fields/AutoSelPers.vue'
 import BaseDate from "@/components/base/BaseDate.vue"
 export default {
     name: 'MeritStepper',

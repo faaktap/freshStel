@@ -135,7 +135,7 @@ import { zmlFetch } from '@/api/zmlFetch';
 //import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import ReportsTableSmall from '@/components/ReportsTableSmall.vue'
-import AutoSelRoom from '@/components/AutoSelRoom.vue'
+import AutoSelRoom from '@/components/fields/AutoSelRoom.vue'
 import BaseDate from "@/components/base/BaseDate.vue"
 import baseTool from '@/components/base/baseTool.vue'
 

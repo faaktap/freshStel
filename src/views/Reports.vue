@@ -80,7 +80,6 @@ import BaseTableReport from    '@/components/base/baseTableReport'
 import VBack from '@/components/base/VBack.vue'
 import { zmlFetch } from '@/api/zmlFetch.js'
 import { getters } from "@/api/store";
-
 export default {
   name: 'Report',
   components:{
@@ -101,16 +100,18 @@ export default {
   computed:{},
   methods: {
     tabSelected(tabNo) {
-      if (this.reports,length < 2) this.loadInitialData()
+      if (tabNo == undefined) return
+      //if (this.reports.length < 2) this.loadInitialData()
       this.tab = tabNo
       this.sqlSelect = ''
       this.curReport = this.reports[tabNo]
+      console.log(this.curReport, tabNo, this.reports.length)
       this.reports[tabNo].answer = 'dd'
       this.curReport.answer = "cc"
       console.log('tab selected:',tabNo, this.curReport.name)
+      console.log('calling getcount from tabselected -   tabSelect', tabNo, this.curReport)
       this.getCount()
     },
-
     //Not used = but would be nice if we can have string interpolation call a function when we need it.
     //javascript template strings with string interpolation
     //also read https://stackoverflow.com/questions/22607806/defer-execution-for-es6-template-literals#comment112302403_22619256 aandagtig
@@ -132,7 +133,6 @@ export default {
        return acc + values[tags[i]] + curr;
      }, fisrt);
     },
-
     objectSelected(e) {
       console.log('objSelected = ',e)
       this.curReport.obj = e
@@ -145,6 +145,7 @@ export default {
       zmlFetch(ts, this.doneAdd )
     },
     getCount() {
+      console.log('calling updat4count  ===  fetch, from getCount')
       if (this.curReport.count == null) {
         this.loading = true
         let ts = {}
@@ -153,18 +154,19 @@ export default {
         zmlFetch(ts, this.updateCount)
         //this.saveToDatabase(this.curReport)
       } else {
+        console.log('call showcount from getcount')
         this.showCount()
       }
     },
     updateCount(response) {
       this.loading = false
       this.curReport.count = response[0].items
+      console.log('call showcount from updatecount')
       this.showCount()
     },
     showCount() {
       this.reports[this.tab].answer = this.curReport.ans.replaceAll('**items**', this.curReport.count)
-      console.log('replace items', this.curReport.answer, this.curReport.ans, this.curReport.count)
-
+      console.log('called 3 times!!! replace items', this.curReport.answer, this.curReport.ans, this.curReport.count)
       //play
       // let a = this.fmt`Test with ${0}, ${1}, ${2} and ${0} again`(['A', 'B', 'C']);
       // console.log(a)
@@ -179,36 +181,35 @@ export default {
       console.log('sqlRep=',this.sqlSelect)
     },
     initialize(response) {
+      console.log('start initialize')
       response.forEach(e =>  e.answer = 'bb')
       this.reports = response
       this.reports.sort((a,b) => a.order - b.order)
       this.reports.forEach(e =>  e.answer = 'ee')
+      console.log('end initialize - calling getcount')
       this.getCount()
     },
     loadInitialData() {
+      console.log('start LOAD INITIAL DATA - hich calls initialize')
       let ts = {task: 'PlainSql',sql: 'select * from dkhs_reports'}
-      zmlFetch(ts, this.initialize )
+      zmlFetch(ts, this.initialize, this.moan )
     }
-
   },
   mounted() {
     if (this.getZml.place.length == 0 || this.getZml.owner.length == 0) {
       //They have been nowhere else = but should not be a problem
     }
     this.loadInitialData()
-
   },
   watch:{
     reportValueToCount() {
       this.curReport.f()
     },
-
   }
 }
 </script>
 
 <style scoped>
-
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 3s;
@@ -219,7 +220,6 @@ export default {
 .fade-enter-active {
   transition: all 3s ease;
 }
-
 .v-carousel .v-window-item {
   position: absolute;
   top: 0;

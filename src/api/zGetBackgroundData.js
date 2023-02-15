@@ -4,7 +4,6 @@ import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import { ls } from "@/api/localStorage.js"
 import { zLoadCal } from "@/api/loadCalendar.js"
-import { crudTask } from '@/components/crud/crudTask';
 
 function l(...args) {
     Vue.prototype.$cs.l(...args)
@@ -49,12 +48,25 @@ export const zData = {
                         }
         fetch(zmlConfig.emailPath, apiConfig);
     },
-    //wernerTest() {},
+    wernerTest() {},
+    quickLoadInitialData: (whatever, afterwardsFunction) => {
+        console.log('InitialData-Quickload----------------------------------------------------Start', whatever)
+        getters.getState({ object: "gZml" }).subjects = ls.load('zmlSubjects')
+        getters.getState({ object: "gZml" }).persMenemonic = ls.load('zmlPersM')
+        getters.getState({ object: "gZml" }).functions = ls.load('zmlFuncs')
+        getters.getState({ object: "gZml" }).place = ls.load('lookupPlace')
+        getters.getState({ object: "gZml" }).meritLevel = ls.load('zmlMeritLevel')
+        if (afterwardsFunction !== undefined) {
+            zData.wernerTest = afterwardsFunction
+        }
+        afterwardsFunction()
+    },
     initialData:  (whatever, afterwardsFunction) => {
+        console.log('InitialData-------------------------------------------------------------------Start', whatever)
         if (whatever !== undefined)
             l(whatever)
         if (afterwardsFunction !== undefined) {
-           crudTask.wernerTest = afterwardsFunction
+           zData.wernerTest = afterwardsFunction
         }
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
@@ -91,10 +103,11 @@ function finishedLoadingBasic (response) {
     //getZml = getters.getState({ object: "gZml" })
     l('finishedLoadingBasic', response)
     getters.getState({ object: "gZml" }).subjects = response.subjects;
-    
+    ls.save('zmlSubjects', response.pers)
 
     getters.getState({ object: "gZml" }).functions = response.functions;
-    
+    ls.save('zmlFunction', response.pers)
+
     // add in a proper way - "other at the bottom
     let f1 = getters.getState({ object: "gZml" }).functions.filter(e => e.functionaccess == 'other')
     let f2 = getters.getState({ object: "gZml" }).functions.filter(e => e.functionaccess != 'other')
@@ -121,8 +134,8 @@ function finishedLoadingBasic (response) {
     } else {
         l('finishedLoadingBasic:d_MeritLevel is empty!')
     }
-    if (crudTask.wernerTest !== undefined) crudTask.wernerTest()
-    console.log('....................DONE LOADING BACKGROUND DATA')
+    zData.wernerTest()
+    console.log('InitialData-----------------------------------------------------------DONE LOADING BACKGROUND DATA')
 
 }
 

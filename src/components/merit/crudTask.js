@@ -39,7 +39,7 @@ export const crudTask = {
     console.log('get ', table)
     let gzp = getters.getState({ object: "gZml" })
     let currentRecord = gzp.meritLevel.find(e => e.id == id)
-    currentRecord.owner = look.persMenemonic(currentRecord.userid)
+    currentRecord.owner = look.persMenemonic(currentRecord.userid) || 0
     console.log('get owner', currentRecord.owner)
     return currentRecord
    }

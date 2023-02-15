@@ -26,20 +26,20 @@
 <v-container fluid>
   <v-layout>
       <v-col xs12 md6>
-       <v-text-field
+       <v-text-field dense
             label="Search" placeholder="Search on Surname"
             v-model="searchInfo" solo clearable
             @click:clear="searchInfo = ''"
+            class="ma-0 pa-0"
        />
       </v-col>
   </v-layout>
- <v-divider />
-</v-container>
+ </v-container>
 <!-- <v-container v-else>
    Your are not logged in - limited functionality
 </v-container> -->
 
-<v-container fluid>
+<v-container fluid class="ma-0 pa-0">
 
   <!--v-simple-table >
     <tr><th>Public Name</th><th>Name</th><th>Surname</th><th>Picture Path</th><th>Class</th><th>WorkArea</th></tr>

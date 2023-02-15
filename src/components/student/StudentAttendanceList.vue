@@ -16,6 +16,8 @@
     </details>
     <details color="primary"><summary>Late</summary>
     If someone is late in class, ie. kids tell you he is on the way, you can mark hom as late.</details>
+    <details color="primary"><summary>AWR</summary>
+    If someone is absent in class but still in school. AWR: Absent with Reason - ie: at music, or helping other teacher.</details>
 
   </base-title-expand>
 
@@ -164,7 +166,7 @@ export default {
     }),
     computed: {
       studentTally() {
-        console.log(this.refreshKey)
+        console.log('StudentTally', this.refreshKey)
         if (this.ss.length < 1) return []
         let tally = []
 
@@ -175,14 +177,13 @@ export default {
         this.ss.forEach(e => {
           const idx = tally.findIndex(t => t.name == e)
           if (idx == -1 ) console.log('we have a problem', idx)
-          const i = tally.find(t => t.name == e)
-          console.log(i)
+          //const i = tally.find(t => t.name == e)
           tally[idx].value += 1
         });
         return tally
       },
       studentListReal() {
-        this.refreshKey
+        //this.refreshKey
         if (this.addList.length) {
           //return this.studentList.concat(this.addList) //did not work? might be refreshkey
           if (this.studentList.length) {
@@ -197,24 +198,6 @@ export default {
 
     },
     methods:{
-      xxstudentListReal() {
-        this.refreshKey
-        console.log('cccccccccccccccccccccc1')
-        if (this.addList.length) {
-          //return this.studentList.concat(this.addList)
-          console.log('cccccccccccccccccccccc2')
-          if (this.studentList.length) {
-            console.log('cccccccccccccccccccccc3')
-             return this.addList.concat(this.studentList)
-          } else {
-            console.log('cccccccccccccccccccccc4')
-             return this.addList
-          }
-        } else {
-          console.log('cccccccccccccccccccccc5')
-          return this.studentList
-        }
-      },
       reset(text) {
         this.ss.fill(text)
         console.log('fill=', this.ss)
@@ -225,11 +208,11 @@ export default {
          this.$router.back()
       },
       studentCardColor(idx) {
-        console.log(this.refreshKey)
         switch (this.ss[idx]) {
           case 'Present': return "green lighten-1"
           case 'Absent': return "red lighten-2"
           case 'Late': return "purple lighten-1"
+          case 'AWR': return "pink lighten-1"
           default : return 'gray lighten-4'
         }
       },

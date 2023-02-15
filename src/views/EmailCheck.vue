@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
     <base-tool toolbarName="Email Delivery Check"
             :background="false"
             :back="true"
@@ -19,7 +19,7 @@
       <!-- <v-btn @click="loadAllData"
              title="Click here to load delivery summary."
       > Refresh Email List </v-btn> -->
-  </div>
+  </v-container>
 </template>
 
 <script>

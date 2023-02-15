@@ -161,6 +161,8 @@ data: () => ({
               msc:'University of Georgia', src:'https://source.unsplash.com/kmuch3JGPUM'},
             ]
 }),
+  activated() {     console.log(this.$options.name,' - activated')  },
+  deactivated() {     console.log(this.$options.name,' - deactivated')  },
 methods: {
   currentView(list) {
     this.live = list

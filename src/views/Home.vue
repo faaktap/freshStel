@@ -1,7 +1,16 @@
 <template>
 <div class="home">
+
+  <v-container fluid v-if="getZml.login.isAuthenticated && (getZml.login.username=='WER' || getZml.login.username=='JHMEL')">
+   <h2> Welcome Werner! </h2>
+               <v-btn to="/loadhomework"> loadhomework </v-btn>
+               <v-btn to="/werner"> werner </v-btn>
+ </v-container>
+
+
 <!-- homeMain -->
  <v-container v-if="getZml.login.isAuthenticated==false" fluid>
+
 
     <hero-section name="forDB"
        bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
@@ -36,11 +45,6 @@
   <admin-home />
   </v-container>
 
-
- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-   <h2> Welcome Werner! </h2>
-               <v-btn to="/loadhomework"> loadhomework </v-btn>
- </v-container>
 
   </div>
 </template>

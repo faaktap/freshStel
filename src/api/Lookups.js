@@ -6,7 +6,7 @@ export const look = {
     someGlobals :  'this is lookup',
     getZml : getters.getState({ object: "gZml" }),
     persMenemonic: (uid) => {
-      if (uid == null) return ''
+      if (!uid) return ''
       let persMenemonic = getters.getState({ object: "gZml" }).persMenemonic
       let idx = persMenemonic.findIndex(e => e.userid == uid)
       if (idx > -1) {
@@ -18,7 +18,7 @@ export const look = {
       return getters.getState({ object: "gZml" }).persMenemonic
     },
     persMenemonicPersID: (uid) => {
-      if (uid == null) return ''
+      if (!uid) return ''
       let persMenemonic = getters.getState({ object: "gZml" }).persMenemonic
       let idx = persMenemonic.findIndex(e => e.persid == uid)
       if (idx > -1) {
