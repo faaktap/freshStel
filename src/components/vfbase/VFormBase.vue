@@ -741,9 +741,9 @@ export default {
       // matches Key specific Tooltip | name by replacing '.' with '-' and prepending 'slot-bottom'  -> 'slot-tooltip-key-formbase-address-city'
       return this.getKeyClassNameWithAppendix(obj, `${tooltipSlotAppendix}-${keyClassAppendix}`)
     },
-    getTooltipSlot (obj) {
+    getTooltipSlot () {
       // default tooltip slot matches all keys
-      console.log(obj)
+      // console.log(obj)
       return `${tooltipSlotAppendix}`
     },
   //
@@ -920,8 +920,7 @@ export default {
     },
   //
   // Set Value
-    setValue (obj, type ) {
-      console.log(type)
+    setValue (obj ) {
       // Use 'schema.toCtrl' Function for setting a modified Value
       return obj.schema.type === 'wrap' ?
         this.toCtrl({ value: this.storeStateData, obj, data: this.storeStateData, schema: this.storeStateSchema }) :

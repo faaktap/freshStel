@@ -27,6 +27,7 @@ A. The search function, use the itemdisplay to get data to display in dropdown
         clearable
         open-on-clear
         message
+        outlined
         v-model="what"
         v-on:input="inputDone"
         :value="searchText"
@@ -85,11 +86,14 @@ export default {
   methods: {
     inputDone() {
       this.$emit('input', this.what);
-      this.$emit('objInput', this.itemObj[0])
+      let obj = this.itemObj.find(item => item.name == this.what)
+      //this.$emit('objInput', this.itemObj[0])
+      this.$emit('objInput', obj)
       ls.save(this.saveIni, this.what)
     },
     finished() {
        this.what = this.itemObj.find(item => item.name == this.initialValue)
+       this.$emit('objInput', this.what)
        console.log(this.$options.name,'finished',this.initialValue)
     }
   },

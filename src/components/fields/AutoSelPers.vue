@@ -5,6 +5,7 @@
         clearable
         open-on-clear
         message
+        outlined
         v-model="what"
         v-on:input="inputDone"
         :value="searchText"
@@ -33,7 +34,9 @@ export default {
   methods: {
     inputDone() {
       this.$emit('input', this.what);
-      this.$emit('objInput', this.itemObj[0])
+      let obj = this.itemObj.find(e => e.user_name.toUpperCase() == this.what)
+      //this.$emit('objInput', this.itemObj[0])
+      this.$emit('objInput', obj)
     },
     finished() {
       //The role of what is somewhat f**cked - here when we return it, it is an object

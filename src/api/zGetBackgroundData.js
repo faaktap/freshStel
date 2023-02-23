@@ -48,7 +48,7 @@ export const zData = {
                         }
         fetch(zmlConfig.emailPath, apiConfig);
     },
-    wernerTest() {},
+    wernerTest(r) {console.log('no func passed',r)},
     quickLoadInitialData: (whatever, afterwardsFunction) => {
         console.log('InitialData-Quickload----------------------------------------------------Start', whatever)
         getters.getState({ object: "gZml" }).subjects = ls.load('zmlSubjects')
@@ -56,18 +56,12 @@ export const zData = {
         getters.getState({ object: "gZml" }).functions = ls.load('zmlFuncs')
         getters.getState({ object: "gZml" }).place = ls.load('lookupPlace')
         getters.getState({ object: "gZml" }).meritLevel = ls.load('zmlMeritLevel')
-        if (afterwardsFunction !== undefined) {
-            zData.wernerTest = afterwardsFunction
-        }
-        afterwardsFunction()
+        getters.getState({ object: "gZml" }).classList = ls.load('zmlClassList')
+        if (afterwardsFunction) afterwardsFunction()
     },
     initialData:  (whatever, afterwardsFunction) => {
         console.log('InitialData-------------------------------------------------------------------Start', whatever)
-        if (whatever !== undefined)
-            l(whatever)
-        if (afterwardsFunction !== undefined) {
-           zData.wernerTest = afterwardsFunction
-        }
+        if (whatever !== undefined) l(whatever)
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
             const ts = {}
@@ -133,6 +127,13 @@ function finishedLoadingBasic (response) {
         getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;
     } else {
         l('finishedLoadingBasic:d_MeritLevel is empty!')
+    }
+
+    if (response.classlist.length > 1) {
+        ls.save('zmlClassList', response.classlist)
+        getters.getState({ object: "gZml" }).classList = response.classlist;
+    } else {
+        l('finishedLoadingBasic:d_ClassList is empty!')
     }
     zData.wernerTest()
     console.log('InitialData-----------------------------------------------------------DONE LOADING BACKGROUND DATA')

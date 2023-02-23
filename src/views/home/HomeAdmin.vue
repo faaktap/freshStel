@@ -69,7 +69,7 @@
      </base-title-expand>
 
 
-  <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
+  <div v-if="getZml.login.isAuthenticated && (getZml.login.username=='WER' || getZml.login.username=='WERNER')">
     {{ joke || 'no joke'}}
      <v-expansion-panels>
         <v-expansion-panel>
@@ -86,6 +86,7 @@
             <v-btn to="/hover"> hover </v-btn>
             <v-btn to="/loadhomework"> loadhomework </v-btn>
             <v-btn to="/checklog"> checklog </v-btn>
+            <v-btn to="/werner"> werner </v-btn>
             <v-btn @click="dateTest"> dateTest </v-btn>
             <v-window>
             xs={{$vuetify.breakpoint.xs}} <br>
