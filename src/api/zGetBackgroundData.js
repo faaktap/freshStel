@@ -54,7 +54,7 @@ export const zData = {
         getters.getState({ object: "gZml" }).subjects = ls.load('zmlSubjects')
         getters.getState({ object: "gZml" }).persMenemonic = ls.load('zmlPersM')
         getters.getState({ object: "gZml" }).functions = ls.load('zmlFuncs')
-        getters.getState({ object: "gZml" }).place = ls.load('lookupPlace')
+        getters.getState({ object: "gZml" }).place = ls.load('zmlLookupPlace')
         getters.getState({ object: "gZml" }).meritLevel = ls.load('zmlMeritLevel')
         getters.getState({ object: "gZml" }).classList = ls.load('zmlClassList')
         if (afterwardsFunction) afterwardsFunction()
@@ -96,12 +96,14 @@ export const zData = {
 function finishedLoadingBasic (response) {
     //getZml = getters.getState({ object: "gZml" })
     l('finishedLoadingBasic', response)
-    getters.getState({ object: "gZml" }).subjects = response.subjects;
-    ls.save('zmlSubjects', response.pers)
+
+    // will be empty when not a student
+    if (response.student.length) {
+        getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;
+        getters.getState({ object: "gZml" }).login.gclass = response.student[0].gclass;
+    }
 
     getters.getState({ object: "gZml" }).functions = response.functions;
-    ls.save('zmlFunction', response.pers)
-
     // add in a proper way - "other at the bottom
     let f1 = getters.getState({ object: "gZml" }).functions.filter(e => e.functionaccess == 'other')
     let f2 = getters.getState({ object: "gZml" }).functions.filter(e => e.functionaccess != 'other')
@@ -109,31 +111,21 @@ function finishedLoadingBasic (response) {
     getters.getState({ object: "gZml" }).functions = f2.concat(f1);
     ls.save('zmlFuncs', getters.getState({ object: "gZml" }).functions)
 
+    getters.getState({ object: "gZml" }).subjects = response.subjects;
+    ls.save('zmlSubjects', response.subjects)
+
     getters.getState({ object: "gZml" }).persMenemonic = response.pers;
     ls.save('zmlPersM', response.pers)
 
-    if (response.place.length > 5) {
-      getters.getState({ object: "gZml" }).place = response.place;
-      ls.save('lookupPlace', response.place)
-    }
+    getters.getState({ object: "gZml" }).place = response.place;
+    ls.save('zmlLookupPlace', response.place)
 
-    // will be empty when not a student
-    if (response.student.length) {
-      getters.getState({ object: "gZml" }).login.grade = response.student[0].grade;
-      getters.getState({ object: "gZml" }).login.gclass = response.student[0].gclass;
-    }
-    if (response.meritlevel.length > 5) {
-        ls.save('zmlMeritLevel', response.meritlevel)
-        getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;
-    } else {
-        l('finishedLoadingBasic:d_MeritLevel is empty!')
-    }
+    ls.save('zmlMeritLevel', response.meritlevel)
+    getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;
 
     if (response.classlist.length > 1) {
         ls.save('zmlClassList', response.classlist)
         getters.getState({ object: "gZml" }).classList = response.classlist;
-    } else {
-        l('finishedLoadingBasic:d_ClassList is empty!')
     }
     zData.wernerTest()
     console.log('InitialData-----------------------------------------------------------DONE LOADING BACKGROUND DATA')

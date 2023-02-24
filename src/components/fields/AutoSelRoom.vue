@@ -60,9 +60,6 @@ A. The search function, use the itemdisplay to get data to display in dropdown
 
 
 <script>
-//import { getters } from "@/api/store"
-import { ls } from "@/api/localStorage.js"
-//import { zData } from "@/api/zGetBackgroundData.js"
 export default {
   name: "AutoSelRoom",
   props: {itemObj: {type: Array,required:true}
@@ -73,7 +70,6 @@ export default {
     search: null,
     what: null,
     obj: {},
-    saveIni:'ASRoom'
   }),
   computed: {
     searchText() {
@@ -89,7 +85,6 @@ export default {
       let obj = this.itemObj.find(item => item.name == this.what)
       //this.$emit('objInput', this.itemObj[0])
       this.$emit('objInput', obj)
-      ls.save(this.saveIni, this.what)
     },
     finished() {
        this.what = this.itemObj.find(item => item.name == this.initialValue)
@@ -98,14 +93,6 @@ export default {
     }
   },
   mounted() {
-    //Check if place loaded, otherwise load from ini, otherwise from mysql
-    // if (getters.getState({ object: "gZml" }).place.length < 5) {
-    //   getters.getState({ object: "gZml" }).place = ls.load('lookupPlace')
-    //   if (getters.getState({ object: "gZml" }).place.length < 5)  {
-    //     zData.initialData('hallo', this.finished)
-    //   }
-    //   return
-    // }
     this.finished()
    },
 

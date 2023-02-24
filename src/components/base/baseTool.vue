@@ -17,7 +17,7 @@
   <v-toolbar elevation="3"
              :color="color || 'primary'"
              :src="showImg ? 'img\\toolbar.jpg' : ''"
-             :collapse="$vuetify.breakpoint.mobile"
+             :xcollapse="$vuetify.breakpoint.mobile"
              dense
              class="ml-0 mr-0 pl-0 pr-0 mb-4">
     <v-app-bar-nav-icon

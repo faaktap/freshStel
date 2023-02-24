@@ -26,6 +26,7 @@ export default {
     props:{
        value:{}
       ,label: {type:String,default:"Period"}
+      ,teacher: {type:String,default:""}
     },
     data: () => ({
       periodList: ['Admin','1','2','3','4','5','6','7','8','9','Late'],
@@ -62,6 +63,11 @@ export default {
       }
       if (this.periodList == 0) alert('we need a few periods!')
 
+    },
+    watch: {
+      teacher(n) {
+        if (n && n.length) { this.menemonic = this.teacher  }
+      }
     }
 }
 </script>

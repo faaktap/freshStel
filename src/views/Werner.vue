@@ -2,6 +2,17 @@
 <v-container fluid>
 <h1> Hallo World </h1>
 
+
+<auto-sel-subjects
+v-if="getZml.subjects && getZml.subjects.length"
+              asLabel="Subjects"
+              v-model="p.subjectID"
+              :initialValue="101"
+              :itemObj="getZml.subjects"
+              @input="change"
+              @objInput="p.subjectObj = $event; change($event)"
+/>
+
 <v-btn v-for="but in buttons" :key="but.to"
        small :to="but.to"
        class="ma-2 pa-2"
@@ -10,57 +21,36 @@
 <v-btn small @click="afterQuick"> Load Initial Data </v-btn>
 
 <base-title-expand  heading="Show Vars" color="blue">
-<v-card>
+<v-card class="caption-text">LOGIN"
+  {{ getZml.login }}
+</v-card>
+
+<v-card class="caption-text">PLACE:
   {{ getZml.place }}
 </v-card>
-<v-card>
+<v-card class="caption-text">
   {{ getZml.persMenemonic }}
 </v-card>
-</base-title-expand> -
+<v-card class="caption-text">
+  {{ getZml.classList }}
+</v-card>
+</base-title-expand>
 
 <!-- :initialPlaceID="testroomstart" -->
 <v-card>
   <v-card-title> Choose some auto fields </v-card-title>
-   <v-card-text>
-      <v-layout wrap justify-space-between>
-        <auto-sel-pers v-if="getZml.persMenemonic && getZml.persMenemonic.length"
-                       v-model="persMen"   asLabel="Inspector/Teacher"
-                       :initialValue="getZml.login.username"
-                       :itemObj="getZml.persMenemonic" @objInput="persObj = $event" />
-        <auto-sel-room v-if="getZml.place && getZml.place.length"
-                     v-model="testroom" asLabel="Location"
-                    :initialValue="testroomstart"
-                    :itemObj="getZml.place"  @objInput="testroomobj = $event" />
-        <auto-sel-period v-model="period"
-                    label="Period"
-                    @DayAndPeriod="period = $event.period; day = $event.day" />
-        <auto-sel-day v-model="day"
-                    label="Day"
-                    @DayAndPeriod="period = $event.period; day = $event.day" />
-        <auto-sel-att-list v-if="getZml.classList && getZml.classList.length"
-                           v-model="classListNo" asLabel="ClassList"
-                          :initialValue="classListNo" :itemObj="getZml.classList"
-                          @objInput="classListObj = $event" />
-      </v-layout>
-   </v-card-text>
-  <v-card-actions>acttio
+  <v-card-text>
+   <sel-general-list-items @input="change" />
+ </v-card-text>
+  <v-card-actions>
+    <v-btn @click="activate" :disabled="!(p.persMen && p.roomName && p.day && p.period && p.classListID && p.questionID)"> Start </v-btn>
+     <div class="text-caption mx-2"> ({{ p.persMen}},{{ p.roomName }},{{ p.day }},{{ p.period }},{{ p.classListID }}, {{p.questionID}} )</div>
     </v-card-actions>
+    roomObj: {{ p.roomObj }}<br>
+    persObj: {{ p.persObj }}<br>
+    classListObj:{{ p.classListObj }}<br>
+    questionObj: {{ p.questionObj }}<br>
 </v-card>
-
-                  trstart{{ testroomstart }}
-                  troom {{ testroom }}
-
-                  <p class="text-caption">obj = {{ testroomobj }}</p>
-
-   persmen {{ persMen }}
-   <p class="text-caption">PO : {{ persObj }}<p>
-   Day:{{ day }}  Period:{{ period }}<br>
-   classListNO:{{ classListNo }} <br> listObj:{{ classListObj }}
-
-<hr>
-
-{{ getZml.classList }}
-
 </v-container>
 </template>
 
@@ -69,38 +59,30 @@
 import { zData } from "@/api/zGetBackgroundData.js"
 import { getters } from "@/api/store";
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
-import AutoSelRoom from '@/components/fields/AutoSelRoom.vue'
-import AutoSelPers from '@/components/fields/AutoSelPers.vue'
-import AutoSelPeriod from '@/components/fields/AutoSelPeriod.vue'
-import AutoSelDay from '@/components/fields/AutoSelDay.vue'
-import AutoSelAttList from '@/components/fields/AutoSelAttList.vue'
-
+import SelGeneralListItems from '@/components/fields/SelGeneralListItems.vue'
+import AutoSelSubjects from '@/components/fields/AutoSelSubjects.vue'
 export default {
     name:"Werner",
     components: {
-                // ZAutoPers, ZAutoLocation, ZAutoPeriod
-                 AutoSelRoom
-               , AutoSelPers
-               , AutoSelPeriod
-               , AutoSelDay
-               , AutoSelAttList
+                 SelGeneralListItems
+               , AutoSelSubjects
                , BaseTitleExpand
                },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
-        testroom:'',
-        testroomstart:'1A',
-        testroomobj:{},
-
-        persMen: '',
-        persObj: {surname: 'poepies'},
-
-        period:'2',
-        day:'1',
-
-        classListNo:4772,
-        classListObj:{},
-
+        p: {roomName: '0'
+         ,roomObj: {}
+         ,persMen: ''
+         ,persObj: {}
+         ,classListID: ''
+         ,classListObj:{}
+         ,questionID: ''
+         ,questionObj: {}
+         ,period: ''
+         ,day: ''
+         ,subjectID: ''
+         ,subjectObj:{}
+        },
         tab:{id:0
            , desc: "Attendance Class Lists"
            , workDone: 0
@@ -121,23 +103,34 @@ export default {
 
     }),
     methods: {
+      change(e) {
+        console.log('Weerner Change:', e)
+      },
+      activate() {alert('doit')},
       afterQuick(r) {
         zData.initialData('Really Load Latest Data',this.afterwards)
         console.log('after QUick',r)
       },
       afterwards(r) {
-        this.persMen = this.getZml.login.persMenemonic
         console.log('afterward',r)
-        console.log(this.persMen , this.getZml.login.persMenemonic)
       },
     },
     created() {
     },
     mounted() {
-        zData.quickLoadInitialData('get from ini', this.afterQuick)
-
-
-
+      if (this.getZml.place.length == 0) {
+         zData.quickLoadInitialData('get from ini', this.afterQuick)
+      } else {
+        this.afterwards()
+      }
+    },
+    watch: {
+      persMen() {
+        if (!this.testroom && this.persMen) {
+          //lookup the teachers room
+          this.testroom = this.persObj.room
+        }
+      }
     }
 }
 </script>

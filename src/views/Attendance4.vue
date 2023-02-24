@@ -429,7 +429,7 @@ export default {
       zmlLog(null, "Att4Tanya " + this.responsiblePerson, 'Started')
       console.log('Attendance4 Started', this.tList)
       //Load lookups for place if not loaded yet....
-      if (this.place.length < 4 && ls.test('lookupPlace')) this.place = ls.load('lookupPlace')
+      if (this.place.length < 4 && ls.test('zmlLookupPlace')) this.place = ls.load('zmlLookupPlace')
       if (this.place.length < 4) alert('We did not load all locations!')
       // console.log('CHECK SAVE BEFORE : ', ls.test('attPeriod'), ls.test('attDay'), ls.test('attPlaceID'))
       // if (!this.period && ls.test('attPeriod'))        this.period = ls.load('attPeriod')

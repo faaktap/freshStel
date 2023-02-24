@@ -155,12 +155,13 @@ export default {
         this.$cs.l('ERROR on subject list : ' , response)
       },
       updateSubject() {
-        let sl = { task: 'plainSql'
-                 , sql: "update dkhs_learner "
-                      + "   set user_password = 'password' "
-                      + " where userid = " + this.curItem.userid
-                 }
-        zmlFetch(sl, this.processAfterReset, this.processError);
+        alert('no used')
+        // let sl = { task: 'plainSql'
+        //          , sql: "update dkhs_learner "
+        //               + "   set user_password = 'password' "
+        //               + " where userid = " + this.curItem.userid
+        //          }
+        // zmlFetch(sl, this.processAfterReset, this.processError);
       },
       processAfterReset(response) {
           if (!response.error == 0) {

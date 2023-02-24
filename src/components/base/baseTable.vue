@@ -11,6 +11,7 @@
          <v-flex>
           <v-text-field
              v-model="search"
+             @input="$emit('search', search)"
              append-icon="mdi-magnify"
              label="Search"
              single-line

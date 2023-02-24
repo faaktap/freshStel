@@ -29,7 +29,6 @@ export default {
     search: null,
     what: null,
     itemValue: 'id',
-    showChoosy:false,
   }),
   methods: {
     inputDone(e1) {
@@ -40,28 +39,23 @@ export default {
 
     },
     lookup() {
-       console.log('wat is hier in?  ', this.initialValue)
-      //The role of what is somewhat f**cked - here when we return it, it is an object
-      //but in inputDone function we return it as "itemValue" which is username
-      this.what = this.itemObj.find(e => e.listname == this.initialValue  )
-      // if (this.what !== undefined) {
-      //   this.$emit('objInput', this.what)
-      // }
+      if (this.initialValue)
+         this.what = this.itemObj.find(e => e.id == this.initialValue  )
     }
   },
   mounted() {
-    //se if we got and id when we came in
-    this.what = this.itemObj.find(e => e.id == this.initialValue  )
+    //on Mounted we searched for the id if we have an initialValue
+    //if (this.initialValue) this.what = this.itemObj.find(e => e.id == this.initialValue  )
+    this.lookup()
     if (this.what !== undefined) {
-      console.log('our incoming id was good! - emiti it back', this.what)
         this.$emit('objInput', this.what)
     }
 
   },
   computed: {
-    searchText() {  console.log('searchText');    return this.itemObj[0] || ''    },
+    searchText() {  console.log(this.$options.name,'searchText');    return this.itemObj[0] || ''    },
     itemDisplay() {     return item => item.grade + ' — ' + item.listname  +  ' - ' + item.teacher  }
   },
-  watch: {    initialValue() {   if (this.initialValue) this.lookup()    }   }
+  watch: {    initialValue() {   this.lookup()      }}
 }
 </script>

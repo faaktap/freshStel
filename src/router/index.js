@@ -233,6 +233,13 @@ const routes = [
     ,meta: {layout: la[3], authentication: "admin"}
   },
   {
+    component: () => import(/* webpackChunkName: "work" */ '@/views/Werner1.vue')
+    ,name: 'Werner1'
+    ,path: '/werner1'
+    ,meta: {layout: la[3], authentication: "admin"}
+  },
+
+  {
     component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailDeliveryReport.vue')
     ,name: 'EmailDeliveryReport'
     ,path: '/emaildeliver/:deliverid?'
