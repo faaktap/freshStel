@@ -242,9 +242,11 @@ export default {
       return answer
     }
   },
+  created() {
+    zData.quickLoadInitialData('QuickLoad',this.initialize)
+  },
   mounted() {
-    console.log(this.$options.name, 'Mounted')
-    zData.initialData('Load Subject Data', this.initialize)
+    console.log('Mounted',this.$options.name)
   }
 }
 

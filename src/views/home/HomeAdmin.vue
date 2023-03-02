@@ -68,7 +68,6 @@
 
      </base-title-expand>
 
-
   <div v-if="getZml.login.isAuthenticated && (getZml.login.username=='WER' || getZml.login.username=='WERNER')">
     {{ joke || 'no joke'}}
      <v-expansion-panels>
@@ -112,25 +111,24 @@
                >
                <v-tab key="1"> grades </v-tab>
                <v-tab key="2"> subject </v-tab>
-               <v-tab key="3"> folders </v-tab>
+               <v-tab key="3"> calendar </v-tab>
                <v-tab key="4"> funcs </v-tab>
-               <v-tab key="5"> popi </v-tab>
                <v-tab key="6"> merits </v-tab>
                <v-tab key="7"> pers </v-tab>
+               <v-tab key="8"> classlist </v-tab>
+               <v-tab key="9"> ticklist </v-tab>
+               <v-tab key="10"> login </v-tab>
                <v-tab-item key="1">
                <zml-data-table v-if="getZml.grades" :dataList="getZml.grades" userHeader="grades"/>
                </v-tab-item>
                <v-tab-item key="2">
                <zml-data-table v-if="getZml.subjects" :dataList="getZml.subjects" userHeader="subjects"/>
                </v-tab-item>
-               <v-tab-item  key="3">
-               <zml-data-table v-if="getZml.folders" :dataList="getZml.folders" userHeader="folders"/>
+               <v-tab-item key="3">
+               <zml-data-table v-if="getZml.calendar" :dataList="getZml.calendar" userHeader="calendar"/>
                </v-tab-item>
                <v-tab-item  key="4">
                <zml-data-table v-if="getZml.functions" :dataList="getZml.functions" userHeader="functions"/>
-               </v-tab-item>
-               <v-tab-item  key="5">
-               <zml-data-table v-if="getZml.popi" :dataList="getZml.popi" userHeader="popi"/>
                </v-tab-item>
                <v-tab-item  key="6">
                <zml-data-table v-if="getZml.meritLevel" :dataList="getZml.meritLevel" userHeader="meritLevel"/>
@@ -138,6 +136,19 @@
                <v-tab-item  key="7">
                <zml-data-table v-if="getZml.persMenemonic" :dataList="getZml.persMenemonic" userHeader="persMenemonic" />
                </v-tab-item>
+               <v-tab-item  key="8">
+               <zml-data-table v-if="getZml.classList" :dataList="getZml.classList" userHeader="classLists" />
+               </v-tab-item>
+               <v-tab-item  key="9">
+               <zml-data-table v-if="getZml.tickList" :dataList="getZml.tickList" userHeader="tickLists (General)" />
+               </v-tab-item>
+               <v-tab-item  key="10">
+                 login---{{ getZml.login }}
+                 <br> locale--{{ getZml.locale}}
+                 <br> calendar---{{ getZml.calendar }}
+                 <br> thisday--{{ getZml.thisday }}
+               </v-tab-item>
+
               </v-tabs>
             </v-layout>
           </v-expansion-panel-content>
@@ -151,6 +162,7 @@
 <script>
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
+import { zData } from "@/api/zGetBackgroundData.js"
 import { zmlFetch, zFetch } from '@/api/zmlFetch.js'
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
@@ -158,7 +170,6 @@ import EmailList from '@/components/email/EmailList.vue';
 import Calendar from '@/components/Calendar.vue';
 import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 import zmlDataTable from '@/components/zmlDataTable.vue'
-import { zData } from '@/api/zGetBackgroundData.js';
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 import baseTool from '@/components/base/baseTool.vue'
@@ -320,11 +331,16 @@ export default {
            this.loading = false
           }
         },
+        initialize() {
+          if (!this.getZml.functions.length) this.loadFunctions()
+        }
+    },
+    created() {
+      zData.quickLoadInitialData('HomeAdmin.vue : Load Data for incase', this.initialize)
     },
     mounted() {
         this.$cs.l('M',this.$options.name)
-        if (!this.getZml.functions.length) this.loadFunctions()
-        this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
+        //this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
         this.CallAsyncFunction()
         this.menuType = this.getZml.login.type
 

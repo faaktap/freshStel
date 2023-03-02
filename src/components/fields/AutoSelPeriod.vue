@@ -39,13 +39,13 @@ export default {
     }),
     methods:{
       updateValue(e) {
-        console.log('update Value',this.$options.name, 'send value = ',e)
+        //console.log('update Value',this.$options.name, 'send value = ',e)
         this.$emit('input', e)
         ls.save(this.saveIni,this.value)
         this.lastOneSelected = this.value
       },
       roosterSelected(a,b,c,d,e) {
-        console.log('day',a,'per',b,'grd',c,'row',d,'?',e)
+        this.$cs.l('day',a,'per',b,'grd',c,'row',d,'?',e)
         this.showRooster = false
         this.period = b
         this.day = a

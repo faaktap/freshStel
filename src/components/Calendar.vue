@@ -1,6 +1,5 @@
 <template>
 <v-card class="ma-0 pa-0" color="white">
-EVENTS: {{ events }}
   <v-row v-if="incomingMenemonic">
     <v-col>
     <v-sheet
@@ -135,16 +134,6 @@ EVENTS: {{ events }}
   <v-container v-else>
      srfwerwerewrwerewrwerew
   </v-container>
-  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-    <h2> Only Werner c this</h2>
-    <v-row>
-        <v-col cols="6" lg="3" v-for="(f,i) in sortIt" :key="i">
-        <v-card color="blue" class="ma-2 pa-1" >
-         {{ f.name }} : {{ f.start }}- {{ f.end }} {{ f.type }}
-         </v-card>
-        </v-col>
-   </v-row>
-  </v-container>
         <v-btn  @click="checkChange"> R(CC) </v-btn>
 </v-card>
 </template>
@@ -265,7 +254,7 @@ export default {
         this.$cs.l('go one back - to sunday', template)
         // Show the next 57 days...
         for (let t=0; t < 57; t++) {
-          this.$cs.l('loading : ', t, zDate)
+          //this.$cs.l('loading : ', t, zDate)
            template = zDate.addOneDay(template)
            //Look for template's date and link to a dayno.
            const sday = this.getZml.calendar.find(cal =>
@@ -356,6 +345,7 @@ export default {
             if (this.$refs.calendar) this.updateTime()
           } else {
            console.error('Calendar Ready: ' , this.calReady)
+           this.getZml.events = this.events
          }
 
        },

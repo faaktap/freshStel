@@ -43,13 +43,6 @@ const routes = [
     params: {errorMessage:''},
     meta: {layout: la[3], authentication: "public"}
   },
-  {
-    component: Home,
-    path: '/home',
-    name: 'RealHome',
-    meta: {layout: la[3],
-    authentication: "public"}
-  },
   { path: '/drive', redirect: '/folder' },
   {
     path: '/folder/:grade?/:subject?/:level1?/:level2?/:level3?/:level4?',
@@ -77,6 +70,14 @@ const routes = [
     ,params: {studentID:'20113'}
     ,meta: {layout: la[3], authentication: "student"}
   },
+  {
+    path: '/scs'
+   ,name: 'StudentClassStartTest',
+   component: () => import(/* webpackChunkName: "test" */ '@/components/student/StudentClassStart.vue')
+   ,alias: '/homex'
+      ,meta: {layout: la[3], authentication: "admin"}
+ },
+
   {
     path: '/admin',
     name: 'Admin',
@@ -232,12 +233,6 @@ const routes = [
     ,path: '/werner'
     ,meta: {layout: la[3], authentication: "admin"}
   },
-  {
-    component: () => import(/* webpackChunkName: "work" */ '@/views/Werner1.vue')
-    ,name: 'Werner1'
-    ,path: '/werner1'
-    ,meta: {layout: la[3], authentication: "admin"}
-  },
 
   {
     component: () => import(/* webpackChunkName: "email" */ '@/components/email/EmailDeliveryReport.vue')
@@ -372,7 +367,7 @@ const routes = [
   },
   {
     path: '/attendance/:date?',    name: 'AttendanceView',
-    component: () => import(/* webpackChunkName: "atten" */ '@/views/AttendanceView.vue'),
+    component: () => import(/* webpackChunkName: "atten" */ '@/views/AttendanceViewOld.vue'),
     props: true,
     params: {date: '', editmode: false},
     meta: {layout: la[3], authentication: "admin" }
@@ -393,6 +388,12 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
+    component: () => import(/* webpackChunkName: "atten" */ '@/views/ViewGenList.vue')
+    ,name: 'ViewGenList'
+    ,path: '/vglist'
+    ,meta: {layout: la[3], authentication: "admin"}
+  },
+  {
     component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentGeneralList.vue'),
     path: '/generaladd',
     name: 'GeneralList',
@@ -401,13 +402,28 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "atten" */ '@/components/homework/ViewGeneralList.vue'),
-    path: '/gtlist',
-    name: 'ViewGeneralList',
+    component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentGenListView.vue'),
+    path: '/genlistview',
+    name: 'GeneralListView',
     props:true,
-    params: {listid: 0},
     meta: {layout: la[3], authentication: "teacher" }
   },
+  {
+    component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentGenListSession.vue'),
+    path: '/genlistsession/:sessionid?',
+    name: 'GenListSession',
+    props:true,
+    params: {sessionid:0},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  // {
+  //   component: () => import(/* webpackChunkName: "atten" */ '@/components/homework/ViewGeneralList.vue'),
+  //   path: '/gtlist',
+  //   name: 'ViewGeneralList',
+  //   props:true,
+  //   params: {listid: 0},
+  //   meta: {layout: la[3], authentication: "teacher" }
+  // },
   {
     component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentAttendanceView.vue'),
     path: '/attview',
@@ -417,18 +433,27 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "reports" */ '@/views/Reports.vue'),
-    path: '/reports',
-    name: 'Reports',
-    props:true,
-    meta: {layout: la[3], authentication: "teacher" }
-  },
-  {
     component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentAttendanceSession.vue'),
     path: '/attsession/:sessionid?',
     name: 'AttendanceSession',
     props:true,
     params: {sessionid:0},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "atten" */ '@/views/JdocViewEdit.vue'),
+    path: '/jdoc',
+    name: 'JdocViewEdit',
+    props:true,
+    params: {sessionid:0},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+
+  {
+    component: () => import(/* webpackChunkName: "reports" */ '@/views/Reports.vue'),
+    path: '/reports',
+    name: 'Reports',
+    props:true,
     meta: {layout: la[3], authentication: "teacher" }
   },
   {

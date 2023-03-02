@@ -51,8 +51,8 @@
   </front-json-to-csv>
  </v-card>
 </v-dialog>
-{{ search }}  {{ searchText }}
-{{ logListFilter }}
+<!-- {{ search }}  {{ searchText }}
+{{ logListFilter }} -->
   </div>
 </template>
 
@@ -161,7 +161,7 @@ export default {
        let output = this.logList.map( (s) => (s.user) );
        //Use it to create ditinct users
        let distinctUsers = [...new Set(output)]
-       console.log('ddddddddddddddddddddddddd',distinctUsers)
+       console.log('Distinct Users',distinctUsers)
      },
      filterColumns(resp,colArray) {
        console.log(colArray)

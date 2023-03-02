@@ -5,7 +5,8 @@
    <h2> Welcome Werner! </h2>
                <v-btn to="/loadhomework"> loadhomework </v-btn>
                <v-btn to="/werner"> werner </v-btn>
-               <v-btn to="/werner1"> werner1 </v-btn>
+               <v-btn to="/vglist"> vglist </v-btn>
+               <v-btn to="/jdoc"> jdoc </v-btn>
  </v-container>
 
 
@@ -90,8 +91,8 @@ export default {
       if (!doStuff(this.$router,task)) { console.log(task) }
    }
   },
-  mounted() {
-    zData.initialData('Load all the Data')
+  created() {
+    zData.quickLoadInitialData('Home.Vue : QuickLoad')
   }
 }
 </script>

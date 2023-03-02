@@ -5,7 +5,7 @@
      <keep-alive :max="10">
       <router-view>
       </router-view>
-     </keep-alive> 
+     </keep-alive>
    </v-container>
    </app-layout>
 
@@ -14,7 +14,7 @@
       :color="snackbarColor"
       elevation="21"
       v-model="snackbar"
-      timeout="3500">
+      timeout="1800">
       {{ snackbarMessage }}
 
       <template v-slot:action="{ attrs }">
@@ -31,6 +31,7 @@
 <script>
 import { getters } from "@/api/store"
 import { zmlConfig } from '@/api/constants'
+import { zData } from "@/api/zGetBackgroundData.js"
 import confirm from "@/api/DialogConfirm"
 import EventBus, { ACTIONS } from '@/api/event-bus'
 import { ls } from "@/api/localStorage.js"
@@ -48,32 +49,28 @@ export default {
   },
   mounted: function () {
     console.log('StartApp : ',this.projectID)
-    /*
-    let payload = "WERNER SMIT"
-    this.$cs.l(payload.toString('base64'))
-    const data = {test:"test", num:"number"};
-    console.log('---ORIGINAL-----', data)
-    // Encode String
-    const encode = Buffer.from(JSON.stringify(data)).toString('base64')
-    console.log('\n---ENCODED-----', encode)
-    // Decode String
-    const decode = JSON.parse(Buffer.from(encode, 'base64').toString('utf-8'))
-    console.log('\n---DECODED-----', decode)
-    ls.save('zmlForWerner',[{some:'data', num:1234}])
-    let t = ls.load('zmlForWerner')
-    console.log('answer = ', t)
-    */
 
    //Check if a reload is needed (if the version number changed)
    let curVersion = ls.load('zmlVersion')
    this.$cs.l(curVersion, '!=' , zmlConfig.projectID)
    if (curVersion != zmlConfig.projectID) {
+    if (ls.test('zmllogin')) {
+      let tmpSaveLogin = ls.load('zmllogin')
+      localStorage.clear()
+      ls.save('zmllogin',tmpSaveLogin)
+    } else {
+      localStorage.clear()
+    }
     ls.save('zmlVersion', zmlConfig.projectID)
     this.$cs.l('Reload on new Version')
     location.reload();
+    return
    } else {
     this.$cs.l('Version is good - continue')
    }
+
+   zData.quickLoadInitialData('App.Vue: Load LocalStorage')
+
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open

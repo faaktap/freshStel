@@ -57,11 +57,13 @@ export default {
     updated() {
       this.finishedLoading()
     },
-    mounted() {
-      if (this.getZml.meritLevel.length < 10) {
-        zData.initialData('checkofditwerk',this.finishedLoading)
+    created() {
+      if (this.getZml.meritLevel.length < 2) {
+        zData.quickLoadInitialData('QuickLoad',this.finishedLoading)
       }
-      console.log(this.$options.name , 'mounted', this.id)
+    },
+    mounted() {
+      console.log('mounted',this.$options.name , this.id)
       this.finishedLoading()
 
     },

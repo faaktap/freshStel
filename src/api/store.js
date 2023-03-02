@@ -48,6 +48,7 @@ const state = Vue.observable({
            persMenemonic:[],   //userid:"144", persid: "144", user_name: "JBRES", "user_fullname": "Me. J. Bresler", "surname": "Bresler", name,title,workemail,"room": "Sport 2", "user_type": "teacher"
            place: [],  //p.placeid, p.name, w.name workarea, p.description,p.ownerid concat(p.name, ' - ',w.name) concatsearch"
            classList: [],   //id, teacher (init + surname),listname, share,jdocstructure,create_timestamp,update_timestamp, grade,ckey,hodsubjectid
+           tickList: [],
            thisday: null
           }
     });

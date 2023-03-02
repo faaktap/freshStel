@@ -2,6 +2,11 @@
 <v-container fluid>
 <h1> Hallo World </h1>
 
+<!-- <quick-calendar-display class="ma-2 pa-2" v-if="attEvt && attEvt.length"
+  :passedEvents="attEvt" /> -->
+<br>
+
+
 
 <auto-sel-subjects
 v-if="getZml.subjects && getZml.subjects.length"
@@ -61,14 +66,17 @@ import { getters } from "@/api/store";
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import SelGeneralListItems from '@/components/fields/SelGeneralListItems.vue'
 import AutoSelSubjects from '@/components/fields/AutoSelSubjects.vue'
+//import QuickCalendarDisplay from '@/components/QuickCalendarDisplay.vue'
 export default {
     name:"Werner",
     components: {
                  SelGeneralListItems
                , AutoSelSubjects
                , BaseTitleExpand
+               //, QuickCalendarDisplay
                },
     data: () => ({
+        attEvt:[],
         getZml: getters.getState({ object: "gZml" }),
         p: {roomName: '0'
          ,roomObj: {}
@@ -111,18 +119,30 @@ export default {
         zData.initialData('Really Load Latest Data',this.afterwards)
         console.log('after QUick',r)
       },
-      afterwards(r) {
-        console.log('afterward',r)
+      attendanceLoadStuff(studentid) { //19014
+        let sql =  `SELECT d.day_name, d.fulldate\
+     , ifnull(attendancedate,concat(d.fulldate, ' 08:00' )) start
+     , ifnull(a.status ,'No Entry') name\
+     , ifnull(concat(a.staff,', ', a.location,', ', a.period) ,'No Entry') detail\
+   FROM dkhs_date d \
+LEFT JOIN v_attendance a ON substr(attendancedate,1,10) = d.fulldate AND a.studentid = ${studentid}\
+  WHERE day_name not in ('Sunday','Saturday')\
+    AND (substr(fulldate,1,4) = '2023'\
+      OR substr(fulldate,1,4) = '2023')\
+ ORDER BY fulldate,attendancedate`
+      //zmlFetch(ts, afterwards)
+      let loading = false
+      zData.loadSql(loading, sql, this.afterwards)
+      },
+      afterwards(response) {
+        this.attEvt = response
       },
     },
     created() {
+      zData.quickLoadInitialData('get from ini, and then call real load - as a test', this.afterQuick)
     },
     mounted() {
-      if (this.getZml.place.length == 0) {
-         zData.quickLoadInitialData('get from ini', this.afterQuick)
-      } else {
-        this.afterwards()
-      }
+      this.attendanceLoadStuff(19014)
     },
     watch: {
       persMen() {

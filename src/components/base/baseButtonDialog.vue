@@ -19,7 +19,7 @@ Like helptext.
          </template>
         </v-menu>
       </v-card-title>
-      <v-card-text> {{ infoText }} </v-card-text>
+      <v-card-text> <slot>{{ infoText }}</slot> </v-card-text>
      </v-card>
     </v-dialog>
 </v-btn>

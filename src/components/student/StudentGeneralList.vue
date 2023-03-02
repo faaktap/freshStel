@@ -6,9 +6,10 @@
     Here is a list of all people you can mark as whatever
     If there are students missing, you need to edit the list you selected at class lists.
     <br>
-    You can add a new student here, but it will only last for this session.
+    You cannot add a new student here, you will need to fix your classlist.
+    <br>If a student is marked as ignored, it is same as absent - no data will be saved.
    </p>
-
+   <p>{{ info }} </p>
   </base-title-expand>
 
 <v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
@@ -17,37 +18,23 @@
 
 <v-container v-else fluid>
  <v-toolbar  dense  row >
-   Attendance for {{ listDetail }} <br> {{ checkList }}
-    <v-spacer></v-spacer>
-      <v-btn v-for="c in checkList" :key="c" small icon @click="reset(c)" class="ma-2" :title="'Mark all as ' + c"> c </v-btn>
-      <v-btn icon small @click="showAdd = true" class="ma-2" title="Add a Student">
-        <v-icon>mdi-database-plus </v-icon>
-      </v-btn>
-     <v-btn icon small class="ma-2" @click="showPhotoList = !showPhotoList" title="show Thumbnails"><v-icon>mdi-image</v-icon></v-btn>
+   <span><strong> {{ listname }} </strong> <span>for</span> {{ staffSurname }}</span>
+    <v-spacer />
+
+      <v-btn icon small class="ma-2" @click="showPhotoList = !showPhotoList" color="primary" title="show Thumbnails"><v-icon>mdi-image</v-icon></v-btn>
     <v-back/>
  </v-toolbar>
 </v-container>
 <v-card>
-  <v-card-title> List Entities </v-card-title>
   <v-card-text>
-    <v-layout row wrap align-content-start justify-space-between class="ma-4">
-      <p>still</p><p>to</p><p>add</p>
-      <!-- <v-text-field v-model="listDetail.note"
-        xs10 md6
-        dense
-        label="Note" />
-      <v-text-field v-model="listDetail.userid"
-        xs10 md6
-        dense
-        label="userid" />
-      <v-text-field v-model="listDetail.placeid"
-        xs10 md6
-        dense
-        label="placeid" />
-      <v-text-field v-model="listDetail.listdate"
-        xs10 md6
-        dense
-        label="listDate" /> -->
+    <v-layout row wrap align-content-start justify-space-between class="ma-2">
+    <!-- <span class="ma-2"><strong> List Functions </strong></span> -->
+    <v-btn v-for="c in checkList" :key="c"
+           x-small xicon
+           color="primary"
+           @click="reset(c)"
+           class="ma-2" :title="'Mark all as ' + c">
+      <v-icon small>mdi-lock-reset</v-icon> {{c}} </v-btn>
     </v-layout>
   </v-card-text>
 </v-card>
@@ -55,12 +42,19 @@
 <v-container class="mt-2" fluid>
  <v-row>
   <v-col cols="12" v-if="studentListReal && studentListReal.length">
-   <v-card color="gray lighten-3" class="ma-2" id="x12345">
-    <v-card-title v-if="'staffSurname' in listDetail" class="heading text-center">
-        <v-flex class="float-right">
-          <span v-for="s in studentTally" :key="s.name" class="ml-2 text-caption"> {{s.name}}:{{s.value}}, </span>
-        </v-flex>
-        Total : {{ studentItem.length }}
+   <v-card color="gray lighten-3" class="ma-2" id="x12345" elevation="0">
+    <v-card-title class="heading text-center">
+      <v-layout wrap justify-space-around>
+      <v-card v-for="(s,i) in studentTally" :key="s.name"
+            class="ml-2 text-sm-caption pa-1"
+            elevation="0"
+            :color="cardColor(i)"
+            :title="`You have ${s.value} students marked as ${s.name}`"
+      >
+         {{s.name}} : {{s.value}}
+      </v-card>
+      <span> Total : {{ studentItem.length }} <span class="text-caption gray--text text--lighten-3"> {{ refreshKey }} </span> </span>
+      </v-layout>
      </v-card-title>
     <v-card-text>
       <v-row>
@@ -68,22 +62,23 @@
                v-for="(s,index) in studentListReal" :key="s.studentid">
            <v-card :color="studentCardColor(index)"
                   class="ma-1 pl-2"
-                  @click="quickShow = s.studentid">
+                  @click="quickShow == false ? quickShow = s.studentid : quickShow = false">
             <v-layout justify-space-between>
              <v-flex xs3 class="ma-1" v-show="showPhotoList==true">
               <z-show name="studentphoto" :id="s.studentid" height="88" />
              </v-flex>
              <span class="mt-2 ml-2 text-caption text-sm-body-2 text-md-body-1"> {{ index+1 }}  </span>
              <span class="ma-2">
-              {{ s.surname }}, {{ s.firstname}} <span v-if="'grade' in s" class="text-caption"> {{ s.grade }}{{ s.gclass }} </span>
+              {{ s.surname }}, {{ s.firstname}}
+               <span v-if="'grade' in s" class="text-caption"> {{ s.grade }}{{ s.gclass }} </span>
              </span>
              <span class="float-right mt-3 mr-4 text-caption">
               {{ studentItem[index] }}
              </span>
             </v-layout>
           </v-card>
-            <v-card v-if="quickShow == s.studentid" color="gray lighten-3" class="ma-1" elevation="6">
-            <v-radio-group dense v-model="studentItem[index]" class="ma-0 pl-5 pa-3">
+          <v-card v-if="quickShow == s.studentid" color="gray lighten-3" class="ma-1" elevation="6">
+           <v-radio-group row dense v-model="studentItem[index]" class="ma-0 pl-5 pa-3">
             <v-radio v-for="c in checkList" :key="c"  :label="c"
                     :value="c" @click="quickShow=false"
                     class="ma-0 pa-0" />
@@ -93,10 +88,10 @@
       </v-row>
      </v-card-text>
      <v-card-actions class="ma-2">
-      <v-btn @click="showAdd = true" class="ma-2">
+      <!-- <v-btn @click="showAdd = true" class="ma-2">
         <v-icon>mdi-database-plus </v-icon>
         Add
-      </v-btn>
+      </v-btn> -->
       <v-spacer />
        <v-btn @click="commitChanges" class="ma-2" color="primary"><v-icon>mdi-content-save</v-icon> Commit Updates </v-btn>
 
@@ -105,53 +100,24 @@
    </v-col>
   </v-row>
 
-<v-dialog v-model="showAdd" width="450" max-width="550" :fullscreen="$vuetify.breakpoint.smAndDown">
-    <v-card  class="ma-2" elevation="2">
-    <v-card-title> Add Student to this list </v-card-title>
-    <v-card-text>
-      <student-lookup
-           @dataEntered="handCapture"
-           :searchMore="true"
-      />
-      <!-- stud = {{ stud }} -->
-      <v-card v-if="'data' in stud" class="pa-2">
-       Name : {{  stud.data.surname }}, {{ stud.data.firstname }}
-       <br>
-       Grade : {{ stud.data.grade }} {{  stud.data.gclass }}
-      <v-card-actions>
-        <v-btn v-if="'data' in stud" @click="addStudent" color="primary"> Add </v-btn>
-        <v-spacer />
-        <v-btn @click="showAdd = false"> Ignore </v-btn>
-      </v-card-actions>
-     <v-card-text class="text-caption ma-2" color="secondary">
-      *warning : if you add a student here, it will be only for this session
-     </v-card-text>
-
-     </v-card>
-     </v-card-text>
-    </v-card>
-</v-dialog>
-
-
 </v-container>
 </div>
 </template>
 
 <script>
 import { getters } from "@/api/store"
-import StudentLookup from '@/components/student/StudentLookup.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import ZShow from '@/components/base/ZShow.vue'
 import VBack from '@/components/base/VBack.vue'
 import { AttWork } from '@/components/student/AttWork.js'
-
 export default {
     name:"StudentGeneralList",
-    props:["studentList", "listDetail","checkList"],
+    props:["studentList"
+        , "generalDetail"
+        , "checkList"],
     components:{
        ZShow
       ,VBack
-      ,StudentLookup
       ,BaseTitleExpand
     },
     data: () => ({
@@ -166,14 +132,24 @@ export default {
         quickShow: false,
         //AttWork: AttWork
         stud:[],
-        showAdd:false,
-        addList:[],
         confirmSound:new Audio('sounds/Water drip.mp3'),
         refreshKey: 0
     }),
     computed: {
+      info() {
+        if (this.studentItem.length < 1) return ''
+        return this.generalDetail
+      },
+      listname() {
+        if (this.studentItem.length < 1) return ''
+        return 'LIST : ' + this.generalDetail.listname
+      },
+      staffSurname() {
+        if (this.studentItem.length < 1) return ''
+        return this.generalDetail.staffSurname + '(' + this.getZml.login.username + ')'
+      },
       studentTally() {
-        console.log('StudentTally', this.refreshKey)
+        //console.log('StudentTally', this.refreshKey)
         if (this.studentItem.length < 1) return []
         let tally = []
 
@@ -190,59 +166,43 @@ export default {
         return tally
       },
       studentListReal() {
-        //this.refreshKey
-        if (this.addList.length) {
-          //return this.studentList.concat(this.addList) //did not work? might be refreshkey
-          if (this.studentList.length) {
-             return this.addList.concat(this.studentList)
-          } else {
-             return this.addList
-          }
-        } else {
-          return this.studentList
-        }
+        //We made it computed, incase we want to add some.
+        return this.studentList
       }
-
     },
     methods:{
       reset(text) {
         this.studentItem.fill(text)
-        console.log('fill=', this.studentItem)
         this.refreshKey++
       },
       commitChanges() {
-        if (AttWork.saveGenList(this.studentListReal, this.studentItem, this.listDetail) == 'DONE')  this.confirmSound.play()
+        if (AttWork.saveGenList(this.studentListReal, this.studentItem, this.generalDetail) == 'DONE')  this.confirmSound.play()
         this.$router.back()
       },
       studentCardColor(idx) {
         //we find the order - getting it from checklist.
         let ord = this.checkList.findIndex(e => e == this.studentItem[idx])
-        //switch (this.studentItem[idx]) {
+        return this.cardColor(ord)
+      },
+      cardColor(ord) {
         switch (ord) {
           case 0: return "green lighten-1"
           case 1: return "blue lighten-2"
-          case 2: return "pink lighten-1"
+          case 2: return "gold lighten-3"
           case 3: return "red lighten-2"
+          case 4: return "gold"
+          case 5: return "amber lighten-1"
+          case 6: return "pink"
+          case 7: return "deep-purple"
+          case 8: return "brown lighten-1"
+          case 9: return "blue-grey lighten-4"
           default : return 'gray lighten-4'
         }
-      },
-      handCapture(studentReceived) {
-        console.log('handcap (received):', this.stud)
-        this.stud = studentReceived
-      },
-      addStudent() {
-        console.log('Adding in list:', this.stud.data)
-        let obj = {}
-        obj = this.stud.data
-        this.addList.push(obj)
-        this.studentItem.push(this.checkList[0])
-        this.showAdd = false
       }
      },
     mounted() {
-      console.log('GeneralClassList(mounted) : ', this.studentList)
+      //console.log('GeneralClassList(mounted) : ', this.studentList.length)
       this.studentItem = Array.from({ length: this.studentList.length }, () => (this.checkList[0]))
-      //console.trace()
     },
     watch: {
     }

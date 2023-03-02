@@ -1,12 +1,11 @@
 <template>
-   <!-- prepend-icon="mdi-magnify" -->
    <v-text-field class="pt-2 xmt-2"
                  single-line hide-details
-                 append-icon="mdi-close"
+                 clearable
+                 outlined
                  placeholder="search"
                 :value="value"
                 @input="updateValue"
-                @click:append="$emit('clear')"
    />
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <v-layout wrap justify-space-between>
+    <v-layout wrap justify-space-around>
         <auto-sel-pers v-if="getZml.persMenemonic && getZml.persMenemonic.length"
               asLabel="Inspector/Teacher"
               v-model="p.persMen"
@@ -63,6 +63,9 @@ export default {
       , AutoSelAttList
       , AutoSelGenList
     },
+    props:{
+      initialValues:{type:Object, required:false},
+      },
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),
       p: {roomName: ''
@@ -87,24 +90,28 @@ export default {
     methods: {
       changePers() {
             console.log('change Pers!!!!', this.findTeacher)
-            console.log('roomname', this.p.persObj)
+            //console.log('roomname', this.p.persObj)
             if (this.p.persObj !== null && this.p.persObj !== undefined && 'room' in this.p.persObj) {
                this.p.roomName = this.p.persObj.room
-               console.log(this.p.persObj.room)
+               //console.log(this.p.persObj.room)
             }
-            console.log('changed????', this.p.roomName , this.p.persObj)
+            //console.log('changed????', this.p.roomName , this.p.persObj)
       },
-      change() {
+      change(e) {
+            if (e == undefined) return
             //each time a change come in, we send the whole object back
-            //console.log('CHange', this.$options.name,e)
+            console.log('CHange', this.$options.name,e)
             this.$emit('input', this.p)
       }
     },
     created() {
       console.log('Create', this.$options.name)
+      if (this.initialValues) this.p = this.initialValues
     },
     mounted() {
       console.log('Mount', this.$options.name)
+
+      console.log(this.$options.name,this.initialValues)
     },
     watch: {
     }

@@ -81,10 +81,9 @@ export default {
         //Fetch a list of all the id's and send it over..
         const period = this.showSelection.period
         let ts = {
-            sql:`SELECT distinct studentid \
-  FROM dkhs_student s, a_attendance a \
- where s.studentid = a.capture \
-  and a.active is null \
+            sql:`SELECT distinct a.studentid \
+  FROM dkhs_student s, v_attendance a \
+ where s.studentid = a.studentid \
   and a.attendancedate like '${this.aDate}%' \
   and a.period = '${period}' \
   and s.grade = '${this.gradeClass.g}' and s.gclass = '${this.gradeClass.c}'`,
@@ -100,8 +99,7 @@ export default {
         let ts = {
             sql:`SELECT grade, gclass, a.staff, a.location,a.period, count(*) count\
               FROM dkhs_student s\
-              left join a_attendance a on s.studentid = a.capture \
-                   and active is null and attendancedate like '${this.aDate}%' \
+              left join v_attendance a on s.studentid = a.studentid and attendancedate like '${this.aDate}%' \
               where grade = '${this.gradeClass.g}' and gclass = '${this.gradeClass.c}'\
               group by grade, gclass, a.staff, a.location,a.period
               order by a.period`,

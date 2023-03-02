@@ -1,11 +1,13 @@
 <template>
-<v-container fluid>
+<v-container  fluid>
+  <!-- pn  {{ initial }} {{ surname }}  {{ cPersName}} -->
+  <!-- {{ persMenemonic }} -->
   <v-layout align-center justify-center>
-  <v-card max-height="400" max-width="500" class="ma-2" v-if="persRec">
+  <v-card max-height="400" max-width="500" class="ma-2" v-if="cPersName">
   <v-card-text class="staff-container">
 
-   <v-img v-if="'photo' in persRec && persRec.photo.length > 5"
-          :src="'https://kuiliesonline.co.za/bib/assets/staff/' + persRec.photo + '?'+Math.random()"
+   <v-img v-if="'photo' in cPersName && cPersName.photo.length > 5"
+          :src="'https://kuiliesonline.co.za/bib/assets/staff/' + cPersName.photo + '?'+Math.random()"
            max-width="90"
            position="left left"
            class="ma-2 Photo"
@@ -13,14 +15,14 @@
    </v-img>
 
   <div class="Surname headline">
-    {{ persRec.surname }}
+    {{ cPersName.surname }}
   </div>
 
   <div class="Firstname headline">
-   {{ persRec.name }}
+   {{ cPersName.name }}
   </div>
   <div class="Phone subtitle-1">
-       {{ persRec.contactnumber }}
+       {{ cPersName.contactnumber }}
        <v-divider  />
   </div>
 
@@ -31,15 +33,12 @@
   <div class="i5"><v-icon small>mdi-update</v-icon></div>
 
   <div class="detail1">  021 903 5121</div>
-  <div class="detail2"> {{ persRec.room }}</div>
-  <div class="detail3"> {{ persRec.workarea }}</div>
-  <div class="detail4"> {{ persRec.workemail || persRec.email }}</div>
-  <div class="detail5"> {{ persRec.changedate }}</div>
+  <div class="detail2"> {{ cPersName.room }}</div>
+  <div class="detail3"> {{ cPersName.workarea }}</div>
+  <div class="detail4"> {{ cPersName.workemail || cPersName.email }}</div>
+  <div class="detail5"> {{ cPersName.changedate }}</div>
 
-  <div class="line"><v-divider
-                       class="mx-4"
-                       vertical
-                      ></v-divider>
+  <div class="line"><v-divider class="mx-4" vertical />
   </div>
   <div class="logo float-right">
     <v-img class="float-right"
@@ -54,8 +53,6 @@
  </v-card>
  <v-card v-else>
   <v-card-title> We could not find the teacher: </v-card-title>
-  {{ persName }}
-  {{ persMenemonic }}
  </v-card>
   </v-layout>
  </v-container>
@@ -63,38 +60,31 @@
 
 <script>
 import { getters } from "@/api/store";
-import { finder } from "@/api/finder.js";
 export default {
     name:"PersonelNameCardDemo",
-    props: ['persName'],
+    props: ['surname','initial','user'],
     data: () => ({
       persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
       loggedIn:getters.getState({ object: "gZml" }).login.username,
-      persRec: { photo:'', surname:'', name:'', contactnumber:'' },
       //srch: null,
-   }),
-    methods:{
-      answer(response) {
-        this.persRec = response
+    }),
+    computed:{
+      cPersName() {
+         let list = {}
+         let srchFor = ''
+         if (this.surname && this.surname.length) srchFor = 'Name'
+         if (this.user && this.user.length) srchFor = 'User'
+         if (srchFor) {
+          list = this.persMenemonic.find(v => {
+             switch (srchFor) {
+             case 'Name' : return v.surname.toLowerCase() == this.surname.toLowerCase() && v.name.substr(0,1).toLowerCase() == this.initial.toLowerCase()
+             case 'User' : return (v.user_name.substr(0,this.user.length).toUpperCase() == this.user.toUpperCase())
+
+          }})
       }
-    },
-    mounted: function() {
-        if (this.persName) {
-           console.log('work out what we want....' , this.persName, this.persMenemonic.length)
-           //this.findPersonel(this.persName)
-           finder.findPersonel(this.persName, this.answer)
-
-        } else {
-           this.persRec.surname = 2
-           this.persRec.name = 3
-           this.persRec.contactnumber =4
-           this.persRec.room = 5
-           this.persRec.workarea =6
-           this.persRec.email =6
-           this.persRec.changedate= 5
-
-        }
-    },
+      return list
+     },
+   }
 }
 </script>
 

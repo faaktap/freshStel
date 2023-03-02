@@ -15,9 +15,21 @@ export const zmlF = {
         }
     },
     ZF: (storage, pcallback, pErrorcallback) => {
+       if  (storage.workDone == 'BUSY')  alert('We should wait, since we are busy with a fetch')
        storage.workDone = BUSY
        storage.progress = true
-       let p = zmlF.zFetch({task:'PlainSql', sql:storage.sql})
+       let taskSql = storage.sql.find(e => e.action == storage.action)
+       taskSql.task = 'PlainSql'
+       taskSql.action = storage.action
+
+       console.log('ZF is doing ', storage, taskSql)
+       if (taskSql.action == 'update' || taskSql.action == 'insert') {
+        taskSql.data = storage.data
+        taskSql.data.bind = storage.data.bind
+       }
+
+       let p = zmlF.zFetch(taskSql)
+
        p.then((resp) => {
         storage.workDone = DONE
         storage.progress = false
@@ -29,21 +41,27 @@ export const zmlF = {
         }
        })
        .then(rjson => {
-        storage.response = rjson
+        storage.progress = false
         if ('errorcode' in rjson && rjson.errorcode != 0) {
-           console.log('we have errorcode on retrieve', rjson)
-           if (pErrorcallback) pErrorcallback(rjson)
-           return
-        } else {
-          console.log('passing data to storage', rjson)
-          if (pcallback) pcallback(rjson)
+          console.log('we have errorcode on action:', storage.action, rjson)
+          storage.feedback = rjson
+          if (pErrorcallback) pErrorcallback(rjson)
           return
         }
+        if (storage.action == 'refresh') {
+          storage.response = rjson
+        } else {
+          storage.feedback = rjson  //save it in feedback, since it was update or insert
+        }
+        console.log('passing data to storage', rjson)
+        if (pcallback) pcallback(rjson)
+        return
        })
        .catch(err => {
           //we have a problem, load our error object and report back
-          storage.response = {error: 'Failed to Fetch', errorcode: '9999', exception:"caught exception", result:err}
+          storage.feedback = {error: 'Failed to Fetch', errorcode: '9999', exception:"caught exception", result:err}
           storage.workDone = DONE
+          storage.progress = false
           if (pErrorcallback) pErrorcallback(storage.response)
        })
     },
@@ -80,13 +98,15 @@ export const zmlF = {
                 if (chk.length == 0) {
                   return false //console.log('it is an empty array = ' , 'no data loaded yet')
                 } else {
-                  return chk.length //console.log('it is a full array','ready for showing!')
+                  console.log('Upd From isGoodData : Data is fine!',chk.length)
+                  return true //chk.length //console.log('it is a full array','ready for showing!')
                 }
               } else {
                 return false //console.log('no errorcode prop object in response')
               }
             } else {
-              return false //console.log('nothing in e response')
+              console.log('goodDataChk:nothing in e response')
+              return true //console.log('nothing in e response')
             }
       },
       zFetch : (task) => {

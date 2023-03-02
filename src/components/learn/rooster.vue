@@ -137,14 +137,14 @@ export default {
             e.bday[10] = e.day10 ?  e.day10 : 'AF'
         })
       }
-      console.log('is it here?',this.entityTable)
+      //console.log('is it here?',this.entityTable)
     },
     //--------------------------------------------------------------------------------
     clickOnForm(editTable,method){
       console.log(editTable, method)
     },
     loadError(response) {
-      console.log('loadError:',response)
+      //console.log('loadError:',response)
       if ('error' in response) errorSnackbar(response.error)
 
     },
@@ -203,7 +203,7 @@ export default {
     },
   },
   mounted() {
-     console.log('Start' , this.$options.name)
+     // console.log('Start' , this.$options.name)
      if (!this.user_name) {
        infoSnackbar("We need a UserName! - Please select staff (Responsible Person)")
      }

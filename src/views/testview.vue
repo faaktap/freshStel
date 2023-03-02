@@ -56,12 +56,12 @@ export default {
         return `( Records :  ${this.sqlData.length || 0} )`
     },
    },
-   mounted() {
+   created() {
     this.loadAllData()
    },
    methods: {
      LoadLatestLookups() {
-         zData.initialData('Load Latest Data')
+         zData.quickLoadInitialData('QuickLoad')
      },
      loadAllData() {
        this.$cs.l('loadAllData')

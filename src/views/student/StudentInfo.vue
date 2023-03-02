@@ -29,7 +29,8 @@
       <v-back />
     </v-toolbar-items>
   </v-toolbar>
-  <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quick(l.data.studentid)">
+  <!-- <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quick(l.data.studentid)"> -->
+  <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quickLoadStudent(l.data.studentid)">
     {{ l.data.firstname }} {{ l.data.surname }} {{ l.data.grade }}
   </v-chip>
   <v-container fluid>

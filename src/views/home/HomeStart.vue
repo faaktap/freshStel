@@ -102,7 +102,7 @@ import { zmlConfig } from '@/api/constants';
 import { zmlLog } from '@/api/zmlLog.js';
 
 export default {
-  name: "PagesIndex",
+  name: "HomeStart",
 //layout: 'default',
   layout(context) {
     console.log('context in layout..',context)

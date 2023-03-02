@@ -123,9 +123,9 @@ export default {
            }
        },
        click(what) {
-           console.log(what)
+           //console.log(what)
             if (doStuff(this.$router,what.payload) == 0) {
-                console.log(what)
+                //console.log(what)
                 if (what.payload.substr(0,4).toLowerCase() == 'http') {
                     window.open(what.payload,'_' + 'ko_external')
                 }
@@ -133,15 +133,15 @@ export default {
         },
    },
    mounted() {
-    this.$cs.l('M',this.$options.name)
+    this.$cs.l('Mounted',this.$options.name)
     if (this.getZml.functions.length == 0) {
+       alert('function not loaded yet!')
        this.getZml.functions = ls.load('zmlFuncs')
     }
    },
 
    created() {
-    console.log('C',this.$options.name)
-    this.$cs.l('C',this.$options.name)
+    this.$cs.l('Created',this.$options.name)
    },
    watch:{
        baseSearch() {

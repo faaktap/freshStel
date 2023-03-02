@@ -22,10 +22,13 @@ export const finder = {
     },
     findPersonel(persName, callbackFunction) {
         //check if we have a username
+        console.log('finder search', persName)
         let len = persName.length
         let srch = ''
+        let obj = {}
         for (const e of finder.persMenemonic)  {
           //console.log(e.user_name,'|', e.user_name.substr(0,len).toUpperCase(),'|', persName.toUpperCase())
+          obj = e
           if (e.user_name.substr(0,len).toUpperCase() == persName.toUpperCase()) {
             srch = `menemonic = '${persName}'`
             break
@@ -45,12 +48,10 @@ export const finder = {
             break
           }
         }
-        if (srch) {
-          finder.loadPers(srch,callbackFunction)
-        } else
-          //we checked persid, and menemonic, found nada, let's look at surname?
-          //alert('we did not find this staff member')
-          finder.persRec = null
+        //we checked persid, and menemonic, found nada, let's look at surname?
+        //alert('we did not find this staff member')
+        console.log('finder return=',obj)
+        return obj
       },
       persRec: {},
       loadPers(srch,cbf) {

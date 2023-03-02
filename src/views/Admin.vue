@@ -15,9 +15,18 @@
                badgeTitle="`You have ${meritCount} merits to confirm`"
                @click="loadYourMeritWork"
       >Merit Approval</base-tool-button>
+      <base-tool-button
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Home"
+               color="secondary"
+               icon="mdi-home"
+               :loading="loading"
+               :disabled="loading"
+               to="/home"
+      >Home</base-tool-button>
   </v-toolbar>
 
-
+<!-- <test-composition-api /> -->
 
 <v-row>
  <v-col cols="12">
@@ -78,6 +87,8 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import ListTest from '@/components/ListTest.vue';
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+
+//import testCompositionApi from "@/components/testCompositionApi.vue";
 export default {
     name:"AdminHome",
     components:{

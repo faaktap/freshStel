@@ -32,7 +32,7 @@
    <v-back/>
  </v-toolbar>
 
- <v-card>
+ <v-card v-if="reports && reports.length">
     <v-tabs-items v-model="tab">
       <v-tab-item  v-for="rep in reports" :key="rep.id" :href="rep.id">
         <v-card flat>
@@ -195,11 +195,14 @@ export default {
       zmlFetch(ts, this.initialize, this.moan )
     }
   },
+  created() {
+     this.loadInitialData()
+  },
   mounted() {
     if (this.getZml.place.length == 0 || this.getZml.owner.length == 0) {
       //They have been nowhere else = but should not be a problem
     }
-    this.loadInitialData()
+
   },
   watch:{
     reportValueToCount() {

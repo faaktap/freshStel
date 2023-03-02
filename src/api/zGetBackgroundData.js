@@ -11,7 +11,8 @@ function l(...args) {
 
 export const zData = {
     someGlobals :  'hallo',
-    loading : true,
+    loadingCache : false,
+    loadingReal : false,
     closeDate : null,
     loadSql(loading, sqlStatement, assignDataProc, api = zmlConfig.apiDKHS){
         loading = true
@@ -49,21 +50,68 @@ export const zData = {
         fetch(zmlConfig.emailPath, apiConfig);
     },
     wernerTest(r) {console.log('no func passed',r)},
+    checkIfAllLoaded() {
+        console.log('checkIfAllLoaded:', getters.getState({ object: "gZml" }).subjects.length
+        , getters.getState({ object: "gZml" }).persMenemonic.length            , getters.getState({ object: "gZml" }).functions.length
+        , getters.getState({ object: "gZml" }).place.length            , getters.getState({ object: "gZml" }).meritLevel.length
+        , getters.getState({ object: "gZml" }).classList.length            , getters.getState({ object: "gZml" }).tickList.length)
+
+        if (getters.getState({ object: "gZml" }).subjects.length
+         && getters.getState({ object: "gZml" }).persMenemonic.length
+         && getters.getState({ object: "gZml" }).functions.length
+         && getters.getState({ object: "gZml" }).place.length
+         && getters.getState({ object: "gZml" }).meritLevel.length
+         && getters.getState({ object: "gZml" }).classList.length
+         && getters.getState({ object: "gZml" }).tickList.length) {
+            return true
+         } else {
+            return false
+         }
+    },
     quickLoadInitialData: (whatever, afterwardsFunction) => {
-        console.log('InitialData-Quickload----------------------------------------------------Start', whatever)
+        if (zData.checkIfAllLoaded() == true) {
+            console.log('InitialData-Quickload-------------------------------------------NotNeeded',zData.loadingCache, whatever)
+            if (afterwardsFunction) afterwardsFunction()
+            return
+        }
+        if (zData.loadingCache == true) {
+            if (afterwardsFunction) afterwardsFunction()
+            console.log('InitialData-Quickload-------------------------------------------Other One Busy')
+            return
+        }
+        zData.loadingCache = true
+        console.time('quickload')
+        console.log('InitialData-Quickload----------------------------------------------------Start',zData.loadingCache, whatever)
         getters.getState({ object: "gZml" }).subjects = ls.load('zmlSubjects')
         getters.getState({ object: "gZml" }).persMenemonic = ls.load('zmlPersM')
         getters.getState({ object: "gZml" }).functions = ls.load('zmlFuncs')
         getters.getState({ object: "gZml" }).place = ls.load('zmlLookupPlace')
         getters.getState({ object: "gZml" }).meritLevel = ls.load('zmlMeritLevel')
         getters.getState({ object: "gZml" }).classList = ls.load('zmlClassList')
-        if (afterwardsFunction) afterwardsFunction()
+        getters.getState({ object: "gZml" }).tickList = ls.load('zmlTickList')
+        zData.loadingCache = false
+        console.log('InitialData-Quickload------------------------------------------------End',zData.loadingCache, whatever)
+        console.timeEnd('quickload')
+
+        if (getters.getState({ object: "gZml" }).functions.length < 2
+         || getters.getState({ object: "gZml" }).place < 2
+         || getters.getState({ object: "gZml" }).persMenemonic < 2) {
+          zData.initialData('cache is empty', afterwardsFunction)
+        } else {
+          if (afterwardsFunction) afterwardsFunction()
+        }
     },
     initialData:  (whatever, afterwardsFunction) => {
-        console.log('InitialData-------------------------------------------------------------------Start', whatever)
+        if (zData.loadingReal == true) {
+            if (afterwardsFunction) afterwardsFunction()
+            return
+        }
+        zData.loadingReal = true
+        console.log('InitialData-------------------------------------------------------------------Start',zData.loadingReal, whatever)
         if (whatever !== undefined) l(whatever)
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
+            console.time('bigload')
             const ts = {}
             ts.api = zmlConfig.apiDKHS
             ts.task = 'loadlearn'
@@ -94,6 +142,9 @@ export const zData = {
 
 //----------------------------------------------------------------
 function finishedLoadingBasic (response) {
+    zData.loadingReal = false
+    console.log('InitialData-------------------------------------------------------------------End',zData.loadingReal)
+    console.timeEnd('bigload')
     //getZml = getters.getState({ object: "gZml" })
     l('finishedLoadingBasic', response)
 
@@ -110,6 +161,7 @@ function finishedLoadingBasic (response) {
     getters.getState({ object: "gZml" }).functions.length = 0
     getters.getState({ object: "gZml" }).functions = f2.concat(f1);
     ls.save('zmlFuncs', getters.getState({ object: "gZml" }).functions)
+    console.log('functions saved on inital load:::', getters.getState({ object: "gZml" }).functions)
 
     getters.getState({ object: "gZml" }).subjects = response.subjects;
     ls.save('zmlSubjects', response.subjects)
@@ -127,6 +179,18 @@ function finishedLoadingBasic (response) {
         ls.save('zmlClassList', response.classlist)
         getters.getState({ object: "gZml" }).classList = response.classlist;
     }
+    if (response.ticklist && response.ticklist.length > 0) {
+        let tmpList = []
+        response.ticklist.forEach(e => {
+            const tickObj = JSON.parse(e.jdocstructure)
+            tmpList.push(tickObj)
+        });
+        getters.getState({ object: "gZml" }).tickList = tmpList
+        ls.save('zmlTickList', getters.getState({ object: "gZml" }).tickList)
+    } else {
+        alert('ticklist is empty!!!')
+    }
+
     zData.wernerTest()
     console.log('InitialData-----------------------------------------------------------DONE LOADING BACKGROUND DATA')
 
@@ -135,7 +199,7 @@ function finishedLoadingBasic (response) {
 
 //----------------------------------------------------------------
 function errorLoading (response) {
-    zData.loading = false
+    zData.loadingReal = false
     //alert('We had an error loading your data!')
     l('We had an ERROR loading your data!',response)
 }

@@ -113,34 +113,15 @@
 
 
  </v-col>
-
-<!--
-{ "functionid": "2", "sortorder": "50"
-, "functionname": "Display Student Content"
-, "shortname": "Teach"
-, "payload": "/sh"
-, "functiontype": "local"
-, "functionaccess": "student"
-, "tip": "Select a grade and subject, and display content for students.."
-, "grade": null
-, "icon": "mdi-school"
-, "description": null}
-{ "functionid": "10", "sortorder": "55", "functionname": "RCL Campaigns", "shortname": "Sign Up", "payload": "/campaigns", "functiontype": "local", "functionaccess": "student", "tip": "DKHS Candidates Register and Voting System", "grade": null, "icon": "mdi-vote", "description": "De Kuilen Candidates Register and Voting System", "create_timestamp": "2021-03-01 15:24:45", "update_timestamp": "2021-03-18 15:49:57" }
-    -->
 </v-row>
 
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
 
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-        <v-btn to="/viewfunctions"> functions </v-btn>
-        <v-btn to="/dkhsawards"> awards </v-btn>
-    </div>
 </div>
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
-import { zmlFetch } from '@/api/zmlFetch.js';
+import { zData } from "@/api/zGetBackgroundData.js"
 import { doStuff } from '@/api/buttons'
 import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
@@ -181,7 +162,7 @@ export default {
             if (!this.getZml) return 0;
             return this.getZml.functions.filter(a => function()
             {
-                if (a.accesstype == this.getZml.login.type)
+                if (a.accesstype == 'student' || a.accesstype == 'other')
                     return 1
                 else
                     return 0
@@ -231,20 +212,30 @@ export default {
             }
 
         },
-        loadFunctions() {
-           let ts = {};
-           ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction where functionaccess = "student" order by sortorder'
-           ts.api = zmlConfig.apiDKHS
-           zmlFetch(ts, this.showData, this.loadError)
-        },
+        // loadFunctions() {
+        //    let ts = {};
+        //    ts.task = 'PlainSql';
+        //    ts.sql = 'select * from dkhs_lfunction where functionaccess = "student" order by sortorder'
+        //    ts.api = zmlConfig.apiDKHS
+        //    zmlFetch(ts, this.showData, this.loadError)
+        // },
         loadError(response) {
             //this.$cs.l(response)
             alert(response)
         },
         showData(response) {
            this.getZml.functions = response
+        },
+        initialize() {
+        this.$cs.l(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
+        this.gradeToShow.c = this.getZml.login.gclass
+        this.$cs.l('home2:', this.gradeToShow.g + this.gradeToShow.c)
+        this.showCal = true;
+        //this.loadFunctions()
         }
+    },
+    created: function() {
+         zData.quickLoadInitialData('Load Data for incase', this.initialize)
     },
     mounted: function() {
         this.$cs.l('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
@@ -255,11 +246,6 @@ export default {
         } else {
            this.gradeToShow.g = 'G'.concat(this.getZml.login.grade)
         }
-        this.$cs.l(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
-        this.gradeToShow.c = this.getZml.login.gclass
-        this.$cs.l('home2:', this.gradeToShow.g + this.gradeToShow.c)
-        this.showCal = true;
-        this.loadFunctions()
 
     }
 }

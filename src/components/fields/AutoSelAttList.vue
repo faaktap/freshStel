@@ -45,7 +45,6 @@ export default {
   },
   mounted() {
     //on Mounted we searched for the id if we have an initialValue
-    //if (this.initialValue) this.what = this.itemObj.find(e => e.id == this.initialValue  )
     this.lookup()
     if (this.what !== undefined) {
         this.$emit('objInput', this.what)
@@ -53,9 +52,9 @@ export default {
 
   },
   computed: {
-    searchText() {  console.log(this.$options.name,'searchText');    return this.itemObj[0] || ''    },
-    itemDisplay() {     return item => item.grade + ' — ' + item.listname  +  ' - ' + item.teacher  }
+    searchText() {  return this.itemObj[0] || ''    },
+    itemDisplay() { return item => item.grade + ' — ' + item.listname  +  ' - ' + item.teacher  }
   },
-  watch: {    initialValue() {   this.lookup()      }}
+  watch: { initialValue() { this.lookup() }}
 }
 </script>

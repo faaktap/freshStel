@@ -1,5 +1,10 @@
 <template>
 <v-container grid-list-lg v-if="subjectList.length" >
+
+  <v-dialog max-width="400" v-model="showPers" scrollable>
+  <personel-name-card-demo :initial="initial" :surname="surname" />
+  </v-dialog>
+
    <v-toolbar dense row>
     <v-toolbar-title>
       <span class="d-none d-sm-block"> Student Subject </span>
@@ -12,7 +17,6 @@
     <v-spacer />
      <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
      <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
-
    </v-toolbar>
 
      <v-layout row wrap v-if="showAs == 'card'">
@@ -20,8 +24,10 @@
           <v-card>
             <!--v-img src="img/logo.png" height="260px "></v-img-->
             <!-- <v-img class="float-right" width="100px" src="/img/logo.png" /> -->
-            <v-card class="float-right ma-2" height="50" width="50">
-             <z-show name="persphoto" :id="lookupPersid(s.teachersurname, s.teacherinitial)" />
+            <v-card class="float-right ma-2" height="50" width="50"
+                    @click="showIt(s.teachersurname, s.teacherinitial)" >
+             <z-show name="persphoto"
+                    :id="lookupPersid(s.teachersurname, s.teacherinitial)" />
             </v-card>
 
             <v-card-title primary-title class='blue--text wordbreak'>
@@ -74,22 +80,31 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 //import { finder } from '@/api/finder.js';
 import ZShow from '@/components/base/ZShow.vue'
+import PersonelNameCardDemo from '@/components/staff/PersonelNameCardDemo.vue'
 export default {
     name:"StudentSubjectCard",
     props: ['studentid', 'color'],
     components: {
-      //PersonelNameCardDemo,
+      PersonelNameCardDemo,
       ZShow
     },
     data: () => ({
       subjectList:{},
       persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
       loading: false,
-      showAs: 'card'
+      showAs: 'card',
+      surname: '',
+      initial: '',
+      showPers:false
     }),
     computed: {
     },
     methods:{
+      showIt(surname,initial) {
+         this.showPers = true
+         this.surname = surname
+         this.initial = initial
+      },
       lookupPersid(surname, initial) {
           let idx = this.persMenemonic.findIndex(e => {
               //console.log(e.surname.toLowerCase() , surname.toLowerCase() , e.name.substr(0,1).toLowerCase(), initial.toLowerCase())

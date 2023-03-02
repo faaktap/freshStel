@@ -9,7 +9,7 @@
        class="mr-2"
        title="Click to view attendance list"
        @click="attendancePrep"
-    >
+    />
   </v-toolbar>
 <v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
     You are not logged in, or you are not a teacher!
@@ -229,7 +229,7 @@ export default {
       classListLoad() {
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = `SELECT studentid, surname, firstname, grade, gclass\
+        ts.sql = `SELECT s.studentid, surname, firstname, grade, gclass\
          , idno, GROUP_CONCAT(email) emails\
          FROM dkhs_student s\
          left join m_subscriber m on s.studentid = m.impnumber and m.outid is null\

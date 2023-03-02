@@ -2,10 +2,16 @@
 <!--
        Copied from TableAttendance under nuxt-attendance (freshNuxt)
 -->
-  <v-container fluid>
-<base-title-expand color="white" heading="ATTENDANCE LISTS (OLD)">
- Nie regtig oud nie, maar met ou metode geneem. Word nog deur June en Jackie gebruik, en ook deur paar onderwysers...
-</base-title-expand>
+<v-container fluid>
+  <hero-section bgpicture="https://www.zmlrekenaars.co.za/test/img/wall022.jpg"
+              title="ATTENDANCE VIEW (OLD)"
+              breakup1="100"
+              breakup2="20"
+              color="green darken-2"
+              text="Nie regtig oud nie, maar met ou metode geneem. "
+              moretext="Word nog deur June en Jackie gebruik, en ook deur paar onderwysers - mens soek hierso vir entries"
+               />
+
   <v-toolbar  dense  row  wrap color="primary">
       Attendance Data
      <v-spacer />
@@ -104,7 +110,7 @@ import { tableWork } from "@/views/AttendanceView.js"
 
 // import TableStockCategoryForm from "@/components/crud/TableStockCategoryForm"
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
-import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import HeroSection from "@/views/sections/HeroSection"
 import BaseSearch from '@/components/base/baseSearch.vue'
 import BaseDate from '@/components/base/BaseDate.vue'
 import VBack from '@/components/base/VBack.vue'
@@ -116,7 +122,7 @@ export default {
             , BaseSearch
             , VBack
             , BaseDate
-            , BaseTitleExpand
+            , HeroSection
             },
 
   data: () => ({

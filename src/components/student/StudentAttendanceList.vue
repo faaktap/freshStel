@@ -27,8 +27,8 @@
 
 <v-container v-else fluid>
  <v-toolbar  dense  row >
-   Attendance for {{ attendanceDetail.staffSurname }} on Day/Period {{attendanceDetail.day}}-{{ attendanceDetail.period}} at Class {{ attendanceDetail.location}}
-    from list {{ attendanceDetail.other.listname}}
+   <span>Attendance for <strong>{{ attendanceDetail.staffSurname }}</strong> on Day/Period <strong>{{attendanceDetail.day}}-{{ attendanceDetail.period}}</strong> at Class <strong>{{ attendanceDetail.location}}</strong>
+    from list <strong>{{ attendanceDetail.other.listname}}</strong></span>
     <v-spacer></v-spacer>
       <v-btn small icon @click="reset('Ignore')" class="ma-2" title="Mark all as ignore"> I </v-btn>
       <v-btn small icon @click="reset('Present')" class="ma-2" title="Mark all as Present"> P </v-btn>

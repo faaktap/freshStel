@@ -47,13 +47,13 @@ export default {
     //se if we got and id when we came in
     this.lookup()
     if (this.what !== undefined) {
-      console.log('our incoming id was good! - emiti it back', this.what)
-        this.$emit('objInput', this.what)
+       //console.log('our incoming id was good! - emiti it back', this.what)
+       this.$emit('objInput', this.what)
     }
   },
   computed: {
-    searchText() {  console.log(this.$options.name,'searchText');    return this.itemObj[0] || ''    },
-    itemDisplay() {     return item => item.user_name + ' — ' + item.user_fullname    }
+    searchText() {  return this.itemObj[0] || ''    },
+    itemDisplay() { return item => item.user_name + ' — ' + item.user_fullname    }
   },
   watch: {    initialValue() {   this.lookup()    }}
 }

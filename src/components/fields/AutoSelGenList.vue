@@ -4,7 +4,7 @@
         :value="value"
         :label="label"
         v-model="what"
-        :items="generalList"
+        :items="tickList"
         item-text="name"
         item-value="id"
         outlined
@@ -21,16 +21,17 @@ export default {
       ,label: {type:String,default:"Questions"}
     },
     data: () => ({
-      generalList: [{id:1, name: "HomeWork", questions: ['Yes','No']}
-              ,{id:2, name: "Handbooks", questions: ['Yes','No']}
-              ,{id:3, name: "PATT/ASS", questions: ['0%','25%','50%','75%','100%','Ignore']}
+      tickList: [{id:1, name: "Homework", questions: ['Yes','No','Ignore']}
+              ,{id:2, name: "Textbooks", questions: ['Yes','No','Ignore']}
+              ,{id:3, name: "PATT/ASS", questions: ['0%','25%','50%','75%','100%','Submitted','Ignore']}
+              ,{id:4, name: "Behaviour", questions: ['Conduct','Outburst','Disruptive','Discipline','Hyper','Noisy','Cellphone','Substance','Sleeping','Ignore']}
               ],
 
       what:'',
     }),
     methods:{
       updateValue(value) {
-        console.log('UpdateVakue',this.$options.name, value)
+        //console.log('UpdateVakue',this.$options.name, value)
         if (!value) return
         let id = value.id
         this.$emit('input', id)
@@ -39,21 +40,21 @@ export default {
 
     },
     mounted() {
-      console.log('Mount',this.$options.name)
+      //console.log('Mount',this.$options.name)
       if (this.value) {
-          this.what = this.generalList.find(el => el.id == this.value)
+          this.what = this.tickList.find(el => el.id == this.value)
       } else {
           this.what = ''
       }
-      if (this.generalList.length == 0) alert('we need a general List!! - call werner please')
-      console.log('FirstCall',this.$options.name, this.what)
+      if (this.tickList.length == 0) alert('we need a general List!! - call werner please')
+      //console.log('FirstCall',this.$options.name, this.what)
       this.updateValue(this.what)
 
     },
     watch: {
       what() {
         if (this.what) {
-          console.log(this.$options.name, 'watch', this.what)
+          //console.log(this.$options.name, 'watch', this.what)
           this.updateValue(this.what)
         }
       }

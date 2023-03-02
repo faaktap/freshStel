@@ -1,3 +1,6 @@
+This was an aborted attempt to direct edit json data stored in varchar on server.
+But we will try again.
+
 <template>
   <div>
     <base-tool :toolbarName="toolbarName"
@@ -110,6 +113,7 @@
 </template>
 
 <script>
+/*
 import { getters } from  "@/api/store"
 import BaseTableEdit from    '@/components/base/baseTableEdit'
 import baseTool from '@/components/base/baseTool.vue'
@@ -177,12 +181,10 @@ export default {
        this.classList =  response[0]
        let objArr = JSON.parse(this.classList.jdocstructure)
        this.checkList = objArr[0].options
-       console.log('ddddddddddddddddddddddddddd',this.classList, this.genList, this.checkList, objArr)
-       this.progress = true;
+       this.progress = false;
      },
      studentsLoaded(response) {
       this.progress = false
-      //alert(response.length)
       let studentList = response
       console.log(studentList)
       this.$router.push({ name: 'GeneralList'
@@ -207,7 +209,6 @@ export default {
      processJDoc(response) {
        this.tickList = response
        this.tickList.forEach(e => {
-          console.log('xxxxxxxxxxxxxxxx',e, this.tickList)
           const objArr = JSON.parse(e.jdocstructure)
           e.checkList = objArr[0].options
           e.description = objArr[0].description
@@ -226,19 +227,19 @@ export default {
       if (this.rec.id == listID) {
         //We got the list, now we process the jdocstruct to see what we can do with it...
         const obj = JSON.parse(this.rec.jdocstructure)
-        /* Also see : reviver
-        const obj = JSON.parse(text, function (key, value) {
-        if (key == "birth") {   you can do something with each field as jou parse it...
-          return new Date(value);
-        } else {
-          return value;
-        }
-        }); */
-        console.log(typeof obj, obj)
-        this.useParms = JSON.parse(this.rec.jdocstructure)
-        console.log(typeof this.useParms, this.useParms)
-        this.showUseForm = true
-      }
+      //   /* Also see : reviver
+      //   const obj = JSON.parse(text, function (key, value) {
+      //   if (key == "birth") {   you can do something with each field as jou parse it...
+      //     return new Date(value);
+      //   } else {
+      //     return value;
+      //   }
+      //   });
+      //   console.log(typeof obj, obj)
+      //   this.useParms = JSON.parse(this.rec.jdocstructure)
+      //   console.log(typeof this.useParms, this.useParms)
+      //   this.showUseForm = true
+      // }
     },
     doUseTask(r) {
       console.log('use task::', r, this.rec,'callsomefunction')
@@ -253,4 +254,5 @@ export default {
 
    }
 }
+*/
 </script>

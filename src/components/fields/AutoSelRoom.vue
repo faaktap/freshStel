@@ -83,26 +83,15 @@ export default {
     inputDone() {
       this.$emit('input', this.what);
       let obj = this.itemObj.find(item => item.name == this.what)
-      //this.$emit('objInput', this.itemObj[0])
       this.$emit('objInput', obj)
     },
     finished() {
        this.what = this.itemObj.find(item => item.name == this.initialValue)
        this.$emit('objInput', this.what)
-       console.log(this.$options.name,'finished',this.initialValue)
     }
   },
-  mounted() {
-    this.finished()
-   },
+  mounted() {    this.finished()   },
 
-  watch: {
-    //initialValue(n,o) {
-    initialValue() {
-       //console.log(this.$options.name,'watch',o,n)
-       //this.what = this.itemObj.find(item => item.name == this.initialValue)
-       this.finished()
-    }
-   }
+  watch: { initialValue() { this.finished() } }
 }
 </script>
