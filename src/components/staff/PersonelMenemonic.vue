@@ -1,13 +1,15 @@
 <template>
-<div>
-  <v-btn @click="showList = !showList" :title="allAboutPers">
-       {{ selected }} {{ value }}
+<v-container fluid>
+  <v-btn @click="showList = !showList" :title="allAboutPers" class="ma-1">
+    <v-icon >mdi-human</v-icon>
+       {{ selected }}
+        <!-- {{ value }} -->
   </v-btn>
-  <v-dialog v-model="showList"
-          :fullscreen="$vuetify.breakpoint.mobile" xmax-width="600" width="auto">
+  <v-dialog v-model="showList" scrollable color="light-blue"
+          :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto">
    <v-card color="light-blue" class="ma-1 pa-1">
     <v-card-title>
-      Teacher List  <v-spacer /><small>{{ toggle }}</small>
+      Teacher List  <v-spacer /><small class="text-caption">{{ toggle }}</small>
       <v-btn-toggle v-model="toggle" mandatory>
       <v-btn small icon> <v-icon>mdi-file-image</v-icon> </v-btn>
       <v-btn small icon> <v-icon>mdi-file-document</v-icon> </v-btn>
@@ -19,33 +21,42 @@
         <v-flex v-for="p in personelList"
                 :key="p.persid" class="ma-1 pa-1">
 
+<!------------------------------------------------ Toggle = 0 -------------------->
          <v-btn v-if="toggle == 0" @click="selectClick(p)"
-               :title="p.surname +', '+ p.name +', ' + p.registerclass"
+               :title="`${p.surname}, ${p.name} , ${p.grade || p.workarea}`"
                 class="ma-1"
+                :color="workareaColor(p.workarea)"
           >
            {{ p.menemonic }}
          </v-btn>
+<!------------------------------------------------ Toggle = 1 -------------------->
          <v-btn v-if="toggle == 1" @click="selectClick(p)"
                 small
-               :title="p.surname +', '+ p.name +', ' + p.registergrade + p.registerclass"
+               :title="`${p.surname}, ${p.name} , ${p.registergrade}`"
                 style="border-radius:50px"
                 class="ma-1"
+                :aspect-ratio="9/16"
+                :color="workareaColor(p.workarea)"
           >
-          {{ p.surname }}, {{ p.name }}, {{ p.registerclass }} [{{ p.menemonic }}]
+          {{ p.surname }}, {{ p.name }}, {{ p.grade || p.workarea }} [{{ p.menemonic }}]
          </v-btn>
-         <v-card color="blue" v-if="toggle == 2"  class="text=center">
+<!------------------------------------------------ Toggle = 2 -------------------->
+         <v-card :color="workareaColor(p.workarea)" v-if="toggle == 2"  class="text=center px-1 pt-1">
+         <!-- <v-avatar> -->
          <v-img @click="selectClick(p)"
-               :title="p.surname +', '+ p.name +', ' + p.registergrade + p.registerclass"
-                class="ma-0 text-center"
+               :title="`${p.surname}, ${p.name} , ${p.grade || p.workarea}`"
+                class="text-center"
                 position="center center"
-                max-width="70"
-                max-height="70"
-                contain
+                max-width="50"
+                min-width="50"
+               :aspect-ratio="9/16"
+               style="border-radius:20px"
           :src="'https://kuiliesonline.co.za/bib/assets/staff/' + p.photo + '?'+Math.random()"
-          ><div>
-          {{ p.menemonic }}
-          </div>
+          >
+
          </v-img>
+         <span>          {{ p.menemonic }}          </span>
+         <!-- </v-avatar> -->
          </v-card>
 
    </v-flex>
@@ -53,7 +64,7 @@
 
  </v-card>
 </v-dialog>
-</div>
+</v-container>
 </template>
 
 <script>
@@ -74,6 +85,19 @@ export default {
         toggle:0
     }),
     methods:{
+      workareaColor(workarea) {
+        console.log('workarea', workarea)
+        switch (workarea.toLowerCase()) {
+          case 'teacher' : return "white";
+          case 'graadhoof' : return "gold";
+          case 'principal' : return "orange";
+          case 'support' : return "green lighten-1";
+          case 'sport' : return "green";
+          case 'finance' : return "indigo";
+          case 'admin' : return "yellow";
+          default : return "cyan"
+        }
+      },
       selectClick(pList) {
           this.$emit('input',pList.menemonic)
           this.$emit('userid',pList.userid)
@@ -92,7 +116,9 @@ export default {
         if (this.personelList.length == 0) {
            let ts = {}
            ts.task = 'PlainSql'
-           ts.sql = `SELECT l.userid, p.persid, p.username, menemonic, registergrade, registerclass, surname, name, room, photo \
+           ts.sql = `SELECT l.userid, p.persid, p.username, menemonic \
+                          , registergrade, registerclass, surname, name, room, workarea, photo \
+                          , concat('G',registergrade,registerclass) grade
                      FROM dkhs_personel p,  dkhs_learner l \
                      WHERE p.menemonic = l.user_name \
                        AND workarea != 'WEG' \

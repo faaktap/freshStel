@@ -71,17 +71,25 @@ const routes = [
     ,meta: {layout: la[3], authentication: "student"}
   },
   {
-    path: '/scs'
-   ,name: 'StudentClassStartTest',
-   component: () => import(/* webpackChunkName: "test" */ '@/components/student/StudentClassStart.vue')
-   ,alias: '/homex'
-      ,meta: {layout: la[3], authentication: "admin"}
- },
-
-  {
     path: '/admin',
     name: 'Admin',
     component: () => import(/* webpackChunkName: "home" */ '@/views/Admin'),
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    path: '/calstud/:studentid?',
+    name: 'CalStudent',
+    props:true,
+    params: {studentid: '20113'},
+    component: () => import(/* webpackChunkName: "home" */ '@/components/CalendarStudent'),
+    meta: {layout: la[3], authentication: "student" }
+  },
+  {
+    path: '/calteach/:menemonic?',
+    name: 'CalendarTeacher',
+    props:true,
+    params: {menemonic: 'SDVM'},
+    component: () => import(/* webpackChunkName: "home" */ '@/components/Calendar'),
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
@@ -105,8 +113,8 @@ const routes = [
   },
   {
     path: '/kalender',
-    name: 'Kalendar',
-    component: () => import(/* webpackChunkName: "about" */ '@/components/Kalendar.vue'),
+    name: 'Kalender',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/Kalender.vue'),
     meta: {layout: la[0], authentication: "teacher" }
   },
   {
@@ -122,6 +130,12 @@ const routes = [
     name: 'TestView',
     component: () => import(/* webpackChunkName: "test" */ '@/views/testview.vue'),
     meta: {layout: la[0], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/components/FundRaiser.vue')
+    ,name: 'FundRaiser'
+    ,path: '/thermometer'
+    ,meta: {layout: la[0], authentication: "public"}
   },
   {
     path: '/repexp',
@@ -159,6 +173,13 @@ const routes = [
     meta: {layout: la[3], authentication: "admin" }
   },
   {
+    component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentClass.vue'),
+    path: '/class/:gc?',
+    name: 'ClassList',
+    params: {title:"studentClassList",gc:{ g: "G12", c: "E1" }},
+    meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
     component: () => import(/* webpackChunkName: "atten" */ '@/components/student/TeacherClassList.vue'),
     path: '/teacherlist',
     name: 'teacherlist',
@@ -170,13 +191,6 @@ const routes = [
     name: 'TeacherClassEdit',
     props:true,
     meta: {layout: la[3], authentication: "admin" }
-  },
-  {
-    component: () => import(/* webpackChunkName: "atten" */ '@/components/student/StudentClass.vue'),
-    path: '/class/:gc?',
-    name: 'ClassList',
-    params: {title:"studentClassList",gc:{ g: "G12", c: "E1" }},
-    meta: {layout: la[3], authentication: "teacher" }
   },
   {
     component: () => import(/* webpackChunkName: "pers" */ '@/views/student/StudentInfo.vue'),
@@ -279,6 +293,12 @@ const routes = [
     ,name: 'color'
     ,path: '/color'
     ,meta: {layout: la[3], authentication: "public"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "home" */ '@/views/AutoRoute.vue'),
+    path: '/ar',
+    name: 'AutoRoute',
+    meta: {layout: la[3], authentication: "public"}
   },
   {
     component: () => import(/* webpackChunkName: "pers" */ '@/views/IncomingPhotoLink.vue')
@@ -388,8 +408,8 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "atten" */ '@/views/ViewGenList.vue')
-    ,name: 'ViewGenList'
+    component: () => import(/* webpackChunkName: "atten" */ '@/views/StartGenList.vue')
+    ,name: 'StartGenList'
     ,path: '/vglist'
     ,meta: {layout: la[3], authentication: "admin"}
   },
@@ -441,12 +461,16 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "atten" */ '@/views/JdocViewEdit.vue'),
+    component: () => import(/* webpackChunkName: "test" */ '@/views/JdocViewEdit.vue'),
     path: '/jdoc',
     name: 'JdocViewEdit',
-    props:true,
-    params: {sessionid:0},
     meta: {layout: la[3], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "test" */ '@/views/BaseCalenViewEdit.vue'),
+    path: '/basecalendaredit',
+    name: 'BaseCalenViewEdit',
+    meta: {layout: la[3], authentication: "admin" }
   },
 
   {
@@ -470,7 +494,23 @@ const router = new VueRouter({
   mode: 'history',
   base: publicPath, //'virtual-school',    //This works : /zmltest/  but ./ does not work for layouts
   werner: 'werner',      //see if I can add my own stuff.
-  routes
+  routes,
+  // scrollBehavior(to, from, savedPosition) {
+  //   if (savedPosition) {      return savedPosition
+  //   } else {      return { top: 0,  behavior: 'smooth' }   }
+  // },
+  // eslint-disable-next-line
+  scrollBehavior(to, from, savedPosition) {
+
+    console.log('ScrollBehavior(',to, from, savedPosition,')' )
+    // eslint-disable-next-line
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ left: 0, top: 0 })
+      }, 500)
+    })
+  },
+
 })
 
 router.beforeEach((to, from,next) => {

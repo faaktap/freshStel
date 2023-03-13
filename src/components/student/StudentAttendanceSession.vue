@@ -20,6 +20,7 @@
     <v-btn icon small class="ma-2" @click="showPhotoList = !showPhotoList" title="show Thumbnails"><v-icon>mdi-image</v-icon></v-btn>
     <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
     <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+    <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn>
     <v-back/>
  </v-toolbar>
 </v-container>
@@ -129,6 +130,7 @@ import ZShow from '@/components/base/ZShow.vue'
 import VBack from '@/components/base/VBack.vue'
 import { AttWork } from '@/components/student/AttWork.js'
 import { infoSnackbar } from '@/api/GlobalActions';
+import { printJSON } from "@/api/zmlPrint.js"
 
 export default {
     name:"StudentAttendanceSession",
@@ -167,8 +169,28 @@ export default {
         });
         return tally
       },
+      studentListPrint() {
+        //Create a list for printing
+        let f = []
+        let cnt = 0
+        this.studentList.forEach(e => {
+          cnt ++
+          const x = e
+          x.time = e.attendancedate.substr(10,20)
+          x.grade = e.grade + e.gclass
+          x.no = cnt
+          if (x.status != 'Present') x.status = '<b>' + x.status + '</b>'
+          f.push(x)
+        })
+        return f
+      }
     },
     methods:{
+      doPrint() {
+        let header = [{value:'no'},{value:'time'},{value:'surname'},{value:'firstname'}
+                    ,{value:'studentid'},{value:'grade'}, {value:'status'}]
+        printJSON(this.studentListPrint, header, `<center>Day: ${ this.detail[0] } Period: ${ this.detail[1] } Class Room: ${ this.place }  -- ${new Date().toJSON().slice(0,10)}</center>`)
+      },
       save() {
          if (this.originalStatus == this.slRec.status) {
            console.log('no status change')

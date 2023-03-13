@@ -5,7 +5,7 @@ Like helptext.
 </docs>
 
 <template>
-<v-btn :color="color" :icon="(iconName.length > 3 && buttonText.length == 0) ? true : false" @click="show=!show">
+<v-btn :color="color" :icon="(iconName.length > 3 && buttonText.length == 0) ? true : false" @click="show=!show" :title="infoTitle">
  <v-icon v-if="iconName.length > 3"> {{ iconName }} </v-icon>
  {{ buttonText }}
     <v-dialog v-model="show" max-width="400" style="position:relative">

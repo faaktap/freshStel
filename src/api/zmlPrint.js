@@ -80,15 +80,20 @@ export function printHeader(title) {
 
 export function printJSON(table, header, title) {
     let properties = cleanUp(header)
+    console.log(table)
+    console.log(header)
+    console.log(properties)
+    console.log(title)
     printJS({
         printable: table,
         type: "json",
         properties: properties,
         repeatTableHeader: true,
         gridHeaderStyle: "color: black;  border: 1px solid #3971A5;font-weight: bold",
-        gridStyle: 'border: 1px solid lightgray; margin-bottom: -1px;',
+        //gridStyle: 'border: 1px solid lightgray; margin-bottom: -1px;',
+        gridStyle: 'border-style: none solid dotted dashed; border-width: 1px ;border-color: lightblue; margin-bottom: 1px; padding-top: 2px',
         header: zmlHeader() + ' ' + title || '..no title',
-        style: ".ltrd { direction: ltr; text-align: right; } * { font-size: 100%; }",
+        style: ".ltrd { direction: ltr; text-align: right; } * { font-size: 101%; }",
         showModal: true,
         modalMessage: 'Retrieving Document...',
         documentTitle: 'DKLearnDoc'

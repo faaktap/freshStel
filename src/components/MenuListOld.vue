@@ -1,24 +1,37 @@
 <template>
+ <!-- v-if="getZml.login.isAuthenticated && ['admin','teacher'].includes(getZml.login.type)"  -->
  <v-container fluid>
-   <transition name="fade" mode="out-in" duration="1500">
-   <v-card class="ma-0">
+
+ <v-template v-if="buttonDisplay==0" row wrap align-content-center justify-space-between>
+  <h3 title="Show different View" @click="buttonDisplay = 1">{{ functiongroup.toUpperCase() }}</h3>
+  <v-template :xclass="cardColor(functiongroup)"  class="ma-2 pa-2"  v-for="l in functionList" :key="l.functionid" v-ripple  @click="click(l)">
+    <v-btn small :color="cardColor(l.functionaccess)" :title="l.tip" class="ma-2 pa-2">
+    <v-icon small>{{ l.icon }}</v-icon>{{ l.functionname }}
+    </v-btn>
+  </v-template>
+ </v-template>
+
+   <v-card class="ma-0 pa-0"  max-width="350" v-if="buttonDisplay==1">
     <v-list subheader class="transition-fast-in-fast-out v-card--reveal ">
-      <v-subheader :class="cardColor(functiongroup)">  Access: {{ functiongroup }}
+      <v-subheader :class="cardColor(functiongroup)">
+          Access: {{ functiongroup }}
         <v-spacer />
-        <v-btn text x-small title="Show more or less" @click="showMore = !showMore"> .. </v-btn>
+        <v-btn text x-small title="Show different View" @click="buttonDisplay = 0"> v </v-btn>
+        <v-btn text x-small title="Show more or less" @click="showMore = !showMore"> m </v-btn>
       </v-subheader>
+
       <v-list-item-group >
+
        <v-list-item v-for="l in functionList"
                    :key="l.functionid" v-ripple  @click="click(l)">
          <v-list-item-content>
             <v-list-item-title>
-              <v-icon :color="cardColor(l.functionaccess)" v-text="l.icon"></v-icon>
+              <v-icon :color="cardColor(l.functionaccess)">{{ l.icon }}</v-icon>
               {{ l.functionname }}
             </v-list-item-title>
-            <v-list-item-subtitle
-                 v-if="showMore"
-                 v-text="l.tip"
-            />
+            <v-list-item-subtitle v-if="showMore" >
+              {{ l.tip }}
+            </v-list-item-subtitle>
          </v-list-item-content>
        </v-list-item>
       </v-list-item-group>
@@ -30,11 +43,11 @@
             :key="l.functionid"
             :title="l.functionname"
             @click="click(l)">
-         <v-icon :color="cardColor(l.functionaccess)" v-text="l.icon"></v-icon>
+         <v-icon :color="cardColor(l.functionaccess)" > {{ l.icon }}</v-icon>
       </v-btn>
     </v-card>
    </v-card>
-   </transition>
+
   </v-container>
 </template>
 
@@ -43,12 +56,13 @@ import { getters } from "@/api/store";
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 export default {
-  name: "ListTest",
+  name: "MenuList",
   props: ["functiongroup"],
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
       showMore:false,
       buttons: false,
+      buttonDisplay: 1,
   }),
   computed:{
     functionList() {
@@ -66,7 +80,7 @@ export default {
                case 'teacher' : return "light-green lighten-3"
                case 'student' : return "green lighten-2"
                case 'admin' : return "green accent-3"
-               default : return "orange lighten-4"
+               default : return "indigo lighten-4"
            }
        },
        click(what) {
@@ -80,6 +94,9 @@ export default {
                 }
             }
         },
+   },
+   mounted() {
+    this.$cs.l('M',this.$options.name)
    }
 };
 </script>

@@ -13,7 +13,7 @@
                :src="photo" />
     </div>
     <div class="float-right ma-2">
-         {{ getZml.login.fullname}} / {{ getZml.login.grade }} - {{ getZml.login.gclass }}
+         {{ getZml.login.fullname}} / {{ getZml.login.grade }}  ( {{ getZml.login.logins}} )
     </div>
         </div>
     </v-card>
@@ -38,6 +38,13 @@
             </v-icon>
           WCGSCHOOLS WiFi UserName
         </v-btn>
+        <v-btn to="/calstud"
+               class="ma-2 pa-2">
+            <v-icon>
+              mdi-calendar
+            </v-icon>
+          Calendar
+        </v-btn>
 
     </v-col>
 </v-row>
@@ -49,33 +56,33 @@
             height="100%"
             scrolling="auto" /> -->
             <!--(homestudent){{ studentid }} -->
-<v-row>
- <v-col cols="12">
+
+<v-layout row wrap align-content-center justify-space-between class="ma-1 pa-1">
+    <menu-list-old functiongroup="student" />
+    <menu-list-old functiongroup="other" />
+</v-layout>
+
+
+ <v-layout row wrap align-content-center justify-space-between class="ma-1 pa-1">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
-   <v-expansion-panel>
+   <!-- <v-expansion-panel>
     <v-expansion-panel-header expand-icon="mdi-calendar"
        title="A calendar for your current day. If you notice the day is wrong, please inform Werner or ms. Wiegand">
-       Calendar - ({{ gradeToShow.g }} {{ gradeToShow.c }} / {{ weekOrDay }})
+       Calendar - ({{ getZml.login.grade }}
     </v-expansion-panel-header>
    <v-expansion-panel-content>
-     <calendar-student v-if="gradeToShow.c" v-show="showCal"
-              :weekOrDay="weekOrDay"
-              :studentGradeClass="gradeToShow.g +  gradeToShow.c" />
+     <calendar-student v-show="showCal" />
    </v-expansion-panel-content>
-   </v-expansion-panel>
+   </v-expansion-panel> -->
 
 
    <v-expansion-panel>
-       <v-expansion-panel-header
-         title="A list of all the places you can go to on this webpage.">
-         Functions (Click here to see available functions)
-       </v-expansion-panel-header>
-       <v-expansion-panel-content>
-          <list-test functiongroup="student" />
-          <list-test functiongroup="other" />
-       </v-expansion-panel-content>
-   </v-expansion-panel>
+       <v-expansion-panel-header title="Show Email Bulletins">
+          Email Bulletins</v-expansion-panel-header>
 
+       <v-expansion-panel-content>
+        <email-bulletins emailSearch="ebull" /></v-expansion-panel-content>
+   </v-expansion-panel>
    <v-expansion-panel>
        <v-expansion-panel-header title="Email Addresses for Newsletters.">
          Email Addresses for Newsletters.
@@ -92,13 +99,6 @@
        </v-expansion-panel-content>
    </v-expansion-panel>
 
-   <v-expansion-panel>
-       <v-expansion-panel-header title="Show Email Bulletins">
-          Email Bulletins</v-expansion-panel-header>
-
-       <v-expansion-panel-content>
-        <email-bulletins emailSearch="ebull" /></v-expansion-panel-content>
-   </v-expansion-panel>
 
    <v-expansion-panel>
        <v-expansion-panel-header title="Show Email Bulletins">
@@ -110,10 +110,8 @@
        </v-expansion-panel-content>
    </v-expansion-panel>
   </v-expansion-panels>
+    </v-layout>
 
-
- </v-col>
-</v-row>
 
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
 
@@ -126,8 +124,8 @@ import { doStuff } from '@/api/buttons'
 import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
-import ListTest from '@/components/ListTest.vue';
-import CalendarStudent from '@/components/CalendarStudent';
+import MenuListOld from '@/components/MenuListOld.vue';
+//import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
@@ -137,8 +135,8 @@ import Avatar from '@/components/base/Avatar'
 export default {
     name:"StudentHome",
     components:{
-          ListTest
-        , CalendarStudent
+          MenuListOld
+        //, CalendarStudent
         , StudentEmailList
         , StudentSubjectList
         , StudentPhotoList
@@ -152,7 +150,6 @@ export default {
          showCal:true,
          cards: ['Today', 'Yesterday'],
          gradeToShow:{g:'', c:''},
-         weekOrDay:"day",
          photo:'',
          studentid:'',
          showPhotos:false,
@@ -187,13 +184,6 @@ export default {
             this.$cs.l('arrived!!', ev)
             this.photo=ev
         },
-       weekOrDayChange() {
-           if (this.weekOrDay == 'day') {
-               this.weekOrDay = 'week'
-           } else {
-               this.weekOrDay = 'day'
-           }
-       },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "light-green lighten-3"
@@ -212,15 +202,7 @@ export default {
             }
 
         },
-        // loadFunctions() {
-        //    let ts = {};
-        //    ts.task = 'PlainSql';
-        //    ts.sql = 'select * from dkhs_lfunction where functionaccess = "student" order by sortorder'
-        //    ts.api = zmlConfig.apiDKHS
-        //    zmlFetch(ts, this.showData, this.loadError)
-        // },
         loadError(response) {
-            //this.$cs.l(response)
             alert(response)
         },
         showData(response) {
@@ -234,10 +216,11 @@ export default {
         //this.loadFunctions()
         }
     },
-    created: function() {
+    created() {
          zData.quickLoadInitialData('Load Data for incase', this.initialize)
     },
-    mounted: function() {
+    mounted() {
+      console.log('mount', this.$options.name)
         this.$cs.l('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
         this.studentid = this.getZml.login.schoolno
         console.log('grade',this.getZml.login.grade,this.getZml.login.grade.length)

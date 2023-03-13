@@ -1,24 +1,21 @@
 <template>
-<v-card class="ma-0 pa-0" color="white">
-  <v-row v-if="incomingMenemonic">
-    <v-col>
-    <v-sheet
-      tile
-      height="44"
-    >
-    <v-toolbar
-       flat
-       dense
-       :loading="loading"
-    >
+<v-card class="ma-0 pa-0">
+  <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall041.jpg"
+              :title="`Calendar :  ${weekOrDay} : ${personeelMenemonic || getZml.login.username}`"
+              text=""
+              breakup1="100"
+              breakup2="20"
+              color="green darken-1"
+               />
 
+  <v-row class="mt-2 pt-2" v-if="calReady">
+    <v-col>
+    <v-sheet tile height="44">
+    <v-toolbar flat dense :loading="loading">
     <v-row>
       <v-col cols=1>
-        <v-btn
-        icon
-        class="ma-2"
-        @click="$refs.calendar.prev()"
-        >
+        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
       </v-col>
@@ -33,12 +30,13 @@
         </v-toolbar-title>
       </v-col>
       <v-col cols=3>
-        <v-card xcolor="primary" class="ma-2 pt-0 pb-0 pr-2 pl-2" elevation="1" >
-          {{ incomingMenemonic }} <small>Display:</small>
-         <v-btn x-small @click="weekOrDayChange">  {{ weekOrDay }} </v-btn>
-
-        </v-card>
-      </v-col>
+          <v-btn color="primary" class="ma-2" @click="weekOrDay == 'day' ? weekOrDay = 'week' : weekOrDay = 'day'" small title="Click to Swop">
+             {{ weekOrDay }}
+          </v-btn>
+          <v-btn icon title="This will display the button you can use to select a new teacher"
+                 @click="showPersDropdown = !showPersDropdown">
+            <v-icon> mdi-information </v-icon></v-btn>
+       </v-col>
       <v-col cols=1>
         <v-btn icon class="ma-2" @click="$refs.calendar.next()">
           <v-icon>mdi-chevron-right</v-icon>
@@ -46,18 +44,15 @@
        </v-col>
     </v-row>
     </v-toolbar>
-
     </v-sheet>
       <v-sheet height="400">
-        <v-calendar
-          dense
-          v-if="events.length > 0"
+       <v-calendar
+          v-if="events.length>0"
           ref="calendar"
           v-model="calValue"
           :now="calToday"
           :value="calToday"
           :events="events"
-          :weekdays="weekday"
           event-color="secondary"
           color="primary"
           :type="weekOrDay"
@@ -69,15 +64,13 @@
           @change="updateRange"
           @click:event="showEvent"
         > <!-- weekdays=[1,2,3,4,5,6,0] -->
-         <template v-slot:day-body="{ date, week }">
+         <!-- <template v-slot:day-body="{ date, week }">
             <div
                class="v-current-time"
               :class="{ first: date === week[0].date }"
               :style="{ top: nowY }"
-            >
-            <!-- <v-card color="red">..</v-card> -->
-            </div>
-         </template>
+            ></div>
+         </template> -->
 
         </v-calendar>
 
@@ -96,17 +89,17 @@
             flat
           >
             <v-toolbar
-              color="selectedEvent.color"
+              color="cyan"
               dark
             >
               <v-btn icon>
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-toolbar-title v-if="selectedEvent" v-html="selectedEvent.name"></v-toolbar-title>
+              <v-toolbar-title v-if="selectedEvent" >{{selectedEvent.name}}</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <span v-if="selectedEvent" v-html="selectedEvent.details"></span>
-              <v-text-field v-model="personeelMenemonic" label="Educator Menemonic" />
+              <span v-if="selectedEvent" >{{ selectedEvent.details }}</span><br>
+              <!-- <span class="float-right">{{ selectedEvent.color }} </span> -->
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -129,12 +122,14 @@
 
 
       </v-sheet>
+      <personel-menemonic v-if="showPersDropdown" v-model="incomingMenemonic" />
     </v-col>
   </v-row>
-  <v-container v-else>
-     srfwerwerewrwerewrwerew
-  </v-container>
-        <v-btn  @click="checkChange"> R(CC) </v-btn>
+  <!-- <v-container v-else>
+    <v-btn  @click="checkChange" title="Check for Changes"> R(CC) </v-btn>
+  </v-container> -->
+
+
 </v-card>
 </template>
 
@@ -145,17 +140,22 @@ import { zDate } from '@/api/zDate.js'
 import { zData } from '@/api/zGetBackgroundData.js'
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
+import HeroSection from "@/views/sections/HeroSection"
+import { infoSnackbar,errorSnackbar } from '@/api/GlobalActions';
+import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue'
 export default {
   name: 'Calendar',
   props: ['menemonic'],
+  components: {HeroSection, PersonelMenemonic},
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
+      showPersDropdown:false,
       loading:false,
       today: null,
       calToday: null,
       calValue: '',
       calReady: false,
-      events:[{ start: "1900-01-01", name: "" }],
+      events:[],
       selectedEvent: null,
       selectedElement: null,
       selectedOpen: null,
@@ -185,14 +185,14 @@ export default {
 
       },
       loadCalendar() {
+        console.log('load default event - check colors?:', this.getZml.calendar, this.getZml.calendar.length)
+        this.events = []
         this.getZml.calendar.forEach(ele => {
           if (ele.start) {
-             const evt= {name: ele.name
-                  , start: ele.start
-                  , end: ele.start
-                  , color: ele.color
-                  , type: ele.type
-                  , timed: ele.timed
+             const evt= {
+                  name: ele.name
+                , start: ele.start  , end: ele.start      , color: ele.color
+                , type: ele.type    , timed: ele.timed    , details: `${ele}`
                     }
              this.events.push(evt)
           } else {
@@ -202,102 +202,88 @@ export default {
         return "done"
       },
       loadRooster(){
+        //clean out the previous teacher's load
+        console.log('start LOADROOSTER.....................')
+        let cleaned = this.events.filter(e => e.temp != true)
+        if (cleaned.length != this.events.length) this.events = cleaned
         this.selectedOpen = false
         this.personeelMenemonic = this.incomingMenemonic
-        if (!this.personeelMenemonic) this.personeelMenemonic = 'TVRB'
+        console.log('start LOADROOSTER -----------------')
 
-/*      we have GROEN as a menemonic - so cannot do this test
-        if (this.personeelMenemonic.substr(0,2) == 'GR') {
-          //This is not a personeel mnemonic, it's a grade,
-          //so our select statement need to change
-          alert('we need a personel menemonic, not a grade')
-          return
-        }
-*/
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = "select * from rooster where user_name = '" + this.personeelMenemonic + "'";
+        ts.sql = `select  dt.fulldate startdate\
+     , dt.dayno\
+     , per.description\
+     , concat(dt.fulldate, ' ', per.starttime) startEvt\
+     , concat(dt.fulldate, ' ', per.endtime) endEvt\
+     , per.length\
+     , substr(per.periodname,4,1) periodno\
+     , l.shortname subject\
+     , l.description subjectname\
+     , r.menemonic user_name\
+     , 'white' color
+     , per.id\
+     , per.dow\
+     , group_concat(r.gradeclass) gradeclass \
+FROM dkhs_date dt , dkhs_dayperiod per, dkhs_rooster r, dkhs_lsubject l \
+WHERE r.menemonic = '${this.personeelMenemonic || this.getZml.login.username}'
+  AND per.dow = dt.dayOfWeek\
+  AND dt.iddate <  DATE(now() + INTERVAL 30 DAY)\
+  AND dt.iddate >  DATE(now() - INTERVAL 30 DAY)\
+  AND r.periodno = substr(per.periodname,4,1)\
+  AND r.dayno = dt.dayno\
+  and r.subjectshortname = l.shortname \
+group by dt.fulldate\
+     , dt.dayno, per.description, concat(dt.fulldate, ' ', per.starttime), concat(dt.fulldate, ' ', per.endtime)\
+     , per.length, substr(per.periodname,4,1), l.shortname, l.description, r.menemonic, per.id, per.dow \
+order by startdate,dt.dayno,  per.periodname, l.shortname`
+        //ts.sql = "select * from dkhs_rooster where user_name = '" + this.personeelMenemonic + "'";
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
-        zmlFetch(ts, this.afterRoosterSelect);
+        zmlFetch(ts, this.afterRoosterSelect, this.someError);
       },
-      getPeriodStartTime(hm,element, dateLooking) {
-         let perStart = zDate.dayType.find(dt =>  dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )
-         hm.h = parseInt(perStart.start.substr(0,2))
-         hm.m = parseInt(perStart.start.substr(3,2))
+      someError(err) {
+        errorSnackbar(`Problem fetching calendar events for ${this.personeelMenemonic || this.getZml.login.username}`)
+        console.log('Problem fetching calendar events fo',err)
       },
       subjectColor(subjectShortName) {
-        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )
+        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName )
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
-          return "amber"
+          return "amber darken-2"
         }
       },
       afterRoosterSelect(response) {
-        //We could use this.calValue as current selected day - but not needed if we show one week of periods.
-        //Get this week's first "day", monday is 1.
         if (this.getZml.calendar.length==0) {
-          alert(`Oops! - Our calendar seem to be empty for ${this.personeelMenemonic}?`)
+          errorSnackbar(`Oops! - Our calendar events have not been loaded yet, please logout and login again.`)
         }
-        if (response.error) {
+        if (response.errorcode != undefined) {
+          infoSnackbar(`We have no class entries for ${this.personeelMenemonic || this.getZml.login.username}`)
+          this.calReady = true
           return
         }
-        let template = zDate.todayNoHours()
-        this.$cs.l('zDate.todayNoHours()', template)
 
-        template = zDate.gotoMonday(template)
-        this.$cs.l('zDate.gotoMonday', template)
+        console.log(`Loading Persevents for ${this.personeelMenemonic || this.getZml.login.username}`)
+        this.calReady = true
+        response.forEach(ele => {
+          console.log(ele)
+          const evt = {
+                  name: ele.subject + ' ' + ele.gradeclass
+                , start: ele.startEvt
+                , end:   ele.endEvt
+                , color: this.subjectColor( ele.subject )
+                , timed: true
+                , details: `${ele.subjectname}, ${ele.user_name}, ${ele.gradeclass}, ${ele.dayno}, ${ele.periodno}, ${ele.length}`
+                , temp: true
+            }
+          this.events.push( evt )
+        })
 
-        //Go back one week
-        template.setDate(template.getDate() - 7);
-        this.$cs.l('go one back - to sunday', template)
-        // Show the next 57 days...
-        for (let t=0; t < 57; t++) {
-          //this.$cs.l('loading : ', t, zDate)
-           template = zDate.addOneDay(template)
-           //Look for template's date and link to a dayno.
-           const sday = this.getZml.calendar.find(cal =>
-              cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'
-           )
-           if (!sday) {
-             // Usually when it's a weekend?
-             // console.log('Skipping:', zDate.format(template,'yyyy-MM-dd'), template.getDay())
-             continue
-           }
-           response.forEach(ele => {
-             let n = ''
-             switch (sday.name.substr(0,4)) {
-               case 'day1': n = ele.day1; break
-               case 'day2': n = ele.day2; break
-               case 'day3': n = ele.day3; break
-               case 'day4': n = ele.day4; break
-               case 'day5': n = ele.day5; break
-               case 'day6': n = ele.day6; break
-               case 'day7': n = ele.day7; break
-               case 'day8': n = ele.day8; break
-               case 'day9': n = ele.day9; break
-               case 'day10':n = ele.day10; break
-             }
-             if (n) {
-               let hm = {}
-               this.getPeriodStartTime(hm,ele,template)
-               let lines = n.split(/\n/);
-               const per = lines[0]
-               const grade = lines[1]
-               const evt = {
-                       name: per + ' ' + ele.periodno + ' ' + grade.substr(0,4) + ' ' + ele.user_name
-                     , start: template.setHours(hm.h, hm.m, 0, 0)
-                     , end:   template.setHours(hm.h, hm.m + 45, 0, 0)
-                     , color: this.subjectColor( n.substr(0,3) )
-                     , timed: true
-                     , details: n
-                 }
-               this.events.push( evt )
-             }
-           })
-        }
         //Brilliant funcking timeout stukkie!!
+        console.log('DONE LOADINGF ROOSTER', this.events)
+        this.calReady = true
         setTimeout(() => {
            this.loading = false;
            if (this.$refs.calendar)  this.$refs.calendar.checkChange()
@@ -357,7 +343,7 @@ export default {
       },
       startTheLoad() {
         this.$cs.l('check if events was loaded..')
-        if( this.getZml.calendar.length < 300) {
+        if( this.getZml.calendar.length < 20) {
             setTimeout(this.startTheLoad, 50) //wait 50 millisecnds then recheck
             this.$cs.l('check AGAIN if events was loaded')
             return
@@ -398,13 +384,15 @@ export default {
       zData.initialData('Load Subject Data')
       zData.calendarData('Load Calendar Data')
       this.startTheLoad()
-      //this.rinseRepeat()
   },
   watch: {
-    menemonic() {
-      this.incomingMenemonic = this.menemonic
-      zData.calendarData('Load Calendar Data')
-      this.loadRooster()
+    // menemonic(x) {
+    //   console.log('watch triggered', x)
+    //   this.incomingMenemonic = this.menemonic
+
+    // },
+    incomingMenemonic() {
+      if (this.incomingMenemonic) this.loadRooster()
     }
   },
 }

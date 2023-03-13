@@ -22,11 +22,14 @@ export const zmlF = {
        taskSql.task = 'PlainSql'
        taskSql.action = storage.action
 
-       console.log('ZF is doing ', storage, taskSql)
-       if (taskSql.action == 'update' || taskSql.action == 'insert') {
+
+       // When do we supply .data, and .data.bind info to phpserver?
+       // At the moment when we do anything except refresh.
+       if (taskSql.action != 'refresh') {
         taskSql.data = storage.data
         taskSql.data.bind = storage.data.bind
        }
+       console.log('ZF is doing ', storage, taskSql)
 
        let p = zmlF.zFetch(taskSql)
 
@@ -42,23 +45,24 @@ export const zmlF = {
        })
        .then(rjson => {
         storage.progress = false
-        if ('errorcode' in rjson && rjson.errorcode != 0) {
-          console.log('we have errorcode on action:', storage.action, rjson)
-          storage.feedback = rjson
+        if (rjson.errorcode != undefined && rjson.errorcode != 0) {
+          console.log('ZmlF : We have errorcode on ', storage.action, rjson.errorcode)
+          storage.feedback = "Error:" + rjson.errorcode   // rjson
           if (pErrorcallback) pErrorcallback(rjson)
           return
         }
         if (storage.action == 'refresh') {
           storage.response = rjson
         } else {
-          storage.feedback = rjson  //save it in feedback, since it was update or insert
+          storage.feedback = 'ErrorAgain:' + rjson  //save it in feedback, since it was update or insert
         }
-        console.log('passing data to storage', rjson)
+        console.log('zmlF: Passing data to storage and do Callback if it exist', rjson)
         if (pcallback) pcallback(rjson)
         return
        })
        .catch(err => {
           //we have a problem, load our error object and report back
+          console.log('zmlF: We caught an throwed error, see feedback', err)
           storage.feedback = {error: 'Failed to Fetch', errorcode: '9999', exception:"caught exception", result:err}
           storage.workDone = DONE
           storage.progress = false
@@ -67,13 +71,13 @@ export const zmlF = {
     },
     showDBError : (chk) => {
         if (chk) {
-              if ('errorcode' in chk) {
+              if (chk.errorcode != undefined) {
                 if (chk.errorcode != '0') {
                   return chk.errorcode +' '+ chk.error
                 } else {
                   return 'error is Zero'
                 }
-              } else if ('length' in chk) {
+              } else if (chk.length != undefined) {
                 if (chk.length == 0) {
                   return 'not Started'
                 } else {
@@ -88,13 +92,13 @@ export const zmlF = {
       },
       isGoodData : (chk) => {
         if (chk) {
-              if ('errorcode' in chk) {
+              if (chk.errorcode != undefined) {
                 if (chk.errorcode > 0) {
                   return false //console.log('we have an error property loaded width an error',chk.errorcode)
                 } else {
                   return true //console.log('we have an error property loaded - no error',chk)
                 }
-              } else if ('length' in chk) {
+              } else if (chk.length != undefined) {
                 if (chk.length == 0) {
                   return false //console.log('it is an empty array = ' , 'no data loaded yet')
                 } else {
@@ -110,7 +114,7 @@ export const zmlF = {
             }
       },
       zFetch : (task) => {
-        const defaultApi = 'https://kuiliesonline.co.za/api/candid/candidates.php/venue.php'
+        const defaultApi = 'https://kuiliesonline.co.za/api/candid/candidates.php'
         const apiConfig = {method: 'POST',
             headers: {'Accept': 'application/json'
                      ,'Content-Type': 'application/json;charset=UTF-8'},

@@ -110,6 +110,7 @@ export default {
           {text: 'Shortname',             value: 'shortname' },
           {text: 'Description',         value: 'description' },
           {text: 'Beskrywing',         value: 'beskrywing' },
+          {text: 'color',             value: 'color' },
           {text: 'linkid',             value: 'linksubjectid' },
           {text: 'Sort',             value: 'sortorder' },
           {text: "edit",             value: "action", sortable: false }

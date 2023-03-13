@@ -13,35 +13,35 @@
                 {{ item.functionname }}
             </v-card-title>
          <v-card-actions>
-          <zml-button-tool 
-             bottom 
-            :btnFace="item.shortname" 
-            color="primary" 
+          <zml-button-tool
+             bottom
+            :btnFace="item.shortname"
+            color="primary"
             :toolTip="item.tip"
             :icon="item.icon"
-          @clicked="click(item)" /> 
+          @clicked="click(item)" />
          </v-card-actions>
             <v-card-text v-if="!$vuetify.breakpoint.smAndDown">
                {{ item.tip }}
             </v-card-text>
         </v-card>
       </template>
-      <template v-else>      
-          <zml-button-tool 
-             bottom 
-            :btnFace="item.shortname" 
-            color="primary" 
+      <template v-else>
+          <zml-button-tool
+             bottom
+            :btnFace="item.shortname"
+            color="primary"
             :toolTip="item.tip"
             :icon="item.icon"
-          @clicked="click(item)" /> 
+          @clicked="click(item)" />
       </template>
       </v-col>
     </v-row>
  </template>
- <template v-else>   
+ <template v-else>
   <v-row v-if="list.length > 0">
     <v-col cols="12" class="d-flex flex-wrap justify-space-between pa-2"> <!-- justify-start -->
-      <v-btn v-for="btn in list" 
+      <v-btn v-for="btn in list"
                :color="btn.functionaccess | cc"
                :key="btn.functionid"
                class="ma-2"
@@ -52,14 +52,14 @@
                @mouseover="theTip=btn.description"
                @mouseleave="theTip=''"
                 dark>
-   
+
             <v-icon :small="$vuetify.breakpoint.smAndDown" class="ma-1">
               {{ btn.icon }}
             </v-icon>
             <template v-if="$vuetify.breakpoint.smAndUp">
-              {{ btn.shortname }} 
+              {{ btn.shortname }}
             </template>
-      </v-btn>            
+      </v-btn>
     </v-col>
     <v-col cols="12">
       <fade-transition  mode="out-in" :duration="1200">
@@ -84,7 +84,7 @@ import { getters } from "@/api/store";
 import FadeTransition from "@/components/transition/FadeTransition.vue";
 
 export default {
-    name:"MenuList",
+    name:"MenuListOld",
     components:{zmlButtonTool, FadeTransition},
     props:['list', 'displayType','access'],
     data: () => ({
@@ -109,7 +109,7 @@ export default {
                case 'admin' : return "green accent-3"
                default : return "orange lighten-4"
            }
-       },        
+       },
        click(what) {
             if (doStuff(this.$router,what.payload) == 0) {
                 if (what.payload.substr(0,4).toLowerCase() == 'http') {
@@ -120,6 +120,9 @@ export default {
             }
         },
 
-    },   
+    },
+    mounted() {
+      console.log('mount', this.$options.name)
+    }
 }
 </script>

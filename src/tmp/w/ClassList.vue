@@ -360,10 +360,11 @@ SELECT c.id, c.teacher, c.listname, c.share, c.jdocstructure \
         console.error('We had an error loading your data!' , response)
       }
     },
-    mounted() {
-      console.log('start : ', this.$options.name)
+    created() {
+      console.log('MC:', this.$options.name)
       this.loadData();
-
+    },
+    mounted() {
     },
     watch: {
       showStudentLists() {

@@ -6,7 +6,6 @@
    General view of Student Lists show entries for the logged in user.
     </p>
   </base-title-expand>
-
   <base-tool :toolList="[]"
             :toolbarName="`General List View for ${getZml.login.fullname}`"
             :loading="loading"
@@ -186,11 +185,11 @@ ORDER BY date DESC`
      , max(s.grade) grade
   FROM dkhs_genlistdata g, s_place p, dkhs_learner l, dkhs_student s  \
  where g.userid = l.userid and p.placeid = g.placeid \
-   and g.userid = ${this.getZml.login.userid} \
    and s.studentid = g.studentid
   group by substr(changedate,1,10), dayno, sessionid  , l.user_name , p.name \
 ORDER BY date DESC`
         }
+        //   and g.userid = ${this.getZml.login.userid} \
         zmlFetch(ts, this.loadGListData, this.errorLoading)
       },
       loadGListData(response) {

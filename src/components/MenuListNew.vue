@@ -2,7 +2,6 @@
 <v-container fluid class="play">
 <v-layout v-if="functionList.length"
           row wrap justify-space-between
-
           class="ma-1 pa-1">
 
         <base-search  id="thesearch"
@@ -22,9 +21,9 @@
             :title="l.description"
             :x-small="small"
             :small="!small"
-             @click="click(l)"
+             @click="loadPage(l)"
       >
-        <v-icon :color="cardColor(l.functionaccess)" class="mr-2" v-text="l.icon"></v-icon>
+        <v-icon :color="cardColor(l.functionaccess)" class="mr-2">{{ l.icon }}</v-icon>
          {{ l.functionname }}
       </v-btn>
 
@@ -33,9 +32,9 @@
         <v-btn
            :x-small="small" :small="!small"
            :title="l.tip"
-           @click="click(l)"
+           @click="loadPage(l)"
         >
-         <v-icon :color="cardColor(l.functionaccess)" class="mr-2" v-text="l.icon"></v-icon>
+         <v-icon :color="cardColor(l.functionaccess)" class="mr-2"> {{ l.icon }}</v-icon>
          {{ l.functionname }}
         </v-btn>
 
@@ -56,11 +55,12 @@
 
 <script>
 import { getters } from "@/api/store";
+import { infoSnackbar,errorSnackbar } from '@/api/GlobalActions';
 import { doStuff } from '@/api/buttons'
 import { ls } from "@/api/localStorage.js"
 import baseSearch from '@/components/base/baseSearch.vue'
 export default {
-  name: "ListTestButtons",
+  name: "MenuListNew",
   props: ['info','small', 'type', 'functionSearch'],
   components:{baseSearch},
   data: () => ({
@@ -112,7 +112,7 @@ export default {
         return ret
        },
        showInfo(des) {
-        alert(des)
+        infoSnackbar(des)
        },
        cardColor(type) {
            switch (type) {
@@ -122,7 +122,7 @@ export default {
                default : return "orange darken-2"
            }
        },
-       click(what) {
+       loadPage(what) {
            //console.log(what)
             if (doStuff(this.$router,what.payload) == 0) {
                 //console.log(what)
@@ -134,14 +134,14 @@ export default {
    },
    mounted() {
     this.$cs.l('Mounted',this.$options.name)
-    if (this.getZml.functions.length == 0) {
-       alert('function not loaded yet!')
-       this.getZml.functions = ls.load('zmlFuncs')
-    }
    },
 
    created() {
     this.$cs.l('Created',this.$options.name)
+    if (this.getZml.functions.length == 0) {
+       errorSnackbar('function not loaded yet!')
+       this.getZml.functions = ls.load('zmlFuncs')
+    }
    },
    watch:{
        baseSearch() {
@@ -153,9 +153,9 @@ export default {
 
 <style scoped>
       .play {
-       background-color: blueviolet;
+       background-color: rgb(38, 81, 131);
        opacity: 0.8;
-       background-image:  linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777);
+       xxbackground-image:  linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(30deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(150deg, #444cf7 12%, transparent 12.5%, transparent 87%, #444cf7 87.5%, #444cf7), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777), linear-gradient(60deg, #444cf777 25%, transparent 25.5%, transparent 75%, #444cf777 75%, #444cf777);
       }
       .bgcontainer {
         height: 100vh;

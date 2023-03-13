@@ -63,7 +63,7 @@ import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import SelGeneralListItems from '@/components/fields/SelGeneralListItems.vue'
 
 export default {
-    name:'GenCLassList',
+    name:'StartGenList',
     transition: 'page-slide',
     components: {
       baseTool

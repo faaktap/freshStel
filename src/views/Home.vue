@@ -1,19 +1,8 @@
 <template>
-<div class="home">
-
-  <v-container fluid v-if="getZml.login.isAuthenticated && (getZml.login.username=='WER' || getZml.login.username=='JHMEL')">
-   <h2> Welcome Werner! </h2>
-               <v-btn to="/loadhomework"> loadhomework </v-btn>
-               <v-btn to="/werner"> werner </v-btn>
-               <v-btn to="/vglist"> vglist </v-btn>
-               <v-btn to="/jdoc"> jdoc </v-btn>
- </v-container>
-
-
-<!-- homeMain -->
+<v-container fluid class="home">
+<!-- HOME -->
  <v-container v-if="getZml.login.isAuthenticated==false" fluid>
-
-
+ <!------------------------------------------------ NO LOGIN YET-->
     <hero-section name="forDB"
        bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
        title="Virtual School Gateway"
@@ -25,20 +14,19 @@
 
  </v-container>
 
-
- <v-container v-if="getZml.login.type=='student'" fluid>
+<!------------------------------------------------ STUDENT LOGGED IN -->
+ <v-container v-else-if="getZml.login.type=='student'" fluid>
   <hero-section name="forDB"
                bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
                title="Student's Home"
                />
   <hr />
-
   <student-home />
-
   </v-container>
 
 
-  <v-container v-show="getZml.login.type=='teacher' || getZml.login.type=='admin'">
+<!------------------------------------------------ TEACHER LOGGED IN -->
+  <v-container v-else-if="getZml.login.type=='teacher' || getZml.login.type=='admin'">
   <hero-section name="forDB"
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
                title="Teacher & Admin Home"
@@ -47,8 +35,15 @@
   <admin-home />
   </v-container>
 
+  <v-container v-else>
+  <hero-section name="forDB"
+               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
+               title="Unknown Home"
+               color="indigo darken-4"
+               />
+    </v-container>
 
-  </div>
+</v-container>
 </template>
 
 <script>

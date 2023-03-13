@@ -243,10 +243,10 @@ export default {
     }
   },
   created() {
+    console.log('MC:',this.$options.name)
     zData.quickLoadInitialData('QuickLoad',this.initialize)
   },
   mounted() {
-    console.log('Mounted',this.$options.name)
   }
 }
 

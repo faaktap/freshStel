@@ -15,13 +15,11 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task + "/Grade")
         case "/hover":
         case "/reports":
-        case "/translate":
         case "/login":
         case "/att":
         case "/admin":
         case "/emailcheck":
         case "/choosesubjects":
-        case "/nested/dialog":
         case "/drive":    //student start
         case "/folderedit":    //student start
         case "/folder":    //student start

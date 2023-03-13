@@ -15,7 +15,7 @@
          @click:row="clickOnRow"
      />
      </v-card-text>
-     <v-card-text v-else>
+     <v-card-text v-if="showCalendar == true">
      <quick-calendar-display  class="ma-1 pa-2"
        v-if="showCalendar && attEvt && attEvt.length"
        :heading="`Attendance ${studentid}, ${studentSurname}`"
@@ -28,6 +28,9 @@
     </v-btn>
     <v-btn @click="showCalendar = !showCalendar" small>
         <span v-if="!showCalendar">Calendar</span><span v-else> Columns </span>
+    </v-btn>
+    <v-btn :to="`/calstud/${studentid}`" small>
+        TimeTable
     </v-btn>
    </v-card-actions>
   </v-card>
@@ -58,7 +61,7 @@ export default {
     data: () => ({
       getZml: getters.getState({ object: "gZml" }) ,
       AttendanceList:null,
-      showCalendar: false,
+      showCalendar: true,
       atendanceHeader: [
         //{text: 'id',       align: 'start',  value: 'attendanceid' },
           {text: 'Date and Time',  align: 'start',  value: 'attendancedate' },

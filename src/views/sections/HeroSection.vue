@@ -37,6 +37,7 @@
               class="justify-center pa-0 grey--text"
               divider=">"
             ><!--  {{ herotext }} -->
+
             </div>
           </v-col>
         </v-row>

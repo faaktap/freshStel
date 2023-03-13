@@ -1,7 +1,7 @@
 <template>
-<v-parallax background height="1000px" src="img/school.jpg" class="filter-img" >
+<v-parallax background xxheight="1200px" src="img/school.jpg" class="filter-div" width="100%" height="100%">
 <v-container justify="center" align="center"  xclass="filter-div mt-5 pa-5" >
- <v-layout wrap class="ma-1" justify-space-around>
+ <v-layout wrap class="ma-1" justify-space-between>
    <v-card class="ma-1 pa-1" color="rgba(106, 196, 226, 0.4)">
      <v-card-title  class="blue--text">
       <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
@@ -62,13 +62,14 @@
       </v-card-text>
       <v-card-actions>
           <v-spacer />
-          <v-btn
+          <v-btn class="mr-4"
             color="primary"
             to="/home"
           >
             Continue
           </v-btn>
       </v-card-actions>
+      <br><br><br><br><br><br><br><br><br><br><br>
    </v-card>
 </v-layout>
 <base-title-expand class="ma-0 pt-1 px-0" heading="More"  color="rgba(106, 196, 226, 0.4)">

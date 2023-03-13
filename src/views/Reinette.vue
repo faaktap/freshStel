@@ -176,16 +176,16 @@ export default {
     makeAFooter() {
       return `<br><br>\
               <table class="table ma-2 pa-2" BORDER=2 BORDERCOLOR="#4a6053" width=96% style='text-align: right; border-spacing: 2px;'>\
-               <tr>
-                <th>EDUCATOR:</th><td align=left>${this.selectedForPrint.teacher} :: ${this.selectedForPrint.totalstudents}</td>\
-                <th>VENUE:</th><th align=left>${this.selectedForPrint.venue} </th>\
+               <tr >
+                <th>EDUCATOR:</th><td align=left style="padding-left: 10px;">${this.selectedForPrint.teacher} :: ${this.selectedForPrint.totalstudents}</td>\
+                <th>VENUE:</th><th align=left style="padding-left: 10px;">${this.selectedForPrint.venue || ''} </th>\
                </tr>\
                <tr>\
-                <th>SUBJECT:${this.selectedForPrint.grade}</th><td align=left>${this.selectedForPrint.subject} </td>\
+                <th>SUBJECT:${this.selectedForPrint.grade}</th><td align=left style="padding-left: 10px;">${this.selectedForPrint.subject} </td>\
                 <th width=20%>Checked By:</th><td width=30%></td>\
                </tr>\
                <tr>\
-                <th>EXAMINATION DATE:</th><td align=left>${this.selectedForPrint.examdate}</td>\
+                <th>EXAMINATION DATE:</th><td align=left style="padding-left: 10px;">${this.selectedForPrint.examdate || ''}</td>\
                 <th width=20%>Invigilator/Toesighouer:</th><td width=30%></td>\
                 </tr>\
               </table>`
@@ -325,10 +325,10 @@ export default {
    and g.teacher = ss.teacher\
    and g.teacher = '${parms.teacher}'\
    and g.subjectname = '${parms.subject}'\
-   and ss.ckey = ${cKey}\
+   and ss.ckey = '${cKey}'\
    and s.grade = '${parms.grade}'\
    and g.grade = '${parms.grade}'`
-      this.reportHeader = `ExamPrintList: ${parms.grade} ${parms.teacher} in ${parms.venue} on ${parms.examdate}`
+      this.reportHeader = `ExamPrintList: ${parms.grade} ${parms.teacher}` // in ${parms.venue} on ${parms.examdate}`
       this.showSelection = false
     }
   },

@@ -9,7 +9,7 @@
         DK-eLearn<br>Printed:{{ today }}
       </td>
       <td width="40%" style="border: 0px;  align: center">
-        <center><strong>High School De Kuilen Hoërskool</strong><br>{{ userHeader }}</center>
+        <center><strong>High School De Kuilen Hoërskool</strong></center>
       </td>
       <td width="30%" style="border: 0px; border-radius: 0px; float: right">
         <img height="60" src="img/logo.png" class="float-right" />
@@ -22,8 +22,8 @@
       <v-toolbar color="primary" dense>
         <v-toolbar-title >           VIEWER :  {{ userHeader }} </v-toolbar-title>
         <v-spacer />
-        <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
-        <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+        <!-- <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
+        <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn> -->
      </v-toolbar>
    <v-data-table
      v-if="showAs=='list'"
@@ -96,11 +96,11 @@ export default {
           @page { margin-top: 45px }
           @media print {
           .print  {display:block}\
-          body {overflow: auto;height: auto;width: 100%;}\
+          body {overflow: auto;height: auto;width: 95%;}\
           h1 { color: #1c3a1b }\
           heading { color: #1c3a1b; height: 150px}\
           p.bodyText {font-size:12pt}\
-          th, td {font-size: 14pt; border-radius: 1px; padding: 1px; margin: 1px; border: 1px solid #e6e4ed;}\
+          th, td {font-size: 12pt; border-radius: 1px; padding: 1px; margin: 1px; border: 1px solid #e6e4ed;}\
           table: {width:95%;}\
           aside {display: none;}\
           main {display: block;}\

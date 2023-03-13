@@ -2,10 +2,14 @@
   <v-app id="app">
    <app-layout :key="projectID" >
    <v-container fluid>
-     <keep-alive :max="10">
-      <router-view>
-      </router-view>
-     </keep-alive>
+      <!-- <v-scroll-x-transition mode="in" hide-on-leave="true">    -->
+     <!-- <v-fade-transition mode="in" xhide-on-leave="true"> -->
+      <transition name="slide-fade" hide-on-leave="true">
+      <!-- <transition name="slide-x-transition" hide-on-leave="true"> -->
+       <keep-alive :max="10">
+        <router-view />
+      </keep-alive>
+      </transition>
    </v-container>
    </app-layout>
 
@@ -92,4 +96,33 @@ export default {
 <style>
 .hide {display:none;}
 .noprint {display:none}
+
+.slide-fade-enter-active {
+  transition: all 1s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+
+
+.slide-x-transition-enter-active {
+  background-color: #b2fab2;
+  transition: background-color 2s, all 2s;
+}
+.slide-x-transition-enter-to {
+  background-color: white;
+}
+.slide-x-transition-leave-active {
+  background-color: white;
+  transition: background-color 2s, all 2s;
+}
+.slide-x-transition-leave-to {
+  background-color: #fccece;
+}
 </style>

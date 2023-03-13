@@ -24,7 +24,8 @@
                 v-if="!$vuetify.breakpoint.smAndDown"
                 class="mt-4"
                 color="secondary"
-                :label="`Search more than Surname: ${searchMore}`"
+                title="Search other data - like name and note"
+                :label="`Search more than Surname `"
       />
       <v-back />
     </v-toolbar-items>

@@ -13,6 +13,7 @@
             >
     <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
     <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+    <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn>
  </base-tool>
 
     <v-card v-if="showAs=='list'" color="gray lighten-3" class="ma-0 pa-0" elevation="2" loading="!loading">
@@ -73,6 +74,7 @@ import baseTool from '@/components/base/baseTool.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import baseSearch from "@/components/base/baseSearch.vue"
 import BaseDate from '@/components/base/BaseDate.vue'
+import { printJSON } from "@/api/zmlPrint.js"
 //import { infoSnackbar } from '@/api/GlobalActions';
 export default {
     name:'StudentAttendanceView',
@@ -91,7 +93,8 @@ export default {
                ,{text:'presenter', value:'presenter'}
                ,{text:'place', value:'place'}
                ,{text:'students', value:'students'}
-               ,{text:'session', value:'sessionid'}
+               ,{text:'grade', value:'grade'}
+               //,{text:'session', value:'sessionid'}
       ],
       aList: [],
       sessionID: null,
@@ -128,6 +131,9 @@ export default {
       }
     },
     methods: {
+      doPrint() {
+        printJSON(this.filterTable, this.aHeader, '<h1>Attendance Session List </h1>')
+      },
       gotoLocations() {
         let webLink = 'https://kuiliesonline.co.za/bates/class'
         window.open(webLink,'_' + 'ko_external')
@@ -143,8 +149,10 @@ export default {
      , l.user_name presenter  \
      , p.name place  \
      , count(*) students \
-  FROM dkhs_attendance a, s_place p, dkhs_learner l  \
+     , min(s.grade) grade \
+  FROM dkhs_attendance a, s_place p, dkhs_learner l, dkhs_student s  \
  where a.userid = l.userid \
+   and a.studentid = s.studentid
    and p.placeid = a.placeid\
    and substr(a.attendancedate,1,10) = substr('${this.searchDate}',1,10) \
  group by substr(attendancedate,1,10)  \

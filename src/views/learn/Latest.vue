@@ -3,6 +3,7 @@
  <base-tool :toolbarName="`File activity in the past ${previousDays || 0} days.`"
            :loading="loading"
  >
+
   <v-btn-toggle v-model="toggleGradeDisplay">
     <base-tool-button>
      <template v-if="!$vuetify.breakpoint.smAndDown">Grade </template> 8
@@ -71,7 +72,7 @@ export default {
                 ],
         previousDays:null,
         search:'',
-        toggleGradeDisplay:1,
+        toggleGradeDisplay:3,
         loading: false,
        }
    },
@@ -159,9 +160,7 @@ export default {
        //If no param is passed, we default to 4
        this.previousDays = this.days || 4
        this.loadData()
-       if (this.getZml.login.class) this.toggleGradeDisplay = this.getZml.login.class - 7
-       console.log(this.getZml.login.class)
-       ////this.$cscs.l'icons',this.$vuetify.icons)
+       this.toggleGradeDisplay = this.getZml.login.grade.match(/\d+/)[0] - 8
    },
 
 }

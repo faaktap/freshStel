@@ -1,0 +1,50 @@
+<html>
+
+See : https://developers.google.com/maps/documentation/places/web-service/details#maps_http_places_details_fields-txt
+<ul>
+<li>curl -L -X GET 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name%2Crating%2Cformatted_phone_number&key=YOUR_API_KEY'
+<li><pre>var axios = require('axios');
+
+var config = {
+  method: 'get',
+  url: 'https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name%2Crating%2Cformatted_phone_number&key=YOUR_API_KEY',
+  headers: { }
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+</pre>
+<li>https://maps.googleapis.com/maps/api/place/details/json
+  ?fields=name%2Crating%2Cformatted_phone_number
+  &place_id=ChIJN1t_tDeuEmsRUsoyG83frY4
+  &key=YOUR_API_KEY
+</ul>  
+
+
+<hr>
+
+Places - autocomplete
+<ul>
+<li>curl -L -X GET 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=amoeba&types=establishment&location=37.76999%2C-122.44696&radius=500&key=YOUR_API_KEY'
+<li>https://maps.googleapis.com/maps/api/place/autocomplete/json
+  ?input=amoeba
+  &location=37.76999%2C-122.44696
+  &radius=500
+  &types=establishment
+  &key=YOUR_API_KEY
+</ul>
+
+
+<ul>
+<li>https://dev.to/arora/places-autocomplete-service-by-google-maps-api-vue-js-js-client-side-d29
+<li>https://gist.github.com/pixelsoul/8b854e39c334299f8cefc8e8532b13fc
+<li>
+
+
+
+

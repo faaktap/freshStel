@@ -22,6 +22,7 @@
     <v-spacer />
 
       <v-btn icon small class="ma-2" @click="showPhotoList = !showPhotoList" color="primary" title="show Thumbnails"><v-icon>mdi-image</v-icon></v-btn>
+      <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn>
     <v-back/>
  </v-toolbar>
 </v-container>
@@ -110,6 +111,7 @@ import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import ZShow from '@/components/base/ZShow.vue'
 import VBack from '@/components/base/VBack.vue'
 import { AttWork } from '@/components/student/AttWork.js'
+import { printJSON } from "@/api/zmlPrint.js"
 export default {
     name:"StudentGeneralList",
     props:["studentList"
@@ -130,7 +132,6 @@ export default {
         classListHeader:'',
         studentItem: [],
         quickShow: false,
-        //AttWork: AttWork
         stud:[],
         confirmSound:new Audio('sounds/Water drip.mp3'),
         refreshKey: 0
@@ -149,13 +150,11 @@ export default {
         return this.generalDetail.staffSurname + '(' + this.getZml.login.username + ')'
       },
       studentTally() {
-        //console.log('StudentTally', this.refreshKey)
         if (this.studentItem.length < 1) return []
         let tally = []
 
-        //Build zero value tally array
+        //Build zero value tally array - we fill it below
         this.checkList.forEach(e => tally.push({name:e, value:0} ))
-
         //loop thru studentItem array, and add 1 to tally for each checklist that match
         this.studentItem.forEach(e => {
           const idx = tally.findIndex(t => t.name == e)
@@ -168,9 +167,32 @@ export default {
       studentListReal() {
         //We made it computed, incase we want to add some.
         return this.studentList
-      }
+      },
     },
     methods:{
+      studentListPrint() {
+        let p = []
+        let cnt = 0
+        this.studentList.forEach(e => {
+          console.log(this.studentItem[cnt], this.studentItem[cnt] != 'Ignore')
+          if (this.studentItem[cnt] != 'Ignore') {
+             const o = e
+             o.cgrade = e.grade + e.gclass
+             o.status = this.studentItem[cnt]
+             cnt++
+             o.no = cnt
+             p.push(o)
+          } else {
+             cnt++
+          }
+        })
+        return p
+      },
+      doPrint() {
+        let header = [{value:'no'},{value:'surname'},{value:'firstname'}
+                    ,{value:'studentid'},{value:'cgrade'}, {value:'status'}]
+        printJSON(this.studentListPrint(), header, `<center><strong> ${ this.listname } </strong> <span>for</span> ${ this.staffSurname }</span></center>`)
+      },
       reset(text) {
         this.studentItem.fill(text)
         this.refreshKey++
@@ -202,7 +224,9 @@ export default {
      },
     mounted() {
       //console.log('GeneralClassList(mounted) : ', this.studentList.length)
-      this.studentItem = Array.from({ length: this.studentList.length }, () => (this.checkList[0]))
+      let ignoreIdx = this.checkList.findIndex(e => e.toLowerCase() == 'ignore')
+      if (ignoreIdx == -1) ignoreIdx = 0
+      this.studentItem = Array.from({ length: this.studentList.length }, () => (this.checkList[ignoreIdx]))
     },
     watch: {
     }

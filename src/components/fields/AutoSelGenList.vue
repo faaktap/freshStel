@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { getters } from "@/api/store"
 export default {
     name:"AutoSelGenList",
     props:{
@@ -21,11 +22,12 @@ export default {
       ,label: {type:String,default:"Questions"}
     },
     data: () => ({
-      tickList: [{id:1, name: "Homework", questions: ['Yes','No','Ignore']}
-              ,{id:2, name: "Textbooks", questions: ['Yes','No','Ignore']}
-              ,{id:3, name: "PATT/ASS", questions: ['0%','25%','50%','75%','100%','Submitted','Ignore']}
-              ,{id:4, name: "Behaviour", questions: ['Conduct','Outburst','Disruptive','Discipline','Hyper','Noisy','Cellphone','Substance','Sleeping','Ignore']}
-              ],
+      tickList: getters.getState({ object: "gZml" }).tickList ,
+      // tickList: [{id:1, name: "Homework", questions: ['Yes','No','Ignore']}
+      //         ,{id:2, name: "Textbooks", questions: ['Yes','No','Ignore']}
+      //         ,{id:3, name: "PATT/ASS", questions: ['0%','25%','50%','75%','100%','Submitted','Ignore']}
+      //         ,{id:4, name: "Behaviour", questions: ['Conduct','Outburst','Disruptive','Discipline','Hyper','Noisy','Cellphone','Substance','Sleeping','Ignore']}
+      //         ],
 
       what:'',
     }),

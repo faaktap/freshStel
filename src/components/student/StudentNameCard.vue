@@ -20,9 +20,9 @@
         </v-card-subtitle>
         </div>
         <v-spacer />
-        <v-card class="ma-2 pa-2" height="100%" color="red">        </v-card>
-        <v-card class="ma-2 pa-2" height="100%" color="red white--text">   {{ studentList.data.note}}     </v-card>
-        <v-card class="ma-2 pa-2" height="100%" color="red">        </v-card>
+        <v-card class="ma-2 pa-2" height="10%" color="gray lighten-2" :title="studentList.idno">        </v-card>
+        <v-card class="ma-2 pa-2" height="10%" color="gray lighten-2 blue--text">   {{ studentList.data.note}}     </v-card>
+        <v-card class="ma-2 pa-2" height="10%" color="gray lighten-2">        </v-card>
 
       <v-layout column align-content-center align-end >
       <v-avatar class="ma-3" size="210" tile>
@@ -32,17 +32,22 @@
          contain>
         </v-img>
       </v-avatar>
-
       </v-layout>
      <!-- </div> -->
+
       </v-layout>
      <v-card-text>
-      <small>
+      <v-btn small :to="`/calstud/${studentList.data.studentid}`" title="See the students's daily program">
+       <v-icon> mdi-timetable</v-icon>
+        TimeTable
+      </v-btn>
+      <span class="text-caption float-right">
         High school De Kuilen Hoërskool
         <br>
        {{new Date()}}
-     </small>
+      </span>
     </v-card-text>
+
     </v-card>
 </template>
 

@@ -126,7 +126,7 @@
   </v-row>
 
 
-<v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
+<v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
    <zml-close-button @btn-click="showListPrint = !showListPrint" />
   <front-json-to-csv v-if="studentList"
                     :jsonData="studentList"
@@ -138,7 +138,7 @@
   </front-json-to-csv>
 </v-dialog>
 
- <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
+ <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
    <zml-close-button @btn-click="showStudentCard = false" />
    <student-name-card :studentList="singleStudent" />
  </v-dialog>

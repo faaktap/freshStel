@@ -52,7 +52,6 @@
         <h2> Kuilies Login</h2>
        </v-card-title>
        <v-card-text>
-        <v-form>
         <!-- <v-form class="px-3" ref="loginForm" width="400" v-on:submit.prevent="onSubmit"> -->
          <v-text-field  label="User"
             v-model="loginObj.username"
@@ -63,16 +62,15 @@
          />
          <v-text-field
             label="Password"
+            autocomplete="current-password"
             v-model="loginObj.password"
             prepend-icon="mdi-lock"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
             :type="showPassword ? 'text' : 'password'"
             v-on:keyup.enter="onEnter"
-            name="password"
-            autocomplete="current-password"
          />
-        </v-form>
+        <!-- </v-form> -->
        </v-card-text>
        <v-card-actions>
         <v-btn @click="registrationMessage()" class="mx-0 mt-3" color="info">
@@ -135,10 +133,41 @@
 
 
 <!-- PROFILE --------------------->
-    <v-dialog v-model="showProfile" :scrollable="true"
+    <v-dialog v-model="showProfile" scrollable="true"
               persistent xwidth="70%"
-              :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto">
-   <Profile v-show="showProfile" @close="showProfile=false" />
+              :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto"
+              >
+      <v-card width="600px">
+        <v-card-title>Profile : {{ getZml.login.fullname }} {{ getZml.login.type }}</v-card-title>
+        <v-card-subtitle class="ma-2"> Please make note of your password, or change it
+          <p class="text-caption green text-center"> Click on the eye to view your password </p>
+        </v-card-subtitle>
+        <v-card-text>
+
+         <v-text-field
+               v-model="getZml.login.username"
+               prepend-icon="mdi-account"
+               :disabled="getZml.login.userid > 0"
+               label="Username" />
+         <v-text-field
+            v-model="getZml.login.password"
+            label="Password"
+            prepend-icon="mdi-lock"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
+            :type="showPassword ? 'text' : 'password'"
+            required />
+         <v-text-field prepend-icon="mdi-human" v-model="getZml.login.fullname" label="Fullname" required />
+         <v-text-field prepend-icon="mdi-phone" v-model="getZml.login.phone" label="Phone"  required />
+         <v-text-field prepend-icon="mdi-email" v-model="getZml.login.email" label="Email"  required />
+<p v-if="getZml.login.email == ''" class="text-caption red text-center"> You need an email if you forget your password </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="info" @click="showProfile = false"> Close </v-btn>
+          <v-spacer />
+          <v-btn color="primary" @click="saveDetails"> Save </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
     </v-container>
   </v-container>
@@ -155,12 +184,11 @@ import { zmlLog } from '@/api/zmlLog.js';
 import { getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 import { ls } from "@/api/localStorage.js"
-import Profile from "@/components/Profile.vue"
 
 export default {
     name: "login",
     props: ['errorMessage'],
-    components: {Profile},
+    components: {},
     computed: {
     },
     data: () => ({
@@ -379,6 +407,32 @@ export default {
 
       }
     },
+    saveDetails() {
+      // this.$cs.l(this.$options.name,'p-saveDet')
+      //we need to send the stuff for an update
+      if (!this.getZml.login.email || !this.getZml.login.phone) {
+          errorSnackbar('You need to supply an email address and a phone number please.')
+          return
+      }
+      const login = {
+            task: 'loginupdate',
+            api: zmlConfig.apiDKHS,
+            data: this.getZml.login}
+      zmlFetch(login,this.doneWithUpdate, this.failUpdate)
+    },
+    doneWithUpdate(response) {
+      // this.$cs.l(this.$options.name,'p-doneUpadte')
+      if (response.errorcode == 0 ) {
+        infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
+        this.showProfile = false
+        this.saveLocalStorage()
+      } else {
+        errorSnackbar('We have a problem to update your details ' + response.error)
+      }
+    },
+    failUpdate(response) {
+      errorSnackbar('We have a problem to update your details ' + response.errorcode)
+    },
     dropAnEmail() {
       // this.$cs.l(this.$options.name,'p-dropEMail')
       // this.getZml.login.password = 'secret'
@@ -469,7 +523,7 @@ export default {
     },
     forgotPassword() {
       if (!this.loginObj.username) {
-        errorSnackbar("Please supply an username - we need your username to find your email.")
+        errorSnackbar("Please supply an username.")
         return
       }
       let ts = {}

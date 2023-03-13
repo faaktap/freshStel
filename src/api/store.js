@@ -31,7 +31,8 @@ const state = Vue.observable({
                   , menemonic:''
                   , lastdate:''
                   , type:'guest'
-                  , login:''},
+                  , login:''
+                  , superUser: false},
            grade: '',
            grades:[{id:8 ,text: "G08",name: 'Grade 8'} ,{id:9 ,text: "G09",name: 'Grade 9'}
                   ,{id:10,text: "G10",name: 'Grade 10'},{id:11,text: "G11",name: 'Grade 11'}
@@ -44,6 +45,7 @@ const state = Vue.observable({
            voteList:[],
            locale: 'af',
            calendar:[],
+           baseCalendar:[], //day  dayOfWeek day_name dayno fulldate holiday_flag idDate month month_name quarter week weekend year 2024
            meritLevel:[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
            persMenemonic:[],   //userid:"144", persid: "144", user_name: "JBRES", "user_fullname": "Me. J. Bresler", "surname": "Bresler", name,title,workemail,"room": "Sport 2", "user_type": "teacher"
            place: [],  //p.placeid, p.name, w.name workarea, p.description,p.ownerid concat(p.name, ' - ',w.name) concatsearch"

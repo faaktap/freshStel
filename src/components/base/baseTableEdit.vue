@@ -5,7 +5,7 @@
     <h1 v-if="tHeading" class="text-center grey--text"> {{ tHeading }} </h1>
    </v-col>
    <v-col cols="12">
-      {{ $vuetify.breakpoint.lgAndDown }}
+      <!-- {{ $vuetify.breakpoint.lgAndDown }} -->
      <v-layout color="gray--text text--lighten-5" flex-column>
        <v-text-field
            v-model="search"
@@ -39,9 +39,8 @@
          <!-- @click:row="clickOnTableRow" -->
          <!-- @dblclick:row.prevent="doubleClickOnTableRow" -->
          <template v-slot:no-data>
-
             <v-alert :value="true" color="error" icon="warning">
-             No data availible - try the refresh button :()
+               No data availible - try the refresh button :)
             </v-alert>
          </template>
          <template v-for="(head,i) in compCol" v-slot:[`item.${head.value}`]="{ item }">  <!-- ,header-->

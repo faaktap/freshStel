@@ -1,6 +1,5 @@
 <template>
 <v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
-
   <hero-section name="forDB"
               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall042.jpg"
               title="Create Attendance Session"
@@ -183,14 +182,18 @@
   </v-row>
 
  <v-dialog v-if="menemonic" v-model="showRooster" width="auto">
+  <keep-alive>
   <rooster :user_name="menemonic"
            @selected="roosterSelected" />
+  </keep-alive>
 </v-dialog>
 
 <v-dialog v-model="showChoosy"  width="450" :fullscreen="$vuetify.breakpoint.smAndDown">
+  <keep-alive>
      <choosy v-model="choosyStuff"
              :items="tList"
              @objectSelected="classListReceived" />
+  </keep-alive>
 </v-dialog>
 
 </v-container>
@@ -434,10 +437,15 @@ export default {
       playSound () {
         this.confirmSound.play();
       },
+      assignDayNo(response) {
+        this.day = response.dayno
+      }
     },
     created() {
       this.loading = true
       zData.quickLoadInitialData('Load Data for incase', this.initialize)
+      zData.loadSql(this.loading, "SELECT dayno FROM dkhs_date WHERE fulldate = CURDATE()"
+                  , this.assignDayNo)
     },
     mounted() {
       zmlLog(null, "Att5Tanya ", 'Started ' + this.login.username +' '+ this.login.userid)

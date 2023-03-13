@@ -130,18 +130,29 @@
       </v-sheet>
     </v-col>
   </v-row>
-  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-    <h4> Only Werner c this</h4>
-    <v-row>
-        <!-- <v-col cols="6" lg="3" v-for="(f,i) in sortIt" :key="i"> -->
-          <v-col cols="6" lg="3" v-for="(f,i) in events" :key="i">
-        <v-card color="blue" class="ma-2 pa-1 text-caption" >
-         {{ f.name }} : {{ f.start }}- {{ f.end }} {{ f.type }}
-         </v-card>
-        </v-col>
-   </v-row>
+  <v-container fluid v-if="getZml.login.superUser">
+
+<base-title-expand  heading="Periods">
+  <period-table />
+</base-title-expand>
+
+
+<base-title-expand  heading="All Events">
+    <v-card>
+      <v-card-title><h4> Only Werner - this is all the events (Periods, Days, Holidays and Birthdays)</h4> </v-card-title>
+      <v-card-text>
+         <v-data-table
+           :headers="eventHeaders"
+           :items="events"
+           class="elevation-1"
+           multi-sort
+         />
+      </v-card-text>
+   </v-card>
+</base-title-expand>
+
   </v-container>
-        <v-btn  @click="checkChange"> R(CC) </v-btn>
+        <!-- <v-btn  @click="checkChange"> R(CC) </v-btn> -->
 </v-card>
 </template>
 
@@ -153,9 +164,14 @@ import { zDate } from '@/api/zDate.js'
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import baseTool from '@/components/base/baseTool.vue'
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import PeriodTable from '@/components/cal/PeriodTable.vue'
 export default {
   name: 'Kalendar',
-  components: {baseTool},
+  components: {baseTool
+             , BaseTitleExpand
+             , PeriodTable
+  },
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
       loading:false,
@@ -164,6 +180,14 @@ export default {
       calValue: '',
       calReady: false,
       events:[{ start: "1900-01-01", name: "" }],
+      eventHeaders: [{value: 'name', text: 'desc'}
+                  ,  {value: 'detail', text:'det'}
+                  ,  {value: 'length', text:'len'}
+                  ,  {value: 'start', text:'startdate'}
+                  ,  {value: 'end', text:'endtime'}
+                  ,  {value: 'color'}
+                  ,  {value: 'type', text:'pname'}
+                  ,  {value: 'timed'}, {value: 'id'}],
       selectedEvent: null,
       selectedElement: null,
       selectedOpen: null,
@@ -241,6 +265,7 @@ export default {
         ts.task = 'PlainSql'
         ts.api = zmlConfig.apiDKHS
         ts.sql = `select  dt.fulldate startdate
+     , dt.dayno
      , per.description
      , per.starttime
      , per.endtime
@@ -274,7 +299,7 @@ WHERE per.dow = dt.dayOfWeek
              }
 
              const evt= {name: ele.type
-                  , detail: `${ele.description} - ${ele.type} - ${ele.length}M`
+                  , detail: `Day:${ele.dayno} ${ele.description} - ${ele.type} - ${ele.length}M`
                   , start: `${ele.startdate} ${ele.starttime}`
                   , end: `${ele.startdate} ${ele.endtime}`
                   , color: ele.color
@@ -282,15 +307,15 @@ WHERE per.dow = dt.dayOfWeek
                   , timed: true
                     }
              this.events.push(evt)
-             const tevt= {name: 'SOME TEST'
-                  , detail: `sometest`
-                  , start: `${ele.startdate} ${ele.starttime}`
-                  , end: `${ele.startdate} ${ele.endtime}`
-                  , color: 'orange'
-                  , type: 'School'
-                  , timed: true
-                    }
-             this.events.push(tevt)
+            //  const tevt= {name: 'SOME TEST'
+            //       , detail: `sometest`
+            //       , start: `${ele.startdate} ${ele.starttime}`
+            //       , end: `${ele.startdate} ${ele.endtime}`
+            //       , color: 'orange'
+            //       , type: 'School'
+            //       , timed: true
+            //         }
+            //  this.events.push(tevt)
           } else {
             console.error(ele.startdate, 'One of our periods does not have a startdate!',ele);
           }
@@ -402,8 +427,7 @@ ORDER BY ev.startdate
          }
       },
     },
-  mounted () {
-    this.$cs.l('MOUNTING KKKKKALENDAR-----------------')
+  created () {
     if (!this.menemonic) {
       if (this.$route.params.menemonic) {
           this.incomingMenemonic = this.$route.params.menemonic.toUpperCase()
@@ -416,6 +440,9 @@ ORDER BY ev.startdate
     this.calToday = zDate.format(this.today,'yyyy-MM-dd')
     this.loadCalendar();
     this.loadPeriods();
+  },
+  mounted () {
+    this.$cs.l('MOUNTING KKKKKALENDER-----------------')
   },
   watch: {
   },

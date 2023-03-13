@@ -7,7 +7,7 @@
 
    <v-toolbar dense row>
     <v-toolbar-title>
-      <span class="d-none d-sm-block"> Student Subject </span>
+      <span class="d-none d-sm-block"> Student Subjects </span>
     </v-toolbar-title>
     <v-overlay v-if="loading" :value="loading">
       <v-progress-circular indeterminate size="84">
@@ -37,17 +37,19 @@
               {{s.teachersurname}}, {{s.teacherinitial}}
             </v-card-subtitle>
             <v-card-text class='body-2'>
-              We can place the next examdate and venue here..or some other note
+              <span v-if="s.examdate"> ExamDate : {{ s.examdate }}<br>
+                {{ s.subexam }}, {{ s.menemonic }}, venue: {{ s.venue }} </span>
               <!-- {{ s.ckey }} -->
                 <!-- Next Exam : {{s.examdate}} -->
               <!-- M.S at {{teacher.ms}} <br> M.S.C at {{teacher.msc}} -->
+               {{ s }}
             </v-card-text>
 
             <v-card-actions>
               <v-btn x-small outlined color='blue'
                      @click="showTeacher(`${s.teachersurname}, ${s.teacherinitial}`)"
                      :title="`Show ${s.teachersurname}, ${s.teacherinitial}`">
-                More...
+              More...
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn x-small outlined color='green'>
@@ -126,7 +128,13 @@ export default {
                this.loading = true
                let ts = {}
                ts.task = 'PlainSql'
-               ts.sql = "select *  from dkhs_studsub where studentid = " + this.studentid
+               ts.sql = `select ss.studentid,ss.ckey, ss.subjectname , ss.hodsubjectid, ss.menemonic, g.subjectname subexam , g.venue, g.examdate, g.teacher
+               , ss.teacherinitial, ss.teachersurname
+      from dkhs_studsub ss
+      left join dkhs_student s on s.studentid = ss.studentid
+      left join dkhs_subjectgroup g on s.grade = g.grade and concat(ss.subjectname,'.',ckey) = g.subjectname
+        and ss.teacher = g.teacher
+      where ss.studentid = ${this.studentid}`
                ts.api = zmlConfig.apiDKHS
                zmlFetch(ts, this.assignData);
             }

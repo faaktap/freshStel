@@ -128,7 +128,14 @@ export const zData = {
     },
     calendarData: (whatever) => {
         l('Calling OUR TESTER')
-        zLoadCal.calendarData(whatever)
+        //zLoadCal.calendarData('Load From zData')
+        zLoadCal.calendarData(whatever || 'loading base')
+        l('DONE Calling OUR TESTER')
+    },
+    baseCalendarData: (whatever) => {
+        l('Calling OUR TESTER')
+        //zLoadCal.calendarData('Load From zData')
+        zLoadCal.getBaseCalendar(whatever || 'loading base')
         l('DONE Calling OUR TESTER')
     },
     randomChuckNorris: async () => {

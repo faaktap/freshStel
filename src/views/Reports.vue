@@ -67,8 +67,10 @@
      :reportHeader="reportHeader"
      :sqlSelect="sqlSelect"
   />
-  <div  v-if="getZml.login.username == 'WER'">
-    {{ reports}}
+  <br>
+  <v-btn x-small v-if="getZml.login.superUser" @click="showDebug=!showDebug"> SU </v-btn> 
+  <div v-if="getZml.login.superUser && showDebug" >
+    Reports : {{ reports}}
   </div>
 </v-container>
 </div>
@@ -95,7 +97,8 @@ export default {
     reports: [{id:0, answer:'', ans:'', sqlCount:'', sqlReports:'', order:0}],
     reportValueToCount:[],
     sqlSelect:null,
-    reportHeader:null
+    reportHeader:null,
+    showDebug:false
   }),
   computed:{},
   methods: {
