@@ -16,6 +16,7 @@
                <v-btn small to="/jdoc" class="mx-2"> jdoc </v-btn>
                <v-btn small to="/basecalendaredit" class="mx-2"> calen edit/view </v-btn>
                <v-btn small to="/kalender" class="mx-2"> kalender </v-btn>
+               <v-btn small to="/periodtable" class="mx-2"> Change/View Periods </v-btn>
                <v-btn small to="/ar" class="mx-2"> autoroute </v-btn>
                <v-btn small to="/checklog" class="mx-2"> checklog </v-btn>
                <v-btn small to="/werner" class="mx-2"> werner </v-btn>

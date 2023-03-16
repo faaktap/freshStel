@@ -118,6 +118,12 @@ const routes = [
     meta: {layout: la[0], authentication: "teacher" }
   },
   {
+    path: '/periodtable',
+    name: 'PeriodTable',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/cal/PeriodTable.vue'),
+    meta: {layout: la[0], authentication: "teacher" }
+  },
+  {
     path: '/rooster/:user_name?',
     name: 'Rooster',
     props:true,

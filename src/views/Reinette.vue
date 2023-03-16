@@ -1,21 +1,30 @@
 <template>
 <v-container fluid>
-
-<base-tool :toolList="[]"
+  <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall042.jpg"
+              title="Reinette se afrol lyste vir eksamen"
+              text=""
+              breakup1="100"
+              breakup2="20"
+              color="purple darken-1"
+               />
+<!-- <base-tool :toolList="[]"
             toolbarName="Reinette se afrol lyste vir eksamen"
            :loading="loading"
             >
             <v-btn icon @click="showExport = !showExport">
             E
            </v-btn>
-</base-tool>
+</base-tool> -->
 
 
 <v-container v-if="showSelection" fluid color="gray--text text--lighten-5">
 <base-tool
             toolbarName="Options"
            :background="false"
+           :loading="loading"
             back="false"
+            class="ma-0 pa-0"
             >
 
        <v-text-field
@@ -34,6 +43,7 @@
            <v-switch inset dense color="warning" v-model="g10" hide-details class="mr-2 ml-2" label="10" />
            <v-switch inset dense color="warning" v-model="g9"  hide-details class="mr-2 ml-2" label="9" />
            <v-switch inset dense color="warning" v-model="g8"  hide-details class="mr-2 ml-2" label="8" />
+           <v-btn icon @click="showExport = !showExport">            E           </v-btn>
 
 </base-tool>
 
@@ -43,6 +53,7 @@
                  :items-per-page="30"
                  :search="search"
                  @dblclick:row="doubleClickOnTableRow"
+                  mobile-breakpoint="0"
       >
          <!--https://blog.devgenius.io/vuetify-edit-table-content-cd57d11ae850-->
          <template v-slot:[`top`]>
@@ -138,13 +149,14 @@ import ReportsTableSmall from '@/components/ReportsTableSmall.vue'
 import AutoSelRoom from '@/components/fields/AutoSelRoom.vue'
 import BaseDate from "@/components/base/BaseDate.vue"
 import baseTool from '@/components/base/baseTool.vue'
+import HeroSection from "@/views/sections/HeroSection"
 
 export default {
  name: "EksamenDruk",
   props:{},
   components: {
     ReportsTableSmall,
-    //ZAutoPlace,
+    HeroSection,
     AutoSelRoom ,
     BaseDate,
     baseTool,
@@ -255,14 +267,6 @@ export default {
         this.subjectList[index].examdate =  this.editedItem.examdate
 
     },
-    // cancel () {
-    //     this.updateNeeded = null
-    //     return
-    // },
-    // open (e) {
-    //     this.updateNeeded = {u1:e.examdate, u2:e.venue}
-    //     return
-    // },
     close() {
       this.dialog = false
       this.updateNeeded = null
@@ -332,7 +336,7 @@ export default {
       this.showSelection = false
     }
   },
-  mounted: function() {
+  created: function() {
     this.loading = true
     let ts = {task: 'PlainSql',
                sql: `select id, subjectname,teacher,examdate,venue,grade,totalstudents \
@@ -340,6 +344,9 @@ export default {
                     order by grade, subjectname, teacher`
              }
     zmlFetch(ts, this.loadData)
+  },
+  mounted: function() {
+    console.log('Mounted:', this.$options.name)
   }
 
 }

@@ -14,6 +14,51 @@ export const zmlF = {
             default: return "unknown status";
         }
     },
+    // Not as fancy as the one above - but feedback is nice.
+    ZQR: (storage, pcallback, pErrorcallback) => {
+      if  ('workDone' in storage && storage.workDone == 'BUSY')  alert('We should wait, since we are busy with a fetch')
+      storage.workDone = BUSY
+      storage.progress = true
+      // let taskSql = {}
+      // taskSql.task = storage.task
+      // taskSql.action = storage.action
+      // if ('data' in storage) taskSql.data = storage.data
+
+      // console.log('ZF is doing ', storage, taskSql)
+      let p = zmlF.zFetch(storage)
+
+      p.then((resp) => {
+       storage.workDone = DONE
+       storage.progress = false
+       console.log('RAW FETCH RETURN 1',resp)
+       if (resp.status >= 200 && resp.status <= 299) {
+         return resp.json();
+       } else {
+         throw Error(resp.statusText)
+       }
+      })
+      .then(rjson => {
+       if (rjson.errorcode != undefined && rjson.errorcode != 0) {
+         console.log('ZmlF : We have errorcode on ', storage.action, rjson.errorcode)
+         storage.feedback = "Error:" + rjson.errorcode   // rjson
+         if (pErrorcallback) pErrorcallback(rjson)
+         return
+       }
+       storage.response = rjson
+       storage.feedback = "Done " + storage.action
+       console.log('zmlF: Passing data to storage and do Callback if it exist', rjson)
+       if (pcallback) pcallback(rjson)
+       return
+      })
+      .catch(err => {
+         //we have a problem, load our error object and report back
+         console.log('zmlF: We caught an throwed error, see feedback', err)
+         storage.feedback = {error: 'Failed to Fetch', errorcode: '9999', exception:"caught exception", result:err}
+         storage.workDone = DONE
+         storage.progress = false
+         if (pErrorcallback) pErrorcallback(storage.response)
+      })
+    },
     ZF: (storage, pcallback, pErrorcallback) => {
        if  (storage.workDone == 'BUSY')  alert('We should wait, since we are busy with a fetch')
        storage.workDone = BUSY

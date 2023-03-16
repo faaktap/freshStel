@@ -14,7 +14,7 @@
          <base-table-edit
                      :tList="sqlData"
                      :tHeading="tHeading"
-                     bHeading="Double click an item to delve deeper."
+                     bHeading="Carefull - keep the times in 00:00 format!"
                      @update="tableAction('update',$event)"
                      @delete="tableAction('delete',$event)"
                      @insert="tableAction('insert')"
@@ -27,8 +27,8 @@
       <v-text-field label="id" v-model="curRec.id" />
       <v-text-field label="description" v-model="curRec.description" />
       <v-text-field label="day of week" v-model="curRec.dow" />
-      <v-text-field label="start" v-model="curRec.starttime" />
-      <v-text-field label="end" v-model="curRec.endtime" />
+      <v-text-field label="start" type="time" v-model="curRec.starttime" />
+      <v-text-field label="end" type="time" v-model="curRec.endtime" />
       <v-text-field label="len" v-model="curRec.length" />
       <v-card-actions>
          <v-btn small @click="showRecord = false"> Close </v-btn>

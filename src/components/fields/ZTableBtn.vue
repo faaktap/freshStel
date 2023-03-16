@@ -12,10 +12,11 @@
            :title="compTitle"
            :icon="!title || $vuetify.breakpoint.lgAndDown ? true : false"
     >
-        <v-icon  small
-                :color="$vuetify.breakpoint.lgAndDown ? compColor : 'white'"
+        <v-icon 
+          small
+          :color="$vuetify.breakpoint.lgAndDown ? compColor : 'white'"
         >
-                {{ compIcon }}
+          {{ compIcon }}
         </v-icon>
         <template v-if="!$vuetify.breakpoint.lgAndDown">
              {{ title }}

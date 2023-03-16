@@ -1,17 +1,19 @@
 <template>
 <div>
- <v-text-field dense
+ <v-text-field
           :label="label"
           :value="value"
            append-icon="mdi-calendar"
-          @xxfocus="showDate = !showDate;"
+          @xxfocus="showDate = !showDate"
           @click:append="showDate = !showDate"
           v-on:input="updateValue($event)"
           :required="required"
           class="ma-2"
           :disabled="disabled"
+          :dense="dense"
           />
-          <v-card elevation-3 v-if="showDate">
+          <v-dialog v-model="showDate" max-width="300" max-height="350" >
+          <v-card elevation-3>
            <v-date-picker dense
                    picker-date
                    no-title
@@ -21,7 +23,7 @@
                    :value="value">
            </v-date-picker>
           </v-card>
-          <!-- {{ showDate }} -->
+          </v-dialog>
 </div>
 </template>
 
@@ -31,10 +33,11 @@
 //https://vuejs.org/v2/guide/forms.html
 import { infoSnackbar } from "@/api/GlobalActions"
 export default {
-  name: "BaseDate",
+  name: "BaseDateDialog",
   props:{ label: {    type: String},
           value: {    type: String },
-          disabled: { type: Boolean, default:false },
+          dense: {    type: Boolean,  default: false },
+          disabled: { type: Boolean,  default:false },
           required: { type: Boolean,  default: false },
           instructions: {type: String, default:""}
         },
@@ -76,5 +79,9 @@ export default {
     this.cheatValue = this.value
     if (this.value == '')  this.cheatValue = this.current.yyyy + '-' + this.current.mm + '-' + this.current.dd
   },
+  watch: {
+    value() {
+    }
+  }
 };
 </script>

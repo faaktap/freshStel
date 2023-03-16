@@ -68,6 +68,9 @@
        <base-title-expand v-if="studentList" heading="Student Attendance">
           <student-attendance :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
+       <base-title-expand v-if="studentList" heading="Prescribed Books on Loan" >
+         <student-prescribed-books :studentid="studentList.data.studentid"  color="white darken-1" />
+       </base-title-expand>
        <base-title-expand v-if="studentList" heading="Learn Assist">
           (We use this to mark examlists with "BUR" for separate exam venue)
           <student-learn-assist :studentid="studentList.data.studentid"  color="white darken-1" />
@@ -131,9 +134,11 @@ import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentAttendance from '@/components/student/StudentAttendance'
 import StudentLearnAssist from '@/components/student/StudentLearnAssist'
 import StudentMerit from '@/components/student/StudentMerit'
+import StudentPrescribedBooks from '@/components/student/StudentPrescribedBooks.vue';
 import VBack from '@/components/base/VBack.vue'
 
 import { printHeader, printPage} from "@/api/zmlPrint.js"
+
 
 export default {
 name: "StudentInfo",
@@ -147,9 +152,11 @@ components: {HeroSection
            , StudentAttendance
            , StudentLearnAssist
            , StudentMerit
+           , StudentPrescribedBooks
            , BaseTitleExpand
            , baseTool
            , VBack
+
            },
 data: () => ({
   printHeader: printHeader,

@@ -21,14 +21,7 @@
       </v-col>
       <v-col cols=4>
         <v-btn x-small class="ma-2" color="primary" @click="setToday">
-          <span v-if="$vuetify.breakpoint.mdAndUp"> Today</span>
-          <v-icon v-else small> mdi-calendar-today</v-icon>
-        </v-btn>
-        <v-btn x-small color="primary" title="Edit this Day"
-               @click="showDay = true"
-        >
-          <span v-if="$vuetify.breakpoint.mdAndUp">  {{ calValue }}  </span>
-          <span v-else> E </span>
+            Today
         </v-btn>
       </v-col>
       <v-col cols=3>
@@ -37,19 +30,11 @@
         </v-toolbar-title>
       </v-col>
       <v-col cols=3 class="text-right">
+         <!-- <v-btn align="right" class="ma-2" small color="primary" @click="weekOrDayChange">  {{ weekOrDay }} </v-btn> -->
          <v-btn-toggle small v-model="toggleView" >
-         <v-btn class="ma-0" x-small xicon color="primary" @click="weekOrDay = 'day'">
-          <span v-if="$vuetify.breakpoint.mdAndUp"> day</span>
-          <span v-else>d</span>
-         </v-btn>
-         <v-btn class="ma-0" x-small xicon color="primary" @click="weekOrDay = 'week'">
-          <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
-          <span v-else>w</span>
-         </v-btn>
-         <v-btn class="ma-0" x-small xicon color="primary" @click="weekOrDay = 'month'">
-          <span v-if="$vuetify.breakpoint.mdAndUp"> month</span>
-          <span v-else>m</span>
-         </v-btn>
+         <v-btn class="ma-0" x-small xicon color="primary" @click="weekOrDay = 'day'">day</v-btn>
+         <v-btn class="ma-0" x-small xicon color="primary" @click="weekOrDay = 'week'">Week</v-btn>
+         <v-btn class="ma-0" x-small xicon color="primary" @click="weekOrDay = 'month'">Month</v-btn>
          </v-btn-toggle>
       </v-col>
       <v-col cols=1>
@@ -63,14 +48,14 @@
     <v-sheet height="800">
         <!-- overlap is stack or column -->
         <v-calendar
-          dense="!$vuetify.breakpoint.mdAndUp"
+          dense
           v-if="events.length > 0"
           ref="calendar"
           v-model="calValue"
           :now="calToday"
           :value="calToday"
           :events="events"
-          :weekdays="$vuetify.breakpoint.mdAndUp ? weekday : weekdayShort"
+          :weekdays="weekday"
           event-color="secondary"
           event-overlap-mode="stack"
           color="primary"
@@ -82,8 +67,7 @@
           interval-height="55"
           interval-minutes="30"
           short-intervals
-          :short-weekdays="!$vuetify.breakpoint.mdAndUp"
-          :show-month-on-first="$vuetify.breakpoint.mdAndUp"
+          show-month-on-first
           @change="updateRange"
           @click:event="clickEvent"
           @click:more="clickMore"
@@ -93,18 +77,7 @@
           @click:interval="clickInterval"
           @click:time="clickTime"
 
-        >
-        <template v-slot:event="{event}">
-          <!-- <div :style="{'background-color':event.color,color:'white'}" class="fill-height pl-2"> -->
-          <div :style="{ 'background-color':event.color,color: gfc(event.color) }"
-               class="fill-height pl-2"
-               :class="sideColor(event.name)"
-          >
-            {{ event.name }} {{ event.start.substr(11,5) }}
-            <!-- {{ event.detail }} -->
-          </div>
-        </template>
-        <!-- weekdays=[1,2,3,4,5,6,0] -->
+        > <!-- weekdays=[1,2,3,4,5,6,0] -->
          <!-- <template v-slot:day-body="{ date, week }">
             <div
                class="v-current-time"
@@ -114,27 +87,60 @@
             </div>
          </template> -->
 
+
         </v-calendar>
+
+
+<!---  SELECTED EVENT --->
+        <v-menu
+          v-model="selectedOpen"
+          :close-on-content-click="true"
+          :activator="selectedElement"
+          offset-x
+        >
+          <v-card color="blue-grey lighten-4" min-width="350px" flat>
+            <v-toolbar color="selectedEvent.color">
+              <v-btn icon> <v-icon>mdi-pencil</v-icon> </v-btn>
+              <v-toolbar-title v-if="selectedEvent">
+                {{ showEvtNameAndTime }}
+              </v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <span v-if="selectedEvent" v-html="selectedEvent"></span>
+            </v-card-text>
+            <v-card-actions>
+              <!-- <v-btn small text color="secondary" @click="clickLoad" > load </v-btn> -->
+              <v-btn small text color="secondary" @click="selectedOpen = false">Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
      </v-sheet>
     </v-col>
   </v-row>
-
 <v-dialog v-model="showEvent" width="455px" height="100%" scrollable color="red">
-  <event-form @save="saveEvent" @close="showEvent = false" :eventDetails="selectedEvent"/>
-</v-dialog>
-
-<v-dialog v-model="showDay" width="455px" height="100%" scrollable color="red">
-  <day-form @xsave="saveEvent" @close="showDay = false" :dayDetails="this.calValue"/>
+  <event-form @close="showEvent = false" :eventDetails="selectedEvent"/>
 </v-dialog>
 
 <v-container fluid v-if="getZml.login.superUser">
+ <base-title-expand  heading="TestCal1">
+  <test-cal-1 />
+ </base-title-expand>
+
+ <base-title-expand  heading="TestCal2">
+  <test-cal-2 />
+ </base-title-expand>
+
  <base-title-expand  heading="Periods">
   <period-table />
  </base-title-expand>
 
+ <base-title-expand  heading="TestCal3">
+  <test-cal-3 />
+ </base-title-expand>
+
  <base-title-expand  heading="All Events">
     <v-card>
-      <v-card-title><h4> (Periods, Days, Holidays and Birthdays)</h4> </v-card-title>
+      <v-card-title><h4> Only Werner - this is all the events (Periods, Days, Holidays and Birthdays)</h4> </v-card-title>
       <v-card-text>
          <v-data-table
            :headers="eventHeaders"
@@ -145,37 +151,34 @@
       </v-card-text>
    </v-card>
  </base-title-expand>
-  <!-- <base-title-expand  heading="TestCal1">  <test-cal-1 /> </base-title-expand>
- <base-title-expand  heading="TestCal2">  <test-cal-2 /> </base-title-expand>
- <base-title-expand  heading="TestCal3">  <test-cal-3 /> </base-title-expand> -->
-
   </v-container>
         <!-- <v-btn  @click="checkChange"> R(CC) </v-btn> -->
 </v-container>
 </template>
 
 <script>
-import { calEvents } from '@/components/cal/CalEvents.js'
+//import { format         ,lastDayOfMonth        , addYears } from 'date-fns'
 import { getters } from "@/api/store"
 import { zDate } from '@/api/zDate.js'
-import { vuetifyColor } from '@/api/vuetifyColor.js'
+//import { zData } from '@/api/zGetBackgroundData.js'
+import { zmlConfig } from '@/api/constants.js';
+import { zmlFetch } from '@/api/zmlFetch.js';
 import baseTool from '@/components/base/baseTool.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import PeriodTable from '@/components/cal/PeriodTable.vue'
+import TestCal1 from '@/components/cal/TestCal1.vue'
+import TestCal2 from '@/components/cal/TestCal2.vue'
+import TestCal3 from '@/components/cal/TestCal3.vue'
 import EventForm from '@/components/cal/EventForm.vue'
-import DayForm from '@/components/cal/DayForm.vue'
-
-// import TestCal1 from '@/components/cal/TestCal1.vue'
-// import TestCal2 from '@/components/cal/TestCal2.vue'
-// import TestCal3 from '@/components/cal/TestCal3.vue'
-
 export default {
   name: 'Kalendar',
   components: {baseTool
              , BaseTitleExpand
              , PeriodTable
              , EventForm
-             , DayForm
+             , TestCal1
+             , TestCal2
+             , TestCal3
   },
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
@@ -184,7 +187,7 @@ export default {
       calToday: null,
       calValue: '',
       calReady: false,
-      events:[],
+      events:[{ start: "1900-01-01", name: "" }],
       eventHeaders: [{value: 'name', text: 'desc'}
                   ,  {value: 'detail', text:'det'}
                   ,  {value: 'length', text:'len'}
@@ -196,16 +199,15 @@ export default {
       selectedEvent: null,
       selectedElement: null,
       selectedOpen: null,
+      personeelMenemonic: '',
       weekOrDay:'week',
       weekday:[1, 2, 3, 4, 5, 6, 0],
-      weekdayShort:[1,2,3,4,5],
       weekdays: [
         { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
         { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
         { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
         { text: 'Mon, Wed, Fri', value: [1, 3, 5] }],
       showEvent: false,
-      showDay: false,
       toggleView: 1,
   }),
   computed: {
@@ -282,7 +284,7 @@ export default {
         //-------------------------------------------------------------------------
         //We can use this one (big dayofmonth round button click) to switch to dayview
         //Or we can do nothing, except make the currentSelectedDate = date
-         //-------------------------------------------------------------------------
+        //-------------------------------------------------------------------------
         console.log('--------------clicked on a DATE', date,past,future, hasTime )
         this.calValue = date
       },
@@ -298,9 +300,9 @@ export default {
           return
         }
         let clickedDayOfWeek = week.find(e => e.date == date)
-        console.log('Day (WeekNO) - we found weekno:',clickedDayOfWeek.weekday)
+        console.log('-----------------clicked on Day (WeekNO):',clickedDayOfWeek.weekday)
         this.calValue = date
-        this.weekOrDay = 'day'
+        //this.weekOrDay = 'day'
       },
       clickEvent ({ nativeEvent, event }) {
         console.log('----------------clicked on Event:',event.name, event.name.indexOf('day'), event, nativeEvent)
@@ -309,6 +311,22 @@ export default {
         this.selectedElement = nativeEvent.target
         this.showEvent = true
         nativeEvent.stopPropagation()
+        // If the event name start with the word day.. we show them info about the day.
+
+        // if (event.name.toLowerCase().indexOf('day') == 0) { alert('day'); return  }
+
+        // const open = () => {
+        //   this.selectedEvent = event
+        //   this.selectedElement = nativeEvent.target
+        //   setTimeout(() => {this.selectedOpen = true}, 20)
+        // }
+        // if (this.selectedOpen) {
+        //   this.selectedOpen = false
+        //   setTimeout(open, 10)
+        // } else {
+        //   open()
+        // }
+        // nativeEvent.stopPropagation()
       },
       clickDayCategory ({ date,past,future, hasTime }) {
         //-------------------------------------------------------------------------
@@ -320,157 +338,197 @@ export default {
       clickLoad(e) {
         console.log(e,'clickLoad')
       },
-      createBlankEvent(date, hasTime, hour, minute) {
+      createBlankEvent(date, hasTime, hour, minute,past,future) {
         let gooddate = date
         if (hasTime) gooddate = date + ` ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
-        this.selectedEvent = {id:0,start: gooddate, end: gooddate, timeStart:'', timeEnd:'', name:'', type:'', timed:'', color:''}
+        this.selectedEvent = {name:'', detail:'', start: gooddate, end: gooddate, type:''}
+        this.addingAnEvent(gooddate, date,past,future, hasTime, hour, minute)
+      },
+      addingAnEvent(gooddate, date,past,future, hasTime, hour, minute) {
+        console.log('show him an adding event window',gooddate, date,past,future, hasTime, hour, minute)
         this.showEvent = true
+        //alert('add an event!')
+      },
+      weekOrDayChange() {
+          switch (this.weekOrDay) {
+          case 'day': this.weekOrDay = 'week';break
+          case 'week': this.weekOrDay = 'month';break
+          case 'month': this.weekOrDay = 'day';break
+          }
       },
       checkChange() {
         if (this.$refs.calendar)  this.$refs.calendar.checkChange()
       },
       updateRange(whatweget) {
          console.info('Range Check', whatweget)
+
       },
-      async saveEvent(e) {
-        console.log('Saving Event', e ,'to', this.selectedEvent)
-        if (e.id == undefined || e.id == 0 || e.id == '' || !e.id) {
-          //This is an insert, and not an update
-          this.events.push(e)
-          calEvents.insertCalEvent(e, () => { this.showEvent = false})
-          return
-        }
-        let updateEvt = this.events.find(ele => ele.id == e.id)
-        //console.log('After find :' , updateEvt)
-        if (updateEvt != undefined) {
-           //let's play
-           updateEvt = e
-          //  updateEvt.name = e.name
-          //  updateEvt.detail = "we made a change"
-          //  updateEvt.color = "black"
-          //  updateEvt.start = e.start
-          //  updateEvt.end = e.end
-        }
-        calEvents.saveCalEvent(e, () => { this.showEvent = false})
+      async loadPeriods() {
+        let ts = {}
+        ts.task = 'PlainSql'
+        ts.api = zmlConfig.apiDKHS
+        ts.sql = `select  dt.fulldate startdate
+     , dt.dayno
+     , per.description
+     , concat(dt.fulldate, ' ', per.starttime) startEvt
+     , concat(dt.fulldate, ' ', per.endtime) endEvt
+     , per.length
+     , per.periodname type
+     , per.id
+     , per.dow
+     , if (periodname = 'Break', 'green lighten-1', 'green darken-2') color
+FROM dkhs_date dt , dkhs_dayperiod per
+WHERE per.dow = dt.dayOfWeek
+  AND dt.iddate <  DATE(now() + INTERVAL 30 DAY)
+  AND dt.iddate >  DATE(now() - INTERVAL 30 DAY)`
+       await zmlFetch(ts, this.assignPerData,  (err) => {console.log('error on PerFetch',err);alert('We go no periods! Contact W.') } )
       },
-      // ---------------------------SHORT FUNCTIONS--------------------------
-      setToday () {  this.calValue = '' },
-      getCurrentTime () { return this.cal ? this.cal.times.now.hour * 60 + this.cal.times.now.minute : 0},
+      assignPerData(response) {
+        //console.log('Assign Period Data', response)
+        response.forEach(ele => {
+          if (ele.startdate) {
+             const evt= {
+                    name: ele.type
+                  , detail: `Day:${ele.dayno} ${ele.description} - ${ele.type} - ${ele.length}M`
+                  , start: ele.startEvt
+                  , end: ele.endEvt
+                  , color: ele.color
+                  , type: ele.type
+                  , timed: true
+                    }
+             this.events.push(evt)
+          } else {
+            console.error(ele.startdate, 'One of our periods does not have a startdate!',ele);
+          }
+        })
+        const evt= {
+                    name: 'My Googl Event it'
+                  , detail: `Some detaiil to display when we are clicked`
+                  , start: '2023-03-14 14:00'
+                  , end: '2023-03-16 08:00'
+                  , color: 'cyan'
+                  , type: 'Werner'
+                  , timed: true
+                  , eventid: 3
+                    }
+        this.events.push(evt)
+
+      },
+      async loadCalendar() {
+        console.log('LoadCalendar:')
+        let ts = {}
+        ts.task = 'PlainSql'
+        ts.api = zmlConfig.apiDKHS
+        ts.sql = `select * from (
+ select dt.idDate startdate, dt.fulldate enddate, dt.week, dt.dayno dayNo
+     ,  concat('day',dayno) event
+     , if(dayNo != '0',"School",null) type
+     , 'light-blue' color
+ FROM dkhs_date dt
+ union all
+ select dt.idDate,dt.fulldate, dt.week, dt.dayno dayNo
+     , hol.holidayname event
+     , if(length(hol.holidayname) > 1,"Holiday",null) type
+     , 'green'
+ FROM dkhs_date dt
+ LEFT JOIN dkhs_holiday hol on dt.iddate = hol.iddate
+ WHERE dt.idDate <  DATE(now() + INTERVAL 30 DAY)
+  AND dt.idDate >  DATE(now() - INTERVAL 30 DAY)
+ union all
+ select dt.idDate,dt.fulldate, dt.week, dt.dayno dayNo
+     , pers.public_preferredname evt
+     , if( length(pers.surname) > 4,'Birthday','whatever') type
+     , 'indigo'
+ FROM dkhs_date dt
+ LEFT JOIN dkhs_personel pers on concat(substr(dt.fulldate,9,2), '-', substr(dt.fulldate,6,2)) = concat(substr(pers.IDNumber,3,2), '-', substr(pers.IDNumber,5,2))
+where length(pers.IDNumber) > 4
+) ev
+WHERE ev.startdate <  DATE(now() + INTERVAL 60 DAY)
+  AND ev.startdate >  DATE(now() - INTERVAL 60 DAY)
+  AND ev.type is not null
+ORDER BY ev.startdate`
+        await zmlFetch(ts, this.assignCalData,  () => {alert('dfsdfsdfsdf') } )
+      },
+      assignCalData(response) {
+        this.getZml.calendar = response
+        console.log(response)
+        this.getZml.calendar.forEach(ele => {
+          if (ele.startdate) {
+             const evt= {name: ele.event
+                  , start: ele.enddate
+                  , end: ele.enddate
+                  , color: ele.color
+                  , type: ele.type
+                  , timed: false //ele.timed
+                    }
+             this.events.push(evt)
+          } else {
+            console.error(ele.startdate, 'One of our event does not have a startdate!',ele);
+          }
+        })
+      },
+
+      setToday () {
+        this.calValue = ''
+      },
+      getCurrentTime () {
+        return this.cal ? this.cal.times.now.hour * 60 + this.cal.times.now.minute : 0
+      },
       scrollToTime () {
         const time = this.getCurrentTime()
         const first = Math.max(0, time - (time % 30) - 30)
 
         this.cal.scrollToTime(first)
       },
-      updateTime () { setInterval(() => this.cal.updateTimes(), 60 * 1000) },
-      // ---------------------------END OF SHORT FUNCTIONS --------------------------
+      updateTime () {
+        setInterval(() => this.cal.updateTimes(), 60 * 1000)
+      },
       activateCalendar() {
           //if (this.$refs.calendar !== undefined) {
           if (this.calReady == false) {
-            console.error('Calendar is Ready?: ' , this.$refs.calendar)
+            console.info('Calendar is Ready?: ' , this.$refs.calendar)
             if (this.$refs.calendar)  this.$refs.calendar.checkChange()
             this.calReady = true
             if (this.$refs.calendar) this.scrollToTime()
             if (this.$refs.calendar) this.updateTime()
           } else {
-           console.error('Calendar is Ready: ' , this.calReady)
+           console.error('Calendar Ready: ' , this.calReady)
          }
-      },
-      rinseRepeat() {
+
+       },
+       rinseRepeat() {
          this.activateCalendar()
          if (!this.calReady) {
           setTimeout(() => { this.rinseRepeat() }, 2000)
          }
       },
-      sideColor(eventname) {
-        switch (eventname) {
-          case 'Break': return "break"
-          case 'Admin': return "admin"
-        }
-        return ''
-      },
-      gfc(color) {
-        if (!color) return ''
-        return vuetifyColor.getBestColor(color)
-      }
     },
   created () {
+    if (!this.menemonic) {
+      if (this.$route.params.menemonic) {
+          this.incomingMenemonic = this.$route.params.menemonic.toUpperCase()
+      }
+    } else {
+      this.incomingMenemonic = this.menemonic
+    }
     this.today = new Date()
     this.today.setHours(0,0,0,0)
     this.calToday = zDate.format(this.today,'yyyy-MM-dd')
-    this.calValue = this.calToday
-
-    let evt= {
-                id:99999,
-                name: 'My Googl Event it'
-              , detail: `Some detaiil to display when we are clicked`
-              , start: '2023-03-14 14:00'
-              , end: '2023-03-16 08:00'
-              , color: 'cyan'
-              , type: 'Werner'
-              , timed: true
-              , eventid: 3
-                }
-    this.events.push(evt)
-    evt= {
-                id:99999,
-                name: 'My Google Event no time'
-              , detail: `Some detaiil to display when we are clicked`
-              , start: '2023-03-14'
-              , end: '2023-03-16'
-              , color: 'cyan'
-              , type: 'Werner'
-              , timed: false
-              , eventid: 3
-                }
-    this.events.push(evt)
-    calEvents.LoadCalendarData(this.events, 'PeriodsAsEvents', ()=>{
-      console.log('done with two' + this.events.length)
-      this.rinseRepeat()
-    })
-    calEvents.LoadCalendarData(this.events,'DaysHolidaysBirthdays', ()=>{
-      console.log('done with one' + this.events.length)
-    })
-    calEvents.LoadCalendarData(this.events, 'LocalEvents', ()=>{
-      console.log('done with two' + this.events.length);
-    })
-
+    this.loadCalendar();
+    this.loadPeriods();
   },
   mounted () {
     this.$cs.l('MOUNTING KKKKKALENDER-----------------')
-    this.$cs.l('hex',vuetifyColor.hexColor('red ligten-2'))
-    this.$cs.l('hex',vuetifyColor.hexColor('primary'))
-    this.$cs.l('text?', vuetifyColor.textColor( vuetifyColor.hexColor('red darken-2')))
-    this.$cs.l('best?', vuetifyColor.getBestColor('red darken-2'))
-    this.$cs.l('best?', vuetifyColor.getBestColor('blue lighten-2'))
-    this.$cs.l('best?', vuetifyColor.getBestColor('blue accent-4'))
-
   },
   watch: {
   },
 }
-/*
-To check if the period times is correct, run this sql
-SELECT periodname, length(starttime), length(endtime), count(*)
-  FROM `dkhs_dayperiod`
-group by periodname, length(starttime), length(endtime)
-*/
 </script>
-
-<style scoped>
-.break {
-  border-left: 5px solid rgb(243, 247, 38);
-}
-.admin {
-  border-left: 5px solid rgb(192, 214, 235);
-}
-
-</style>
 
 <style lang="scss">
 .v-current-time {
   height: 2px;
-  background-color: #9ff514;
+  background-color: #ea4335;
   position: absolute;
   left: -1px;
   right: 0;

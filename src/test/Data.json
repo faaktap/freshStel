@@ -1,0 +1,27 @@
+{ "historyArray" : [
+  {
+    "id": "contact-1",
+    "isContactItem":true,
+    "component": "TimeLineComponent1",
+    "props": {
+      "contact": {"name": "Pierre le Roux", "phone": "023 2344 113"}
+    }
+  },
+  {
+    "id": "event-1",
+    "isSystemEventItem":true,
+    "component": "TimeLineComponent2",
+    "props": {
+      "event": {"name": "some event", "eventsdf": "Nivce wht of traversing a json file and showinf stuff based on key info"}
+    }
+  },
+  {
+    "id": "contact-2",
+    "isContactItem":true,
+    "component": "TimeLineComponent1",
+    "props": {
+      "contact": {"name": "Werner Smit", "phone": "324 534 3334"}
+    }
+  }
+]
+}

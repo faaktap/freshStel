@@ -1,0 +1,110 @@
+<template>
+<v-card elevation="2" class="ma-2 pa-1 gray--text text--accent-2" color="blue-grey lighten-5" >
+ <zml-toggle-button v-model="toggleView" @close="$emit('close')" @save="checkAndSave" />
+ <v-card-title class="mb-2">
+    DayForm
+ </v-card-title>
+ <v-card-subtitle  v-if="$vuetify.breakpoint.mdAndUp">
+     Quarter {{ day.quarter }} Week {{ day.week }}
+ </v-card-subtitle>
+  <v-form @submit.prevent ref="form" class="ma-2 pa-2">
+   <!-- <v-layout row wrap align-content-start justify-space-between class="ma-2 pa-0"> -->
+   <v-text-field dense
+                 label="Full Date" type="date"
+                 v-model="day.fulldate"
+                 disabled
+   />
+   <v-text-field dense
+                 label="Day Name" type="text"
+                 v-model="day.day_name"
+                 disabled
+   />
+   <v-radio-group v-model="day.holiday_flag" label="Holiday" dense row>
+      <v-radio  label="No"  value="f"  />
+      <v-radio  label="Yes" value="t"  />
+   </v-radio-group>
+   <v-radio-group v-model="day.weekend" label="Weekend" dense row>
+      <v-radio  label="No"  value="0"  />
+      <v-radio  label="Yes" value="1"  />
+   </v-radio-group>
+   <!-- <v-radio-group v-model="day.dayno"
+                        label="Day No"
+                        dense
+                        row>
+      <v-radio v-for="d in [0,1,2,3,4,5,6,7,8,9,10]" :key="d"  :label="String(d)"   :value="String(d)" />
+   </v-radio-group> -->
+   <v-select
+          v-model="day.dayno"
+          :items="['0','1','2','3','4','5','6','7','8','9','10']"
+          label="DayNo"
+          return-object
+   ></v-select>
+  <!-- </v-layout> -->
+ </v-form>
+ {{ day }}
+</v-card>
+</template>
+
+
+<script>
+import { zmlFetch } from '@/api/zmlFetch';
+import zmlToggleButton from '@/components/zmlToggleButton.vue'
+export default {
+  name: 'DayEditor',
+  components: {
+        zmlToggleButton
+            },
+  props:["dayDetails"],
+  data: () => ({
+      day:{
+        idDate:'20230412', fulldate:'2023-04-12', quarter:'', week:'', day_name:'Monday', holiday_flag:0, weekend:1,  dayno: '9'
+      },
+      toggleView: ''
+  }),
+  methods:{
+    checkAndSave() {
+      alert('check and save' + JSON.stringify(this.day) )
+      let ts = {}
+      ts.sql = 'update dkhs_date set dayno = :dayno, holiday_flag = :holiday_flag, weekend = :weekend where idDate = :idDate'
+      ts.task = 'PlainSql'
+      ts.data = {idDate:this.day.idDate}
+      ts.data.bind = {idDate: this.day.idDate, dayno:this.day.dayno}
+      ts.data.bind.weekend = this.day.weekend
+      ts.data.bind.holiday_flag = this.day.holiday_flag
+      zmlFetch(ts, this.updateDone)
+    },
+    updateDone(resp) {
+      alert('saved ok?' + JSON.stringify(resp) )
+      this.$emit('close')
+    },
+    loadNewData() {
+      console.log(this.$options.name, 'loadNewData')
+      if (this.dayDetails == this.day.fulldate) {
+        return
+      }
+      let ts = {}
+      ts.task = 'PlainSql'
+      ts.sql = `select * from dkhs_date where fulldate =  '${this.dayDetails}'`
+      zmlFetch(ts, this.loadDay)
+    },
+    loadDay(resp) {
+      this.day = resp[0]
+      console.log('calday:',resp)
+    }
+  },
+  computed:{},
+  created()  {console.log('created',this.$options.name, this.dayDetails) },
+  activated(){console.log('activated',this.$options.name, this.dayDetails) },
+  mounted()  {
+    console.log('mounted',this.$options.name, this.dayDetails)
+    //On mount the eventDetails watcher does not fire...
+    this.loadNewData()
+  },
+  watch: {
+    dayDetails(n,o) {
+      console.log(this.$options.name, 'details has changed!',n,o, this.dayDetails)
+      this.loadNewData()
+    }
+  }
+}
+</script>

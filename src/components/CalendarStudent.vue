@@ -80,7 +80,6 @@
           :activator="selectedElement"
           offset-x
         >
-        {{ selectedOpen}}
           <v-card
             color="blue-grey lighten-4"
             min-width="350px"
@@ -100,17 +99,18 @@
       </v-sheet>
     </v-col>
   </v-row>
-  <!-- {{ getZml.calendar }}
-  {{ events }} -->
-  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-    <v-row>
-        <v-col cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
+
+  <!-- <v-container fluid v-if="getZml.login.superUser">
+    <v-row dense class="ma-0 pa-0">
+        <v-col  class="ma-0 pa-0" cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
         <v-card color="blue" class="ma-2 pa-1" >
         {{ i }} {{ f.name }} - {{ f.start }} {{ f.end }} {{ f.type }}
+        <hr>
+        {{ f }}
          </v-card>
         </v-col>
    </v-row>
-  </v-container>
+  </v-container> -->
 </div>
 </template>
 
@@ -169,34 +169,29 @@ export default {
 
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = `select  dt.fulldate startdate
-     , dt.dayno
-     , per.description
-     , concat(dt.fulldate, ' ', per.starttime) startEvt
-     , concat(dt.fulldate, ' ', per.endtime) endEvt
-     , per.length
-     , substr(per.periodname,4,1) periodno
-     , if (periodname = 'Break', 'green lighten-1', 'green darken-2') color
-     , l.shortname subject
-     , l.description subjectname
-     , r.menemonic user_name
-     , per.id
-     , per.dow
-FROM dkhs_date dt , dkhs_dayperiod per, dkhs_rooster r, dkhs_student s, dkhs_lsubject l, dkhs_studsub ss
-WHERE s.studentid = '${this.studentidToView}'
-  AND r.gradeclass = concat(s.grade, s.gclass)
-  AND s.studentid = ss.studentid
-  AND per.dow = dt.dayOfWeek
-  AND dt.iddate <  DATE(now() + INTERVAL 30 DAY)
-  AND dt.iddate >  DATE(now() - INTERVAL 30 DAY)
-  AND r.periodno = substr(per.periodname,4,1)
-  AND r.dayno = dt.dayno
-  and s.studentid = ss.studentid
-  and l.beskrywing = ss.subjectname
-  and r.subjectshortname = l.shortname
-  and r.menemonic = ss.menemonic
-  and l.linksubjectid = ss.subjectid
-order by startdate,dt.dayno,  per.periodname, l.shortname`
+        ts.sql = `select  dt.fulldate startdate\
+     , dt.dayno, per.description\
+     , concat(dt.fulldate, ' ', per.starttime) startEvt\
+     , concat(dt.fulldate, ' ', per.endtime) endEvt\
+     , per.length, substr(per.periodname,4,1) periodno\
+     , if (periodname = 'Break', 'green lighten-1', 'green darken-2') color\
+     , l.shortname subject, l.description subjectname, r.menemonic user_name\
+     , per.id , per.dow\
+ FROM dkhs_date dt , dkhs_dayperiod per, dkhs_rooster r, dkhs_student s, dkhs_lsubject l, dkhs_studsub ss\
+ WHERE s.studentid = '${this.studentidToView}'\
+  AND r.gradeclass = concat(s.grade, s.gclass)\
+  AND s.studentid = ss.studentid\
+  AND per.dow = dt.dayOfWeek\
+  AND dt.iddate <  DATE(now() + INTERVAL 30 DAY)\
+  AND dt.iddate >  DATE(now() - INTERVAL 30 DAY)\
+  AND r.periodno = substr(per.periodname,4,1)\
+  AND r.dayno = dt.dayno\
+  and s.studentid = ss.studentid\
+  and l.beskrywing = ss.subjectname\
+  and r.subjectshortname = l.shortname\
+  and r.menemonic = ss.menemonic\
+  and l.linksubjectid = ss.subjectid\
+ order by startdate,dt.dayno,  per.periodname, l.shortname`
 
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
