@@ -1,13 +1,23 @@
 <template>
+<v-container fluid>
+ <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall109.jpg"
+              title="De Kuilen eBulletins"
+              text=""
+              breakup1="100"
+              breakup2="20"
+               />
+
  <v-card class="mx-auto" elevation="2">
        <base-tool toolbarName="Newsletters"
-       icon="mdi-newspaper-plus"
+       icon="mdi-email-newsletter"
        :toolList="[]"
        :loading="loading"
        :background="false"
        :back="true"
      >
     <base-search class="text-uppercase"
+                 :outlined=false
                  v-model="searchString"
                  @clear="searchString=''" />
      </base-tool>
@@ -104,6 +114,7 @@
     <v-btn small color="primary" to="/" class="ma-2"><v-icon class="mr-2">mdi-home</v-icon> Home </v-btn>
    </v-card-actions>
  </v-card>
+</v-container>
 </template>
 
 <script>
@@ -111,10 +122,11 @@ import { zmlFetch } from "@/api/zmlFetch";
 import { getters } from "@/api/store";
 import baseTool from '@/components/base/baseTool.vue'
 import baseSearch from '@/components/base/baseSearch.vue'
+import HeroSection from "@/views/sections/HeroSection.vue"
 export default {
     name:"EmailBulletins",
     props: ['emailSearch'],
-    components:{baseTool, baseSearch},
+    components:{baseTool, baseSearch, HeroSection},
     head: {
        meta: [
          { name: 'description', content: 'Werner EMAIL BULLETINS' },
@@ -173,7 +185,12 @@ export default {
         this.getHtml(e.deliveryid)
         this.attachments = e.attachments
         this.email = e
-        this.showList = true
+
+        if (e.attachments.length == 1) {
+          this.doit(e.attachments[0])
+        } else {
+          this.showList = true
+        }
       },
       getEmails() {
         let sl = { task: 'plainSql', sql:''}

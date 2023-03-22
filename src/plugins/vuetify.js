@@ -22,6 +22,7 @@ export default new Vuetify({
           info: "#2196F3",
           success: "#4CAF50",
           warning: "#FFC107",
+          smalltoolbargray: "#F1F3F4",
           lightblue: "#14c6FF",
           yellow: "#FFCF00",
           pink: "#FF1976",
@@ -36,7 +37,11 @@ export default new Vuetify({
           lightgray: "#BDBDBD",
           lightpink: "#FFCFE3",
           white: "#FFFFFF",
-          gold: "#b99c31"
+          whitesmoke: "#f5f5f5",
+          linen: "#faf0e6",
+          gold: "#b99c31",
+          browsergold: "#ffd700",
+          Cornsilk: "#fff8dc",
         }
       }
     }

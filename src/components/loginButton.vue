@@ -61,7 +61,7 @@
               Profile
            </v-btn>
            <v-spacer />
-           <v-btn to="/logout"
+           <v-btn to="/login"
                  small rounded
                  class="blue--text font-weight-black"> Logout </v-btn>
 

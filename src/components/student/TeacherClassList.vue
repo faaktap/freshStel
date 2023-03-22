@@ -73,7 +73,7 @@
 
     <v-dialog v-model="showForm"  :fullscreen="$vuetify.breakpoint.mobile" width="50%">
       <v-card  class="ma-2 pa-2">
-        <v-card-title> {{ formTitle }} </v-card-title>
+        <v-card-title> Teacher Class List {{ formTitle }} </v-card-title>
         <v-card-text column align-content-start justify-space-around>
           <v-text-field v-model="rec.listname" label="List Name" outlined dense />
           <v-text-field v-model="rec.teacher" label="Teacher" outlined dense disabled/>
@@ -179,7 +179,7 @@ export default {
     },
     addStudentsToList(id) {
       if (!this.rec.listname || this.rec.listname == this.defaultListname) {
-        infoSnackbar('please fill in a new name, and make sure all other information is filled in, we wil')
+        infoSnackbar('please fill in a new name, and make sure all other information is filled in, we wil...')
         this.basedOnOtherList = false
         return
       }

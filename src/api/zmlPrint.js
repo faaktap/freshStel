@@ -15,7 +15,7 @@ function zmlHeader() {
 
  // eslint-disable-next-line
 function zmlStyle(name) {
-    console.log('apply style ', name)
+    zmlConfig.cl('apply style ', name)
     switch (name) {
     case 'footie' :
       return `footer {font-size: 9px;color: #f00;text-align: center;}\
@@ -80,10 +80,10 @@ export function printHeader(title) {
 
 export function printJSON(table, header, title) {
     let properties = cleanUp(header)
-    console.log(table)
-    console.log(header)
-    console.log(properties)
-    console.log(title)
+    zmlConfig.cl(table)
+    zmlConfig.cl(header)
+    zmlConfig.cl(properties)
+    zmlConfig.cl(title)
     printJS({
         printable: table,
         type: "json",
@@ -165,8 +165,8 @@ export function printPage( htmlRef, small ) {
        type: "html",
        style: style,
        scanStyles: false,
-       onPrintDialogClose: () => console.log("The print dialog was closed"),
-       onError: e => console.log(e)
+       onPrintDialogClose: () => zmlConfig.cl("The print dialog was closed"),
+       onError: e => zmlConfig.cl(e)
       });
     //   header: 'zmlHeader()',
     //   headerStyle: `align: center;font:Garamond`,

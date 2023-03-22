@@ -36,26 +36,27 @@
             <div
               class="justify-center pa-0 grey--text"
               divider=">"
-            ><!--  {{ herotext }} -->
-
+            >
             </div>
           </v-col>
         </v-row>
       </v-img>
-      <v-row
+      <v-card
           align="center"
           v-if="herotext"
-          class="ma-8 fill-height text-justify white--text">
+          class="ma-8 fill-height text-justify green--text">
           <v-col cols=12>
             <h2> {{ herotext }}</h2>
-
-            <p v-html="moretext"> </p>
-            <v-btn v-if="herobutton" :to="func" :title="herotext">
+{{ text}} || {{ herotext }} ||  {{ moreText}} // {{ herobutton }}
+            <p> {{ moreText}} </p>
+            <v-btn v-if="herobutton"
+                  :to="func"
+                  :title="herotext">
               <v-icon> {{icon}}</v-icon>
               {{ herobutton }}
             </v-btn>
           </v-col>
-      </v-row>
+      </v-card>
     </v-sheet>
    </section>
 </template>
@@ -74,7 +75,7 @@
            , bgpicture: String
            , title: {type: String, default: "A Title"}
            , text: String
-           , moretext:String
+           , moreText:String
            , button:String
            , icon:String
            , func:String

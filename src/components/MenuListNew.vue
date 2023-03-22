@@ -1,15 +1,16 @@
 <template>
 <v-container fluid class="play">
-<v-layout v-if="functionList.length"
+<v-layout v-if="functionList"
           row wrap justify-space-between
-          class="ma-1 pa-1">
-
-        <base-search  id="thesearch"
-                      style="flex-grow: 8"
-                      v-show="functionSearch"
-                      class="ma-2 text-uppercase"
-                      v-model="search"
-                      @clear="search=''" />
+          class="ma-1 pa-1"
+>
+    <base-search  id="thesearch"
+                  style="flex-grow: 8"
+                  v-show="functionSearch"
+                  class="ma-2 text-uppercase"
+                  v-model="search"
+                  @clear="search=''"
+    />
 
     <v-card outlined
             :class="small ? 'ma-1 pa-0' : 'ma-2 pa-2'"
@@ -72,7 +73,7 @@ export default {
   }),
   computed:{
     searchList() {
-        if (this.search.length == 0) return this.functionList
+        if (!this.search) return this.functionList
         return this.filterByValue(this.functionList, this.search)
         //return this.filterByValue(this.getZml.functions, this.search)
     },
@@ -146,6 +147,9 @@ export default {
    watch:{
        baseSearch() {
         document.getElementById("theSearch").focus()
+       },
+       functionSearch() {
+        if (this.functionSearch == false) this.search = ''
        }
    }
 };

@@ -1,12 +1,13 @@
-import Vue from 'vue'
+//import Vue from 'vue'
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch';
 import { ls } from "@/api/localStorage.js"
 import { zLoadCal } from "@/api/loadCalendar.js"
+import { errorSnackbar, infoSnackbar } from "@/api/GlobalActions"
 
-function l(...args) {
-    Vue.prototype.$cs.l(...args)
+function l() { //(...args) {
+    //console.log('zGB',...args)
 }
 
 export const zData = {
@@ -14,6 +15,7 @@ export const zData = {
     loadingCache : false,
     loadingReal : false,
     closeDate : null,
+    snack: (msg) => infoSnackbar(msg),
     loadSql(loading, sqlStatement, assignDataProc, api = zmlConfig.apiDKHS){
         loading = true
         let ts = {}
@@ -31,6 +33,7 @@ export const zData = {
         zmlFetch(ts, finishedLoadingQuery, errorLoading)
     },
     sendEmail(emailInfo) {
+        infoSnackbar('sending email')
         let email = emailInfo
         email.method = "advemail"
         if (!email.subject) email.subject  = "A Subject"
@@ -49,9 +52,10 @@ export const zData = {
                         }
         fetch(zmlConfig.emailPath, apiConfig);
     },
-    wernerTest(r) {console.log('no func passed',r)},
+    wernerTest(r) {l('no func passed',r)},
     checkIfAllLoaded() {
-        console.log('checkIfAllLoaded:', getters.getState({ object: "gZml" }).subjects.length
+        infoSnackbar('Check System Properties 1')
+        l('checkIfAllLoaded:', getters.getState({ object: "gZml" }).subjects.length
         , getters.getState({ object: "gZml" }).persMenemonic.length            , getters.getState({ object: "gZml" }).functions.length
         , getters.getState({ object: "gZml" }).place.length            , getters.getState({ object: "gZml" }).meritLevel.length
         , getters.getState({ object: "gZml" }).classList.length            , getters.getState({ object: "gZml" }).tickList.length)
@@ -69,19 +73,20 @@ export const zData = {
          }
     },
     quickLoadInitialData: (whatever, afterwardsFunction) => {
+        infoSnackbar('Check System Properties 2')
         if (zData.checkIfAllLoaded() == true) {
-            console.log('InitialData-Quickload-------------------------------------------NotNeeded',zData.loadingCache, whatever)
+            l('InitialData-Quickload-------------------------------------------NotNeeded',zData.loadingCache, whatever)
             if (afterwardsFunction) afterwardsFunction()
             return
         }
         if (zData.loadingCache == true) {
             if (afterwardsFunction) afterwardsFunction()
-            console.log('InitialData-Quickload-------------------------------------------Other One Busy')
+            l('InitialData-Quickload-------------------------------------------Other One Busy')
             return
         }
         zData.loadingCache = true
         console.time('quickload')
-        console.log('InitialData-Quickload----------------------------------------------------Start',zData.loadingCache, whatever)
+        l('InitialData-Quickload----------------------------------------------------Start',zData.loadingCache, whatever)
         getters.getState({ object: "gZml" }).subjects = ls.load('zmlSubjects')
         getters.getState({ object: "gZml" }).persMenemonic = ls.load('zmlPersM')
         getters.getState({ object: "gZml" }).functions = ls.load('zmlFuncs')
@@ -90,7 +95,7 @@ export const zData = {
         getters.getState({ object: "gZml" }).classList = ls.load('zmlClassList')
         getters.getState({ object: "gZml" }).tickList = ls.load('zmlTickList')
         zData.loadingCache = false
-        console.log('InitialData-Quickload------------------------------------------------End',zData.loadingCache, whatever)
+        l('InitialData-Quickload------------------------------------------------End',zData.loadingCache, whatever)
         console.timeEnd('quickload')
 
         if (getters.getState({ object: "gZml" }).functions.length < 2
@@ -106,8 +111,9 @@ export const zData = {
             if (afterwardsFunction) afterwardsFunction()
             return
         }
+        infoSnackbar('Refreshing System Properties')
         zData.loadingReal = true
-        console.log('InitialData-------------------------------------------------------------------Start',zData.loadingReal, whatever)
+        l('InitialData-------------------------------------------------------------------Start',zData.loadingReal, whatever)
         if (whatever !== undefined) l(whatever)
 
         if (!getters.getState({ object: "gZml" }).subjects.length) {
@@ -128,11 +134,13 @@ export const zData = {
     },
     calendarData: (whatever) => {
         l('Calling OUR TESTER')
+        infoSnackbar('Refreshing Calendar 1')
         //zLoadCal.calendarData('Load From zData')
         zLoadCal.calendarData(whatever || 'loading base')
         l('DONE Calling OUR TESTER')
     },
     baseCalendarData: (whatever) => {
+        infoSnackbar('Refreshing Calendar 2')
         l('Calling OUR TESTER')
         //zLoadCal.calendarData('Load From zData')
         zLoadCal.getBaseCalendar(whatever || 'loading base')
@@ -141,7 +149,7 @@ export const zData = {
     randomChuckNorris: async () => {
         let response = await fetch('https://api.chucknorris.io/jokes/random')
         let data = await response.json()
-        console.log('chuck data', data.value)
+        l('chuck data', data.value)
         return data
     }
 
@@ -150,7 +158,7 @@ export const zData = {
 //----------------------------------------------------------------
 function finishedLoadingBasic (response) {
     zData.loadingReal = false
-    console.log('InitialData-------------------------------------------------------------------End',zData.loadingReal)
+    l('InitialData-------------------------------------------------------------------End',zData.loadingReal)
     console.timeEnd('bigload')
     //getZml = getters.getState({ object: "gZml" })
     l('finishedLoadingBasic', response)
@@ -168,7 +176,7 @@ function finishedLoadingBasic (response) {
     getters.getState({ object: "gZml" }).functions.length = 0
     getters.getState({ object: "gZml" }).functions = f2.concat(f1);
     ls.save('zmlFuncs', getters.getState({ object: "gZml" }).functions)
-    console.log('functions saved on inital load:::', getters.getState({ object: "gZml" }).functions)
+    l('functions saved on inital load:::', getters.getState({ object: "gZml" }).functions)
 
     getters.getState({ object: "gZml" }).subjects = response.subjects;
     ls.save('zmlSubjects', response.subjects)
@@ -199,7 +207,7 @@ function finishedLoadingBasic (response) {
     }
 
     zData.wernerTest()
-    console.log('InitialData-----------------------------------------------------------DONE LOADING BACKGROUND DATA')
+    l('InitialData-----------------------------------------------------------DONE LOADING BACKGROUND DATA')
 
 }
 
@@ -208,6 +216,7 @@ function finishedLoadingBasic (response) {
 function errorLoading (response) {
     zData.loadingReal = false
     //alert('We had an error loading your data!')
+    errorSnackbar('We had an error loading your data! - Possible Internet Disruption')
     l('We had an ERROR loading your data!',response)
 }
 

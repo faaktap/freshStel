@@ -122,12 +122,10 @@ import { mer } from "@/components/merit/merit.js"
 // import { infoSnackbar } from "@/api/GlobalActions"
 import { printJSON } from "@/api/zmlPrint.js"
 //import zmlCloseButton from '@/components/zmlCloseButton.vue'
-import VBack from '@/components/base/VBack.vue'
 export default {
     name: 'PersonelMeritList',
     props: [],
     components:{
-       VBack
     },
     data () {
       return {

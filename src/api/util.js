@@ -1,3 +1,10 @@
+
+export function  leftPad(num, size)  {   //leftpad, lpad, add zeroes to back of number
+    let s = num + ""
+    while (s.length < size) s = "0" + s
+    return s
+}
+
 export const util = {
 
     cl: function (...args) {

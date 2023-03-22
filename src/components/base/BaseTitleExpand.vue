@@ -14,9 +14,9 @@ or
 -->
 <template>
 <v-container fluid>
- <v-expansion-panels rounded class="pa-0 mx-0 mb-2"  v-model="panel">
+ <v-expansion-panels rounded class="pa-0 mx-0 mb-2"  v-model="panel" >
    <v-expansion-panel value="0">
-    <v-expansion-panel-header  :color="color">
+    <v-expansion-panel-header  :color="color" :class="tclass">
         <slot name="header">
          <h2 :class="`${headingSize} text-center`">{{ heading }}</h2>
          </slot>
@@ -41,6 +41,7 @@ export default {
           ,color: {default:"white"}
           ,openOrClose: {default:""}
           ,headsize: {default:2}
+          ,tclass: {default:''}
     },
     data () {
       return {
@@ -48,7 +49,7 @@ export default {
       }
     },
     computed:{
-        headingSize() { return "text-xd-h" + this.headsize + " subtitle-md-1" }
+        headingSize() { return "text-xs-h" + this.headsize + " subtitle-md-1" }
     },
     methods:{},
     mounted() {

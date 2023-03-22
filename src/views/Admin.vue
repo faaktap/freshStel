@@ -9,7 +9,7 @@
               color="green darken-1"
                />
 <!-- ADMIN  -->
-<div v-if="getZml.login.superUser">SuperUser! - Kyk Onder</div>
+<div v-if="getZml.login.superUser">Jy is 'n SuperUser! - Kyk Onder</div>
 <v-toolbar color="primary" row  wrap :loading="loading">
       {{ getZml.login.fullname}} / {{ getZml.login.username}}
       <v-spacer />
@@ -46,7 +46,6 @@
                to="/home"
       >Home</base-tool-button>
   </v-toolbar>
-
 <!-- <test-composition-api /> -->
 
 <v-row>
@@ -165,7 +164,7 @@ export default {
       this.loadFunctions()
     },
     mounted() {
-      console.log('Mounted', this.$options.name)
+      this.$cs.l('Mounted', this.$options.name)
 
     }
 }

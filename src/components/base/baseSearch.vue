@@ -1,8 +1,8 @@
 <template>
    <v-text-field class="pt-2 xmt-2"
                  single-line hide-details
-                 clearable
-                 outlined
+                :clearable="clearable"
+                :outlined="outlined"
                  placeholder="search"
                 :value="value"
                 @input="updateValue"
@@ -16,7 +16,9 @@ export default {
       value: {
         type: String,
         default: ''
-      }
+      },
+      outlined:{type:Boolean, default:true},
+      clearable:{type:Boolean, default:true},
     },
   methods: {
       updateValue: function (event) {

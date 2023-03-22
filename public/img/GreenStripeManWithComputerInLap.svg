@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2020 (64-Bit) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="200px" height="283px" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 200 283"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect id="GreenRectangle" fill="#00A859" stroke="#373435" stroke-width="0" stroke-miterlimit="22.9256" x="63" y="8" width="72" height="263"/>
+  <path id="RightArm" fill="white" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-miterlimit="22.9256" d="M141 137l19 -1c0,0 4,49 0,54 -4,5 -21,11 -21,11l0 -17 4 -1 -2 -46 0 0z"/>
+  <path id="LeftArm" fill="white" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-miterlimit="22.9256" d="M65 141l-17 -1c0,0 -6,49 -2,54 4,5 21,7 21,7l0 -12 -4 -1 2 -46 0 0z"/>
+  <path id="Shirt" fill="#0080BF" stroke="#101010" stroke-width="1" stroke-linejoin="round" stroke-miterlimit="22.9256" d="M64 149l-19 -5c0,0 0,-1 0,-1 0,-1 -1,-1 -1,-1 -1,0 -1,1 -1,1 0,0 0,1 0,1l4 -18c2,-9 9,-16 17,-18l39 -10 1 0 39 10c9,2 15,10 17,19l3 18c0,1 0,1 -1,1l-20 6 2 42c0,0 0,1 -1,1 -1,1 -27,16 -40,16l-1 0c-13,-1 -38,-11 -39,-11 0,0 1,-1 1,-1 0,-1 -1,-1 -1,-1 -1,0 -1,1 -1,1 0,0 0,1 1,1l0 -48 1 -2 0 0z"/>
+  <ellipse id="Logo" fill="black" stroke="black" stroke-width="0" stroke-linejoin="round" stroke-miterlimit="22.9256" transform="matrix(0.50547 0.07446 -0.08451 0.57374 102.435 143.026)" rx="31" ry="27"/>
+  <g id="Plane">
+   <path fill="white" fill-rule="nonzero" d="M120 143l2 -2 -2 -4 -6 5 -1 -3 5 -6 -1 -4c0,0 1,-1 2,-1l0 0c0,0 0,0 1,0 0,0 1,1 1,1l1 4 8 1 1 3 -7 1 2 4 3 0 1 2 -3 0 -1 0 0 0 -3 2 -1 -2 0 -2 0 0z"/>
+  </g>
+  <path id="Head" fill="white" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-miterlimit="22.9256" d="M121 93c0,2 -3,12 -19,12 -8,0 -17,-11 -17,-12l-1 -10 0 0c-3,0 -5,-2 -5,-5l0 -3c0,-2 2,-4 4,-5 1,-12 10,-26 20,-26 11,0 19,14 20,26l1 0c1,0 2,1 2,2l0 6c0,3 -2,5 -4,5l-1 9 0 0 0 0z"/>
+  <g id="Laptop">
+   <path fill="#C9C9C9" stroke="black" stroke-width="1" stroke-linejoin="round" stroke-miterlimit="22.9256" d="M141 215l-76 0c-2,0 -4,-2 -4,-4l-6 -43 86 0 -6 43c-2,1 -3,3 -3,4 0,3 2,5 5,5 2,0 4,-2 4,-5 0,-2 -1,-4 -3,-4l3 4 0 0z"/>
+  </g>
+  <g id="Kasteel">
+   <polygon fill="#E72F03" points="94,151 110,151 110,152 94,152 "/>
+   <polygon fill="#E72F03" points="94,148 95,148 95,152 94,152 "/>
+   <polygon fill="#0F5447" points="97,141 107,141 107,142 97,142 "/>
+   <polygon fill="#0F5447" points="97,139 107,139 107,140 97,140 "/>
+   <polygon fill="#E72F03" points="96,148 97,148 97,152 96,152 "/>
+   <polygon fill="#E72F03" points="101,148 102,148 102,152 101,152 "/>
+   <polygon fill="#E72F03" points="110,151 94,151 94,152 110,152 "/>
+   <polygon fill="#E72F03" points="110,148 109,148 109,152 110,152 "/>
+   <polygon fill="#E72F03" points="107,148 106,148 106,152 107,152 "/>
+   <polygon fill="#E72F03" points="99,148 100,148 100,152 99,152 "/>
+   <polygon fill="#E72F03" points="105,148 104,148 104,152 105,152 "/>
+   <polygon fill="#E72F03" points="96,138 97,138 97,148 96,148 "/>
+   <polygon fill="#E72F03" points="107,138 106,138 106,148 107,148 "/>
+   <path fill="#E72F03" d="M110 134l-5 0 0 1 5 0 0 -1zm-6 0l-4 0 0 1 4 0 0 -1z"/>
+   <polygon fill="#E72F03" points="107,138 96,138 96,139 107,139 "/>
+   <polygon fill="#E72F03" points="100,134 101,134 101,138 100,138 "/>
+   <polygon fill="#E72F03" points="103,134 104,134 104,138 103,138 "/>
+   <polygon fill="#E72F03" points="105,134 106,134 106,138 105,138 "/>
+   <polygon fill="#E72F03" points="109,134 110,134 110,136 109,136 "/>
+   <path fill="#E72F03" fill-rule="nonzero" d="M109 136c0,0 0,1 -2,2l0 1c2,0 3,-2 3,-3l-1 0z"/>
+   <path fill="#0F5447" d="M100 145l1 0 2 0 1 0 0 1 0 2 6 0 0 1 -16 0 0 -1 6 0 0 -2 0 -1 0 0zm3 3l0 -2 -2 0 0 2 2 0z"/>
+   <path fill="#E72F03" d="M94 134l5 0 0 1 -5 0 0 -1zm6 0l4 0 0 1 -4 0 0 -1z"/>
+   <polygon fill="#E72F03" points="99,134 98,134 98,138 99,138 "/>
+   <polygon fill="#E72F03" points="95,134 94,134 94,136 95,136 "/>
+   <path fill="#E72F03" fill-rule="nonzero" d="M95 136c0,0 0,1 2,2l0 1c-2,0 -3,-2 -3,-3l1 0z"/>
+  </g>
+ </g>
+</svg>

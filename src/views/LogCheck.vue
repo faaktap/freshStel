@@ -104,10 +104,10 @@ export default {
    },
    methods: {
      tableDblClick(evt,item) {
-         console.log('Table Double Click: ', item.item)
+         this.$cs.l('Table Double Click: ', item.item)
      },
      tableSelect(evt,item) {
-         console.log('Table select:',item.item, evt)
+         this.$cs.l('Table select:',item.item, evt)
      },
      buildSelect () {
         if (this.searchText || this.logDate) {
@@ -142,7 +142,7 @@ export default {
            from dkhs_log\
         ${this.getData.where}\
         ORDER BY log_id DESC`
-        console.log(' sql = ', this.getData.sql)
+        this.$cs.l(' sql = ', this.getData.sql)
         this.loadLogs()
      },
      loadLogs() {
@@ -161,10 +161,10 @@ export default {
        let output = this.logList.map( (s) => (s.user) );
        //Use it to create ditinct users
        let distinctUsers = [...new Set(output)]
-       console.log('Distinct Users',distinctUsers)
+       this.$cs.l('Distinct Users',distinctUsers)
      },
      filterColumns(resp,colArray) {
-       console.log(colArray)
+       this.$cs.l(colArray)
        resp.forEach(e => {
          // if details was saved as json, unstringify it..
          if (e.details[0] == '"'  && e.details.length > 80  ) {
@@ -187,8 +187,8 @@ export default {
      }
    },
    mounted() {
-     console.log('mount ' , this.$options.name)
-     console.log('params = ', this.search, this.searchText)
+     this.$cs.l('mount ' , this.$options.name)
+     this.$cs.l('params = ', this.search, this.searchText)
      this.buildSelect()
    }
 }

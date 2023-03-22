@@ -32,7 +32,7 @@ export const zmlConfig = {
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
   cl: function (...args) {
-     console.info(...args);
+     //console.info(...args);
   },
   randomColor: function() {return Math.floor(Math.random()*16777215).toString(16)},
   copyToClipboard : function(text) {navigator.clipboard.writeText(text)},

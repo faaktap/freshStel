@@ -50,21 +50,16 @@
 </div>
 </template>
 
-<docs>
-Here is some documentation
-</docs>
 <script>
 import { getters } from "@/api/store"
 //import { zData } from "@/api/zGetBackgroundData.js"
 //import { infoSnackbar } from "@/api/GlobalActions"
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
-import VBack from '@/components/base/VBack.vue'
 
 export default {
     name: 'MeritTable',
     components:{
        BaseToolButton
-      ,VBack
     },
     data () {
       return {

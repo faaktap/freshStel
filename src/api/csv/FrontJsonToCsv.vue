@@ -97,9 +97,9 @@ export default {
   },
   methods: {
     build() {
-      console.log(this.$options.name,' clicked for build')
+      this.$cs.l(this.$options.name,' clicked for build')
        this.finalJsonData = []
-       console.log(this.$options.name,'BUILD 1')
+       this.$cs.l(this.$options.name,'BUILD 1')
        this.jsonData.forEach(data => {
            let obj = {}
            this.labels.forEach(lab => {
@@ -110,7 +110,7 @@ export default {
            this.finalJsonData.push(obj)
        })
        let test = {}
-       console.log(this.$options.name,'BUILD 2')
+       this.$cs.l(this.$options.name,'BUILD 2')
        this.labels.forEach(lab => {
                if (lab.clicked == true) {
                  test[lab.desc] = {title: lab.desc.toUpperCase() }
@@ -118,17 +118,17 @@ export default {
                  test[lab.desc] = ''
                }*/
        })
-       console.log(this.$options.name,'BUILD 3')
+       this.$cs.l(this.$options.name,'BUILD 3')
        this.finalHeading = test; //{...[test]}
-       console.log(this.$options.name,'saving if : ' , this.unique)
+       this.$cs.l(this.$options.name,'saving if : ' , this.unique)
        if (this.unique) {
-          console.log('this.uniqe is true')
+          this.$cs.l('this.uniqe is true')
            // ls.save(this.unique, this.labels)
        }
-       console.log(this.$options.name,'BUILD 4')
+       this.$cs.l(this.$options.name,'BUILD 4')
     },
     buildLabels() {
-     console.log('building new labels')
+     this.$cs.l(this.$options.name,'building new labels')
      this.labels = []
      this.finalHeading = {}
      this.finalJsonData = []
@@ -147,13 +147,13 @@ export default {
     },
   },
   mounted() {
-    console.log('mount', this.$options.name, this.csvTitle,this.small, this.unique)
-    console.log('check if statement : ', this.unique , ls.test('zml'+this.unique))
+    this.$cs.l(this.$options.name,'mount', this.csvTitle,this.small, this.unique)
+    this.$cs.l(this.$options.name,'check if statement : ', this.unique , ls.test('zml'+this.unique))
     // if (this.unique && ls.test('zml'+this.unique)) {
-    //   console.log('loading unique : ', 'zml' + this.unique,ls.load(this.unique))
+    //   this.$cs.l('loading unique : ', 'zml' + this.unique,ls.load(this.unique))
     //   this.labels = ls.load(this.unique)
     // } else {
-    //   console.log('Ask for buildlabels .. unique = ', this.unique)
+    //   this.$cs.l('Ask for buildlabels .. unique = ', this.unique)
        this.buildLabels()
     // }
     this.userHeader = this.csvTitle
@@ -161,7 +161,7 @@ export default {
   },
   watch:{
       // unique: function() {
-      //   console.log(this.$options.name,'loading if : ' , this.unique)
+      //   this.$cs.l(this.$options.name,'loading if : ' , this.unique)
       //   if (this.unique && ls.test(this.unique)) this.labels = ls.load(this.unique)
       // },
       jsonData: function() {
@@ -170,9 +170,9 @@ export default {
       labels: {
         deep: true,
         handler(n,o) {
-          console.log('labels handler: new',n,'old',o)
+          this.$cs.l('labels handler: new',n,'old',o)
           this.build()
-          console.log('build watch done')
+          this.$cs.l('build watch done')
         }
       }
   },

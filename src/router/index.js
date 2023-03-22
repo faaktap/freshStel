@@ -81,7 +81,7 @@ const routes = [
     name: 'CalStudent',
     props:true,
     params: {studentid: '20113'},
-    component: () => import(/* webpackChunkName: "home" */ '@/components/CalendarStudent'),
+    component: () => import(/* webpackChunkName: "kal" */ '@/components/CalendarStudent'),
     meta: {layout: la[3], authentication: "student" }
   },
   {
@@ -89,7 +89,7 @@ const routes = [
     name: 'CalendarTeacher',
     props:true,
     params: {menemonic: 'SDVM'},
-    component: () => import(/* webpackChunkName: "home" */ '@/components/Calendar'),
+    component: () => import(/* webpackChunkName: "kal" */ '@/components/Calendar'),
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
@@ -114,13 +114,13 @@ const routes = [
   {
     path: '/kalender',
     name: 'Kalender',
-    component: () => import(/* webpackChunkName: "about" */ '@/components/Kalender.vue'),
+    component: () => import(/* webpackChunkName: "kal" */ '@/components/cal/Kalender.vue'),
     meta: {layout: la[0], authentication: "teacher" }
   },
   {
     path: '/periodtable',
     name: 'PeriodTable',
-    component: () => import(/* webpackChunkName: "about" */ '@/components/cal/PeriodTable.vue'),
+    component: () => import(/* webpackChunkName: "kal" */ '@/components/cal/PeriodTable.vue'),
     meta: {layout: la[0], authentication: "teacher" }
   },
   {
@@ -128,14 +128,14 @@ const routes = [
     name: 'Rooster',
     props:true,
     params: {user_name: 'TVRB'},
-    component: () => import(/* webpackChunkName: "about" */ '@/components/learn/rooster.vue'),
+    component: () => import(/* webpackChunkName: "kal" */ '@/components/learn/rooster.vue'),
     meta: {layout: la[0], authentication: "teacher" }
   },
   {
-    path: '/testview',
-    name: 'TestView',
-    component: () => import(/* webpackChunkName: "test" */ '@/views/testview.vue'),
-    meta: {layout: la[0], authentication: "teacher" }
+    path: '/systemview',
+    name: 'SystemView',
+    component: () => import(/* webpackChunkName: "test" */ '@/views/SystemView.vue'),
+    meta: {layout: la[0], authentication: "admin" }
   },
   {
     component: () => import(/* webpackChunkName: "test" */ '@/components/FundRaiser.vue')
@@ -252,6 +252,12 @@ const routes = [
     ,name: 'Werner'
     ,path: '/werner'
     ,meta: {layout: la[3], authentication: "admin"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "work" */ '@/views/test/WernerTest.vue')
+    ,name: 'WernerTest'
+    ,path: '/wernertest'
+    ,meta: {layout: la[3], authentication: "werner"}
   },
 
   {
@@ -473,7 +479,7 @@ const routes = [
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
-    component: () => import(/* webpackChunkName: "test" */ '@/views/BaseCalenViewEdit.vue'),
+    component: () => import(/* webpackChunkName: "cal" */ '@/views/BaseCalenViewEdit.vue'),
     path: '/basecalendaredit',
     name: 'BaseCalenViewEdit',
     meta: {layout: la[3], authentication: "admin" }
@@ -507,8 +513,7 @@ const router = new VueRouter({
   // },
   // eslint-disable-next-line
   scrollBehavior(to, from, savedPosition) {
-
-    console.log('ScrollBehavior(',to, from, savedPosition,')' )
+    console.log('ind:ScrollBehavior(',to, from, savedPosition,')' )
     // eslint-disable-next-line
     return new Promise((resolve, reject) => {
       setTimeout(() => {

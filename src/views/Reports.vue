@@ -32,7 +32,7 @@
    <v-back/>
  </v-toolbar>
 
- <v-card v-if="reports && reports.length">
+ <v-card v-if="!loading && (reports && reports.length)">
     <v-tabs-items v-model="tab">
       <v-tab-item  v-for="rep in reports" :key="rep.id" :href="rep.id">
         <v-card flat>
@@ -68,7 +68,7 @@
      :sqlSelect="sqlSelect"
   />
   <br>
-  <v-btn x-small v-if="getZml.login.superUser" @click="showDebug=!showDebug"> SU </v-btn> 
+  <v-btn x-small v-if="getZml.login.superUser" @click="showDebug=!showDebug"> SU </v-btn>
   <div v-if="getZml.login.superUser && showDebug" >
     Reports : {{ reports}}
   </div>
@@ -104,6 +104,8 @@ export default {
   methods: {
     tabSelected(tabNo) {
       if (tabNo == undefined) return
+      if (this.loading) return
+      if (!this.reports || !this.reports.length) return
       //if (this.reports.length < 2) this.loadInitialData()
       this.tab = tabNo
       this.sqlSelect = ''
@@ -148,6 +150,7 @@ export default {
       zmlFetch(ts, this.doneAdd )
     },
     getCount() {
+      if (this.loading) return
       console.log('calling updat4count  ===  fetch, from getCount')
       if (this.curReport.count == null) {
         this.loading = true
@@ -202,9 +205,7 @@ export default {
      this.loadInitialData()
   },
   mounted() {
-    if (this.getZml.place.length == 0 || this.getZml.owner.length == 0) {
-      //They have been nowhere else = but should not be a problem
-    }
+    console.log('mount', this.$options.name)
 
   },
   watch:{

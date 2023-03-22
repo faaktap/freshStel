@@ -202,11 +202,11 @@ export default {
         this.attendanceList = aList
         this.classListHeader = `Student List for ${this.gradeClass.g}${this.gradeClass.c} \
                                 Room (${aProp.location}) Period (${aProp.period}) - ${aProp.staff}`
-        console.log('use',aList,' to do a fetch on all students', aProp)
+        this.$cs.l('use',aList,' to do a fetch on all students', aProp)
       },
       studentCardColor(id) {
         if (this.attendanceList.length == 0) return 'gray lighten-4'
-        console.log('List=',this.attendanceList)
+        this.$cs.l('List=',this.attendanceList)
         if (this.attendanceList.findIndex(a => a.studentid == id) > -1) {
           return "green darken-1"
         } else {
@@ -215,7 +215,7 @@ export default {
       },
       showEmails(id) {
         let em = this.studentList.find(e => e.studentid == id)
-        console.log('show emails',em)
+        this.$cs.l('show emails',em)
         if (!em.emails) {
           return ["No Emails Found"]
         }
@@ -251,12 +251,12 @@ export default {
       }
      },
     mounted() {
-      console.log('SC(mounted)1 : ', this.$options.name)
-      console.log('SC(mounted)2 : ', this.$router.params)
-      console.log('SC(mounted)3 : ', this.gc)
+      this.$cs.l('SC(mounted)1 : ', this.$options.name)
+      this.$cs.l('SC(mounted)2 : ', this.$router.params)
+      this.$cs.l('SC(mounted)3 : ', this.gc)
       if (this.gc && this.gc.c && this.gc.g) {
         // {"g": "G08", "c": "E1" }
-        console.log('gc exist', this.gc)
+        this.$cs.l('gc exist', this.gc)
         this.gradeClass = {g:this.gc.g, c:this.gc.c}
       }
     },

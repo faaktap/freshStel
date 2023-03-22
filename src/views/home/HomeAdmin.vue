@@ -166,7 +166,7 @@ export default {
       this.CallAsyncFunction()
     },
     mounted() {
-        console.log('Mount',this.$options.name)
+        this.$cs.l('Mount',this.$options.name)
         //this.$cs.l('AdminHome Load Joke',this.today,this.tomorrow)
 
         //this.menuType = this.getZml.login.type

@@ -166,7 +166,7 @@ export default {
     }),
     computed: {
       studentTally() {
-        console.log('StudentTally', this.refreshKey)
+        this.$cs.l('StudentTally', this.refreshKey)
         if (this.ss.length < 1) return []
         let tally = []
 
@@ -176,7 +176,7 @@ export default {
         //loop thru ss array, and add 1 to tally for each checklist that match
         this.ss.forEach(e => {
           const idx = tally.findIndex(t => t.name == e)
-          if (idx == -1 ) console.log('we have a problem', idx)
+          if (idx == -1 ) this.$cs.l('we have a problem', idx)
           //const i = tally.find(t => t.name == e)
           tally[idx].value += 1
         });
@@ -200,7 +200,7 @@ export default {
     methods:{
       reset(text) {
         this.ss.fill(text)
-        console.log('fill=', this.ss)
+        this.$cs.l('fill=', this.ss)
         this.refreshKey++
       },
       commitChanges() {
@@ -217,18 +217,18 @@ export default {
         }
       },
       handCapture(studentReceived) {
-        console.log('handcap (received):', this.stud)
+        this.$cs.l('handcap (received):', this.stud)
         this.stud = studentReceived
       },
       addStudent() {
-        console.log('Adding in list:', this.stud.data)
+        this.$cs.l('Adding in list:', this.stud.data)
         this.addList.push(this.stud.data)
         this.ss.push('Present')
         this.showAdd = false
       }
      },
     mounted() {
-      console.log('ClassList(mounted) : ', this.studentList)
+      this.$cs.l('ClassList(mounted) : ', this.studentList)
       this.ss = Array.from({ length: this.studentList.length }, () => ('Present'))
     },
     watch: {

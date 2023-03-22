@@ -1,9 +1,16 @@
 module.exports = {
-  //publicPath: '/',
+  // publicPath: '/',
   publicPath: '/virtual-school/',
+  outputDir: 'dist',
+  assetsDir: 'zasset',
+  filenameHashing: true,
+  //pages: {} - see https://cli.vuejs.org/config/#pages (like nuxt)
+  integrity: true,
   "transpileDependencies": [
     "vuetify"
   ],
+
+
   //  chainWebpack: config => {
   //           config
   //               .plugin('html')

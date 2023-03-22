@@ -6,10 +6,13 @@
   :passedEvents="attEvt" /> -->
 <br>
 
+<base-title-expand  heading="Call Component from list" color="blue">
 <TimeLineComponentPlay />
+</base-title-expand>
 
-<auto-sel-subjects
-v-if="getZml.subjects && getZml.subjects.length"
+<base-title-expand  heading="Select a subject" color="blue">
+possible : {{ getZml.subjects && getZml.subjects.length }}
+<auto-sel-subjects v-if="getZml.subjects && getZml.subjects.length"
               asLabel="Subjects"
               v-model="p.subjectID"
               :initialValue="101"
@@ -17,11 +20,11 @@ v-if="getZml.subjects && getZml.subjects.length"
               @input="change"
               @objInput="p.subjectObj = $event; change($event)"
 />
-
+</base-title-expand>
 <v-btn v-for="but in buttons" :key="but.to"
        small :to="but.to"
        class="ma-2 pa-2"
-> {{ but.name || but.to}}
+> {{ but.name || but.to  }}
  </v-btn>
 <v-btn small @click="afterQuick"> Load Initial Data </v-btn>
 
@@ -48,7 +51,8 @@ v-if="getZml.subjects && getZml.subjects.length"
    <sel-general-list-items @input="change" />
  </v-card-text>
   <v-card-actions>
-    <v-btn @click="activate" :disabled="!(p.persMen && p.roomName && p.day && p.period && p.classListID && p.questionID)"> Start </v-btn>
+    <!-- {{ p.persMen }}{{p.roomName }}{{ p.day }}{{ p.period }}{{ p.classListID }}{{ p.questionID }} -->
+    <v-btn @click="activate" > Start </v-btn>
      <div class="text-caption mx-2"> ({{ p.persMen}},{{ p.roomName }},{{ p.day }},{{ p.period }},{{ p.classListID }}, {{p.questionID}} )</div>
     </v-card-actions>
     roomObj: {{ p.roomObj }}<br>
@@ -103,23 +107,32 @@ export default {
         },
         buttons:[
             {to:"/checklog", name:"checklog"},
-            {to:"/emailcheck", name:""},
+            {to:"/emailcheck"},
+            {to:"/class"},
+            {to:"/genlistview"},
+            {to:"/tce", name:"Teacher Class Edit (tce)"},
             {to:"/teacherlist", name:""},
-            {to:"/class", name:""},
-            {to:"/tce", name:"Teacher Class Edit"},
             {to:"/testview", name:"Test View"},
-            {to:"/gtlist", name:"General teacher List"},
+            {to:"/vglist", name:"General teacher List (vglist)"},
+            {to:"/wernertest"},
             ],
 
     }),
+    computed: {
+    },
     methods: {
       change(e) {
-        console.log('Weerner Change:', e)
+        console.log(this.$options.name,'Weerner Change:', e)
       },
-      activate() {alert('doit')},
+      activate() {
+        zData.snack('sdf sdf klsdfjml ksdjfl aksdjf lkdsjflkasdfsadf')
+        alert('doit')
+      },
       afterQuick(r) {
+        //We must clean the subject data - so we can really load all.
+        this.getZml.subjects.length = 0
         zData.initialData('Really Load Latest Data',this.afterwards)
-        console.log('after QUick',r)
+        console.log(this.$options.name,'after QUick',r)
       },
       attendanceLoadStuff(studentid) { //19014
         let sql =  `SELECT d.day_name, d.fulldate\

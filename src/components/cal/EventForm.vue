@@ -1,8 +1,8 @@
 <template>
-<v-card elevation="2" class="ma-2 pa-1 gray--text" >
+<v-card elevation="2" class="ma-2 pa-1 gray--text" :class="formTop">
  <zml-toggle-button v-model="toggleView" @close="$emit('close')" @save="checkAndSave" />
- <v-card-title> Event </v-card-title>
-  <v-form @submit.prevent ref="form">
+ <v-card-title  :style="formSpace"> Event </v-card-title>
+  <v-form @submit.prevent ref="form"  :style="formSpace">
    <v-layout row wrap align-content-start justify-space-between class="ma-2 pa-0">
    <auto-sel-event-type v-model="evt.type"
                         label="Event Type"
@@ -16,7 +16,7 @@
                  :disabled="readOnly"
                  :rules="reqRule"
    />
-   <base-date-dialog v-model="evt.start"
+   <base-date v-model="evt.start"
               dense
               instructions="FA"
               label="start Date"
@@ -28,7 +28,7 @@
                  :disabled="readOnly"
                  clearable
    />
-   <base-date-dialog v-model="evt.end"
+   <base-date v-model="evt.end"
               instructions="FA"
               label="end Date"
               dense
@@ -65,7 +65,7 @@
 
 <script>
 import zmlToggleButton from '@/components/zmlToggleButton.vue'
-import BaseDateDialog from '@/components/base/BaseDateDialog.vue'
+import BaseDate from '@/components/base/BaseDate.vue'
 import BaseTextArea from '@/components/base/BaseTextArea.vue'
 import AutoSelEventType from '@/components/fields/AutoSelEventType.vue'
 //import { calEvents } from './CalEvents'
@@ -82,7 +82,7 @@ export default {
               zmlToggleButton
             , AutoSelEventType
 //            , BaseDate
-            , BaseDateDialog
+            , BaseDate
             , BaseTextArea
             },
   props:["eventDetails"],
@@ -100,7 +100,7 @@ export default {
           alert('not yet - please read the messages to complete the form!')
           return
       }
-      console.log(this.$options.name, 'CheckAndSave', this.evt)
+      this.$cs.l(this.$options.name, 'CheckAndSave', this.evt)
       //Fix the time by adding at the back of the dates..
       if (this.evt.startTime) this.evt.start = this.evt.start + ' ' + this.evt.startTime
       if (this.evt.endTime) this.evt.end = this.evt.end + ' ' + this.evt.endTime
@@ -125,7 +125,7 @@ export default {
         this.evt.endTime = ''
         //alert('Start EventForm: Before Assign : ' + JSON.stringify(this.evt))
       }
-      console.log(this.$options.name, 'Before Time Conversion EventForm: E,S : ' , this.evt)
+      this.$cs.l(this.$options.name, 'Before Time Conversion EventForm: E,S : ' , this.evt)
       try {
         // important to cut the times, before we set date to just date
         if (this.evt.start.length > 12) {
@@ -141,7 +141,7 @@ export default {
         console.log('Catch Error on timecomnversion', err)
       }
       //alert('Start EventForm: E,S : ' + JSON.stringify(this.evt))
-      console.log(this.$options.name, 'After Time Conversion EventForm: E,S : ' , this.evt)
+      this.$cs.l(this.$options.name, 'After Time Conversion EventForm: E,S : ' , this.evt)
     }
   },
   computed:{
@@ -156,20 +156,46 @@ export default {
         return true
        }
        return false
-    }
+    },
+    formTop() {
+        return this.$vuetify.breakpoint.mdAndUp ? 'thebox' : ''
+      },
+      formSpace() {
+        //if (this.expand) return ''
+        return this.$vuetify.breakpoint.mdAndUp  ? 'padding-right: 120px' : ''
+      }
+
   },
-  created()  {console.log('created',this.$options.name, this.eventDetails) },
-  activated(){console.log('activated',this.$options.name, this.eventDetails) },
+  created()  {this.$cs.l('created',this.$options.name, this.eventDetails) },
+  activated(){this.$cs.l('activated',this.$options.name, this.eventDetails) },
   mounted()  {
-    console.log('mounted',this.$options.name, this.eventDetails)
+    this.$cs.l('mounted',this.$options.name, this.eventDetails)
     //On mount the eventDetails watcher does not fire...
     this.loadNewData()
   },
   watch: {
     eventDetails(n,o) {
-      console.log(this.$options.name, 'details has changed!',n,o, this.eventDetails)
+      this.$cs.l(this.$options.name, 'details has changed!',n,o, this.eventDetails)
       this.loadNewData()
     }
   }
 }
 </script>
+
+<style scoped>
+div.thebox
+{
+  fill: currentColor;
+  box-sizing: border-box;
+  padding-right: 5px;
+  /* background-image: url('~@/assets/Rect-Gray-Equality.svg'); */
+  /* background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg'); */
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-CalendarAdd.svg');
+  /* background-image: var(--rec-equal-badge); */
+  background-size: 120px auto;
+  background-repeat: repeat-y;
+  background-attachment: scroll, local;
+  background-origin: content-box;
+  background-position: top right;
+}
+</style>

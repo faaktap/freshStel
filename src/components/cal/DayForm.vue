@@ -78,7 +78,7 @@ export default {
       this.$emit('close')
     },
     loadNewData() {
-      console.log(this.$options.name, 'loadNewData')
+      this.$cs.l(this.$options.name, 'loadNewData')
       if (this.dayDetails == this.day.fulldate) {
         return
       }
@@ -89,7 +89,7 @@ export default {
     },
     loadDay(resp) {
       this.day = resp[0]
-      console.log('calday:',resp)
+      this.$cs.l('calday:',resp)
     }
   },
   computed:{},

@@ -11,48 +11,38 @@
 
 
    <h2> Welcome SysAdmin! </h2>
-               <v-btn small to="/loadhomework" class="mx-2"> loadhomework </v-btn>
-               <v-btn small to="/vglist" class="mx-2"> vglist </v-btn>
-               <v-btn small to="/jdoc" class="mx-2"> jdoc </v-btn>
-               <v-btn small to="/basecalendaredit" class="mx-2"> calen edit/view </v-btn>
-               <v-btn small to="/kalender" class="mx-2"> kalender </v-btn>
-               <v-btn small to="/periodtable" class="mx-2"> Change/View Periods </v-btn>
-               <v-btn small to="/ar" class="mx-2"> autoroute </v-btn>
-               <v-btn small to="/checklog" class="mx-2"> checklog </v-btn>
-               <v-btn small to="/werner" class="mx-2"> werner </v-btn>
-               <v-btn small to="/viewfunctions" class="mx-2"> functions </v-btn>
-     <v-expansion-panels>
-        <v-expansion-panel>
+      <v-layout class="ma-2 pa-2" row wrap justify-space-between>
+               <v-btn small to="/loadhomework" class="ma-2"> loadhomework </v-btn>
+               <v-btn small to="/vglist" class="ma-2"> vglist </v-btn>
+               <v-btn small to="/jdoc" class="ma-2"> jdoc </v-btn>
+               <v-btn small to="/basecalendaredit" class="ma-2"> calen edit/view </v-btn>
+               <v-btn small to="/kalender" class="ma-2"> skool kalender </v-btn>
+               <v-btn small to="/periodtable" class="ma-2"> Change/View Periods </v-btn>
+               <v-btn small to="/ar" class="ma-2"> autoroute </v-btn>
+               <v-btn small to="/checklog" class="ma-2"> checklog </v-btn>
+               <v-btn small to="/werner" class="ma-2"> werner </v-btn>
+               <v-btn small to="/wernertest" class="ma-2"> wernertest </v-btn>
+               <v-btn small to="/viewfunctions" class="ma-2"> functions </v-btn>
+            <v-btn small to="/dkhsawards" class="ma-2"> dkhs awards </v-btn>
+            <v-btn small to="/studentawards" class="ma-2"> student awards </v-btn>
+            <v-btn small to="/about" class="ma-2"> about </v-btn>
+            <v-btn small to="/hover" class="ma-2"> hover </v-btn>
+            <v-btn small to="/loadhomework" class="ma-2"> loadhomework </v-btn>
+            <v-btn small to="/folderedit/GR08/Accounting_Rekeningkunde/" class="ma-2"> FE Gr8 Rek </v-btn>
+            <v-btn small to="/register/:surveyidPassed" class="ma-2"> register </v-btn>
+            <v-btn small @click="dateTest" class="ma-2"> dateTest </v-btn>
+            <v-btn small to="/systemview" class="ma-2"> System Tests and Updates </v-btn>
 
-          <v-expansion-panel-header>
-              Stuff that only superuser has access to
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <menu-list-new :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
-
-            <v-layout class="ma-1" row wrap justify-space-between>
-            <v-btn to="/dkhsawards"> dkhs awards </v-btn>
-            <v-btn to="/studentawards"> student awards </v-btn>
-            <v-btn to="/about"> about </v-btn>
-            <v-btn to="/hover"> hover </v-btn>
-            <v-btn to="/loadhomework"> loadhomework </v-btn>
-            <v-btn to="/folderedit/GR08/Accounting_Rekeningkunde/"> FE Gr8 Rek </v-btn>
-            <v-btn to="/register/:surveyidPassed"> register </v-btn>
-            <v-btn @click="dateTest"> dateTest </v-btn>
-            <v-btn to="/testview"> Some Updates - TestView </v-btn>
-            {{ joke }}
-            <v-window>
+            <v-card class="ma-2 pa-2">
+              {{ joke }}
             xs={{$vuetify.breakpoint.xs}} <br>
             sm={{$vuetify.breakpoint.sm}}<br>
             md={{$vuetify.breakpoint.md}}<br>
             lg={{$vuetify.breakpoint.lg}}<br>
             xl={{$vuetify.breakpoint.xl}}<br>
-            </v-window>
-             <span> emailist:<email-list /> </span>
-            </v-layout>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-
+            </v-card>
+      </v-layout>
+       <v-expansion-panels>
         <v-expansion-panel>
           <v-expansion-panel-header>
               list-test functiongroup="all"  Tester
@@ -64,9 +54,10 @@
 
         <v-expansion-panel>
           <v-expansion-panel-header>
-              global tables
+              global tables, v-layout, v-tabs
           </v-expansion-panel-header>
           <v-expansion-panel-content>
+            v-layout, v-tabs
             <v-layout class="ma-1" col wrap justify-space-between>
               <v-tabs
                 v-model="vtabs"
@@ -81,6 +72,7 @@
                <v-tab key="8"> classlist </v-tab>
                <v-tab key="9"> ticklist </v-tab>
                <v-tab key="10"> login </v-tab>
+
                <v-tab-item key="1">
                <zml-data-table v-if="getZml.grades" :dataList="getZml.grades" userHeader="grades"/>
                </v-tab-item>
@@ -117,11 +109,26 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
      </v-expansion-panels>
-    <hero-section name="forDB"
-                 v-for="(i,c) in [96,83,84,99,95,76,65,61,53,54,80,57,73,69,67,25,11,12,14,28]" :key="c"
-                 :bgpicture="`https://www.zmlrekenaars.co.za/test/img/wall0${i}.jpg`"
-                 :title="`TEST : wall0${i} ${c}`"
+     <v-card v-for="(i,c) in [176,175,173,172,166,164,158,147,125,111,109,96,83,84,99,98,95,76,65,61,57,76,73,69,67,53,54,47,42,33,28,25,21,18,17,11,12,14,6,5]" :key="c"
+            class="ma-2 pa-2"
+            elevation="0">
+         <hero-section name="test"
+                 :bgpicture="bgPicture(i)"
+                 :title="`Hero WallPaper : ${i}`"
                />
+                 <!-- :moreText="` More and More text ${c}`"
+                 :text="`some text ${c}${c}${c}`"
+                 :button="` Button ${c}`"
+                 icon="mdi-kettle"
+                 func="/wernertest" -->
+
+     </v-card>
+
+     <!-- for some reason the below statement give warning  vue.runtime.esm.js?2b0e:4605 [Vue warn]: Duplicate keys detected: '3'. This may cause an update error.
+     <v-img v-for="j of 3" :key="j"
+           :src="bgPicture(j)" :id="`x${j}`" :ref="`x${j}`" >
+           <span> {{ j }} </span>
+     </v-img> -->
 <!-- <test-composition-api /> -->
 
 
@@ -144,8 +151,11 @@ import HeroSection from "@/views/sections/HeroSection.vue"
 // import baseTool from '@/components/base/baseTool.vue'
 //Werner test
 import { zDate } from '@/api/zDate.js';
-import MenuListNew from '@/components/MenuListNew.vue';
+//import MenuListNew from '@/components/MenuListNew.vue';
 //import { loadCalendar } from '@/api/loadCalendar.js';
+
+import { leftPad } from '@/api/util.js'
+
 
 export default {
     name:"SuperUser",
@@ -154,8 +164,8 @@ export default {
             //  , PersonelMenemonic
             //  , BaseTitleExpand
             //  , baseTool
-              MenuListNew
-            , HeroSection
+            //  MenuListNew
+             HeroSection
     },
     data: () => ({
 
@@ -177,6 +187,10 @@ export default {
     computed:{
     },
     methods:{
+      bgPicture(i) {
+        let x = leftPad(i,3)
+        return "https://www.zmlrekenaars.co.za/test/img/wall" + x + ".jpg"
+      },
       changeType() {
         if (this.menuType == 'all') { this.menuType = 'admin'; return}
         if (this.menuType == 'admin') { this.menuType = 'teacher'; return}

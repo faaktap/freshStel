@@ -26,7 +26,7 @@
 
 
 <!------------------------------------------------ TEACHER LOGGED IN -->
-  <v-container v-else-if="getZml.login.type=='teacher' || getZml.login.type=='admin'">
+  <v-container v-else-if="getZml.login.type=='teacher' || getZml.login.type=='admin'" fluid>
   <hero-section name="forDB"
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
                title="Teacher & Admin Home"
@@ -35,7 +35,7 @@
   <admin-home />
   </v-container>
 
-  <v-container v-else>
+  <v-container v-else fluid>
   <hero-section name="forDB"
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
                title="Unknown Home"

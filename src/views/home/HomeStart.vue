@@ -106,7 +106,7 @@ export default {
   name: "HomeStart",
 //layout: 'default',
   layout(context) {
-    console.log('context in layout..',context)
+    this.$cs.l('context in layout..',context)
     return 'default'
   },
   components: {BaseTitleExpand,DkhsILogo, DkhsRLogo, DkhsLogo},
@@ -121,8 +121,8 @@ export default {
         return Math.floor(Math.random() * 4)
       }
   },
-  activated() {     console.log(this.$options.name,' - activated')  },
-  deactivated() {     console.log(this.$options.name,' - deactivated')  },
+  activated() {     this.$cs.l(this.$options.name,' - activated')  },
+  deactivated() {   this.$cs.l(this.$options.name,' - deactivated')  },
   methods:{
     getQuote() {
       let token = {headers: {'Authorization': 'Token 4f9248d8208d5554e8f508d126eaada5ad4b9ca6'}}
@@ -131,8 +131,8 @@ export default {
       requestFetch(apiUrl, token)
       .then((response) => {return response.json();})
       .then((data) => {
-        //console.log(data);
-        //console.log(data.results.length);
+        //this.$cs.l(data);
+        //this.$cs.l(data.results.length);
         let r = Math.floor(Math.random() * 5)
         this.q.quote = data.results[r].quote
         this.q.author = data.results[r].author
@@ -147,7 +147,7 @@ export default {
    //require('dotenv').config()
    // zData.l('starting', this.$options.name,zData.someGlobals, 'Calling zData as a test.')
    this.$cs.l('M',this.$options.name)
-   console.log('Process=',process)
+   this.$cs.l('Process=',process)
    //var env = process.env.NODE_ENV || 'development';
    zmlLog(null, 'HomeStart',{version: zmlConfig.projectID} )
   },

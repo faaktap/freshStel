@@ -193,7 +193,7 @@ export default {
       },
       save() {
          if (this.originalStatus == this.slRec.status) {
-           console.log('no status change')
+           this.$cs.l('no status change')
          } else {
            //Check if it's today's date
             let currentDateWithFormat = new Date().toJSON().slice(0,10)   //.replace(/-/g,'/'); no need to change - to /
@@ -207,14 +207,14 @@ export default {
          this.showEditDialog = false
       },
       edit(attendanceid) {
-        console.log('editing:', attendanceid)
+        this.$cs.l('editing:', attendanceid)
         this.slRec = this.studentList.find(e => e.attendanceid == attendanceid)
         //get the attendance, and allow to change..
         if ('attendanceid' in this.slRec) {
           this.showEditDialog = true
           this.originalStatus = this.slRec.status
         } else {
-          console.log('some error on find slRec=', this.slRec,'SL=', this.studentList)
+          this.$cs.l('some error on find slRec=', this.slRec,'SL=', this.studentList)
         }
       },
       commitChanges() {
@@ -236,14 +236,14 @@ export default {
       errorLoading(err) {
         this.loading = false
         alert('something went wrong:'+ err.error)
-        console.log(err)
+        this.$cs.l(err)
       },
      },
     mounted() {
-      console.log('AttViewSes(mounted) : ', this.sessionid)
+      this.$cs.l('AttViewSes(mounted) : ', this.sessionid)
       this.refresh()
       this.detail = this.sessionid.split(".");
-      console.log(this.detail.length)
+      this.$cs.l(this.detail.length)
       if (this.detail.length == 3) {
         this.detail[2] = this.detail[2].substr(0,this.detail[2].indexOf('-'))
       }

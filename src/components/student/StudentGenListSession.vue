@@ -198,7 +198,7 @@ export default {
       },
       save() {
          if (this.originalStatus == this.slRec.status) {
-           console.log('no status change')
+           this.$cs.l('no status change')
          } else {
            infoSnackbar('Updating....')
            AttWork.updateGenList(this.slRec)
@@ -212,7 +212,7 @@ export default {
           this.showEditDialog = true
           this.originalStatus = this.slRec.status
         } else {
-          console.log('some error on find slRec=', this.slRec,'SL=', this.studentList)
+          this.$cs.l('some error on find slRec=', this.slRec,'SL=', this.studentList)
         }
       },
       commitChanges() {
@@ -234,11 +234,11 @@ export default {
       errorLoading(err) {
         this.loading = false
         alert('something went wrong loading general list student data:'+ err.error)
-        console.log(err)
+        this.$cs.l(err)
       },
      },
     mounted() {
-      console.log('GenListViewSes(mounted) : ', this.sessionid)
+      this.$cs.l('GenListViewSes(mounted) : ', this.sessionid)
       this.refresh()
        //External.4.3.Handbooks-20011
        //Room . Day . Per . listname - unique

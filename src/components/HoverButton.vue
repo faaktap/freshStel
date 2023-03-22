@@ -15,34 +15,41 @@ The object only need to have a property called "title"
         <v-btn
          :color="color"
           dense nav shaped
-          :small="icon ? true : false"
-          :icon="icon!=''"
+          :xxxsmall="icon ? true : false"
+          :xxxicon="icon!=''"
           v-bind="attrs"
           v-on="on"
           :fab="fab"
           @click="$emit('mainclick',title)"
         >
-        <v-icon small v-if="icon"> {{ icon }} </v-icon>
+        <v-icon v-if="icon"> {{ icon }} </v-icon>
           {{ title }}
         </v-btn>
       </template>
-      
-      
-      <v-list v-if="dropItems && dropItems.length" dense bottom  outlined rounded>
-        <v-list-item
-          v-for="(mitem, index) in dropItems"
-          :key="index"
-          @click="$emit('dropclick',mitem.title,mitem)"
-        >
-         
-          <v-list-item-icon v-if="mitem.icon"><v-icon> {{mitem.icon}} </v-icon></v-list-item-icon>
-
-          <v-list-item-title v-if="mitem.title"> {{ mitem.title }} </v-list-item-title>
 
 
-        </v-list-item>
+      <v-list v-if="dropItems && dropItems.length"
+              bottom
+              outlined
+              rounded
+      >
+       <v-list-item
+          v-for="(mitem, index) in dropItems" :key="index"
+          @click="dropClick(mitem.title)"
+       >
+        <v-list-item-icon v-if="mitem.icon">
+          <v-icon>
+            {{mitem.icon}}
+          </v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-title v-if="mitem.title">
+          {{ mitem.title }}
+        </v-list-item-title>
+
+       </v-list-item>
       </v-list>
-      
+
     </v-menu>
 </template>
 
@@ -62,12 +69,15 @@ The object only need to have a property called "title"
     data: () => ({
     }),
     methods: {
+      dropClick(e) {
+         setTimeout( () => {
+          this.$emit('dropclick',e)
+         }, 500);
+      },
       hallo() {
         if (this.dropItems.length) {
           console.log('start hallo',this.dropItems)
-          //Object.keys(this.dropItems).map(function (m, i) {
-            //console.log('hallo',this.dropItems[m],i)
-          //})
+
         }
       }
     },
