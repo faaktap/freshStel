@@ -51,14 +51,11 @@
   <menu-list-new :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
 
      <base-title-expand heading="Calendar">
-     <v-row>
-         <v-col cols="5">
-          <personel-menemonic v-model="wieOmTeWys" />
-          </v-col><v-col cols="5">
-          <v-btn to="/calteach" class="float-right"> Full Screen </v-btn>
+     <!-- <v-row>
+         <v-col cols="12">
+          <v-btn :to="`/calteach/${wieOmTeWys}`" class="float-right"> Full Screen </v-btn>
         </v-col>
-        <v-col cols="2">
-        </v-col></v-row>
+      </v-row> -->
       <v-container fluid>
       <calendar
                :menemonic="wieOmTeWys" />
@@ -79,7 +76,7 @@ import { zmlFetch } from '@/api/zmlFetch.js'
 //import { infoSnackbar } from '@/api/GlobalActions';
 import MenuListNew from '@/components/MenuListNew.vue';
 import Calendar from '@/components/Calendar.vue';
-import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
+//import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 import baseTool from '@/components/base/baseTool.vue'
@@ -88,7 +85,7 @@ export default {
     name:"HomeAdmin",
     components:{
                Calendar
-             , PersonelMenemonic
+             //, PersonelMenemonic
              , BaseTitleExpand
              , MenuListNew
              , baseTool

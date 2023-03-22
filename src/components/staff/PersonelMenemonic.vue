@@ -1,10 +1,15 @@
 <template>
-<v-container fluid>
-  <v-btn @click="showList = !showList" :title="allAboutPers" class="ma-1">
-    <v-icon >mdi-human</v-icon>
-       {{ selected }}
-        <!-- {{ value }} -->
-  </v-btn>
+
+  <v-btn  @click="showList = !showList"
+         :x-small="xSmall"
+         :title="allAboutPers || selected"
+         color="primary"
+  >
+    <v-icon :small="xSmall">
+      mdi-human-male-board
+    </v-icon>
+    <slot>
+    </slot>
   <v-dialog v-model="showList" scrollable color="light-blue"
           :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto">
    <v-card color="light-blue" class="ma-1 pa-1">
@@ -64,7 +69,8 @@
 
  </v-card>
 </v-dialog>
-</v-container>
+</v-btn>
+
 </template>
 
 <script>
@@ -73,9 +79,10 @@ import { zmlConfig } from '@/api/constants';
 export default {
     name:"PersonelMenemonic",
     components:{},
-    props:[
-     'value'
-    ],
+    props:{
+      value:{default: ''},
+      xSmall:{type:Boolean, default: false}
+    },
     data: () => ({
         personelList:[],
         showList:false,

@@ -1,11 +1,8 @@
 module.exports = {
-  // publicPath: '/',
-  publicPath: '/virtual-school/',
-  outputDir: 'dist',
-  assetsDir: 'zasset',
-  filenameHashing: true,
-  //pages: {} - see https://cli.vuejs.org/config/#pages (like nuxt)
-  integrity: true,
+  publicPath: '/',
+  //publicPath: '/virtual-school/',
+  outputDir:'dist',
+  assetsDir:'zasset',
   "transpileDependencies": [
     "vuetify"
   ],

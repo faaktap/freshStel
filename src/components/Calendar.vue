@@ -2,14 +2,14 @@
 <v-card class="ma-0 pa-0">
   <hero-section name="forDB"
               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall041.jpg"
-              :title="`Calendar :  ${weekOrDay} : ${personeelMenemonic || getZml.login.username}`"
+              :title="`Calendar :  ${weekOrDay} : ${incomingMenemonic || getZml.login.username}`"
               text=""
               breakup1="100"
               breakup2="20"
               color="green darken-1"
                />
 
-  <v-row class="mt-2 pt-2" v-if="calReady">
+  <v-row class="mt-2 pt-2">
     <v-col>
     <v-sheet tile height="44">
     <v-toolbar flat dense :loading="loading">
@@ -20,9 +20,14 @@
         </v-btn>
       </v-col>
       <v-col cols=4>
-        <v-btn small class="ma-2" color="primary" @click="setToday">
-            Today
+        <v-btn :xSmall="!$vuetify.breakpoint.mdAndUp" class="ma-2" color="primary" @click="setToday">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> Today</span>
+          <v-icon v-else small> mdi-calendar-today</v-icon>
         </v-btn>
+         <personel-menemonic :x-small="!$vuetify.breakpoint.mdAndUp" class="ma-2" v-model="incomingMenemonic" >
+          <span v-if="$vuetify.breakpoint.mdAndUp"> {{ incomingMenemonic }}</span>
+         </personel-menemonic>
+
       </v-col>
       <v-col cols=3>
         <v-toolbar-title v-if="$refs.calendar">
@@ -30,12 +35,20 @@
         </v-toolbar-title>
       </v-col>
       <v-col cols=3>
-          <v-btn color="primary" class="ma-2" @click="weekOrDay == 'day' ? weekOrDay = 'week' : weekOrDay = 'day'" small title="Click to Swop">
-             {{ weekOrDay }}
-          </v-btn>
-          <v-btn icon title="This will display the button you can use to select a new teacher"
-                 @click="showPersDropdown = !showPersDropdown">
-            <v-icon> mdi-information </v-icon></v-btn>
+         <v-btn-toggle small v-model="toggleView" >
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> day</span>
+          <span v-else>d</span>
+         </v-btn>
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'week'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
+          <span v-else>w</span>
+         </v-btn>
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'month'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> month</span>
+          <span v-else>m</span>
+         </v-btn>
+         </v-btn-toggle>
        </v-col>
       <v-col cols=1>
         <v-btn icon class="ma-2" @click="$refs.calendar.next()">
@@ -122,7 +135,6 @@
 
 
       </v-sheet>
-      <personel-menemonic v-if="showPersDropdown" v-model="incomingMenemonic" />
     </v-col>
   </v-row>
   <!-- <v-container v-else>
@@ -149,7 +161,6 @@ export default {
   components: {HeroSection, PersonelMenemonic},
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
-      showPersDropdown:false,
       loading:false,
       today: null,
       calToday: null,
@@ -160,14 +171,14 @@ export default {
       selectedElement: null,
       selectedOpen: null,
       incomingMenemonic: null,
-      personeelMenemonic: '',
       weekOrDay:'week',
       weekday:[1, 2, 3, 4, 5, 6, 0],
       weekdays: [
         { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
         { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
         { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-        { text: 'Mon, Wed, Fri', value: [1, 3, 5] }]
+        { text: 'Mon, Wed, Fri', value: [1, 3, 5] }],
+     toggleView: 1,
   }),
   methods:{
       weekOrDayChange() {
@@ -185,7 +196,7 @@ export default {
 
       },
       loadCalendar() {
-        console.log('load default event - check colors?:', this.getZml.calendar, this.getZml.calendar.length)
+        this.$cs.l('cl','load default event - check colors?:', this.getZml.calendar, this.getZml.calendar.length)
         this.events = []
         this.getZml.calendar.forEach(ele => {
           if (ele.start) {
@@ -196,19 +207,18 @@ export default {
                     }
              this.events.push(evt)
           } else {
-            console.error('One of our event does not have a startdate!',ele);
+            console.error('cl','One of our event does not have a startdate!',ele);
           }
         })
         return "done"
       },
       loadRooster(){
         //clean out the previous teacher's load
-        console.log('start LOADROOSTER.....................')
+        this.$cs.l('cl','start LOADROOSTER.....................')
         let cleaned = this.events.filter(e => e.temp != true)
         if (cleaned.length != this.events.length) this.events = cleaned
         this.selectedOpen = false
-        this.personeelMenemonic = this.incomingMenemonic
-        console.log('start LOADROOSTER -----------------')
+        this.$cs.l('cl','start LOADROOSTER -----------------')
 
         let ts = {}
         ts.task = 'PlainSql'
@@ -227,7 +237,7 @@ export default {
      , per.dow\
      , group_concat(r.gradeclass) gradeclass \
 FROM dkhs_date dt , dkhs_dayperiod per, dkhs_rooster r, dkhs_lsubject l \
-WHERE r.menemonic = '${this.personeelMenemonic || this.getZml.login.username}'
+WHERE r.menemonic = '${this.incomingMenemonic || this.getZml.login.username}'
   AND per.dow = dt.dayOfWeek\
   AND dt.iddate <  DATE(now() + INTERVAL 30 DAY)\
   AND dt.iddate >  DATE(now() - INTERVAL 30 DAY)\
@@ -238,14 +248,13 @@ group by dt.fulldate\
      , dt.dayno, per.description, concat(dt.fulldate, ' ', per.starttime), concat(dt.fulldate, ' ', per.endtime)\
      , per.length, substr(per.periodname,4,1), l.shortname, l.description, r.menemonic, per.id, per.dow \
 order by startdate,dt.dayno,  per.periodname, l.shortname`
-        //ts.sql = "select * from dkhs_rooster where user_name = '" + this.personeelMenemonic + "'";
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
         zmlFetch(ts, this.afterRoosterSelect, this.someError);
       },
       someError(err) {
-        errorSnackbar(`Problem fetching calendar events for ${this.personeelMenemonic || this.getZml.login.username}`)
-        console.log('Problem fetching calendar events fo',err)
+        errorSnackbar(`Problem fetching calendar events for ${this.incomingMenemonic || this.getZml.login.username}`)
+        this.$cs.l('cl','Problem fetching calendar events fo',err)
       },
       subjectColor(subjectShortName) {
         let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName )
@@ -260,15 +269,20 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
           errorSnackbar(`Oops! - Our calendar events have not been loaded yet, please logout and login again.`)
         }
         if (response.errorcode != undefined) {
-          infoSnackbar(`We have no class entries for ${this.personeelMenemonic || this.getZml.login.username}`)
+          infoSnackbar(`We have no class entries for ${this.incomingMenemonic || this.getZml.login.username}`)
+          this.calReady = true
+          return
+        }
+        if (!response.length) {
+          infoSnackbar(`We have no Rooster entries for ${this.incomingMenemonic || this.getZml.login.username}`)
           this.calReady = true
           return
         }
 
-        console.log(`Loading Persevents for ${this.personeelMenemonic || this.getZml.login.username}`)
+        this.$cs.l('cl',`Loading Persevents for ${this.incomingMenemonic || this.getZml.login.username}`)
         this.calReady = true
         response.forEach(ele => {
-          console.log(ele)
+          //this.$cs.l('cl',ele)
           const evt = {
                   name: ele.subject + ' ' + ele.gradeclass
                 , start: ele.startEvt
@@ -282,7 +296,7 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
         })
 
         //Brilliant funcking timeout stukkie!!
-        console.log('DONE LOADINGF ROOSTER', this.events)
+        this.$cs.l('cl','DONE LOADINGF ROOSTER', this.events)
         this.calReady = true
         setTimeout(() => {
            this.loading = false;
@@ -348,7 +362,7 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
             this.$cs.l('check AGAIN if events was loaded')
             return
         }
-        console.log('calendar events is now cool!!!!!', this.getZml.calendar.length)
+        this.$cs.l('cl','calendar events is now cool!!!!!', this.getZml.calendar.length)
         this.today = new Date()
         this.today.setHours(0,0,0,0)
         this.calToday = zDate.format(this.today,'yyyy-MM-dd')
@@ -360,7 +374,7 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
   computed: {
       sortIt() {
         let cal = this.getZml.calendar.filter(item => item.type == 'School')
-        // console.log(this.getZml.calendar,cal)
+        // this.$cs.l('cl',this.getZml.calendar,cal)
         return cal.sort((a,b) => a.startdate - b.startdate)
       },
 
@@ -372,7 +386,6 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
       },
     },
   mounted () {
-    this.$cs.l('MOUNTING CALENDAR-----------------')
     if (!this.menemonic) {
       if (this.$route.params.menemonic) {
           this.incomingMenemonic = this.$route.params.menemonic.toUpperCase()
@@ -380,17 +393,17 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
     } else {
       this.incomingMenemonic = this.menemonic
     }
+    this.$cs.l('MOUNTING CALENDAR-----------------for', this.incomingMenemonic)
 
       zData.initialData('Load Subject Data')
       zData.calendarData('Load Calendar Data')
       this.startTheLoad()
   },
   watch: {
-    // menemonic(x) {
-    //   console.log('watch triggered', x)
-    //   this.incomingMenemonic = this.menemonic
-
-    // },
+    menemonic(x) {
+      this.$cs.l('cl','watch triggered', x)
+      this.incomingMenemonic = this.menemonic
+    },
     incomingMenemonic() {
       if (this.incomingMenemonic) this.loadRooster()
     }

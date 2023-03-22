@@ -137,12 +137,16 @@ export default {
     },
     mounted() {
       this.localMaxWidth = this.MaxWidth || 600
+      this.$cs.l('bd',' mounted', this.localMaxWidth, this.formTop)
     },
     activated() {
+      this.$cs.l('bd',' activated', this.localMaxWidth, this.formTop)
     },
     created() {
+      this.$cs.l('bd',' created', this.localMaxWidth, this.formTop)
     },
     destroyed() {
+      this.$cs.l('bd',' destryed', this.localMaxWidth, this.formTop)
     },
     watch: {}
 }
@@ -150,12 +154,26 @@ export default {
 
 <style scoped>
 :root {
-    --url1: url("https://kuiliesonline.co.za/img/upload/Rect-Gray-Equality.svg");
-    --url2: url("https://kuiliesonline.co.za/img/upload/Rect-Gray-AttendanceHandInLug.svg");
-    --url3: url("https://kuiliesonline.co.za/img/upload/Rect-Gray-Integrity.svg");
-    --url4: url("https://kuiliesonline.co.za/img/upload/Rect-Gray-KlasGee.svg");
-    --url5: url("https://kuiliesonline.co.za/img/upload/Rect-Gray-Message.svg");
-    --url6: url("https://kuiliesonline.co.za/img/upload/Rect-Gray-BlueStudentWithLaptop.svg");
+    --url1: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Equality.svg');
+    --url2: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-AttendanceHandInLug.svg');
+    --url3: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Integrity.svg');
+    --url4: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-KlasGee.svg');
+    --url5: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Message.svg');
+    --url6: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-BlueStudentWithLaptop.svg');
+}
+div.thebox0
+{
+  fill: currentColor;
+  box-sizing: border-box;
+  padding-right: 5px;
+  /* background-image: url('~@/assets/Rect-Gray-Equality.svg'); */
+  background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg');
+  /* background-image: var(--url1); */
+  background-size: 120px auto;
+  background-repeat: repeat-y;
+  background-attachment: scroll, local;
+  background-origin: content-box;
+  background-position: top right;
 }
 div.thebox1
 {
@@ -163,9 +181,8 @@ div.thebox1
   box-sizing: border-box;
   padding-right: 5px;
   /* background-image: url('~@/assets/Rect-Gray-Equality.svg'); */
-  /* background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg'); */
-  background-image: var(--url1);
-  /* background-image: var(--rec-equal-badge); */
+  background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg');
+  /* background-image: var(--url1); */
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -176,7 +193,7 @@ div.thebox2
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: var(--url2);
+  background-image: url('~@/assets/Rect-Gray-KlasGee.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -187,7 +204,7 @@ div.thebox3
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: var(--url3);
+  background-image: url('~@/assets/Rect-Gray-Integrity.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -198,7 +215,7 @@ div.thebox4
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: var(--url4);
+  background-image: url('~@/assets/Rect-Gray-Message.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -209,7 +226,7 @@ div.thebox5
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: var(--url5);
+  background-image: url('~@/assets/Rect-Gray-BlueStudentWithLaptop.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
