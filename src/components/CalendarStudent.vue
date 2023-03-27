@@ -29,15 +29,35 @@
         <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
 
-        <v-btn small class="ma-2" color="primary" @click="setToday">
-            Today
+        <v-btn v-if="!$vuetify.breakpoint.mobile"
+               :x-small="!$vuetify.breakpoint.mdAndUp"
+               class="ma-sm-0 ma-2" color="primary" @click="setToday">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> Today</span>
+          <v-icon v-else small> mdi-calendar-today</v-icon>
         </v-btn>
         <v-spacer />
           <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title>
           <v-spacer />
-          <v-btn color="primary" class="ma-2" @click="weekOrDay == 'day' ? weekOrDay = 'week' : weekOrDay = 'day'" small title="Click to Swop">
+
+         <v-btn-toggle small v-model="toggleView" >
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> day</span>
+          <span v-else>d</span>
+         </v-btn>
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'week'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
+          <span v-else>w</span>
+         </v-btn>
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'month'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> month</span>
+          <span v-else>m</span>
+         </v-btn>
+         </v-btn-toggle>
+
+
+          <!-- <v-btn color="primary" class="ma-2" @click="weekOrDay == 'day' ? weekOrDay = 'week' : weekOrDay = 'day'" small title="Click to Swop">
              {{ weekOrDay }}
-          </v-btn>
+          </v-btn> -->
         <v-btn icon class="ma-2"  @click="$refs.calendar.next()" >
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
@@ -139,6 +159,7 @@ export default {
       selectedElement: null,
       selectedOpen: null,
       weekOrDay: "week",
+      toggleView:0,
   }),
   methods:{
       updateRange(whatweget) {

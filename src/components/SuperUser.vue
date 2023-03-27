@@ -14,7 +14,7 @@
       <v-layout class="ma-2 pa-2" row wrap justify-space-between>
                <v-btn small to="/loadhomework" class="ma-2"> loadhomework </v-btn>
                <v-btn small to="/vglist" class="ma-2"> vglist </v-btn>
-               <v-btn small to="/jdoc" class="ma-2"> jdoc </v-btn>
+               <v-btn small to="/jdoc" class="ma-2"> jdoc - HomeWork, Period and Day Edit </v-btn>
                <v-btn small to="/basecalendaredit" class="ma-2"> calen edit/view </v-btn>
                <v-btn small to="/kalender" class="ma-2"> skool kalender </v-btn>
                <v-btn small to="/periodtable" class="ma-2"> Change/View Periods </v-btn>

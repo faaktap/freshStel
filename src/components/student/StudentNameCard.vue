@@ -13,12 +13,14 @@
             <tr><td v-if="!$vuetify.breakpoint.smAndDown"> id  &nbsp;</td> <td>{{ studentList.data.idno }} </td></tr>
             <tr><td v-if="!$vuetify.breakpoint.smAndDown"> name  &nbsp;</td> <td>{{ studentList.data.firstname }} {{ studentList.data.surname }}</td></tr>
             </v-simple-table>
-            <v-chip class="ma-2 pa-2" elevation="2" >
+
+        <v-chip class="ma-2 pa-2 text-heading-2" elevation="2" >
             {{ studentList.data.grade }}
             {{ studentList.data.gclass }}
-            </v-chip>
+        </v-chip>
         </v-card-subtitle>
         </div>
+
         <v-spacer />
         <v-card class="ma-2 pa-2" height="10%" color="gray lighten-2" :title="studentList.idno">        </v-card>
         <v-card class="ma-2 pa-2" height="10%" color="gray lighten-2 blue--text">   {{ studentList.data.note}}     </v-card>
@@ -37,10 +39,16 @@
 
       </v-layout>
      <v-card-text>
-      <v-btn small :to="`/calstud/${studentList.data.studentid}`" title="See the students's daily program">
+      <v-btn small @click="showTimetable = true" title="See the students's daily program">
        <v-icon> mdi-timetable</v-icon>
         TimeTable
       </v-btn>
+
+       <v-dialog v-model="showTimetable" max-width="900">
+         <v-btn small color="primary" @click="showTimetable = false"> close </v-btn>
+         <calendar-student :studentid="studentList.data.studentid" />
+       </v-dialog>
+
       <span class="text-caption float-right">
         High school De Kuilen Hoërskool
         <br>
@@ -52,14 +60,21 @@
 </template>
 
 <script>
+import CalendarStudent from '@/components/CalendarStudent.vue';
 export default {
     name:"StudentNameCard",
+    components:{CalendarStudent},
     props: ['studentList','color'],
+    data: () => ({
+      showTimetable:false,
+    }),
     methods: {
       // goToStudent() {
       //   this.$router.push("/student/"+this.studentList.data.studentid)
       // }
     },
-    mounted() {}
+    mounted() {
+      this.$cs.l('Mounted', this.$options.name)
+    }
 }
 </script>

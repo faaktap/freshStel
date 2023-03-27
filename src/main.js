@@ -45,16 +45,14 @@ export const cs = {
       let e = document.getElementById(containerID || "app")
       if (e) { e.scrollIntoView({ behavior: "smooth" })} else { cs.l('ELEMENT DOES NOT EXIST')}
   },
-  sidePadding: () => {
-    return this.$vuetify.breakpoint.mdAndUp ? 'padding-right:240px' : ''
-  }
 }
 
 Vue.prototype.$history = window.history;
 Vue.prototype.$cs = cs;
 
-//Vue.component('G2Line1', resolve => { require(['@/components/G2/charts/Line/1.vue'], resolve) })
-Vue.component('VBack', resolve => { require(['@/components/base/VBack.vue'], resolve) })
+// How to add components globally so all can see them - testing with small one
+Vue.component('v-back', resolve => { require(['@/components/base/VBack.vue'], resolve) })
+
 import { af,en } from '@/api/translate'
 const messages = {
   en,

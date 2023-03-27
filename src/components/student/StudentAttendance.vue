@@ -29,8 +29,8 @@
     <v-btn @click="showCalendar = !showCalendar" small>
         <span v-if="!showCalendar">Calendar</span><span v-else> Columns </span>
     </v-btn>
-    <v-btn :to="`/calstud/${studentid}`" small>
-        TimeTable
+    <v-btn @click="showTimetable = !showTimetable" small>
+        TimeTable  <!-- :to="`/calstud/${studentid}`" -->
     </v-btn>
    </v-card-actions>
   </v-card>
@@ -44,24 +44,32 @@
      </v-card>
     </v-dialog>
 
+    <v-dialog v-model="showTimetable" max-width="900">
+      <v-btn small color="primary" @click="showTimetable = false"> close </v-btn>
+      <calendar-student :studentid="studentid" />
+    </v-dialog>
+
 </v-container>
 </template>
 <script>
 import { zmlFetch } from "@/api/zmlFetch";
 import { getters } from "@/api/store";
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
-import QuickCalendarDisplay from '@/components/QuickCalendarDisplay.vue'
+import QuickCalendarDisplay from '@/components/cal/QuickCalendarDisplay.vue'
+import CalendarStudent from '@/components/CalendarStudent.vue';
 export default {
     name:"StudentAttendanceList",
     props: ['studentid','color'],
     components: {
         QuickCalendarDisplay
+      , CalendarStudent
       , FrontJsonToCsv
     },
     data: () => ({
       getZml: getters.getState({ object: "gZml" }) ,
       AttendanceList:null,
       showCalendar: true,
+      showTimetable: false,
       atendanceHeader: [
         //{text: 'id',       align: 'start',  value: 'attendanceid' },
           {text: 'Date and Time',  align: 'start',  value: 'attendancedate' },
@@ -127,8 +135,8 @@ export default {
         this.attEvt = response
       },
     },
-    mounted: function() {
-        console.log(this.$options.name,  this.studentid)
+    mounted() {
+        this.$cs.l('Mounted',this.$options.name,  this.studentid)
         if (this.studentid) {
            this.getAttendance()
         }

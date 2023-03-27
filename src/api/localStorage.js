@@ -1,5 +1,7 @@
 let zml = 'zml'
 
+import {Buffer} from 'buffer';
+
 function encode (data) {
 //  console.log('encode stringify',JSON.stringify(data))
 //  console.log('encode',Buffer.from(JSON.stringify(data)).toString('base64'))

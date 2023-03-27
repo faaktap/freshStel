@@ -27,21 +27,21 @@
       <v-radio  label="No"  value="0"  />
       <v-radio  label="Yes" value="1"  />
    </v-radio-group>
-   <!-- <v-radio-group v-model="day.dayno"
-                        label="Day No"
-                        dense
-                        row>
-      <v-radio v-for="d in [0,1,2,3,4,5,6,7,8,9,10]" :key="d"  :label="String(d)"   :value="String(d)" />
-   </v-radio-group> -->
    <v-select
           v-model="day.dayno"
           :items="['0','1','2','3','4','5','6','7','8','9','10']"
           label="DayNo"
-          return-object
-   ></v-select>
+   />
+   <v-select
+          v-model="day.dayOfWeek"
+          :items="periodTypes"
+          label="DayOfWeek - PeriodType"
+          item-text="description"
+          item-value="dow"
+   />
   <!-- </v-layout> -->
  </v-form>
- {{ day }}
+ <!-- {{ day }} {{ periodTypes}} -->
 </v-card>
 </template>
 
@@ -57,20 +57,28 @@ export default {
   props:["dayDetails"],
   data: () => ({
       day:{
-        idDate:'20230412', fulldate:'2023-04-12', quarter:'', week:'', day_name:'Monday', holiday_flag:0, weekend:1,  dayno: '9'
+        idDate:'20230412', fulldate:'2023-04-12', quarter:'', week:'', day_name:'Monday', holiday_flag:0, weekend:1,  dayno: '9',dayOfWeek:6
       },
+      periodTypes:[
+        //SELECT description, dow FROM `dkhs_dayperiod` group by description, dow order by dow
+          {dow:2, description:'Monday'}
+         ,{dow:6, description:'Friday'}
+         ,{dow:8, description:'Hall Days'}
+         ,{dow:10, description:'Test Day 2023'}
+      ],
       toggleView: ''
   }),
   methods:{
     checkAndSave() {
       alert('check and save' + JSON.stringify(this.day) )
       let ts = {}
-      ts.sql = 'update dkhs_date set dayno = :dayno, holiday_flag = :holiday_flag, weekend = :weekend where idDate = :idDate'
+      ts.sql = 'update dkhs_date set dayno = :dayno, holiday_flag = :holiday_flag, weekend = :weekend, dayOfWeek = :dayOfWeek where idDate = :idDate'
       ts.task = 'PlainSql'
       ts.data = {idDate:this.day.idDate}
       ts.data.bind = {idDate: this.day.idDate, dayno:this.day.dayno}
       ts.data.bind.weekend = this.day.weekend
       ts.data.bind.holiday_flag = this.day.holiday_flag
+      ts.data.bind.dayOfWeek = this.day.dayOfWeek
       zmlFetch(ts, this.updateDone)
     },
     updateDone(resp) {
@@ -78,14 +86,18 @@ export default {
       this.$emit('close')
     },
     loadNewData() {
+      if (this.dayDetails == '')  return
+      if (this.dayDetails == this.day.fulldate)  return
       this.$cs.l(this.$options.name, 'loadNewData')
-      if (this.dayDetails == this.day.fulldate) {
-        return
-      }
       let ts = {}
       ts.task = 'PlainSql'
       ts.sql = `select * from dkhs_date where fulldate =  '${this.dayDetails}'`
       zmlFetch(ts, this.loadDay)
+      ts.sql = `SELECT description, dow FROM dkhs_dayperiod group by description, dow order by dow`
+      zmlFetch(ts, this.loadPeriodType)
+    },
+    loadPeriodType(resp) {
+      this.periodTypes = resp
     },
     loadDay(resp) {
       this.day = resp[0]

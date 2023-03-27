@@ -6,9 +6,9 @@
   :passedEvents="attEvt" /> -->
 <br>
 
-<base-title-expand  heading="Call Component from list" color="blue">
+<!-- <base-title-expand  heading="Call Component from list" color="blue">
 <TimeLineComponentPlay />
-</base-title-expand>
+</base-title-expand> -->
 
 <base-title-expand  heading="Select a subject" color="blue">
 possible : {{ getZml.subjects && getZml.subjects.length }}
@@ -70,15 +70,15 @@ import { getters } from "@/api/store";
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import SelGeneralListItems from '@/components/fields/SelGeneralListItems.vue'
 import AutoSelSubjects from '@/components/fields/AutoSelSubjects.vue'
-import TimeLineComponentPlay from '@/test/TimeLineComponentPlay.vue'
-//import QuickCalendarDisplay from '@/components/QuickCalendarDisplay.vue'
+// import TimeLineComponentPlay from '@/test/TimeLineComponentPlay.vue'
+// import QuickCalendarDisplay from '@/components/QuickCalendarDisplay.vue'
 export default {
     name:"Werner",
     components: {
                  SelGeneralListItems
                , AutoSelSubjects
                , BaseTitleExpand
-               , TimeLineComponentPlay
+               //, TimeLineComponentPlay
                //, QuickCalendarDisplay
                },
     data: () => ({

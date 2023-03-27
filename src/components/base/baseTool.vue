@@ -89,11 +89,11 @@
 </template>
 
 <script>
-import VBack from '@/components/base/VBack.vue'
+//import VBack from '@/components/base/VBack.vue'
 export default {
     name:"baseTool",
     props:["toolList","toolbarName","loading","background","back","color"],
-    components:{VBack},
+    //components:{VBack},
     data: () => ({
         appBar: false
     }),

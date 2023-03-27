@@ -20,11 +20,13 @@
         </v-btn>
       </v-col>
       <v-col cols=4>
-        <v-btn :xSmall="!$vuetify.breakpoint.mdAndUp" class="ma-2" color="primary" @click="setToday">
+        <v-btn v-if="!$vuetify.breakpoint.mobile"
+               :x-small="!$vuetify.breakpoint.mdAndUp"
+               class="ma-sm-0 ma-2" color="primary" @click="setToday">
           <span v-if="$vuetify.breakpoint.mdAndUp"> Today</span>
           <v-icon v-else small> mdi-calendar-today</v-icon>
         </v-btn>
-         <personel-menemonic :x-small="!$vuetify.breakpoint.mdAndUp" class="ma-2" v-model="incomingMenemonic" >
+         <personel-menemonic :x-small="!$vuetify.breakpoint.mdAndUp" class="ma-sm-0 ma-2" v-model="incomingMenemonic" >
           <span v-if="$vuetify.breakpoint.mdAndUp"> {{ incomingMenemonic }}</span>
          </personel-menemonic>
 
@@ -36,11 +38,11 @@
       </v-col>
       <v-col cols=3>
          <v-btn-toggle small v-model="toggleView" >
-         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
+         <v-btn  small :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
           <span v-if="$vuetify.breakpoint.mdAndUp"> day</span>
           <span v-else>d</span>
          </v-btn>
-         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'week'">
+         <v-btn  :x-small="!$vuetify.breakpoint.mdAndUp" small color="primary" @click="weekOrDay = 'week'">
           <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
           <span v-else>w</span>
          </v-btn>
@@ -76,14 +78,22 @@
           short-intervals
           @change="updateRange"
           @click:event="showEvent"
-        > <!-- weekdays=[1,2,3,4,5,6,0] -->
-         <!-- <template v-slot:day-body="{ date, week }">
-            <div
-               class="v-current-time"
-              :class="{ first: date === week[0].date }"
-              :style="{ top: nowY }"
-            ></div>
-         </template> -->
+        >
+        <template v-slot:event="{event}">
+          <div :style="{ 'background-color':event.color,color: gfc(event.color) }"
+               class="fill-height pl-2"
+               :class="sideColor(event.name)"
+          >
+            <span v-if="$vuetify.breakpoint.mdAndUp">
+              {{ event.name.substr(0,21) }}
+              {{ event.start.substr(11,5) }}
+            </span>
+            <span v-else>
+              {{ event.name.substr(0,7) }}
+            </span>
+          </div>
+        </template>
+
 
         </v-calendar>
 
@@ -146,7 +156,7 @@
 </template>
 
 <script>
-//import { format         ,lastDayOfMonth        , addYears } from 'date-fns'
+import { vuetifyColor } from '@/api/vuetifyColor.js'
 import { getters } from "@/api/store"
 import { zDate } from '@/api/zDate.js'
 import { zData } from '@/api/zGetBackgroundData.js'
@@ -218,7 +228,7 @@ export default {
         let cleaned = this.events.filter(e => e.temp != true)
         if (cleaned.length != this.events.length) this.events = cleaned
         this.selectedOpen = false
-        this.$cs.l('cl','start LOADROOSTER -----------------')
+        this.$cs.l('cl','start REALLY LOADROOSTER -------------')
 
         let ts = {}
         ts.task = 'PlainSql'
@@ -369,6 +379,17 @@ order by startdate,dt.dayno,  per.periodname, l.shortname`
         this.loadCalendar()
         this.loadRooster()
 
+      },
+      sideColor(eventname) {
+        switch (eventname) {
+          case 'Break': return "break"
+          case 'Admin': return "admin"
+        }
+        return ''
+      },
+      gfc(color) {
+        if (!color) return ''
+        return vuetifyColor.getBestColor(color)
       }
     },
   computed: {

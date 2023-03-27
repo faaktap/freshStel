@@ -152,7 +152,7 @@ export default {
         detail:'',
         showEditDialog:false,
         slRec:{},
-        checkList: ["Present","Absent", "Late", "Ignore"],
+        checkList: ["Present","Absent", "Late", "Bunk", "Ignore"],
         originalStatus: ''
     }),
     computed: {

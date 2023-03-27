@@ -10,15 +10,17 @@
     </v-icon>
     <slot>
     </slot>
-  <v-dialog v-model="showList" scrollable color="light-blue"
-          :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto">
-   <v-card color="light-blue" class="ma-1 pa-1">
+  <v-dialog v-model="showList"
+          :fullscreen="$vuetify.breakpoint.mobile" max-width="900" width="auto" >
+   <v-card class="ma-1 pa-1">
     <v-card-title>
-      Teacher List  <v-spacer /><small class="text-caption">{{ toggle }}</small>
+      Teacher List
+      <v-spacer />
+      <!-- <small class="text-caption">{{ toggle }}</small> -->
       <v-btn-toggle v-model="toggle" mandatory>
       <v-btn small icon> <v-icon>mdi-file-image</v-icon> </v-btn>
-      <v-btn small icon> <v-icon>mdi-file-document</v-icon> </v-btn>
       <v-btn small icon> <v-icon>mdi-image</v-icon> </v-btn>
+      <v-btn small icon> <v-icon>mdi-file-document</v-icon> </v-btn>
       </v-btn-toggle>
     </v-card-title>
       <v-layout v-if="personelList.length && showList"
@@ -27,15 +29,16 @@
                 :key="p.persid" class="ma-1 pa-1">
 
 <!------------------------------------------------ Toggle = 0 -------------------->
-         <v-btn v-if="toggle == 0" @click="selectClick(p)"
-               :title="`${p.surname}, ${p.name} , ${p.grade || p.workarea}`"
-                class="ma-1"
+         <v-btn v-if="toggle == 0"
+                @click="selectClick(p)"
+                :title="`${p.surname}, ${p.name} , ${p.grade || p.workarea}`"
+                class="ma-0 pa-0"
                 :color="workareaColor(p.workarea)"
           >
            {{ p.menemonic }}
          </v-btn>
-<!------------------------------------------------ Toggle = 1 -------------------->
-         <v-btn v-if="toggle == 1" @click="selectClick(p)"
+<!------------------------------------------------ Toggle = 2 -------------------->
+         <v-btn v-if="toggle == 2" @click="selectClick(p)"
                 small
                :title="`${p.surname}, ${p.name} , ${p.registergrade}`"
                 style="border-radius:50px"
@@ -45,8 +48,8 @@
           >
           {{ p.surname }}, {{ p.name }}, {{ p.grade || p.workarea }} [{{ p.menemonic }}]
          </v-btn>
-<!------------------------------------------------ Toggle = 2 -------------------->
-         <v-card :color="workareaColor(p.workarea)" v-if="toggle == 2"  class="text=center px-1 pt-1">
+<!------------------------------------------------ Toggle = 1 -------------------->
+         <v-card :color="workareaColor(p.workarea)" v-if="toggle == 1"  class="text=center px-1 pt-1">
          <!-- <v-avatar> -->
          <v-img @click="selectClick(p)"
                :title="`${p.surname}, ${p.name} , ${p.grade || p.workarea}`"
@@ -93,15 +96,15 @@ export default {
     }),
     methods:{
       workareaColor(workarea) {
-        console.log('workarea', workarea)
         switch (workarea.toLowerCase()) {
-          case 'teacher' : return "white";
+          case 'teacher' : return "primary";
           case 'graadhoof' : return "gold";
           case 'principal' : return "orange";
           case 'support' : return "green lighten-1";
           case 'sport' : return "green";
           case 'finance' : return "indigo";
-          case 'admin' : return "yellow";
+          case 'admin' : return "orange lighten-1";
+          case 'ontvangs' : return "orange lighten-2";
           default : return "cyan"
         }
       },

@@ -1,8 +1,8 @@
 <template>
-<v-parallax background xxheight="1200px" src="img/school.jpg" class="filter-div" width="100%" height="100%">
-<v-container justify="center" align="center"  xclass="filter-div mt-5 pa-5" >
+<v-parallax background src="img/school.jpg" class="filter-div" width="100%" height="100%">
+<v-container justify="center" align="center"  class="mt-5 pa-5" >
  <v-layout wrap class="ma-1" justify-space-between>
-   <v-card class="ma-1 pa-1" color="rgba(106, 196, 226, 0.4)">
+   <v-card class="ma-1 pa-1" color="rgba(106, 196, 226, 0.4)" width="100%">
      <v-card-title  class="blue--text">
       <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
       <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />
@@ -59,6 +59,7 @@
           </v-card>
           </v-col>
           </v-row>
+          <br><br><br><br><br><br><br><br><br><br><br>
       </v-card-text>
       <v-card-actions>
           <v-spacer />
@@ -69,7 +70,7 @@
             Continue
           </v-btn>
       </v-card-actions>
-      <br><br><br><br><br><br><br><br><br><br><br>
+
    </v-card>
 </v-layout>
 <base-title-expand class="ma-0 pt-1 px-0" heading="More"  color="rgba(106, 196, 226, 0.4)">
@@ -147,7 +148,7 @@ export default {
    //require('dotenv').config()
    // zData.l('starting', this.$options.name,zData.someGlobals, 'Calling zData as a test.')
    this.$cs.l('M',this.$options.name)
-   this.$cs.l('Process=',process)
+   // this.$cs.l('Process=',process)
    //var env = process.env.NODE_ENV || 'development';
    zmlLog(null, 'HomeStart',{version: zmlConfig.projectID} )
   },

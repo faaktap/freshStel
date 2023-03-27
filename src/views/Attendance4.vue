@@ -425,7 +425,7 @@ export default {
                                            ,listname:this.tListObj.listname
                                            ,listid:this.tListObj.id
                                            ,other:this.tListObj}
-                       , checkList: ["Present","Absent", "Late","AWR", "Ignore"]
+                       , checkList: ["Present","Absent", "Late","AWR", "Bunk","Ignore"]
                        }
                       })
       },

@@ -170,11 +170,17 @@ data: () => ({
               msc:'University of Georgia', src:'https://source.unsplash.com/kmuch3JGPUM'},
             ]
 }),
-  activated() {     console.log(this.$options.name,' - activated')  },
-  deactivated() {     console.log(this.$options.name,' - deactivated')  },
+activated()   {   this.$cs.l(this.$options.name,' - activated')  },
+deactivated() {   this.$cs.l(this.$options.name,' - deactivated')  },
+computed: {
+  liveList() {
+    if (!live) return []
+    return
+  }
+},
 methods: {
   currentView(list) {
-    this.live = list
+    this.live = list.slice(0,18)
   },
    printIt() {
       printPage('printMe', true)

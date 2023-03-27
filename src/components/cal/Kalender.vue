@@ -307,7 +307,13 @@ export default {
         if (this.showEvent == true) return
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
-        this.showEvent = true
+        //See if the event is one of our DayNo's like 'day1'
+        if (event.name.indexOf('day') == 0) {
+          this.calValue = event.start
+          this.showDay = true
+        } else {
+          this.showEvent = true
+        }
         nativeEvent.stopPropagation()
       },
       clickDayCategory ({ date,past,future, hasTime }) {

@@ -45,7 +45,7 @@ export default {
       showText() { return item => item.description + ' : ' + item.eventtype  },
       items() {
         if (this.dataReady == false) return []
-        return this.sortProb  ///this.typeData.response
+        return this.typeData.response  //this.sortProb  ///
       }
     },
     created() {
@@ -60,12 +60,13 @@ export default {
         this.typeData.headers = [{text:'id', value:'id'}, {text:'type', value:'eventtype'}, {text:'Desc', value:'description'},{text:'color', value:'color'}]
         zmlF.ZQR(this.typeData, () => {
           this.typeData.response = this.typeData.response.sort((a, b) => a.eventtype.localeCompare(b.eventtype))
+          this.sortProb = this.typeData.response.sort((a, b) => a.description.localeCompare(b.description))
           this.dataReady = true
           ls.save('zmlEventTypes',this.typeData)
           console.log('DATA WAS LOADED!!!!'); }
         )
       }
-      this.sortProb = this.typeData.response.sort((a, b) => a.description.localeCompare(b.description))
+
     },
     mounted() {
       if (this.value) {

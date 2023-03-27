@@ -13,14 +13,14 @@ But we want to show a form in this one...
        small
 >
  <v-icon v-if="iconName.length > 3">
-   {{ iconName }}
+    {{ iconName }}
  </v-icon>
-    {{ buttonText }}
+   <span v-if="!iconName || !$vuetify.breakpoint.smAndDown"> {{ buttonText }} </span>
     <v-dialog v-model="show"
              :max-width="localMaxWidth"
               width="auto"
               max-height="500"
-              xstyle="position:relative"
+              style="position:relative"
              :fullscreen="$vuetify.breakpoint.smAndDown || expand"
     >
      <v-card :max-width="localMaxWidth"
@@ -148,27 +148,23 @@ export default {
     destroyed() {
       this.$cs.l('bd',' destryed', this.localMaxWidth, this.formTop)
     },
-    watch: {}
+    watch: {
+      show() {
+        this.$cs.l('bd','show',this.formTop)
+      }
+    }
 }
 </script>
 
 <style scoped>
-:root {
-    --url1: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Equality.svg');
-    --url2: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-AttendanceHandInLug.svg');
-    --url3: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Integrity.svg');
-    --url4: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-KlasGee.svg');
-    --url5: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Message.svg');
-    --url6: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-BlueStudentWithLaptop.svg');
-}
 div.thebox0
 {
   fill: currentColor;
   box-sizing: border-box;
   padding-right: 5px;
   /* background-image: url('~@/assets/Rect-Gray-Equality.svg'); */
-  background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg');
-  /* background-image: var(--url1); */
+  /* background-image: url('~@/assets/Rect-Gray-KlasGee.svg'); */
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Equality.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -180,8 +176,7 @@ div.thebox1
   fill: currentColor;
   box-sizing: border-box;
   padding-right: 5px;
-  /* background-image: url('~@/assets/Rect-Gray-Equality.svg'); */
-  background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg');
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-AttendanceHandInLug.svg');
   /* background-image: var(--url1); */
   background-size: 120px auto;
   background-repeat: repeat-y;
@@ -193,7 +188,7 @@ div.thebox2
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: url('~@/assets/Rect-Gray-KlasGee.svg');
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Integrity.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -204,7 +199,7 @@ div.thebox3
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: url('~@/assets/Rect-Gray-Integrity.svg');
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-KlasGee.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -215,7 +210,7 @@ div.thebox4
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: url('~@/assets/Rect-Gray-Message.svg');
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Message.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
@@ -226,7 +221,7 @@ div.thebox5
 {
   box-sizing: border-box;
   padding-right: 5px;
-  background-image: url('~@/assets/Rect-Gray-BlueStudentWithLaptop.svg');
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-BlueStudentWithLaptop.svg');
   background-size: 120px auto;
   background-repeat: repeat-y;
   background-attachment: scroll, local;

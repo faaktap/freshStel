@@ -120,8 +120,8 @@ export default {
       } ,
       // color: ['green', 'orange', 'red accent-2','lightgray', 'green'],
       // category: ['Present', 'Late', 'Absent','No Entry', 'unKnown', 'unKnown'],
-      color: ['orange', 'green', 'red accent-2','lightgray', 'green'],
-      category: ['Late', 'Present', 'Absent','No Entry', 'unKnown', 'unKnown'],
+      color: ['orange', 'green', 'red accent-2','lightgray', 'purple','red accent-1','green'],
+      category: ['Late', 'Present', 'Absent','No Entry', 'Bunk', 'AWR','UnKnown'],
       canvasOutput:{}
 
   }),

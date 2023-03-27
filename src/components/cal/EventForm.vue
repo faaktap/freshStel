@@ -185,17 +185,20 @@ export default {
 <style scoped>
 div.thebox
 {
+  border-style: solid; border-width: thin; border-color: black;
+  border-spacing: 15px 50px;
   fill: currentColor;
   box-sizing: border-box;
   padding-right: 5px;
   /* background-image: url('~@/assets/Rect-Gray-Equality.svg'); */
   /* background-image: url('~@/assets/Rect-Gray-AttendanceHandInLug.svg'); */
-  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-CalendarAdd.svg');
+  background-image: url('https://kuiliesonline.co.za/img/upload/Rect-Gray-Integrity.svg');
   /* background-image: var(--rec-equal-badge); */
-  background-size: 120px auto;
+  background-size: 120px 600px;
   background-repeat: repeat-y;
   background-attachment: scroll, local;
   background-origin: content-box;
   background-position: top right;
+
 }
 </style>

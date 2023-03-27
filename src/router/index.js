@@ -480,11 +480,12 @@ const routes = [
   },
   {
     component: () => import(/* webpackChunkName: "cal" */ '@/views/BaseCalenViewEdit.vue'),
-    path: '/basecalendaredit',
+    path: '/basecalendaredit/:seldate?',
     name: 'BaseCalenViewEdit',
+    props:true,
+    params: {seldate:'2023-04'},
     meta: {layout: la[3], authentication: "admin" }
   },
-
   {
     component: () => import(/* webpackChunkName: "reports" */ '@/views/Reports.vue'),
     path: '/reports',

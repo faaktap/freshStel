@@ -94,10 +94,13 @@ import { zmlConfig } from '@/api/constants'
 import { zmlFetch } from "@/api/zmlFetch"
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions'
 import SubjectEdit from '@/components/learn/SubjectEdit'
-import VBack from '@/components/base/VBack.vue'
+//import VBack from '@/components/base/VBack.vue'
 export default {
     name:"ViewSubjects",
-    components:{SubjectEdit, VBack},
+    components:{
+      SubjectEdit
+    //  , VBack
+    },
     props: [],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
