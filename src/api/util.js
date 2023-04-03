@@ -5,8 +5,12 @@ export function  leftPad(num, size)  {   //leftpad, lpad, add zeroes to back of 
     return s
 }
 
-export const util = {
+export function cl(...args) {
+    console.info(...args);
+}
 
+
+export const util = {
     cl: function (...args) {
        console.info(...args);
     },

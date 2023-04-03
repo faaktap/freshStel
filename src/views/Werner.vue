@@ -2,6 +2,24 @@
 <v-container fluid>
 <h1> Hallo World </h1>
 
+
+{{ wdebug }} {{ typeof(wdebug) }}
+<v-card elevation="-4"><v-card-title> v-multi-items component - single value from list</v-card-title>
+<v-card-text><v-radio-group v-model="wdebug"><v-radio :value="true" label="ON"/><v-radio :value="false" label="OFF"/></v-radio-group>
+ <v-multi-play :items="items"
+              v-model="vmpT"
+              label="alabel"
+              color="red"
+              nodata="oeps"
+              :entryType="{type:'text', label:'werner'}"
+              outlined="true"
+              :debug="wdebug"
+ />
+</v-card-text>
+</v-card>
+
+
+
 <!-- <quick-calendar-display class="ma-2 pa-2" v-if="attEvt && attEvt.length"
   :passedEvents="attEvt" /> -->
 <br>
@@ -68,6 +86,7 @@ possible : {{ getZml.subjects && getZml.subjects.length }}
 import { zData } from "@/api/zGetBackgroundData.js"
 import { getters } from "@/api/store";
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+import VMultiPlay from '@/components/base/VMultiPlay.vue'
 import SelGeneralListItems from '@/components/fields/SelGeneralListItems.vue'
 import AutoSelSubjects from '@/components/fields/AutoSelSubjects.vue'
 // import TimeLineComponentPlay from '@/test/TimeLineComponentPlay.vue'
@@ -78,11 +97,18 @@ export default {
                  SelGeneralListItems
                , AutoSelSubjects
                , BaseTitleExpand
+               , VMultiPlay
                //, TimeLineComponentPlay
                //, QuickCalendarDisplay
                },
     data: () => ({
-        attEvt:[],
+         vmpT:null
+         ,vmpM:null
+         ,vmpR:null
+         ,items: ['item1', 'item2', 'item 3']
+         ,wdebug: false
+        
+        ,attEvt:[],
         getZml: getters.getState({ object: "gZml" }),
         p: {roomName: '0'
          ,roomObj: {}
@@ -95,9 +121,9 @@ export default {
          ,period: ''
          ,day: ''
          ,subjectID: ''
-         ,subjectObj:{}
-        },
-        tab:{id:0
+        ,subjectObj:{}}
+    
+        ,tab:{id:0
            , desc: "Attendance Class Lists"
            , workDone: 0
            , response: []

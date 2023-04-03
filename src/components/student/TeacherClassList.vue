@@ -76,7 +76,10 @@
         <v-card-title> Teacher Class List {{ formTitle }} </v-card-title>
         <v-card-text column align-content-start justify-space-around>
           <v-text-field v-model="rec.listname" label="List Name" outlined dense />
-          <v-text-field v-model="rec.teacher" label="Teacher" outlined dense disabled/>
+          <v-autocomplete v-model="rec.teacher" label="Teacher" outlined dense
+                          :items="getZml.persMenemonic"
+                          :item-text="teacherInitSurname"
+                          :item-value="teacherInitSurname"  />
           <v-combobox v-model="rec.grade" :items="otherGradeOptions" label="grade"/>
           <v-radio-group v-model="rec.share" label="Shared" outlined dense  row>
             <v-radio label="Yes" value="Y" />
@@ -219,6 +222,9 @@ export default {
 
   },
   computed:{
+   teacherInitSurname() {
+      return item => item.name.substr(0,1).toUpperCase() + ' ' + item.surname.toUpperCase()
+   },
    teacherListFilter() {
       if (!this.tList.length) return [];
       let answer = this.tList

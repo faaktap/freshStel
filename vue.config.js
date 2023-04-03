@@ -1,6 +1,6 @@
 module.exports = {
-  //publicPath: '/',
-  publicPath: '/virtual-school/',
+  publicPath: '/',
+  //publicPath: '/virtual-school/',
   outputDir:'dist',
   assetsDir:'zasset',
   "transpileDependencies": [

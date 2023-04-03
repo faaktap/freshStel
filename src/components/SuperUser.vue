@@ -143,6 +143,7 @@ import { zmlFetch, zFetch } from '@/api/zmlFetch.js'
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 import HeroSection from "@/views/sections/HeroSection.vue"
+import zmlDataTable from '@/components/zmlDataTable.vue'
 
 // import Calendar from '@/components/Calendar.vue';
 // import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
@@ -166,6 +167,7 @@ export default {
             //  , baseTool
             //  MenuListNew
              HeroSection
+           , zmlDataTable
     },
     data: () => ({
 

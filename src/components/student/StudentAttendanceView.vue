@@ -62,6 +62,10 @@
       <!-- </v-layout> -->
      </v-card-text>
    </v-card>
+<StudentAttendanceSession v-if="compSessionID && compPlace"
+                          :sessionid="compSessionID"
+                          :place="compPlace"
+/>
 
  </div>
 </template>
@@ -76,6 +80,8 @@ import baseSearch from "@/components/base/baseSearch.vue"
 import BaseDate from '@/components/base/BaseDate.vue'
 import { printJSON } from "@/api/zmlPrint.js"
 //import { infoSnackbar } from '@/api/GlobalActions';
+
+import StudentAttendanceSession from '@/components/student/StudentAttendanceSession.vue'
 export default {
     name:'StudentAttendanceView',
     transition: 'page-slide',
@@ -84,6 +90,7 @@ export default {
     , BaseTitleExpand
     , baseSearch
     , BaseDate
+    , StudentAttendanceSession
     },
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),
@@ -103,6 +110,8 @@ export default {
       searchRoom:'',
       searchPeriod:'',
       showAs: 'list',
+      compSessionID:'',
+      compPlace:'',
     }),
     computed: {
       filterTable() {
@@ -181,7 +190,10 @@ ORDER BY date DESC`
       },
       loadSessionData(e1,e2) {
         console.log('going forward to session:',e2.item.sessionid, e1,e2)
-        this.$router.push({ name: 'AttendanceSession', params: {sessionid: e2.item.sessionid, place:e2.item.place} })
+        //alert('here we can show component-and not router push')
+        this.compPlace = e2.item.place
+        this.compSessionID = e2.item.sessionid
+        //this.$router.push({ name: 'AttendanceSession', params: {sessionid: e2.item.sessionid, place:e2.item.place} })
       },
       errorLoading(err) {
         this.loading = false

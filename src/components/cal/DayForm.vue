@@ -70,7 +70,7 @@ export default {
   }),
   methods:{
     checkAndSave() {
-      alert('check and save' + JSON.stringify(this.day) )
+      //alert('check and save' + JSON.stringify(this.day) )
       let ts = {}
       ts.sql = 'update dkhs_date set dayno = :dayno, holiday_flag = :holiday_flag, weekend = :weekend, dayOfWeek = :dayOfWeek where idDate = :idDate'
       ts.task = 'PlainSql'
@@ -82,7 +82,7 @@ export default {
       zmlFetch(ts, this.updateDone)
     },
     updateDone(resp) {
-      alert('saved ok?' + JSON.stringify(resp) )
+      //alert('saved ok?' + JSON.stringify(resp) )
       this.$emit('close')
     },
     loadNewData() {

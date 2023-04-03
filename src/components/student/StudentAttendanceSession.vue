@@ -238,17 +238,27 @@ export default {
         alert('something went wrong:'+ err.error)
         this.$cs.l(err)
       },
+      newData() {
+        this.refresh()
+        this.detail = this.sessionid.split(".");
+        this.$cs.l(this.detail.length)
+        if (this.detail.length == 3) {
+          this.detail[2] = this.detail[2].substr(0,this.detail[2].indexOf('-'))
+        }
+
+      }
      },
     mounted() {
       this.$cs.l('AttViewSes(mounted) : ', this.sessionid)
-      this.refresh()
-      this.detail = this.sessionid.split(".");
-      this.$cs.l(this.detail.length)
-      if (this.detail.length == 3) {
-        this.detail[2] = this.detail[2].substr(0,this.detail[2].indexOf('-'))
-      }
+      this.newData()
     },
     watch: {
+      sessionid() {
+         this.newData()
+      },
+      place() {
+        this.newData()
+      }
     }
 }
 </script>

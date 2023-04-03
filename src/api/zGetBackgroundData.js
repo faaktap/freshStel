@@ -182,6 +182,9 @@ function finishedLoadingBasic (response) {
     ls.save('zmlSubjects', response.subjects)
 
     getters.getState({ object: "gZml" }).persMenemonic = response.pers;
+    //Here we add initial space surname to try and link up with CEMIS
+    getters.getState({ object: "gZml" }).persMenemonic.forEach(p => p.initSurname = p.name.substr(0,1).toUpperCase() + ' ' + p.surname.toUpperCase())
+
     ls.save('zmlPersM', response.pers)
 
     getters.getState({ object: "gZml" }).place = response.place;
