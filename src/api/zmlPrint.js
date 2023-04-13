@@ -71,7 +71,7 @@ export function printHeader(title) {
        <strong>High School De Kuilen Hoërskool</strong><br>${ title }}
      </td>
      <td width="25%" style="float: right; text-align: right;border: 0px;border-radius: 0;">
-       <img width="35" src="img/logo.png" />
+       <img width="35" src="https://kuiliesonline.co.za/virtual-school/img/logo.png" />
      </td>
     </tr>
     </table>`

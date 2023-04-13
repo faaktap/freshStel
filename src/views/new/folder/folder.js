@@ -15,8 +15,11 @@ export const fol = {
       if (element.dir) {
         if (element.filename[0] !== '.' && element.filename[0] !== '.') {
             if (username == 'werner' && element.filename.includes('GR1')) {
-                console.log('ignore')
+                console.log('ignore W')
+            } else if (usertype == 'student' && (element.filename.includes('TEACHERS') || element.dir.includes('TEACHERS')) ) {
+              console.log('ignore T')
             } else {
+                console.log('fol: pushed ', element.dir, element.filename[0])
                 folders.push(element)
             }
             console.log('fol:', isAuthenticated, username, usertype)

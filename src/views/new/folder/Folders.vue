@@ -148,7 +148,11 @@ export default {
       this.noColor = !this.noColor
     },
     treeClick (ik) {
-      this.$cs.l('treeClick', ik)
+      // Prevent student access at certain places...
+      if (ik.indexOf('TEACHERS') > -1 &&  getters.getState({ object: "gZml" }).login.type == 'student') {
+        this.$cs.l('treeClick', ik, ik.indexOf('TEACHERS') )
+        return
+      }
       this.treeOS.push(ik)
       // get the folder from the tree!!! via href value
       // Remove https://kuiliesonline.co.za  from the value. like "IgnoreDir" and send it back
@@ -167,7 +171,7 @@ export default {
       this.$emit('folder', folder)
     },
     passBackFolderOnTree (folder) {
-      // this.$cs.l('clicked on tree folder', folder, ' emityting.')
+      this.$cs.l('clicked on tree folder', folder, ' emityting.')
       this.$emit('folder', folder)
     },
     getTreeFolders (foldername) {

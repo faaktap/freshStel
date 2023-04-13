@@ -1160,3 +1160,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.small-radio i {
+  font-size: 19px;
+}
+.small-radio label {
+  font-size: 14px;
+  padding-left: 0px;
+  margin-left: -4px;
+}
+.small-radio .v-radio {
+  padding: 0px;
+}
+.small-radio [class*="__ripple"] {
+  left: 0;
+}
+</style>

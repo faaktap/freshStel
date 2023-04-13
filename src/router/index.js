@@ -99,11 +99,19 @@ const routes = [
     meta: {layout: la[3], authentication: "public" }
   },
   {
-    path: '/register/:surveyidPassed',
+    path: '/register/:surveyidPassed?',
     name: 'register',
     props:true,
-    params: {surveyidPassed: '20113'},
+    params: {surveyidPassed: '3'},
     component: () => import(/* webpackChunkName: "pers" */ '@/components/vfbase/register'),
+    meta: {layout: la[0], authentication: "public" }
+  },
+  {
+    path: '/rekenaar/:surveyidPassed?',
+    name: 'rekenaar',
+    props:true,
+    params: {surveyidPassed: '4'},
+    component: () => import(/* webpackChunkName: "pers" */ '@/components/vfbase/rekenaar.vue'),
     meta: {layout: la[0], authentication: "public" }
   },
   {

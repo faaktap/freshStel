@@ -104,10 +104,10 @@ export default {
      show:false,
      expand: false,
      localMaxWidth: 900,
-     images:['Rect-Gray-Respect.svg','Rect-Gray-DKHSLogo.svg','Rect-Gray-Integrity.svg','Rect-Gray-KlasGee.svg','Rect-Gray-StudentRead.svg',
-             'Rect-Gray-StudentComputerHome.svg','Rect-Gray-BlueStudentWithLaptop.svg','Rect-Gray-WIFI.svg','Rect-Gray-Stats.svg','Rect-Gray-Hiking.svg',
-             'Rect-Gray-Message.svg','Rect-Gray-CalendarAdd.svg','Rect-Gray-USB.svg','Rect-Gray-Internet.svg','Rect-Gray-Equality.svg',
-             'Rect-Gray-AttendanceHandInLug.svg'],
+     images:['learn/Rect-Gray-Respect.svg','learn/Rect-Gray-DKHSLogo.svg','learn/Rect-Gray-Integrity.svg','learn/Rect-Gray-KlasGee.svg','learn/Rect-Gray-StudentRead.svg',
+             'learn/Rect-Gray-StudentComputerHome.svg','learn/Rect-Gray-BlueStudentWithLaptop.svg','learn/Rect-Gray-WIFI.svg','learn/Rect-Gray-Stats.svg','learn/Rect-Gray-Hiking.svg',
+             'learn/Rect-Gray-Message.svg','learn/Rect-Gray-CalendarAdd.svg','learn/Rect-Gray-USB.svg','learn/Rect-Gray-Internet.svg','learn/Rect-Gray-Equality.svg',
+             'learn/Rect-Gray-AttendanceHandInLug.svg'],
     }),
     methods:{
       test() {
