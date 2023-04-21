@@ -2,8 +2,10 @@
 
   <v-btn  @click="showList = !showList"
          :x-small="xSmall"
+         :small="small"
          :title="allAboutPers || selected"
          color="primary"
+         class="ma-2"
   >
     <v-icon :small="xSmall">
       mdi-human-male-board
@@ -84,7 +86,8 @@ export default {
     components:{},
     props:{
       value:{default: ''},
-      xSmall:{type:Boolean, default: false}
+      xSmall:{type:Boolean, default: false},
+      small:{type:Boolean, default: false},
     },
     data: () => ({
         personelList:[],

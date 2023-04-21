@@ -53,7 +53,7 @@ export default {
         BaseTableEdit
       , baseTool
     },
-    props: [],
+    props: ['periodDescription'],
     data () {
       return {
         toolbarName:"Periods",
@@ -79,8 +79,14 @@ export default {
      loadAllData() {
        this.$cs.l('loadAllData')
        this.progress = true;
-       let ts = {sql: 'select * from dkhs_dayperiod order by dow, description, starttime'
+       let ts = {}
+       if (this.periodDescription) {
+         ts = {sql: `select * from dkhs_dayperiod where description like '${this.periodDescription}' order by dow, description, starttime`
                 ,task: 'PlainSql'}
+       } else {
+         ts = {sql: 'select * from dkhs_dayperiod order by dow, description, starttime'
+                ,task: 'PlainSql'}
+       }
        zmlFetch(ts, this.processAllData)
      },
      processAllData(response) {             //processAllData(response,notused,queue)
@@ -122,7 +128,6 @@ export default {
       this.dbUpdate()
      },
      dbUpdate() {
-      alert(this.updateSql)
       let ts = {sql: this.updateSql
                ,task: 'PlainSql'}
        zmlFetch(ts, this.UpdateDone)
@@ -130,6 +135,15 @@ export default {
      UpdateDone(response) {
       console.log('response : ' , response)
      }
+   },
+   mounted() {
+    this.$cs.l('PeriodTable Mount', this.periodDescription)
+   },
+   watch:{
+    periodDescription() {
+      this.$cs.l('loadAllData since periodDesc changed', this.periodDescription)
+      this.loadAllData()
+    }
    }
 }
 </script>

@@ -346,7 +346,12 @@ export default {
           if (['JHMEL', 'WER', 'WERNER','TVRB'].includes(this.getZml.login.username.toUpperCase() )) {
             infoSnackbar('You are a SUPERUSER!')
             this.getZml.login.superUser = true
+            this.$super.user = true
+          } else {
+            this.getZml.login.superUser = false
+            this.$super.user = false
           }
+          this.$super.username = this.getZml.login.username
 
           if (!this.goodPassword()) {
             zmlLog(this.loginObj.username, "LoginFail3", 'To easy password')

@@ -4,7 +4,6 @@
         cache-items
         clearable
         open-on-clear
-        message
         outlined
         v-model="what"
         v-on:input="inputDone"
@@ -13,19 +12,20 @@
         :items="itemObj"
         :item-text="itemDisplay"
         :item-value="itemValue"
-        xxreturn-object
+        return-object
         :label="asLabel">
  </v-autocomplete>
 </template>
 
 <script>
+import { getters } from "@/api/store";
 export default {
    name: "AutoSelSubjects",
-   props: {itemObj: {type: Array,required:true}
-          ,asLabel: {type:String, default:'xxxx'}
-          ,initialValue: {default:1}
+   props: {asLabel: {type:String, default:'Subject List'}
+          ,initialValue: {default:null}
           },
    data: () => ({
+    itemObj: getters.getState({ object: "gZml" }).subjects,
     search: null,
     what: null,
     itemValue: 'subjectid',

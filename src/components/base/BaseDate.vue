@@ -11,6 +11,7 @@
           class="ma-2"
           :disabled="disabled"
           :dense="dense"
+          :outlined="outlined"
           />
           <v-dialog v-model="showDate" max-width="300" max-height="350" >
           <v-card elevation-3>
@@ -37,6 +38,7 @@ export default {
   props:{ label: {    type: String},
           value: {    type: String },
           dense: {    type: Boolean,  default: false },
+          outlined: {    type: Boolean,  default: false },
           disabled: { type: Boolean,  default:false },
           required: { type: Boolean,  default: false },
           instructions: {type: String, default:""}

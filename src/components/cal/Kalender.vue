@@ -127,11 +127,16 @@
   <day-form @xsave="saveEvent" @close="showDay = false" :dayDetails="this.calValue"/>
 </v-dialog>
 
-<v-container fluid v-if="getZml.login.superUser">
+
  <base-title-expand  heading="Periods">
-  <period-table />
+  <period-list-view />
  </base-title-expand>
 
+<base-title-expand  heading="Events">
+  <event-list-view />
+ </base-title-expand>
+
+<v-container fluid v-if="getZml.login.superUser">
  <base-title-expand  heading="All Events">
     <v-card>
       <v-card-title><h4> (Periods, Days, Holidays and Birthdays)</h4> </v-card-title>
@@ -161,9 +166,11 @@ import { zDate } from '@/api/zDate.js'
 import { vuetifyColor } from '@/api/vuetifyColor.js'
 import baseTool from '@/components/base/baseTool.vue'
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
-import PeriodTable from '@/components/cal/PeriodTable.vue'
+import PeriodListView from '@/components/cal/PeriodListView.vue'
+import EventListView from '@/components/cal/EventListView.vue'
 import EventForm from '@/components/cal/EventForm.vue'
 import DayForm from '@/components/cal/DayForm.vue'
+
 
 // import TestCal1 from '@/components/cal/TestCal1.vue'
 // import TestCal2 from '@/components/cal/TestCal2.vue'
@@ -173,7 +180,8 @@ export default {
   name: 'Kalendar',
   components: {baseTool
              , BaseTitleExpand
-             , PeriodTable
+             , PeriodListView
+             , EventListView
              , EventForm
              , DayForm
   },

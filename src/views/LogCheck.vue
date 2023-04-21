@@ -42,6 +42,8 @@
       </v-btn>
       </v-card-actions>
       </v-card>
+su= {{ $super.user }} {{ $super.test }} {{ $super }}
+      Distinct Users : {{ distinctUsers }}
 
 <v-dialog v-model="showResult">
  <v-card color="red" v-if="showResult && logList">
@@ -86,7 +88,8 @@ export default {
         logList:[],
         logDate:null,
         search:'',
-        searchText:''
+        searchText:'',
+        distinctUsers:[]
        }
 
    },
@@ -99,6 +102,9 @@ export default {
         let x = this.logList.filter(
           str => Object.values(str).join().toUpperCase().includes( this.search.toUpperCase() )
         )
+        // if (x.length == 0) {
+        //   return this.logList
+        // }
         return x
     }
    },
@@ -110,6 +116,7 @@ export default {
          this.$cs.l('Table select:',item.item, evt)
      },
      buildSelect () {
+        this.search = '' //reset searchvalue
         if (this.searchText || this.logDate) {
           let searchWhere = '1 = 1'
           let dateWhere = '1 = 1'
@@ -160,8 +167,8 @@ export default {
        //Use loglines and add all users in an array
        let output = this.logList.map( (s) => (s.user) );
        //Use it to create ditinct users
-       let distinctUsers = [...new Set(output)]
-       this.$cs.l('Distinct Users',distinctUsers)
+       this.distinctUsers = [...new Set(output)]
+       this.$cs.l('Distinct Users',this.distinctUsers)
      },
      filterColumns(resp,colArray) {
        this.$cs.l(colArray)
@@ -189,7 +196,23 @@ export default {
    mounted() {
      this.$cs.l('mount ' , this.$options.name)
      this.$cs.l('params = ', this.search, this.searchText)
+    //  this.$super.user = true
+    //  this.$super.message = 'some message'
+    //  this.$super.test = 'some test'
+    //  this.$super.newOne = 'newOne'
      this.buildSelect()
+   },
+   watch: {
+    search() {
+      console.log('watch' ,  this.logListFilter.length == 0 , this.search.length > 0)
+      if ( this.logListFilter.length == 0 && this.search.length > 0) {
+           //this.search.slice(0, -1)  //removing last character...
+           this.search =  this.search.replace(/.$/, '')  //removing last character...
+           //this.search = this.search.substring(0, this.search.length - 1);  //removing last character..
+           console.log('removed an character', this.search)
+
+      }
+    }
    }
 }
 </script>

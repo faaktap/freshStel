@@ -1,7 +1,8 @@
 <template>
     <zml-preview :src="image"
                  :type="imagetype"
-                 @close="closeIt"
+                 @close="$emit('close')"
+                 @askForNext="askForNext"
     />
 </template>
 <script>
@@ -14,12 +15,18 @@ export default {
           zmlPreview
     },
     methods:{
-        closeIt() {
-            this.$emit('close')
+        askForNext(key) {
+            this.$emit('askForNext', key)
         }
     },
     mounted() {
        console.log('M:', this.$options.name, this.image, this.imagetype)
+    },
+    watch: {
+       image() {
+        //We could log the image request here -to see how many use it?
+
+       }
     }
 }
 </script>

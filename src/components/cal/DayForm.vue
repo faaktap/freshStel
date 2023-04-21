@@ -29,15 +29,20 @@
    </v-radio-group>
    <v-select
           v-model="day.dayno"
-          :items="['0','1','2','3','4','5','6','7','8','9','10']"
-          label="DayNo"
-   />
+          :items="dayNo"
+          label="School Day Number"
+          title="0 for Sat and Sun and Holiday2 for Day 2, 10 for Day 10, etc"
+          hint="0 for Sat and Sun and Holiday2 for Day 2, 10 for Day 10, etc"
+          item-text="daytype"
+          item-value="id"
+   /> {{ day.dayno }}
    <v-select
           v-model="day.dayOfWeek"
           :items="periodTypes"
-          label="DayOfWeek - PeriodType"
+          label="Period List to Use"
           item-text="description"
           item-value="dow"
+          title="What periodlist should we use"
    />
   <!-- </v-layout> -->
  </v-form>
@@ -66,7 +71,14 @@ export default {
          ,{dow:8, description:'Hall Days'}
          ,{dow:10, description:'Test Day 2023'}
       ],
-      toggleView: ''
+      toggleView: '',
+      dayNo:[ {id:'0', daytype: 'Weekend'}  ,{id:'1',daytype: 'Day 1'}
+            , {id:'2',daytype: 'Day 2'}  ,{id:'3',daytype: 'Day 3'}
+            , {id:'4',daytype: 'Day 4'}  ,{id:'5',daytype: 'Day 5'}
+            , {id:'6',daytype: 'Day 6'}  ,{id:'7',daytype: 'Day 7'}
+            , {id:'8',daytype: 'Day 8'}  ,{id:'9',daytype: 'Day 9'}
+            , {id:'10' ,daytype: 'Day 10'}
+            ]
   }),
   methods:{
     checkAndSave() {

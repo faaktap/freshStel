@@ -7,36 +7,25 @@
     </p>
   </base-title-expand>
 
- <base-tool :toolList="[]"
+  <base-tool :toolList="[]"
             :toolbarName="`Attendance View for ${getZml.login.fullname}`"
             :loading="loading"
             >
-    <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
-    <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+    <v-btn class="ma-2" small icon @click="srch.showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
+    <v-btn class="ma-2" small icon @click="srch.showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
     <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn>
  </base-tool>
 
-    <v-card v-if="showAs=='list'" color="gray lighten-3" class="ma-0 pa-0" elevation="2" loading="!loading">
-     <v-card-text>
-      <!-- <v-layout wrap justify-space-between> -->
-        <v-data-table
-            v-if="aList && aHeader.length > 0"
-            :headers="aHeader"
-            :items="filterTable"
-             class="elevation-1"
-            color="purple lighten-3"
-            @dblclick:row.prevent="loadSessionData"
-        >
-        <template v-slot:top>
          <v-card cols="12" class="row wrap text-center d-flex justify-space-between ma-0 mb-2">
-          <base-search class="ma-2 pa-2 text-uppercase" v-model="searchString" @clear="searchString=''" />
+          <base-search class="ma-2 pa-2 text-uppercase" v-model="srch.searchString"  />  <!-- @clear="srch.searchString=''" -->
           <v-text-field
 
-             v-model="searchRoom"
+             v-model="srch.searchRoom"
              :label="placeObj.placeid ? placeObj.description : 'location'"
              class="ma-2 pa-2"
              clearable
-             @input="(val) => (searchRoom = searchRoom.toUpperCase())"
+             @input="(val) => (srch.searchRoom = srch.searchRoom.toUpperCase())"
+             outlined
 
           >
           <template v-slot:append-outer>
@@ -48,24 +37,63 @@
           </v-text-field>
           <v-combobox
              class="ma-2 pa-2"
-             v-model="searchPeriod"
+             v-model="srch.searchPeriod"
              label="Period"
              :items="['Admin','1','2','3','4','5','6','7','8','9','Late']"
              clearable
              append-icon="mdi-magnify"
+             outlined
           />
-          <base-date v-model="searchDate" :curValue="searchDate" xinstructions="FA" label="Date" class="ma-2 pa-2"/>
+          <base-date v-model="srch.searchDate" :curValue="srch.searchDate" xinstructions="FA" label="Date" class="mt-0 ma-2 pa-2" :outlined="true" />
          </v-card>
-        </template>
+
+
+    <v-card v-if="srch.showAs=='list'" color="gray lighten-3" class="ma-0 pa-0" elevation="2" loading="!loading">
+     <v-card-text>
+      <!-- <v-layout wrap justify-space-between> -->
+        <v-data-table
+            v-if="aList && aHeader.length > 0"
+            :headers="aHeader"
+            :items="filterTable"
+             class="elevation-1"
+            color="purple lighten-3"
+            @dblclick:row.prevent="loadSessionData"
+        >
         </v-data-table>
 
       <!-- </v-layout> -->
      </v-card-text>
    </v-card>
-<StudentAttendanceSession v-if="compSessionID && compPlace"
+   <v-card v-else color="gray lighten-3" class="ma-2 pa-2" elevation="2" loading="!loading">
+    <v-layout row wrap align-content-start justify-space-around class="ma-2 pa-2">
+     <v-card v-for="(a,i) in filterTable" :key="i"
+             class="ma-2 pa-2" color="rgba(105, 199, 71, 0.3"
+             @click="loadSessionDataFromCard(a)"
+     >
+     <v-card-text>
+      <v-layout justify-space-between>
+       <span class="font-weight-black">Day {{ a.day }}&nbsp;&nbsp;</span>
+       <span>{{ a.date }} &nbsp;&nbsp;</span>
+       <span class="font-weight-black">P {{ a.period }}</span>
+      </v-layout>
+      <v-layout justify-space-between>
+       <span class="font-weight-black">{{ a.presenter }}</span>
+       <span>Room {{ a.place }}</span>
+      </v-layout>
+      <v-layout justify-space-between>
+        <span>{{ a.grade }}</span>
+        <span> {{ a.students }} Students </span>
+       </v-layout>
+       <!-- <v-spacer /> <v-icon small> mdi-kettle </v-icon> -->
+     </v-card-text>
+     </v-card>
+    </v-layout>
+   </v-card>
+
+<!-- <StudentAttendanceSession v-if="compSessionID && compPlace"
                           :sessionid="compSessionID"
                           :place="compPlace"
-/>
+/> -->
 
  </div>
 </template>
@@ -80,8 +108,8 @@ import baseSearch from "@/components/base/baseSearch.vue"
 import BaseDate from '@/components/base/BaseDate.vue'
 import { printJSON } from "@/api/zmlPrint.js"
 //import { infoSnackbar } from '@/api/GlobalActions';
-
-import StudentAttendanceSession from '@/components/student/StudentAttendanceSession.vue'
+import { ls } from "@/api/localStorage.js"
+//import StudentAttendanceSession from '@/components/student/StudentAttendanceSession.vue'
 export default {
     name:'StudentAttendanceView',
     transition: 'page-slide',
@@ -90,7 +118,7 @@ export default {
     , BaseTitleExpand
     , baseSearch
     , BaseDate
-    , StudentAttendanceSession
+    //, StudentAttendanceSession
     },
     data: () => ({
       getZml: getters.getState({ object: "gZml" }),
@@ -104,12 +132,14 @@ export default {
                //,{text:'session', value:'sessionid'}
       ],
       aList: [],
-      sessionID: null,
-      searchString: '',
-      searchDate:Intl.DateTimeFormat('af-ZA').format(new Date()), //create a default yyyy-mm-dd date for first search
-      searchRoom:'',
-      searchPeriod:'',
-      showAs: 'list',
+      srch: {
+        sessionID: null,
+        searchString: '',
+        searchDate: '',
+        searchRoom:'',
+        searchPeriod:'',
+        showAs: 'list',
+      },
       compSessionID:'',
       compPlace:'',
     }),
@@ -117,23 +147,22 @@ export default {
       filterTable() {
         if (this.aList.length == 0) return []
         let theList = this.aList
-        if (this.searchString) theList = theList.filter(e =>
-            e.presenter.substr(0,this.searchString.length).toUpperCase() == this.searchString.toUpperCase()
+        if (this.srch.searchString) theList = theList.filter(e =>
+            e.presenter.substr(0,this.srch.searchString.length).toUpperCase() == this.srch.searchString.toUpperCase()
         )
-        console.log(1)
-        if (this.searchRoom)   theList = theList.filter(e =>
-            e.place.substr(0,this.searchRoom.length).toUpperCase() == this.searchRoom.toUpperCase()
+        //console.log(1)
+        if (this.srch.searchRoom)
+           theList = theList.filter(e => e.place.substr(0,this.srch.searchRoom.length).toUpperCase() == this.srch.searchRoom.toUpperCase()
         )
-        console.log(2)
-        if (this.searchPeriod) theList = theList.filter(e => e.period.toUpperCase() == this.searchPeriod.toUpperCase())
-        console.log(3)
+        //console.log(2)
+        if (this.srch.searchPeriod) theList = theList.filter(e => e.period.toUpperCase() == this.srch.searchPeriod.toUpperCase()  )
+        //console.log(3)
         return theList
-
       },
       // Get the placeid, based on roomsearch, so we can use it in our sql or filter.
       placeObj() {
-        if (!this.searchRoom) return {name:'', placeid:0}
-        const roomObj =  this.getZml.place.filter(e => e.name == this.searchRoom) [0]
+        if (!this.srch.searchRoom) return {name:'', placeid:0}
+        const roomObj =  this.getZml.place.filter(e => e.name == this.srch.searchRoom) [0]
         if (!roomObj) return {name:'', placeid:0}
         if ('placeid' in roomObj) return roomObj
         return {name:'', placeid:0}
@@ -163,7 +192,7 @@ export default {
  where a.userid = l.userid \
    and a.studentid = s.studentid
    and p.placeid = a.placeid\
-   and substr(a.attendancedate,1,10) = substr('${this.searchDate}',1,10) \
+   and substr(a.attendancedate,1,10) = substr('${this.srch.searchDate}',1,10) \
  group by substr(attendancedate,1,10)  \
          , SUBSTRING_INDEX(sessionid, ".", 1)
          , sessionid  \
@@ -188,12 +217,18 @@ ORDER BY date DESC`
         }
         this.loading = false
       },
+      loadSessionDataFromCard(e) {
+        console.log('going forward to session (from card):',e)
+        this.compPlace = e.place
+        this.compSessionID = e.sessionid
+        this.$router.push({ name: 'AttendanceSession', params: {sessionid: this.compSessionID, place:this.compPlace} })
+      },
       loadSessionData(e1,e2) {
         console.log('going forward to session:',e2.item.sessionid, e1,e2)
         //alert('here we can show component-and not router push')
         this.compPlace = e2.item.place
         this.compSessionID = e2.item.sessionid
-        //this.$router.push({ name: 'AttendanceSession', params: {sessionid: e2.item.sessionid, place:e2.item.place} })
+        this.$router.push({ name: 'AttendanceSession', params: {sessionid: this.compSessionID, place:this.compPlace} })
       },
       errorLoading(err) {
         this.loading = false
@@ -202,16 +237,21 @@ ORDER BY date DESC`
       },
     },
     mounted() {
-        this.searchString = this.getZml.login.username
         if (this.getZml.place.length < 5) alert('we have not loaded places yet! - please startat attload')
+        if (ls.test(this.$options.name)) this.srch = ls.load(this.$options.name)
+        //if (!this.srch.searchString) this.srch.searchString = this.getZml.login.username
+        //this.srch.searchDate = Intl.DateTimeFormat('af-ZA').format(new Date()), //create a default yyyy-mm-dd date for first search
         this.refresh()
     },
     watch:{
-      searchDate() {
-        this.refresh()
+      srch: {
+        deep: true,
+        handler() {
+          console.log('src changed.....', this.srch)
+          if (this.srch.searchDate) this.refresh()
+          ls.save(this.$options.name,this.srch)
+        }
       }
-    },
-    beforeDestroy() {
     }
 }
 </script>

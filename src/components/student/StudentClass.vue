@@ -132,7 +132,7 @@
   </front-json-to-csv>
 </v-dialog>
 
- <v-dialog v-model="showStudentCard"  max-width="650" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable="false">
+ <v-dialog v-model="showStudentCard"  max-width="650" :fullscreen="$vuetify.breakpoint.smAndDown" :scrollable="false">
    <zml-close-button @btn-click="showStudentCard = false" />
    <student-name-card :studentList="singleStudent" />
  </v-dialog>

@@ -248,7 +248,7 @@ export default {
        sessionID:0,
        staffList:['Wiegand','Pollie','Alex'],
        periodList:['Admin','1','2','3','4','5','6','7','8','9','Late'],
-       tListObj: {grade:'', subjectname: '', ckey:0},
+       tListObj: {},
        tList: [],
        tLists: false,
        lastLoadedListTeacherName: '',
@@ -264,7 +264,7 @@ export default {
     },
     methods: {
       classListReceived(e) {
-        //console.log('set obj tListObj to ', e)
+        console.log('set obj tListObj to ', e)
         this.showChoosy = false;
         this.tListObj=e
       },
@@ -299,7 +299,7 @@ export default {
         this.$router.push('/attview')
       },
       userSelectedStaff() {
-         //console.log(this.responsiblePerson.name, 'was selected??')
+         console.log(this.responsiblePerson, 'was selected??')
          let persid = this.responsiblePerson.persid
          let idx = this.persMenemonic.findIndex(e => e.persid == persid)
          if (idx > -1) {
@@ -381,10 +381,11 @@ export default {
       },
       roosterSelected(a,b,c,d,e) {
        //alert('selected day=' + a + 'per=' + b + "sel=" + c)
-        console.log('day',a,'per',b,'grd',c,'row',d,'?',e)
+        console.log('day',a,'per',b,'grd',c,'row',d,'?',e, this.tListObj)
         this.showRooster = false
         this.period = b
         this.day = a
+        this.tListObj = {grade:'G' + c.substr(0,2), subjectname: '', ckey:0},
         this.checkIfAllSelected()
         //let r = Math.floor(Math.random()*1615).toString(5)
         //this.sessionID = `${a}-${b}-${c}-${r}`

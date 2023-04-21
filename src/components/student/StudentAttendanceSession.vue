@@ -35,30 +35,28 @@
                v-for="s in studentList"
               :key="s.studentid">
            <v-card :color="s.status == 'Present' ? 'green lighten-1' : 'purple lighten-3'" class="ma-1 pl-2">
-             <v-card-title class="text-caption">
+             <v-card-text>
               <v-layout justify-space-between>
-               <span>{{ s.surname }}, {{ s.firstname}}</span>
+               <span class="font-weight-black">{{ s.surname }}, {{ s.firstname}}</span>
                <span> {{ s.studentid }}  </span>
               </v-layout>
-             </v-card-title>
-             <v-card-text>
              <v-layout justify-space-between>
                <v-flex xs3 class="ma-1" v-show="showPhotoList==true">
                  <z-show name="studentphoto" :id="s.studentid" height="88" />
                </v-flex>
              <span class="ma-2">
-               {{ s.attendancedate.substr(0,16) }} P{{ s.period }}
+               {{ s.attendancedate.substr(0,16) }}
              </span>
-
+             <span class="ma-2 font-weight-black">P{{ s.period }}</span>
             </v-layout>
-             </v-card-text>
-             <v-card-actions class="text-caption">
+
+
               <v-layout justify-space-between>
               <span class="ma-2" v-if="'grade' in s"> {{ s.grade }}{{ s.gclass }} </span>
               <v-spacer />
               <v-btn small class="ma-2" @click="edit(s.attendanceid)"> {{ s.status }} </v-btn>
               </v-layout>
-             </v-card-actions>
+             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -131,6 +129,7 @@ import VBack from '@/components/base/VBack.vue'
 import { AttWork } from '@/components/student/AttWork.js'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { printJSON } from "@/api/zmlPrint.js"
+import { ls } from "@/api/localStorage.js"
 
 export default {
     name:"StudentAttendanceSession",
@@ -153,7 +152,7 @@ export default {
         showEditDialog:false,
         slRec:{},
         checkList: ["Present","Absent", "Late", "Bunk", "Ignore"],
-        originalStatus: ''
+        originalStatus: '',
     }),
     computed: {
       studentTally() {
@@ -179,7 +178,7 @@ export default {
           x.time = e.attendancedate.substr(10,20)
           x.grade = e.grade + e.gclass
           x.no = cnt
-          if (x.status != 'Present') x.status = '<b>' + x.status + '</b>'
+          if (x.status != 'Present') x.status = '*' + x.status
           f.push(x)
         })
         return f
@@ -250,6 +249,7 @@ export default {
      },
     mounted() {
       this.$cs.l('AttViewSes(mounted) : ', this.sessionid)
+      if (ls.test(this.$options.name)) this.showAs = ls.load(this.$options.name)
       this.newData()
     },
     watch: {
@@ -258,7 +258,11 @@ export default {
       },
       place() {
         this.newData()
+      },
+      showAs() {
+        ls.save(this.$options.name,this.showAs)
       }
+
     }
 }
 </script>

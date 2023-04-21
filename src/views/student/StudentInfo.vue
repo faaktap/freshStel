@@ -55,8 +55,8 @@
        <!-- <base-title-expand v-if="studentList" heading="Basic Student Info"> -->
           <student-name-card v-if="studentList" :studentList="studentList" color="blue lighten-2" />
        <!-- </base-title-expand> -->
-       <base-title-expand v-if="studentList" heading="Student Subjects"
-                          openOrClose="open">
+       <base-title-expand v-if="studentList" heading="Student Subjects">
+           <!-- Fill in openOrClose="close" with any value, to force it open first time -->
            <student-subject-list :studentid="studentList.data.studentid" color="white darken-1" />
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Email Contacts">
@@ -76,15 +76,15 @@
           <student-learn-assist :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Merits"
-                          openOrClose="open">
+                          openOrClose="close">
           <student-merit :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
       </div>
       <v-btn icon x-small @click="printIt" class="noprint"><v-icon>mdi-print</v-icon> print </v-btn>
   </v-container>
 
-<!--   another nice card layout we might use...
- <v-container grid-list-lg>
+
+   <!-- <v-container grid-list-lg>
       <v-layout row wrap>
         <v-flex v-for="teacher in teachers" :key="teacher.firstName" xs12 sm6 md4>
           <v-card>
@@ -110,8 +110,8 @@
           </v-card>
         </v-flex>
       </v-layout>
-    </v-container>
- -->
+    </v-container> -->
+
  </v-container>
 
   <router-link :to="{ name: 'PersonelInfo'}" > <v-icon> mdi-nature-people </v-icon> </router-link>

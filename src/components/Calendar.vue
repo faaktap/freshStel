@@ -22,11 +22,12 @@
       <v-col cols=4>
         <v-btn v-if="!$vuetify.breakpoint.mobile"
                :x-small="!$vuetify.breakpoint.mdAndUp"
-               class="ma-sm-0 ma-2" color="primary" @click="setToday">
+               small
+               class="ma-sm-0 mr-1 ma-2" color="primary" @click="setToday">
           <span v-if="$vuetify.breakpoint.mdAndUp"> Today</span>
           <v-icon v-else small> mdi-calendar-today</v-icon>
         </v-btn>
-         <personel-menemonic :x-small="!$vuetify.breakpoint.mdAndUp" class="ma-sm-0 ma-2" v-model="incomingMenemonic" >
+         <personel-menemonic :x-small="!$vuetify.breakpoint.mdAndUp" small="true" v-model="incomingMenemonic" >
           <span v-if="$vuetify.breakpoint.mdAndUp"> {{ incomingMenemonic }}</span>
          </personel-menemonic>
 
@@ -46,7 +47,7 @@
           <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
           <span v-else>w</span>
          </v-btn>
-         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'month'">
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" small color="primary" @click="weekOrDay = 'month'">
           <span v-if="$vuetify.breakpoint.mdAndUp"> month</span>
           <span v-else>m</span>
          </v-btn>

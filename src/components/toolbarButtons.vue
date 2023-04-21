@@ -16,7 +16,7 @@
             class="ma-2"
             :small="$vuetify.breakpoint.mdAndDown == true"
             :x-small="$vuetify.breakpoint.smAndDown == true"
-            :title="btnTip(btn)"
+            :title="btnTip(btn) + 'sssss'"
             @click="doTask(btn.func)"
             v-show="!btn.optional == 1 || true">
 
@@ -76,7 +76,7 @@
                :x-small="$vuetify.breakpoint.smAndDown == true">
         <v-card-title>
          <v-btn small @click="doTask(btn.func)" :title="btnTip(btn)">
-           <v-icon small>{{ btn.icon }}</v-icon>
+           <v-icon small>{{ btn.icon }}</v-icon>xxx
            {{ btnText(btn.btn) }}
          </v-btn>
 
@@ -138,6 +138,7 @@ export default {
    AreYouSure()    { return this.$t('message.AreYouSure') },
    Delete()        { return this.$t('message.Delete') },
    btnGroup() {
+    console.log('btnG', this.buttons)
     return this.buttons[ this.buttonGroup[0] ] || []
    }
  },

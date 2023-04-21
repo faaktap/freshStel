@@ -49,6 +49,13 @@ export const cs = {
 
 Vue.prototype.$history = window.history;
 Vue.prototype.$cs = cs;
+Vue.prototype.$super = Vue.observable({
+  user: false,
+  message: 'message',
+  test: 'test'
+});
+//Vue.prototype.$superUser = false;  //we will attempt to link this when we logged in
+//Vue.prototype.$test = "This is a test message"  //we will attempt to link this when we logged in
 
 // How to add components globally so all can see them - testing with small one
 Vue.component('v-back', resolve => { require(['@/components/base/VBack.vue'], resolve) })

@@ -6,6 +6,7 @@
 
 <v-container v-else fluid>
 
+
  <v-toolbar  dense  row  wrap>
    Other Class Lists as needed by Teachers
     <v-spacer></v-spacer>
@@ -39,19 +40,18 @@
 </v-container>
 
 <v-container fluid>
-  <!-- <v-layout v-if="showAs=='list'" row wrap align-content-start justify-space-between class="ma-2 pa-2"> -->
     <v-simple-table v-if="showAs=='list'">
       <thead>
-      <tr><th>id</th><th>teacher</th><th>listname</th><th></th></tr>
+      <tr><th>id</th><th>teacher</th><th>listname</th><th>Grade</th><th></th></tr>
       </thead>
       <tbody>
       <tr v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3">
         <td class="pa-2 ma-2">{{ t.id }}</td>
         <td class="ma-2" >{{ t.teacher }}</td>
         <td class="ma-2 pa-2">{{ t.listname }}</td>
+        <td class="ma-2 pa-2">{{ t.grade }}</td>
         <td> <v-btn x-small @click="loadList(t.id)" title="View or Add Students in List" color="primary" class="ma-2"> View </v-btn>
              <v-btn x-small @click="editListName(t.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn>
-
         </td>
       </tr>
       </tbody>
@@ -97,8 +97,9 @@
                 Add All Students from other List
           </v-btn>
         </v-card-actions>
-        <v-textarea v-model="rec.jdocstructure" label="Other List Criteria" outlined dense />
+        <!-- <v-textarea v-model="rec.jdocstructure" label="Other List Criteria" outlined dense /> -->
         <v-card-text v-if="basedOnOtherList">
+            <sel-student-subs />
            <v-btn class="ma-1" v-for="t in tList" :key="t.id" @click="addStudentsToList(t.id)"> {{ t.listname }} </v-btn>
         </v-card-text>
       </v-card>
@@ -128,12 +129,15 @@ import { getters } from "@/api/store";
 import { clWork } from "@/components/homework/ClassListWork.js"
 import { zData } from "@/api/zGetBackgroundData.js"
 import { ls } from "@/api/localStorage.js"
-import { infoSnackbar } from '../../api/GlobalActions';
+import { infoSnackbar } from '@/api/GlobalActions';
+
+import SelStudentSubs from '@/components/fields/SelStudentSubs.vue'
+
 const ADD_LIST_TITLE = "Create New List"
 export default {
   name: "TeacherClassList",
   props:{},
-  components: {},
+  components: { SelStudentSubs },
   data: () => ({
     gradeList: [],
     otherGradeOptions:['G07','G08','G09','G10','G11','G12'],
@@ -146,6 +150,7 @@ export default {
     passedListID: '',
     basedOnOtherList: false,
     showAs: 'list',
+    saveIni: 'zmlTCLShowAS',
   }),
   methods:{
     initialize() {
@@ -253,6 +258,12 @@ export default {
     zData.quickLoadInitialData('QuickLoad',this.initialize)
   },
   mounted() {
+    if (ls.test(this.saveIni)) this.showAs = ls.load(this.saveIni)
+  },
+  watch: {
+    showAs() {
+      ls.save(this.saveIni,this.showAs)
+    }
   }
 }
 

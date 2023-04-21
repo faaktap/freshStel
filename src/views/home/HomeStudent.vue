@@ -1,6 +1,14 @@
 <template>
 <div>
 <!-- homestudent -->
+
+<z-menu
+                :permanent="true"
+                :expandOnHover="true"
+                :floating="true"
+                :passed="['cancel', 'save', 'load']"
+        />
+
 <v-toolbar color="primary">
     <v-card color="primary" width="100%" class="pa-3">
         <div class="d-flex flex-no-wrap justify-space-between">
@@ -132,6 +140,7 @@ import StudentPhotoList from '@/components/student/StudentPhotoList'
 import StudentMerit from '@/components/student/StudentMerit'
 import EmailBulletins from '@/components/email/EmailBulletins'
 import Avatar from '@/components/base/Avatar'
+// import ZMenu from '@/components/base/ZMenu.vue'
 export default {
     name:"StudentHome",
     components:{

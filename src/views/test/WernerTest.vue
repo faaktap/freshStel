@@ -1,17 +1,22 @@
 <template>
 <v-container fluid>
-<v-btn @click="showWernerTest=!showWernerTest"> Swop to Other Visual tests (CARDS) </v-btn>
-<v-container v-if="showWernerTest" fluid>
-<v-card class="ma-2 pa-2">
- <v-card-title> Test Data Dialog </v-card-title>
- <v-row>
-  <v-col cols="6">
-   <base-date dense label="date" v-model="adate" />
-  </v-col>
-  <v-col cols="6">
-   <base-date label="date" v-model="adate" />
-  </v-col>
- </v-row>
+  <h1> --------- WERNERTEST.VUE in test Folder ----------- </h1>
+   <v-btn @click="showWernerTest=!showWernerTest"> Swop to Other Visual tests (CARDS) </v-btn>
+
+ <v-container v-if="showWernerTest" fluid>
+  <v-card class="ma-2 pa-2">
+   <v-card-title> Test Data Dialog (base-date) dense and not dense</v-card-title>
+   <v-row>
+    <v-col cols="4">
+     <base-date dense label="date" v-model="adate" />
+    </v-col>
+    <v-col cols="4">
+     <v-text-field dense label="date" v-model="adate" />
+    </v-col>
+    <v-col cols="4">
+     <base-date label="date" v-model="adate" />
+    </v-col>
+  </v-row>
 </v-card>
 
 
@@ -36,7 +41,9 @@
   <v-col>
  <v-card-title> Testing same idea inside hover-icon component called hover-icon (using a badge) </v-card-title>
  <v-card-text>
-<hover-icon text="some text on slide" icon="mdi-fountain-pen" color="red" class="ma-2 pa-2" x-large />
+   <hover-icon text="some text on slide"
+               icon="mdi-fountain-pen" color="red"
+               class="ma-2 pa-2" x-large />
  </v-card-text>
   </v-col></v-row>
 </v-card>
@@ -44,7 +51,6 @@
 
 <v-card max-width="600px" elevation="4" class="ma-2 pa=2">
   <v-card-title> Using above icon on a v-text-field, adding 2 icons at back </v-card-title>
-
   <v-card-text>
     <p> Unfortunately @click does not work at the moment - only info displayed </p>
 <v-text-field label="Answer (optional)" title="play with append icon" prepend-inner-icon="mdi-test-tube">
@@ -268,6 +274,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-
-</style>

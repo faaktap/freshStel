@@ -1,7 +1,10 @@
 <template>
 <v-container fluid>
-<h1> Hallo World </h1>
+<h1> -----------WERNER.VUE-------------- </h1>
 
+
+icons:
+<p-icon name="all" />
 
 {{ wdebug }} {{ typeof(wdebug) }}
 <v-card elevation="-4"><v-card-title> v-multi-items component - single value from list</v-card-title>
@@ -91,6 +94,7 @@ import SelGeneralListItems from '@/components/fields/SelGeneralListItems.vue'
 import AutoSelSubjects from '@/components/fields/AutoSelSubjects.vue'
 // import TimeLineComponentPlay from '@/test/TimeLineComponentPlay.vue'
 // import QuickCalendarDisplay from '@/components/QuickCalendarDisplay.vue'
+import PIcon from '@/components/base/PIcon.vue'
 export default {
     name:"Werner",
     components: {
@@ -98,6 +102,7 @@ export default {
                , AutoSelSubjects
                , BaseTitleExpand
                , VMultiPlay
+               , PIcon
                //, TimeLineComponentPlay
                //, QuickCalendarDisplay
                },
@@ -107,7 +112,7 @@ export default {
          ,vmpR:null
          ,items: ['item1', 'item2', 'item 3']
          ,wdebug: false
-        
+
         ,attEvt:[],
         getZml: getters.getState({ object: "gZml" }),
         p: {roomName: '0'
@@ -122,7 +127,7 @@ export default {
          ,day: ''
          ,subjectID: ''
         ,subjectObj:{}}
-    
+
         ,tab:{id:0
            , desc: "Attendance Class Lists"
            , workDone: 0

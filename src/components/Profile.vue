@@ -52,9 +52,9 @@ export default {
        saveDetails() {
          // this.$cs.l(this.$options.name,'p-saveDet')
          //we need to send the stuff for an update
-         alert("TEST")
-         alert(this.login.password.toUpperCase() )
-         console.log('[pppppppppppppppppppppppppp',this.login.password.toUpperCase() )
+         //alert("TEST")
+         //alert(this.login.password.toUpperCase() )
+         //console.log('[pppppppppppppppppppppppppp',this.login.password.toUpperCase() )
          if (!this.login.password || this.login.password.toUpperCase() == 'PASSWORD') {
              errorSnackbar('Try to think of better password than password please.')
              return

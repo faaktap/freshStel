@@ -1,0 +1,30 @@
+// See https://vuetifyjs.com/en/features/sass-variables/#vue-cli-install
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+//
+// The variables you want to modify
+// $font-size-root: 20px;
+
+
+$font-family:'Ubuntu'
+
+.v-application {
+  [class*='text-'] {
+    color: #36405a;
+    font-family: $font-family, sans-serif !important;
+  }
+  font-family: $font-family, sans-serif !important;
+}
+
+
+$font-size-root: 24px;
+$switch-width: 400px;
+$switch-track-width: 400px;
+
+
+.custom-header {
+    font-size: 2.125rem !important; /* from .text-h4 */
+    line-height: 2.5rem; /* from .text-h4 */
+    letter-spacing: .0073529412em !important; /* from .text-h4 */
+    font-weight: 400; /* from .text-h4 */
+    font-family: Ubuntu, Roboto, sans-serif;
+}

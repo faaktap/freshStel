@@ -32,6 +32,7 @@
             <v-btn small to="/register/:surveyidPassed" class="ma-2"> register </v-btn>
             <v-btn small @click="dateTest" class="ma-2"> dateTest </v-btn>
             <v-btn small to="/systemview" class="ma-2"> System Tests and Updates </v-btn>
+            <v-btn small to="/cemismenu" class="ma-2"> Cemis Menu </v-btn>
 
             <v-card class="ma-2 pa-2">
               {{ joke }}
@@ -156,7 +157,6 @@ import { zDate } from '@/api/zDate.js';
 //import { loadCalendar } from '@/api/loadCalendar.js';
 
 import { leftPad } from '@/api/util.js'
-
 
 export default {
     name:"SuperUser",

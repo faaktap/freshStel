@@ -27,14 +27,19 @@
 
       <v-card v-if="getZml.login.isAuthenticated" elevation="3" color="white" >
         <v-card-title>
-           <avatar class="mt-1 mb-0 mr-4 pa-0" :username="getZml.login.fullname"   @clickAvatar="showProfile" />
+           <!-- <avatar class="mt-1 mb-0 mr-4 pa-0" :username="getZml.login.fullname"   @clickAvatar="showProfile" /> -->
+           <avatar class="mt-1 mb-0 mr-4 pa-0" :username="getZml.login.fullname"   @click="showProfile" />
            {{ getZml.login.fullname}}
         </v-card-title>
-        <v-card-subtitle class="ma-1 pa-1"> Information/Stats </v-card-subtitle>
+        <v-card-subtitle class="ma-1 pa-1">
+           Information/Stats
+           <v-btn to="/home" icon><v-icon> mdi-home</v-icon></v-btn>
+        </v-card-subtitle>
         <v-card-text>
+
           <ul>
           <li>Logins : {{ getZml.login.logins }} </li>
-          <li>Last Login : {{ getZml.login.lastdate }}</li>
+          <li>Last Login : {{ getZml.login.lastdate.substring(0,10) || 'none' }}</li>
           <li>Language - {{getZml.login.lang }}</li>
           <li>Type - {{getZml.login.type }}</li>
           <li>Email - <span v-if="getZml.login.email"> {{getZml.login.email }}</span>
@@ -46,24 +51,39 @@
         <v-card-actions class="ma-0 pa-0">
            <v-btn v-show="getZml.login.type != 'student'"
                   to="/userlist" small rounded
+                  title="Show userlist"
                   class="blue--text font-weight-black">
+             <v-icon v-if="$vuetify.breakpoint.smAndDown">rp</v-icon>
+             <template v-else>
              Reset Passwords
+             </template>
            </v-btn>
            <v-btn small rounded
                  @click="switchLocale"
                   title="Click here to change locale. (Language)"
                   class="blue--text font-weight-black">
+             <v-icon v-if="$vuetify.breakpoint.smAndDown">{{ displayLocale }}</v-icon>
+             <template v-else>
              {{ displayLocale }}
+             </template>
            </v-btn>
 
            <v-btn small rounded @click="showProfile = true" class="blue--text font-weight-black"
                   title="Change password, email, etc...">
-              Profile
+             <v-icon v-if="$vuetify.breakpoint.smAndDown">pr</v-icon>
+             <template v-else>
+             Profile
+             </template>
            </v-btn>
            <v-spacer />
            <v-btn to="/login"
                  small rounded
-                 class="blue--text font-weight-black"> Logout </v-btn>
+                 class="blue--text font-weight-black">
+           <v-icon v-if="$vuetify.breakpoint.smAndDown">lo</v-icon>
+           <template v-else>
+                 Logout
+           </template>
+           </v-btn>
 
         </v-card-actions>
         <div class="ma-2 caption"> <v-icon small>mdi-brain</v-icon>{{programname}} version {{ version }}</div>

@@ -1,8 +1,9 @@
 <template>
 <div>
 
+<h1> -------------------- WERNERVISUAL.VUE in test folder -------------------------</h1>
 
-  <v-btn @click="$emit('close')"> Close </v-btn>
+  <v-btn class="noise" @click="$emit('close')"> Close </v-btn>
 
 
 
@@ -90,6 +91,27 @@ export default {
                , prependInnerIcon:"mdi-wikipedia"
                , class:'pa-2 elevation-4'
             },
+            productGroup:
+            {  type: "wrap"
+               , title: "Some Group"
+               , col: { cols : 12}
+               , ripple:false
+               , class: "title ma-2 pa-2 rounded elevation-4",
+             schema: {
+              other6Field:{type: 'img'
+               , src:"/img/logo.png"
+               , class:'pa-2 elevation-4'
+               , width:"200"
+               , col: { cols : 6}
+               , contain:true
+              },
+              other7Field:{ type: 'text'
+                  , label: 'This is part of group'
+                  , col: { cols : 6}
+                  , prependInnerIcon:"mdi-yoga"
+              },
+            }}
+
       }
        this.mySchema1 = {
            email: { type: 'email'
@@ -181,7 +203,7 @@ export default {
   }
 
 .side-image {
-    background-image: url( '~@/assets/GreenStripe.svg');
+    background-image: url( '~@/assets/img/GreenStripe.svg');
     background-position: right;
 
     background-repeat: none;
@@ -212,4 +234,64 @@ export default {
   flex: 1;
   padding: 5px;
 }
+</style>
+
+<style lang="scss" scoped>
+.noise {
+  position: relative;
+  width: 287px; height: 36px;
+  border: none;
+  background: none;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+
+  &::after {
+    content: "Hover for Noise";
+    opacity: var(--op, 1);
+    transition: opacity 0.4s;
+  }
+
+  & > i {
+    position: absolute;
+    left: var(--left, 0);
+    top: 50%;
+    width: 3px; height: 72px;
+    transform: translateY(-50%) scaleY(var(--sy, 0));
+    z-index: -1;
+    transition: transform var(--duration) ease-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(#fff, hsl(var(--hue, 0), 75%, 75%));
+      border-radius: 50%;
+      animation: noise var(--duration) infinite ease-in-out alternate;
+      animation-play-state: var(--aps, paused);
+
+      @keyframes noise {
+        0% { transform: scaleY(calc(1 - (var(--size, 0)))); }
+        100% { transform: scaleY(calc(1 + (var(--size, 0)))); }
+      }
+    }
+
+    @for $i from 0 to 72 {
+      &:nth-child(#{$i + 1}) {
+        --left: #{$i * 4}px;
+        --duration: #{random(200) + 200}ms;
+        --size: #{random(1000) / 1000};
+        --hue: #{$i * 5};
+      }
+    }
+  }
+
+  &:hover {
+    --sy: 1;
+    --aps: running;
+    --op: 0;
+  }
+}
+
 </style>

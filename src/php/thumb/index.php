@@ -184,6 +184,7 @@ header('Pragma: no-cache' );
   
 
 function debug($text) {
-    file_put_contents('debug.txt.htm',  $text ,FILE_APPEND | LOCK_EX);
+    $time = date("Y-m-d h:i:sa");
+    file_put_contents('debug.txt.htm',  $time .'-'. $text ,FILE_APPEND | LOCK_EX);
 }
 ?>

@@ -92,6 +92,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "kal" */ '@/components/Calendar'),
     meta: {layout: la[3], authentication: "teacher" }
   },
+
   {
     path: '/choosesubjects',
     name: 'skool',
@@ -126,10 +127,19 @@ const routes = [
     meta: {layout: la[0], authentication: "teacher" }
   },
   {
-    path: '/periodtable',
+    path: '/periodtable/:periodDescription?',
     name: 'PeriodTable',
+    props:true,
+    params: {periodDescription: 'Monday'},
     component: () => import(/* webpackChunkName: "kal" */ '@/components/cal/PeriodTable.vue'),
     meta: {layout: la[0], authentication: "teacher" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "atten" */ '@/components/cal/PeriodListView.vue'),
+    path: '/periodview',
+    name: 'PeriodListView',
+    props:true,
+    meta: {layout: la[3], authentication: "teacher" }
   },
   {
     path: '/rooster/:user_name?',
@@ -158,6 +168,14 @@ const routes = [
     props:true,
     meta: {layout: la[0], authentication: "teacher" }
   },
+  {
+    path: '/cemismenu',
+    name: 'Cemis',
+    component: () => import(/* webpackChunkName: "test" */ '@/test/Cemis.vue'),
+    props:true,
+    meta: {layout: la[0], authentication: "public" }
+  },
+
 //import BasePrintTable from '@/components/base/BasePrintTable.vue'
   {
     path: '/dkhsawards',   name: 'dkhsawards',
@@ -265,6 +283,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "work" */ '@/views/test/WernerTest.vue')
     ,name: 'WernerTest'
     ,path: '/wernertest'
+    ,meta: {layout: la[3], authentication: "werner"}
+  },
+  {
+    component: () => import(/* webpackChunkName: "work" */ '@/tmp/w/WernerTest.vue')
+    ,name: 'WernerT'
+    ,path: '/wernert'
     ,meta: {layout: la[3], authentication: "werner"}
   },
 

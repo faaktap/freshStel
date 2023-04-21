@@ -2,7 +2,32 @@
   <!-- https://github.com/SortableJS/Sortable for draggable options this looks like the best. -->
   <v-container fluid>
 
-   <v-card color="silver" class="ma-2 pa-2">
+
+<!-- <v-container class="wegoflex ma-0 py-0">
+ <v-row class="ma-0">
+  <v-container class="folders flex-grow-0 flex-shrink-0 col">
+    wekrjlwie jrlkwqejrlwejr wqerwer <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>
+    <v-card-actions> <v-btn> werwqerqwer </v-btn><v-btn> werwqerqwer </v-btn><v-btn> werwqerqwer </v-btn></v-card-actions>
+    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+    <v-card><v-card-title>awslejklwqkrjlwqkrweqr</v-card-title>    <v-card-actions> <v-btn> werwqerqwer </v-btn></v-card-actions>    </v-card>
+  </v-container>
+  <v-container class="files flex-grow-1 col">
+    werjlwqirjwqlkrjwqelrk
+  </v-container>
+ </v-row>
+</v-container>-->
+
+   <v-card color="silver" class="ma-2 pb-0">
       <v-card width="100%">
         <base-bread
           v-if="curDir"
@@ -13,7 +38,6 @@
           @changeFolder="changeBreadcrumbFolder"
         />
       </v-card>
-
       <v-toolbar
         dense
         row
@@ -97,7 +121,7 @@
          Rename Item
         </base-tool-button>
 
-        <v-switch
+        <v-switch x-small
           v-model="showFoldersInFileList"
           class="ml-2 pt-5"
           label="Folders"
@@ -118,6 +142,9 @@
 
 
       </v-toolbar>
+      <!-- For a little spacing -->
+      &nbsp;
+
       <v-row  v-if="allowEdit">
         <v-col cols="12">
           <v-card color="silver" class="ma-0 pa-1 text-caption">
@@ -181,8 +208,6 @@
      </tr>
      </tbody>
     </v-simple-table>
-
-
               </base-title-expand>
             </v-card>
             <div v-else>
@@ -190,14 +215,15 @@
             </div>
           </v-card>
         </v-col>
-      </v-row>
+    </v-row>
 
-      <v-row row wrap>
-        <v-col cols="12" sm="6" md="4">
-            <v-card
-              class="ma-2 pa-2 overflow-y-auto"
-            >
-              <v-card-actions class="ma-0 pa-0">
+
+
+    <v-row row wrap>
+<!-- THIS IS THE LEFTHAND SIDE OF THE SCREEN -->
+        <v-col class="ma-0 pa-0" cols="12" sm="6" :md="mdColLeft" style="max-height: calc(100vh - 63px);overflow: auto;">
+            <v-card class="ma-0 pa-0 overflow-y-auto" elevation="0">
+              <v-card-actions class="ma-2 pa-2">
                 <base-tool-button
                   title="go Back one folder"
                   @click="back"
@@ -205,6 +231,15 @@
                 >
                   back
                 </base-tool-button>
+                <v-spacer />
+                <v-switch
+                 v-if="$vuetify.breakpoint.lgAndUp"
+                 v-model="showFoldersInFileList"
+                 class="ml-2 pt-1"
+                 :x-small="$vuetify.breakpoint.smAndDown"
+                 label="Show Folders in List"
+                 />
+
                 <v-spacer />
                 <v-btn v-if="$vuetify.breakpoint.smAndDown || showMobile"
                        @click="showMobile = true"
@@ -216,7 +251,13 @@
               </v-card-actions>
               <v-card-text>
 <!-- Show folders, either in a dialog for small, or standard display --->
-              <v-dialog v-model="showMobile">
+            <v-dialog v-model="showMobile" height="50%" width="90%">
+              <!-- <base-dialog
+                iconName="mdi-folder"
+                buttonText="Folder"
+               paddingRight="130px"> -->
+               <v-card class="text-caption">
+                <v-card-title>Folder List<v-spacer /><v-btn icon x-small @click="showMobile = false"><v-icon small>mdi-close</v-icon></v-btn></v-card-title>
                <folders
                 :directory-display-records="directoryDisplayRecords"
                 :folder-load-url="folderLoadUrl"
@@ -226,9 +267,17 @@
                 @moreFolder="checkPathBeforeLoadFolder"
                 @folderSelected="folderSelected = $event"
                />
-              </v-dialog>
+               <v-switch
+                 v-model="showFoldersInFileList"
+                 class="ml-2 pt-5"
+                 :x-small="$vuetify.breakpoint.smAndDown"
+                 label="Show Folders in List"
+                 />
+
+              </v-card>
+            </v-dialog>
                <folders
-                class="hidden-sm-and-down"
+                class="hidden-sm-and-down mt-0 pt-0"
                 :directory-display-records="directoryDisplayRecords"
                 :folder-load-url="folderLoadUrl"
                 :current-path="curDir"
@@ -241,7 +290,8 @@
         </v-col>
 
 <!-- Show the files --->
-        <v-col cols="12" sm="6" md="8">
+<!-- THIS IS THE RIGHTHAND SIDE OF THE SCREEN -->
+        <v-col cols="12" sm="6" :md="mdColRight"  style="height: calc(100vh - 63px);overflow: auto;">
           <!-- FILES DISPLAY -->
         <drop-zone @activateDrop="activateDrop" description="OK, I've got it - let go of the mousebutton..">
           <v-card class="ma-2 pa-2">
@@ -262,6 +312,7 @@
         </v-col>
       </v-row>
     </v-card>
+
 
 <!---------------- SHOW CREATE FOLDER --------------------------------------->
     <v-dialog
@@ -354,12 +405,14 @@
 <!---------------- SHOW FILE --------------------------------------->
     <v-dialog v-model="showAttachment"
                   :fullscreen="$vuetify.breakpoint.lgAndDown"
-                  height="90%"
+                  height="98%"
                   :scrollable="false"
                   width="unset">
+      <!-- //zml - can we pass all the files to this component, so they can press next?zml -->
       <show-attachment-dialog :image="attachment.src"
                               :imagetype="attachment.srctype"
                               @close="showAttachment = !showAttachment"
+                              @askForNext="askForNext"
       />
    </v-dialog>
     <!-- Add some space at the bottom, so that page does not jump around on new file load-->
@@ -389,6 +442,8 @@ import ShowAttachmentDialog from '@/components/ShowAttachmentDialog.vue'
 
 import DropZone from '@/components/DropZone.vue'
 
+import BaseDialog from '@/components/base/BaseDialog.vue'
+
 export default {
   name: 'FolderEdit',
   components: {
@@ -400,9 +455,12 @@ export default {
     FileUpload,
     LoadingBall,
     ShowAttachmentDialog,
-    DropZone
+    DropZone,
+    BaseDialog
   },
   data: () => ({
+    mdColLeft:4,
+    mdColRight:8,
     usertype:usertype,
     getZml: getters.getState({ object:"gZml" }),
     fileDisplayRecords: [],
@@ -431,9 +489,19 @@ export default {
     showAttachment: false,
     attachment:{src:'', srctype:''},
     allowEdit: false,
-    drawer: false
+    drawer: false,
+    lastAttachViewObj:{}
   }),
   methods: {
+    changeMdColSize() {
+      if (this.mdColLeft == 4) {
+          this.mdColLeft -= 2
+          this.mdColRight += 2
+      } else {
+          this.mdColLeft += 2
+          this.mdColRight -= 2
+      }
+    },
     activateDrop() {
       this.showUpload = true
     },
@@ -614,6 +682,30 @@ export default {
         return
       }
       this.prepareAttachment(fileObj)
+      this.lastAttachViewObj = fileObj
+    },
+    askForNext(key) {
+      if (key == undefined) {console.log('diis', key);return}
+      // console.log('provide them wiKKKKKKKKKKKKKKK', key)
+      // console.log('provide them with a new object, listed after the current obj, or the first one', this.lastAttachViewObj, key, this.fileDisplayRecords)
+      let fname = this.lastAttachViewObj.filename
+      let idx = this.fileDisplayRecords.findIndex(e => {
+        //console.log( e.filename ,fname)
+        return e.filename === fname
+      })
+      // console.log('adter map search : ', idx, fname)
+      let next
+      if (idx > -1) {
+         if (key == 'a' || key == 'A') next = idx - 1
+         if (key == 'd' || key == 'D') next = idx + 1
+         if (!next) next = idx+1
+         if (next && this.fileDisplayRecords[next] && !this.fileDisplayRecords[next].dir ) {
+            this.lastAttachViewObj = this.fileDisplayRecords[next]
+            this.prepareAttachment(this.lastAttachViewObj)
+         }
+      }
+      //alert(idx)
+
     },
     prepareAttachment(fileObj) {
       if (fileObj.ext == 'link') {
@@ -745,6 +837,37 @@ export default {
     this.allowEdit = ['teacher','admin'].includes(this.getZml.login.type)
     // this.$cs.l('access:', this.getZml.login.type)
   },
+  watch: {
+    showFoldersInFileList() {
+        this.changeMdColSize()
+    }
+  }
 
 }
 </script>
+
+
+<style>
+.wegoflex {
+  display: flex;
+  flex-flow: row wrap;
+}
+.wegoflex > * {
+  flex: 1 100%;
+}
+.folders {
+  position: relative;
+  padding: 0;
+  padding-top: 0px;
+  border-right: 1px solid rgba(51, 51, 51, 0.3);
+  min-width: 230px;
+  max-width: 530px;
+  padding-top: 15px;
+  height: calc(100vh - 63px);
+  overflow: auto;
+}
+.files {
+  flex: 3 0px;
+  align-content: stretch;
+}
+</style>
