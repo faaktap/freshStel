@@ -75,6 +75,9 @@ export default {
 
    zData.quickLoadInitialData('App.Vue: Load LocalStorage')
 
+   //Cheat way to save user to windows...
+   window.$aa = this.getZml.login
+
 
 /* START External Programs that uses app.vue to make use of global stuff.    */
     this.$root.$confirm = this.$refs.confirm.open

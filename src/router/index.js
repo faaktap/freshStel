@@ -121,6 +121,16 @@ const routes = [
     meta: {layout: la[3], authentication: "werner" }
   },
   {
+    component: () => import(/* webpackChunkName: "about" */ '@/views/quanda.vue'),
+    path: '/quanda', name: 'FAQ',
+    meta: {layout: la[3], authentication: "werner" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "about" */ '@/test/test7Up.vue'),
+    path: '/test7', name: 'test7Up',
+    meta: {layout: la[3], authentication: "werner" }
+  },
+  {
     path: '/kalender',
     name: 'Kalender',
     component: () => import(/* webpackChunkName: "kal" */ '@/components/cal/Kalender.vue'),

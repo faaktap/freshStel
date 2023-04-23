@@ -1,5 +1,5 @@
 const PROJECT_NAME = "dkLearn"
-const PROJECT_VERSION = "54.3k"
+const PROJECT_VERSION = "54.3l"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -20,10 +20,12 @@ const MAX_UPLOAD_SIZE = 90 * 1024 * 1024
 export const zmlConfig = {
   apiPath:    "https://kuiliesonline.co.za/api/candid/candidates.php",
   apiUpload:  "https://kuiliesonline.co.za/api/fileUpload/fileUpload.php",
+  apiUploadCR:  "https://kuiliesonline.co.za/api/crfile/fileUpload.php",
   apiDKHS:    "https://kuiliesonline.co.za/api/dkhs/dkhs.php",
   localPath:  "https://kuiliesonline.co.za/qrsite",
   videoPath:  "https://kuiliesonline.co.za/",
   emailPath:  "https://kuiliesonline.co.za/api/swiftmailer/genMailer.php",
+  filesRootFolder:'/api/crfile/files/',
   maxUploadSize: MAX_UPLOAD_SIZE,
   projectID: PROJECT_ID,
   projectName: PROJECT_NAME,

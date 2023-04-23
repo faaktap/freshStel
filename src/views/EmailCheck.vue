@@ -13,8 +13,8 @@
                      :tList="emailStatusList"
                      :tHeading="'Email Status Summary  ( Records : ' + emailStatusList.length + ')'"
                      bHeading="Double click an item to delve deeper."
-                     @edit="tableDblClick"
-                     @select="tableSelect"
+                     @delete="tableDelete"
+                     @update="tableSelect"
          />
       <!-- <v-btn @click="loadAllData"
              title="Click here to load delivery summary."
@@ -64,16 +64,13 @@ export default {
     this.loadAllData()
    },
    methods: {
-     tableDblClick(evt,item) {
-        //  this.$cs.l('back at base - dblClick:evt:', evt )
-        this.$cs.l('back at base - Edit:item:',item.item.deliveryid,evt )
-        //  this.$cs.l('Table Show Delivieries 3: ', item.item)
-         this.$router.push({ name: 'EmailDeliveryReport'
-                           , params: {deliverid: item.item.deliveryid} })
+     tableDelete(item) {
+        this.$cs.l('back at base - Edit:item:',item.deliveryid )
+        this.$router.push({ name: 'EmailDeliveryReport', params: {deliverid: item.deliveryid} })
      },
-     tableSelect(evt,item) {
-       //this.$cs.l('back at base - select:',item.item, evt)
-       this.$cs.l('here we could have a popup form?', evt, item)
+     tableSelect(item) {
+       this.$cs.l('back at base - Edit:item:',item.deliveryid )
+       this.$router.push({ name: 'EmailDeliveryReport', params: {deliverid: item.deliveryid} })
      },
      loadAllData() {
        this.progress = true;

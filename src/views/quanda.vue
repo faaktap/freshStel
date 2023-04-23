@@ -1,16 +1,26 @@
 <template>
   <v-container fluid>
 
-    <v-btn
-      icon
-      class="float-right"
-      @click="load()"
-      title="refresh (load new data)"
-    >
-      <v-icon color="success"> mdi-refresh </v-icon></v-btn
-    >
+    <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall109.jpg"
+              title="Kuiliesonline FAQ "
+              text=""
+              breakup1="100"
+              breakup2="20"
+    />
 
-    <h1  > title="Frequently asked Questions" </h1>
+<v-toolbar  dense  row  wrap>
+   Also known as .. Frequently asked Questions
+    <v-spacer/>
+
+    <v-btn icon @click="load()" title="refresh (load new data)">
+      <v-icon color="success"> mdi-refresh </v-icon>
+    </v-btn>
+    <v-btn icon @click="addNewOne()" title="Ask a Question">
+      <v-icon color="primary"> mdi-plus </v-icon>
+    </v-btn>
+    <v-back class="float-right" />
+</v-toolbar>
 
     <template v-if="faqList">
       <blockquote
@@ -69,7 +79,7 @@
       :fullscreen="$vuetify.breakpoint.smAndDown"
     >
       <transition name="fade">
-        <v-card color="black" dark>
+        <v-card color="grey">
           <typical-edit-form
             class="ma-2 pa-2"
             :schema="faqSchema"
@@ -80,14 +90,18 @@
         </v-card>
       </transition>
     </v-dialog>
+    <!-- {{ faqList }} -->
   </v-container>
 </template>
 
 <script>
 import { zmlFetch } from "@/api/zmlFetch.js";
 import { faqSchema } from "@/api/faqFormSchema.js";
+import TypicalEditForm from "@/components/vfbase/TypicalEditForm.vue"
+import HeroSection from "@/views/sections/HeroSection.vue"
+import VBack from '@/components/base/VBack.vue'
 export default {
-  components: { },
+  components: { TypicalEditForm, HeroSection, VBack },
   name: "QandAPage",
   data: () => ({
     faqSchema: {},
@@ -95,34 +109,31 @@ export default {
     completedData: {},
     task: { workDone: "", progress: false, action: "", task: "" },
     showSchema: false,
-    currentRecord: {},
+    curRecord: {},
     faqList: {},
   }),
   methods: {
     getData(msg) {
       this.completedData = msg;
-      if (JSON.stringify(this.completedData) != JSON.stringify(msg)) {
-        cl("faq a change occuired - must still work on this");
-      } else {
-        cl("faq no change occured - must still work on this");
-      }
       this.save();
     },
     addNewOne() {
       this.faqModel = {};
       this.faqSchema = faqSchema;
-      cl("bra before add data model,schema", this.faqModel, this.faqSchema);
-      this.currentRecord.id = 0;
-      this.currentRecord.model = this.faqModel;
-      this.currentRecord.model.faqOriginator = this.$g.zml.login.fullname;
-      this.currentRecord.schema = this.faqSchema;
+      this.curRecord.id = 0;
+      this.curRecord.model = this.faqModel;
+      this.curRecord.model.faqOriginator = this.$super.fullname;
+      this.curRecord.schema = this.faqSchema;
       this.showSchema = true;
     },
     showForm(id) {
-      this.currentRecord = this.faqList.find((e) => e.id == id);
-      if (this.currentRecord.userid == 0) this.currentRecord.userid = 1234;
-      this.faqModel = this.currentRecord.model;
+      this.curRecord = this.faqList.find((e) => e.id == id);
+      alert(JSON.stringify(this.curRecord))
+      if (this.curRecord.userid == 0) this.curRecord.userid = this.$super.user;
+      this.faqModel = this.curRecord.model;
+      alert(JSON.stringify(this.curRecord.model))
       this.faqSchema = faqSchema;
+      alert(JSON.stringify(faqSchema))
       this.showSchema = true;
     },
     save() {
@@ -130,10 +141,10 @@ export default {
       t.task = "SaveFaq";
       t.action = "trying to save faq information";
       t.workDone = "WAIT";
-      t.data = this.currentRecord;
-      t.data.name = this.currentRecord.model.faqName;
-      t.user = this.$g.zml.login;
-      zmlF.ZQR(t, this.afterwards, this.loadError);
+      t.data = this.curRecord;
+      t.data.name = this.curRecord.model.name;
+      t.user = {'fullname': this.$super.fullname, 'userid': this.$super.userid}
+      zmlFetch(t, this.afterSave, this.loadError);
     },
     load() {
       let t = this.task;
@@ -143,25 +154,36 @@ export default {
       zmlFetch(t, this.loadData, this.loadError);
     },
     loadData(response) {
-      this.faqList = response;
-      cl("bra list", this.faqList);
-      if (this.faqList && this.faqList.length) {
-        this.faqList.forEach((element) => {
-          element.model = JSON.parse(element.jdocstructure);
+      if ('error' in response && response.error.includes('We did not find any')) {
+        alert(response.error)
+        this.addNewOne()
+        return
+      }
+      this.faqList = JSON.parse(JSON.stringify(response))
+      this.$cs.l("bra list1", response);
+      this.$cs.l("bra list2", this.faqList);
+      this.faqList = []
+      if (response && response.length) {
+        response.forEach((e) => {
+          this.$cs.l("bra list3", e);
+          e.model = JSON.parse(e.jdocstructure);
+          this.faqList.push(e)
+          this.$cs.l("bra list4", this.faqList);
         });
       }
-      this.$g.zml.faqs = this.faqList;
+      this.$cs.l("bra list5", this.faqList);
     },
-    afterwards(response) {
+    afterSave(response) {
       if (this.task.progress)
         console.error(
           "bra after",
           "Progress should be set as false when we get here!"
         );
-      cl("bra after", response);
+      this.$cs.l("bra after", response);
       //this.myModel = JSON.parse( response[0].jdocstructure )
       //this.myModelBackup = JSON.parse( response[0].jdocstructure )
       this.showSchema = false;
+      this.load()
     },
     loadError(e) {
       if (this.task.progress)
@@ -169,17 +191,16 @@ export default {
           "bra error",
           "Progress should be set as false when we get here!"
         );
-      cl("bra error", e);
+      this.$cs.l("bra error", e);
     },
   },
   computed: {
   },
   created() {
-    init(this, "qanda");
-    this.user = 'werner'
   },
   mounted() {
-    cl("faq mount");
+    this.$cs.l("faq mount");
+    this.user = this.$super.fullname
     this.load();
   },
 };

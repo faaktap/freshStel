@@ -352,6 +352,8 @@ export default {
             this.$super.user = false
           }
           this.$super.username = this.getZml.login.username
+          this.$super.fullname = this.getZml.login.fullname
+          this.$super.userid   = this.getZml.login.userid
 
           if (!this.goodPassword()) {
             zmlLog(this.loginObj.username, "LoginFail3", 'To easy password')

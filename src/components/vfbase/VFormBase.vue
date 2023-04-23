@@ -388,6 +388,7 @@
   import  { VCard,VAutocomplete, VCombobox } from 'vuetify/lib'
   import { get, isPlainObject, isFunction, isString, isNumber, isEmpty, orderBy, delay } from 'lodash'
 
+
 //
 // Declaration
   const typeToComponent = {
@@ -517,9 +518,11 @@
   // type wrap or group - if no typeInt defined take default
   const defaultInternGroupType = 'v-card'
 //
+import VHead from "@/components/base/VHead.vue"
+import VImage from "@/components/base/VImage.vue"
 export default {
   name: 'VFormBase',
-  components:{VCard, VAutocomplete, VCombobox},
+  components:{VCard, VAutocomplete, VCombobox, VHead, VImage},
   props: {
     id: {
       type: String,

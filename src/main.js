@@ -36,10 +36,10 @@ Vue.prototype.$playSound = (path, volume = .5) => {
 
 
 // eslint-disable-next-line
-export const cs = {
+Vue.prototype.$cs = {
   // eslint-disable-next-line
   l: (...args) => {
-        console.log('cl',...args);
+        console.log('mj',...args);
     },
   scrollToTop: (containerID) => {
       let e = document.getElementById(containerID || "app")
@@ -48,9 +48,11 @@ export const cs = {
 }
 
 Vue.prototype.$history = window.history;
-Vue.prototype.$cs = cs;
+//Vue.prototype.$cs = cs;
 Vue.prototype.$super = Vue.observable({
   user: false,
+  fullname: '',
+  userid: '',
   message: 'message',
   test: 'test'
 });
