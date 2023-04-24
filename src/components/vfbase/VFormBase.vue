@@ -520,9 +520,10 @@
 //
 import VHead from "@/components/base/VHead.vue"
 import VImage from "@/components/base/VImage.vue"
+import VCustom from "@/components/base/VCustom.vue"
 export default {
   name: 'VFormBase',
-  components:{VCard, VAutocomplete, VCombobox, VHead, VImage},
+  components:{VCard, VAutocomplete, VCombobox, VHead, VImage, VCustom},
   props: {
     id: {
       type: String,

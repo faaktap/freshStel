@@ -88,6 +88,7 @@
 </template>
 
 <script>
+function cl(...args) {console.log('TEFrm' ,...args)}
 import QuickForm from "@/components/vfbase/QuickForm.vue";
 import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
 export default {
@@ -108,7 +109,7 @@ export default {
   }),
   methods: {
     feedback(data) {
-      this.$cs.l("tef received from quickform: " + JSON.stringify(data));
+      cl("feedback received quickform: stop here" + JSON.stringify(data));
       // wait with this ... this.localData = JSON.parse(JSON.stringify(data))
       //Not sure if we should send local data back all he time?
       //If you activate below, you get a JSON loop. Ek dink dis hoekom ek quickform create het in eerste plek
@@ -118,13 +119,13 @@ export default {
       this.$refs.myForm.resetValidation();
     },
     checkAndSendBack() {
-      this.$cs.l("tef did form validate??",this.$refs.myForm.validate(),this.formValid);
+      cl("checkAndSendBack()",this.$refs.myForm.validate(),this.formValid);
       if (this.$refs.myForm.validate()) {
         this.$emit("done", this.localData)
       } else {
-        this.$cs.l("tef validation error-A",this.$refs.myForm.validate(),this.formValid)
-        this.$cs.l("tef validation error-B", this.$refs.myForm.errorBag)
-        this.$cs.l("tef validation error-C", this.$refs)
+        cl("validation error-A",this.$refs.myForm.validate(),this.formValid)
+        cl("validation error-B", this.$refs.myForm.errorBag)
+        cl("validation error-C", this.$refs)
         //Move up to possibly first error - not sure how to pin point where it is...yet
         this.$cs.scrollToTop("myForm") /// myForm
       }
@@ -136,43 +137,25 @@ export default {
     },
   },
   mounted() {
-    this.$cs.l(
-      "tef Mount : Typical Edit Form",
-      this.$options
-    );
-    if (Object.keys(this.schema).length === 0) this.ready = false;
-    if (Object.keys(this.schema).length > 0) this.ready = true;
-    this.localSchema = this.schema;
-    this.localData = this.model;
+    cl("Mount : Typical Edit Form",this.$options)
+    if (Object.keys(this.schema).length === 0) this.ready = false
+    if (Object.keys(this.schema).length > 0) this.ready = true
+    this.localSchema = this.schema
+    this.localData = this.model
   },
   watch: {
     title() {
-      this.$cs.l("tef Watch Schema", "test for emptiness")
+      cl("Watch Title", "test for emptiness")
+      this.ready = false
       if (Object.keys(this.schema).length === 0) {
         //We have a empty object passed - prevent form display
-        this.ready = false;
+        this.ready = false
       } else {
-        this.localData = this.model;
-        this.localSchema = this.schema;
-        this.ready = false;
+        this.localData = this.model
+        this.localSchema = this.schema
+        this.ready = false
       }
-    },
-
-    // schema() {
-    //   this.$cs.l('tef Watch Schema', 'test for emptiness')
-    //   if (Object.keys(this.schema).length === 0) {
-    //     //We have a empty object passed - prevent form display
-    //     this.ready = false
-    //   } else {
-    //     this.localSchema = this.schema
-    //     this.localData = this.model
-    //     this.ready = true
-    //   }
-    // },
-    // model() {
-    //   this.localData = this.model
-    //   this.localSchema = this.schema
-    // },
-  },
-};
+    }
+  }
+}
 </script>

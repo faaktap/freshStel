@@ -131,6 +131,12 @@ const routes = [
     meta: {layout: la[3], authentication: "werner" }
   },
   {
+    component: () => import(/* webpackChunkName: "about" */ '@/test/schemaCRUD.vue'),
+    path: '/testCrud', name: 'schemaCRUD',
+    meta: {layout: la[3], authentication: "werner" }
+  },
+
+  {
     path: '/kalender',
     name: 'Kalender',
     component: () => import(/* webpackChunkName: "kal" */ '@/components/cal/Kalender.vue'),

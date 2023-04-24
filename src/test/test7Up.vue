@@ -44,8 +44,6 @@
      resultList:::: {{ resultList }}
      <br>
      newFileList:::: {{ newFileList}}
-     <v-btn @click="test"> test </v-btn>
-     files====={{ files }}
 
 </div>
 </template>

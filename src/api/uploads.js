@@ -1,7 +1,7 @@
 import { zmlConfig } from '@/api/constants.js';
 
 function cl(...args) {
-        console.log('uploads.js:' ,...args);
+        //console.log('uploads.js:' ,...args);
 }
 
 
@@ -11,7 +11,7 @@ export const uploads = {
       for (const [key, value] of Object.entries(inThisObj)) {
         if (key.toUpperCase().indexOf('FILE') > -1) {
             if (typeof(value) == 'object' && Array.isArray(value) == true) {
-              console.log('aaaaaaaaaaaaaaaaaa?',key, value, Array.isArray(value))
+               cl('aaaaaaaaaaaaaaaaaa?',key, value, Array.isArray(value))
                let x = Array.from(value)
                if (x.length == 0) x.push(value)
                addHere = addHere.concat(x)

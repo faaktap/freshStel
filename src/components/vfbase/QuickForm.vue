@@ -40,6 +40,9 @@
 </template>
 
 <script>
+function cl(...args) {
+  //console.log('QckFrm' ,...args)
+}
 import VFormBase from "@/components/vfbase/VFormBase.vue";
 export default {
   name: "QuickForm",
@@ -53,22 +56,18 @@ export default {
   }),
   methods: {
     inputHandler(e1,e2) {
-      this.$cs.l("qf inputHandler", e1,e2);
+      cl("qf inputHandler", e1,e2);
     },
     test(e) {
       //If someone click on a icon, we might want something to happen
-      this.$cs.l("qf", "test click on form - send on blur", e);
+      //cl("qf", "test click on form - send on blur", e);
       //let { on, key, obj, params } = e
       if (e.key.indexOf("file") > -1) {
         alert("we touched a file");
       }
       if (e.key.indexOf("werner") > -1) {
-        this.$cs.l(
-          "qfb",
-          "We Clicked on field icon where fieldname has word werner inside it - we can emit this if we want: e.params.text",
-          e.params.text,
-          e
-        );
+        cl("We Clicked on field icon where fieldname has word werner inside it - we can emit this if we want: e.params.text:",
+          e.params.text,'fullE:',e)
         //cl('qfb','on, key, obj, params = ', on, key, obj, params)
         //Or we can emit all clicks? - but how to get the data back?
       } else {
@@ -80,7 +79,7 @@ export default {
     },
   },
   mounted() {
-    this.$cs.l("qf", "start : quickform");
+    cl("mount : quickform");
   },
   watch: {
     myModel() {
@@ -88,7 +87,7 @@ export default {
     },
     /* mySchema: {
         handler(newValue, oldValue) {
-            this.$cs.l('Our watch say something has changed!!!', newValue, oldValue)
+            cl('Our watch say something has changed!!!', newValue, oldValue)
         },
         deep: true
       }*/
