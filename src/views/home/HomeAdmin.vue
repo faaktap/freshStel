@@ -1,6 +1,19 @@
 <template>
 <v-container fluid v-if="getZml.login.isAuthenticated">
 <!-- homeadmin -->
+
+      <v-layout row wrap align-content-start justify-space-between>
+        <v-btn small class="ma-2"
+                            @click="goToCalendar">
+         <v-icon> mdi-calendar </v-icon>
+          calendar
+        </v-btn>
+        <v-btn small class="ma-2"  to="/attload">
+        <v-icon> mdi-store-clock-outline </v-icon>
+          Attendance
+        </v-btn>
+      </v-layout>
+
   <base-tool :toolList="[]"
            toolbarName="Menu for Admin & Teachers"
            :loading="loading"
@@ -50,20 +63,6 @@
 
   <menu-list-new :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
 
-     <base-title-expand heading="Calendar">
-     <!-- <v-row>
-         <v-col cols="12">
-          <v-btn :to="`/calteach/${wieOmTeWys}`" class="float-right"> Full Screen </v-btn>
-        </v-col>
-      </v-row> -->
-      <v-container fluid>
-      <calendar
-               :menemonic="wieOmTeWys" />
-      </v-container>
-
-     </base-title-expand>
-
-
 </v-container>
 </template>
 
@@ -75,18 +74,19 @@ import { zmlFetch } from '@/api/zmlFetch.js'
 //import { doStuff } from '@/api/buttons'
 //import { infoSnackbar } from '@/api/GlobalActions';
 import MenuListNew from '@/components/MenuListNew.vue';
-import Calendar from '@/components/Calendar.vue';
+//import Calendar from '@/components/Calendar.vue';
 //import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
-
-import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
+import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
+//import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 import baseTool from '@/components/base/baseTool.vue'
 
 export default {
     name:"HomeAdmin",
     components:{
-               Calendar
+             //  Calendar
              //, PersonelMenemonic
-             , BaseTitleExpand
+             //, BaseTitleExpand
+               baseButtonDialog
              , MenuListNew
              , baseTool
     },
@@ -104,12 +104,15 @@ export default {
         loading:false,
         menuInfo: false,
         menuSmall: false,
-        menuType: 'all',
+        menuType: 'teacher',
         menuSearch:false,
     }),
     computed:{
     },
     methods:{
+      goToCalendar() {
+        this.$router.push({ name: 'CalendarTeacher', params: {menemonic: this.wieOmTeWys} })
+      },
       changeType() {
         if (this.menuType == 'all') { this.menuType = 'admin'; return}
         if (this.menuType == 'admin') { this.menuType = 'teacher'; return}

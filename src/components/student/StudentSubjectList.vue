@@ -42,7 +42,7 @@
               <!-- {{ s.ckey }} -->
                 <!-- Next Exam : {{s.examdate}} -->
               <!-- M.S at {{teacher.ms}} <br> M.S.C at {{teacher.msc}} -->
-               {{ s }}
+
             </v-card-text>
 
             <v-card-actions>
@@ -94,7 +94,7 @@ export default {
       subjectList:{},
       persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
       loading: false,
-      showAs: 'card',
+      showAs: 'list',
       surname: '',
       initial: '',
       showPers:false

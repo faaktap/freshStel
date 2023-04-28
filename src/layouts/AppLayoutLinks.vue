@@ -4,7 +4,7 @@
   <template v-if="getZml.login.isAuthenticated == true">
   <v-app-bar app color="#45516b" :title="programname">
     <zml-title :maintitle="programname" />
-    <toolbar-buttons menuDisplay="horizontal" :buttonGroup="toolbars"/>
+    <toolbar-buttons menuDisplay="horizontal" :buttonGroup="toolbars" />
     <v-spacer />
     <login-button/>
   </v-app-bar>

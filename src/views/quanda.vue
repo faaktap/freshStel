@@ -46,12 +46,12 @@
                 left
                 transition="slide-x-transition"
               >
-                <v-icon>mdi-fountain-pen-tip </v-icon>
+                <v-icon class="ma-2 pa=2" @click="showMore(c.id)">mdi-skew-more </v-icon>
               </v-badge>
             </v-hover>
           </v-btn>
         </p>
-        A: &#8220; {{ c.model.faqAnswer }} &#8221;
+        A: &#8220;<span v-html="c.model.faqAnswer"></span>&#8221;
         <footer>
           <small>
             <em>&mdash;{{ c.model.faqOriginator }}</em>
@@ -62,8 +62,9 @@
                 right
                 :content="`created on ${c.createdate}`"
                 transition="slide-x-transition"
+                class="ma-1 pa-1"
               >
-                <v-icon>{{ c.icon }} </v-icon>
+                <v-icon class="ma-1 pa-1">{{ c.icon }} </v-icon>
               </v-badge>
             </v-hover>
           </small>
@@ -72,6 +73,22 @@
     </template>
 
     <v-dialog
+      v-model="showPic"
+      :max-width="900"
+      style="position: relative"
+      transition="home"
+      :fullscreen="$vuetify.breakpoint.smAndDown"
+    >
+      <transition name="fade">
+        <v-card color="grey">
+          <v-img :src="'https://kuiliesonline.co.za' + faqPic"
+            class="ma-2 pa-2"
+          />
+          <v-btn @click="showPic = false"> close </v-btn>
+        </v-card>
+      </transition>
+    </v-dialog>
+    <!-- <v-dialog
       v-model="showSchema"
       :max-width="900"
       style="position: relative"
@@ -89,62 +106,42 @@
           />
         </v-card>
       </transition>
-    </v-dialog>
-    <!-- {{ faqList }} -->
+    </v-dialog> -->
   </v-container>
 </template>
 
 <script>
 import { zmlFetch } from "@/api/zmlFetch.js";
-import { faqSchema } from "@/api/faqFormSchema.js";
-import TypicalEditForm from "@/components/vfbase/TypicalEditForm.vue"
 import HeroSection from "@/views/sections/HeroSection.vue"
 import VBack from '@/components/base/VBack.vue'
+import { questionSchema } from '@/api/faqFormSchema.js'
 export default {
-  components: { TypicalEditForm, HeroSection, VBack },
+  components: { HeroSection, VBack },
   name: "QandAPage",
   data: () => ({
-    faqSchema: {},
     faqModel: {},
+    faqPic:'',
+    showPic: false,
     completedData: {},
     task: { workDone: "", progress: false, action: "", task: "" },
-    showSchema: false,
     curRecord: {},
     faqList: {},
+    questionSchema
   }),
   methods: {
-    getData(msg) {
-      this.completedData = msg;
-      this.save();
+    showMore(id) {
+      let p = this.faqList.find(e => e.id == id)
+      if (p && p.model.imgFaq) {
+           this.faqPic = p.model.imgFaq
+           this.showPic = true
+      }
     },
     addNewOne() {
-      this.faqModel = {};
-      this.faqSchema = faqSchema;
-      this.curRecord.id = 0;
-      this.curRecord.model = this.faqModel;
-      this.curRecord.model.faqOriginator = this.$super.fullname;
-      this.curRecord.schema = this.faqSchema;
-      this.showSchema = true;
+      alert('easiest wat is this....')
+       this.$router.push({ name: 'addFaq' , meta: {layout: "AppLayoutDefault" }})
     },
     showForm(id) {
       this.curRecord = this.faqList.find((e) => e.id == id);
-      alert(JSON.stringify(this.curRecord))
-      if (this.curRecord.userid == 0) this.curRecord.userid = this.$super.user;
-      this.faqModel = this.curRecord.model;
-      alert(JSON.stringify(this.curRecord.model))
-      this.faqSchema = faqSchema;
-      alert(JSON.stringify(faqSchema))
-      this.showSchema = true;
-    },
-    save() {
-      let t = this.task;
-      t.task = "SaveFaq";
-      t.action = "trying to save faq information";
-      t.workDone = "WAIT";
-      t.data = this.curRecord;
-      t.data.name = this.curRecord.model.name;
-      t.user = {'fullname': this.$super.fullname, 'userid': this.$super.userid}
-      zmlFetch(t, this.afterSave, this.loadError);
     },
     load() {
       let t = this.task;
@@ -160,44 +157,21 @@ export default {
         return
       }
       this.faqList = JSON.parse(JSON.stringify(response))
-      this.$cs.l("bra list1", response);
-      this.$cs.l("bra list2", this.faqList);
       this.faqList = []
       if (response && response.length) {
         response.forEach((e) => {
-          this.$cs.l("bra list3", e);
           e.model = JSON.parse(e.jdocstructure);
+          e.model.faqAnswer = e.model.faqAnswer.replace(/\n/g, "<br />");
           this.faqList.push(e)
-          this.$cs.l("bra list4", this.faqList);
         });
       }
-      this.$cs.l("bra list5", this.faqList);
-    },
-    afterSave(response) {
-      if (this.task.progress)
-        console.error(
-          "bra after",
-          "Progress should be set as false when we get here!"
-        );
-      this.$cs.l("bra after", response);
-      //this.myModel = JSON.parse( response[0].jdocstructure )
-      //this.myModelBackup = JSON.parse( response[0].jdocstructure )
-      this.showSchema = false;
-      this.load()
     },
     loadError(e) {
-      if (this.task.progress)
-        console.error(
-          "bra error",
-          "Progress should be set as false when we get here!"
-        );
-      this.$cs.l("bra error", e);
+      this.$cs.l("loaderror", e);
     },
   },
-  computed: {
-  },
-  created() {
-  },
+  computed: {},
+  created() {},
   mounted() {
     this.$cs.l("faq mount");
     this.user = this.$super.fullname

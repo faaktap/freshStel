@@ -13,6 +13,7 @@
          :items-per-page="5"
          class="ma-1 pa-2"
          @click:row="clickOnRow"
+         mobile-breakpoint="0"
      />
      </v-card-text>
      <v-card-text v-if="showCalendar == true">

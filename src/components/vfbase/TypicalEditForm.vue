@@ -17,7 +17,7 @@
       {{ cardTitle }}
     </v-card-title>
     <v-card-actions>
-      <base-button-dialog
+      <!-- <base-button-dialog
         buttonText=""
         title="dev data"
         iconName="mdi-emoticon-cool"
@@ -27,16 +27,16 @@
       ready = {{ready }}<br>
       localData =  {{ localData }}<br>
       model = {{ model }}
-      </base-button-dialog>
+      </base-button-dialog> -->
 
       <v-spacer />
-      <v-btn small @click="resetValidation" title="Reset Validation ... Hide all the nasty red stuff">
+      <v-btn small @click="resetValidation" title="Reset Validation ... Hide all the nasty red stuff" class="ma-2 pa-2">
         <v-icon color="green" small> mdi-broom</v-icon>
       </v-btn>
-      <v-btn small color="warning" @click="$emit('close')" title="stop">
+      <v-btn v-if="closeButton" small color="warning" @click="$emit('close')" title="stop" class="ma-2 pa-2">
         <v-icon small > mdi-close</v-icon>
       </v-btn>
-      <v-btn small color="primary" @click="checkAndSendBack" title="save your work">
+      <v-btn small color="primary" @click="checkAndSendBack" title="save your work" class="ma-2 pa-2">
         <v-icon small> mdi-content-save</v-icon>
       </v-btn>
 
@@ -74,13 +74,13 @@
 
     <v-card-actions>
       <v-spacer />
-      <v-btn small @click="resetValidation" title="Reset Validation ... Hide all the nasty red stuff">
+      <v-btn small @click="resetValidation" title="Reset Validation ... Hide all the nasty red stuff"  class="ma-2 pa-2">
         <v-icon color="green" small> mdi-broom</v-icon>
       </v-btn>
-      <v-btn small color="warning" @click="$emit('close')" title="stop">
+      <v-btn v-if="closeButton" small color="warning" @click="$emit('close')" title="stop"  class="ma-2 pa-2">
         <v-icon small > mdi-close</v-icon>
       </v-btn>
-      <v-btn small color="primary" @click="checkAndSendBack" title="save your work">
+      <v-btn small color="primary" @click="checkAndSendBack" title="save your work"  class="ma-2 pa-2">
         <v-icon small> mdi-content-save</v-icon>
       </v-btn>
     </v-card-actions>
@@ -90,7 +90,7 @@
 <script>
 function cl(...args) {console.log('TEFrm' ,...args)}
 import QuickForm from "@/components/vfbase/QuickForm.vue";
-import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
+//import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
 export default {
   name: "TypicalEditForm",
   props: {
@@ -100,7 +100,10 @@ export default {
     color: { type: String, required: false },
     closeButton: { type: Boolean, default: true },
   },
-  components: {QuickForm, baseButtonDialog},
+  components: {
+      QuickForm
+    //, baseButtonDialog
+  },
   data: () => ({
     formValid: true,
     localSchema: {},

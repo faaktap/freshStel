@@ -1,8 +1,8 @@
 module.exports = {
-  //publicPath: '/',
-  publicPath: '/virtual-school/',
+  publicPath: '/',
+  //publicPath: '/virtual-school/',
   outputDir:'dist',
-  assetsDir:'casset',
+  assetsDir:'sasset',
   "transpileDependencies": [
     "vuetify"
   ],

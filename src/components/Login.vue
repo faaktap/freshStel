@@ -1,10 +1,15 @@
 <template>
  <v-container>
-  <v-row class="justify-center"  align="center" justify-center>
+
+  <v-layout row wrap align-content-start justify-space-between>
     <v-col v-if="getZml.login.isAuthenticated"
            class="mx-auto my-12">
-     <v-card max-width="500"
-           color=#F5F5F5>
+     <v-hover v-slot:default="{ hover }">
+     <v-card xmax-width="500"
+           style="xoverflow: auto;"
+          :elevation="hover ? 12 : 2"
+          :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+      >
       <v-card-title>
        <h2> Kuilies Session Status  </h2>
       </v-card-title>
@@ -28,15 +33,20 @@
        <v-btn @click="doBack" color="primary">
          Back
        </v-btn>
-       <v-btn color="info" @click="startLearning">
+
+       <!--@click="startLearning" -->
+       <v-btn color="info" to="/home"  >
          Continue
        </v-btn>
+
         <v-spacer />
+
        <v-btn  @click="logout" color="info">
         Logout
        </v-btn>
       </v-card-actions>
      </v-card>
+     </v-hover>
     </v-col>
 <!-- ------------------------------------ -->
      <v-col v-else
@@ -97,9 +107,34 @@
        </v-card-actions>
       </v-card>
   </v-hover>
- </v-col><!-- Else End-->
-     </v-row>
-    <v-overlay
+ </v-col>
+
+     <v-col class="mx-auto my-12">
+      <v-card class="ma-2 pa-2" v-show="getZml.login.isAuthenticated == false">
+        <p><v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>If you are a learner, your login would start with your schoolno, and
+         if you are a teacher it would be your teacher login details.
+         A learner's first login his admin number will be his username with no password.
+         Request them from Werner at  082 563 9790
+         if you are unsure.</p>
+         <p><v-icon color="purple darken-2"> mdi-information </v-icon>If you forget your password, type in your username and press
+         reset - a reset link will be sent to your email account (if provided) Otherwise ask Me. van Rensburg or other teacher to reset your password.
+         </p>
+      </v-card>
+      <v-card class="ma-2 pa-2" v-show="getZml.login.isAuthenticated == true">
+          <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>
+          If you have any questions or problems on this site, feel free to share any ideas
+          with us. Drop an email to <a href="mailto:werner@zmlrekenaars.co.za"> werner </a>. If you have content problems, speak to
+          your teacher.
+      </v-card>
+     <v-card  class="ma-2 pa-2">
+       <v-icon color="green darken-2"> mdi-information </v-icon>
+       If you end up here after selecting a specific function, it usually means you do not have rights
+       to access that function.
+     </v-card>
+
+      </v-col>
+  </v-layout>
+      <v-overlay
       :opacity="1"
       :value="overlay"
     >
@@ -107,30 +142,6 @@
         Loading...
       </v-progress-circular>
     </v-overlay>
-
-    <v-row>
-     <v-col>
-      <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == false">
-        <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>If you are a learner, your login would start with your schoolno, and
-         if you are a teacher it would be your teacher login details.
-         A learner's first login his admin no will be his username and password.
-         Request them from Werner at  082 563 9790
-         if you are unsure.
-      </v-card>
-      <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == true">
-          <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>
-          If you have any questions or problems on this site, feel free to share any ideas
-          with us. Drop an email to werner@zmlrekenaars.co.za. If you have content problems, speak to
-          your teacher.
-      </v-card>
-     <v-card  class="ma-5 pa-4">
-       <v-icon color="green darken-2"> mdi-information </v-icon>
-       If you end up here after selecting a specific function, it usually means you do not have rights
-       to access that function.
-     </v-card>
-
-      </v-col>
-    </v-row>
     <v-container>
 
 

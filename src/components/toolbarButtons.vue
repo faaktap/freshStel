@@ -15,11 +15,10 @@
             :key="btn.btn"
             class="ma-2"
             :small="$vuetify.breakpoint.mdAndDown == true"
-            :x-small="$vuetify.breakpoint.smAndDown == true"
-            :title="btnTip(btn) + 'sssss'"
+            :icon="$vuetify.breakpoint.smAndDown == true"
+            :title="btnTip(btn) + 's'"
             @click="doTask(btn.func)"
             v-show="!btn.optional == 1 || true">
-
         <v-icon :small="$vuetify.breakpoint.smAndDown" class="ma-1">
           {{ btn.icon }}
         </v-icon>
@@ -138,7 +137,7 @@ export default {
    AreYouSure()    { return this.$t('message.AreYouSure') },
    Delete()        { return this.$t('message.Delete') },
    btnGroup() {
-    console.log('btnG', this.buttons)
+    console.log('btnG', this.buttons, this.buttonGroup[0])
     return this.buttons[ this.buttonGroup[0] ] || []
    }
  },

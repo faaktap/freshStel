@@ -75,10 +75,11 @@
           color="primary"
           :type="weekOrDay"
           intervalMinutes="60"
-          first-time="07:30"
+          first-time="07:00"
           interval-count="8"
           interval-height="35"
           short-intervals
+          :weekdays="$vuetify.breakpoint.mdAndUp ? weekdayAll : weekdayShort"
           @change="updateRange"
           @click:event="showEvent"
         > <!-- weekdays=[1,2,3,4,5,6,0] -->
@@ -159,6 +160,8 @@ export default {
       selectedElement: null,
       selectedOpen: null,
       weekOrDay: "week",
+      weekdayAll:[1, 2, 3, 4, 5, 6, 0],
+      weekdayShort:[1, 2, 3, 4, 5],
       toggleView:0,
   }),
   methods:{

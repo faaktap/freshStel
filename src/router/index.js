@@ -126,6 +126,18 @@ const routes = [
     meta: {layout: la[3], authentication: "werner" }
   },
   {
+    component: () => import(/* webpackChunkName: "about" */ '@/test/addFaq.vue'),
+    path: '/addfaq/faqid?', name: 'addFaq',
+    params: {faqid: 0},
+    meta: {layout: la[3], authentication: "werner" }
+  },
+  {
+    component: () => import(/* webpackChunkName: "about" */ '@/test/addUpload.vue'),
+    path: '/addphoto/:studentid?', name: 'addUpload',
+    params: {studentid: 0},
+    meta: {layout: la[3], authentication: "student" }
+  },
+  {
     component: () => import(/* webpackChunkName: "about" */ '@/test/test7Up.vue'),
     path: '/test7', name: 'test7Up',
     meta: {layout: la[3], authentication: "werner" }

@@ -17,7 +17,7 @@
 <!------------------------------------------------ STUDENT LOGGED IN -->
  <v-container v-else-if="getZml.login.type=='student'" fluid>
   <hero-section name="forDB"
-               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
+               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall046.jpg"
                title="Student's Home"
                />
   <hr />
@@ -43,6 +43,10 @@
                />
     </v-container>
 
+<base-title-expand heading="Profile">
+  <profile />
+</base-title-expand>
+
 </v-container>
 </template>
 
@@ -53,6 +57,8 @@ import HeroSection from "@/views/sections/HeroSection.vue"
 import StudentHome from "@/views/home/HomeStudent"
 import AdminHome from "@/views/home/HomeAdmin"
 import Login from '@/components/Login'
+import Profile from '@/components/Profile'
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import { zData } from '@/api/zGetBackgroundData.js';
 export default {
   name: 'Home',
@@ -61,6 +67,8 @@ export default {
            , AdminHome
            , StudentHome
            , Login
+           , BaseTitleExpand
+           , Profile
   },
   data: () => ({
     buttons: buttons,

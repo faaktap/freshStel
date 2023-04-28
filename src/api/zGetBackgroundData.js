@@ -66,6 +66,7 @@ export const zData = {
          && getters.getState({ object: "gZml" }).place.length
          && getters.getState({ object: "gZml" }).meritLevel.length
          && getters.getState({ object: "gZml" }).classList.length
+         && getters.getState({ object: "gZml" }).students.length
          && getters.getState({ object: "gZml" }).tickList.length) {
             return true
          } else {
@@ -94,6 +95,7 @@ export const zData = {
         getters.getState({ object: "gZml" }).meritLevel = ls.load('zmlMeritLevel')
         getters.getState({ object: "gZml" }).classList = ls.load('zmlClassList')
         getters.getState({ object: "gZml" }).tickList = ls.load('zmlTickList')
+        getters.getState({ object: "gZml" }).students = ls.load('zmlStudents')
         zData.loadingCache = false
         l('InitialData-Quickload------------------------------------------------End',zData.loadingCache, whatever)
         console.timeEnd('quickload')
@@ -189,6 +191,9 @@ function finishedLoadingBasic (response) {
 
     getters.getState({ object: "gZml" }).place = response.place;
     ls.save('zmlLookupPlace', response.place)
+
+    getters.getState({ object: "gZml" }).students = response.students;
+    ls.save('zmlStudents', response.students)
 
     ls.save('zmlMeritLevel', response.meritlevel)
     getters.getState({ object: "gZml" }).meritLevel = response.meritlevel;

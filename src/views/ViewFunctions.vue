@@ -33,7 +33,8 @@
     :items="getZml.functions"
     :items-per-page="15"
     :search="search"
-    multi-sort
+     multi-sort
+     mobile-breakpoint="0"
      class="elevation-1"
      color="blue lighten-3"
      @click:row="editFunc"

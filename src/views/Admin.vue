@@ -49,9 +49,9 @@
 <!-- <test-composition-api /> -->
 
 <v-row>
- <v-col cols="12">
-     <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students">
-     <v-row><v-col cols="12" md="6" lg="4">
+ <v-col cols="12" class="mt-2 ma-0 pa-0">
+     <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students" class="ma-0 pa-0">
+     <v-row class="ma-0 pa-0"><v-col cols="12" md="6" lg="4" class="ma-0 pa-0">
            <menu-list-old functiongroup="admin" />
            </v-col><v-col cols="12" md="6" lg="4">
            <menu-list-old functiongroup="teacher" />

@@ -1,7 +1,7 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" >
    <app-layout :key="projectID" >
-   <v-container fluid>
+   <v-container fluid class="ml-sm-0 mr-sm-0 mr-md-2 ml-md-2  mt-2 mt-md-2 pa-0">
       <!-- <v-scroll-x-transition mode="in" hide-on-leave="true">    -->
      <!-- <v-fade-transition mode="in" xhide-on-leave="true"> -->
       <transition name="slide-fade" hide-on-leave="true">
@@ -58,19 +58,19 @@ export default {
    let curVersion = ls.load('zmlVersion')
    this.$cs.l(curVersion, '!=' , zmlConfig.projectID)
    if (curVersion != zmlConfig.projectID) {
-    if (ls.test('zmllogin')) {
-      let tmpSaveLogin = ls.load('zmllogin')
-      localStorage.clear()
-      ls.save('zmllogin',tmpSaveLogin)
-    } else {
-      localStorage.clear()
-    }
-    ls.save('zmlVersion', zmlConfig.projectID)
-    this.$cs.l('Reload on new Version')
-    location.reload();
-    return
+      if (ls.test('zmllogin')) {
+        let tmpSaveLogin = ls.load('zmllogin')
+        localStorage.clear()
+        ls.save('zmllogin',tmpSaveLogin)
+      } else {
+        localStorage.clear()
+      }
+      ls.save('zmlVersion', zmlConfig.projectID)
+      this.$cs.l('Reload on new Version')
+      location.reload();
+      return
    } else {
-    this.$cs.l('Version is good - continue')
+      this.$cs.l('Version is good - continue')
    }
 
    zData.quickLoadInitialData('App.Vue: Load LocalStorage')

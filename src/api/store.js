@@ -43,7 +43,7 @@ const state = Vue.observable({
            subjects: [], //subjectid, sortorder, shortname, path, beskrywing description, description beskrywing, linksubjectid, picture, color
            functions: [],
            voteList:[],
-           locale: 'af',
+           locale: 'en',
            calendar:[],
            baseCalendar:[], //day  dayOfWeek day_name dayno fulldate holiday_flag idDate month month_name quarter week weekend year 2024
            meritLevel:[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
@@ -51,6 +51,7 @@ const state = Vue.observable({
            place: [],  //p.placeid, p.name, w.name workarea, p.description,p.ownerid concat(p.name, ' - ',w.name) concatsearch"
            classList: [],   //id, teacher (init + surname),listname, share,jdocstructure,create_timestamp,update_timestamp, grade,ckey,hodsubjectid
            tickList: [],
+           students: [],  //studentid, name, surname, grade class
            thisday: null
           }
     });

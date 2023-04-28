@@ -521,9 +521,10 @@
 import VHead from "@/components/base/VHead.vue"
 import VImage from "@/components/base/VImage.vue"
 import VCustom from "@/components/base/VCustom.vue"
+import VSelStudents from "@/components/base/VSelStudents.vue"
 export default {
   name: 'VFormBase',
-  components:{VCard, VAutocomplete, VCombobox, VHead, VImage, VCustom},
+  components:{VCard, VAutocomplete, VCombobox, VHead, VImage, VCustom, VSelStudents},
   props: {
     id: {
       type: String,

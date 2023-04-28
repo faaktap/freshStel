@@ -1,6 +1,6 @@
 <template>
-<v-parallax background src="img/school.jpg" class="filter-div" width="100%" height="100%">
-<v-container justify="center" align="center"  class="mt-5 pa-5" >
+<v-parallax background src="img/school.jpg" class="filter-div ma-0 pa-0" width="100%" height="100%" >
+<v-container fluid justify="center" align="center"  class="ma-0 pa-0" xclass="mt-md-5 pa-md-2 pa-sm-1" >
  <v-layout wrap class="ma-1" justify-space-between>
    <v-card class="ma-1 pa-1" color="rgba(106, 196, 226, 0.4)" width="100%">
      <v-card-title  class="blue--text">

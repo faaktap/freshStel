@@ -1,6 +1,6 @@
 <template>
- <div>
-  <AppLayoutLinks />
+ <v-container fluid class="ma-0 pa-0">
+   <AppLayoutLinks />
    <v-main>
     <transition name="fade" mode="out-in">
     <slot />
@@ -68,7 +68,7 @@
     </v-row>
    </v-footer>
    </div>
- </div>
+ </v-container>
 </template>
 
 <script>

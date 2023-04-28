@@ -9,6 +9,7 @@
          :hide-default-footer="true"
          class="elevation-1"
          @click:row="clickOnRow"
+         mobile-breakpoint="0"
        ></v-data-table>
    </v-card-text>
    <v-card-text v-else>
@@ -23,7 +24,7 @@ export default {
     name:"StudentEmailList",
     props: ['studentid','color'],
     data: () => ({
-      getZml: getters.getState({ object: "gZml" }) ,  
+      getZml: getters.getState({ object: "gZml" }) ,
       emailList:null,
       emailHeader: [
         //{text: 'id',       align: 'start',  value: 'subid' },

@@ -9,17 +9,15 @@
               color="green darken-1"
                />
 
-  <v-row class="mt-2 pt-2">
-    <v-col>
-    <v-sheet tile height="44">
-    <v-toolbar flat dense :loading="loading">
-    <v-row>
-      <v-col cols=1>
-        <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
-          <v-icon>mdi-chevron-left</v-icon>
+
+    <v-toolbar flat  :loading="loading" class="mt-2 ma-2 pa-1">
+    <v-row class="mt-4 ma-0 pa-0">
+      <v-col cols="1" class="ma-0 pa-0 float-left">
+        <v-btn small icon  @click="$refs.calendar.prev()">
+        <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols=4>
+      <v-col cols="4"  class="ma-0 pa-0">
         <v-btn v-if="!$vuetify.breakpoint.mobile"
                :x-small="!$vuetify.breakpoint.mdAndUp"
                small
@@ -32,35 +30,39 @@
          </personel-menemonic>
 
       </v-col>
-      <v-col cols=3>
-        <v-toolbar-title v-if="$refs.calendar">
+      <v-col cols="3">
+        <v-toolbar-title v-if="$refs.calendar" >
             {{ $refs.calendar.title }}
         </v-toolbar-title>
       </v-col>
-      <v-col cols=3>
+      <v-col cols="3">
          <v-btn-toggle small v-model="toggleView" >
-         <v-btn  small :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
+
+         <v-btn  small :icon="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
           <span v-if="$vuetify.breakpoint.mdAndUp"> day</span>
           <span v-else>d</span>
          </v-btn>
-         <v-btn  :x-small="!$vuetify.breakpoint.mdAndUp" small color="primary" @click="weekOrDay = 'week'">
+         <v-btn  small :icon="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'week'">
           <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
           <span v-else>w</span>
          </v-btn>
-         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" small color="primary" @click="weekOrDay = 'month'">
+         <v-btn small :icon="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'month'">
           <span v-if="$vuetify.breakpoint.mdAndUp"> month</span>
           <span v-else>m</span>
          </v-btn>
          </v-btn-toggle>
        </v-col>
-      <v-col cols=1>
-        <v-btn icon class="ma-2" @click="$refs.calendar.next()">
+      <v-col cols="1">
+        <v-btn small icon  @click="$refs.calendar.next()">
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
        </v-col>
     </v-row>
     </v-toolbar>
-    </v-sheet>
+
+<v-row class="ma-0 mt-2 pa-0 pt-2">
+    <v-col>
+
       <v-sheet height="400">
        <v-calendar
           v-if="events.length>0"
@@ -73,24 +75,25 @@
           color="primary"
           :type="weekOrDay"
           intervalMinutes="60"
-          first-time="07:30"
+          first-time="07:00"
           interval-count="8"
           interval-height="35"
           short-intervals
+          :weekdays="$vuetify.breakpoint.mdAndUp ? weekdayAll : weekdayShort"
           @change="updateRange"
           @click:event="showEvent"
         >
         <template v-slot:event="{event}">
           <div :style="{ 'background-color':event.color,color: gfc(event.color) }"
-               class="fill-height pl-2"
+               class="fill-height pl-2 text-caption"
                :class="sideColor(event.name)"
           >
-            <span v-if="$vuetify.breakpoint.mdAndUp">
+            <span v-if="$vuetify.breakpoint.mdAndUp" >
               {{ event.name.substr(0,21) }}
               {{ event.start.substr(11,5) }}
             </span>
-            <span v-else>
-              {{ event.name.substr(0,7) }}
+            <span v-else class="text-caption">
+              {{ event.name.substr(0,5) }}
             </span>
           </div>
         </template>
@@ -183,7 +186,8 @@ export default {
       selectedOpen: null,
       incomingMenemonic: null,
       weekOrDay:'week',
-      weekday:[1, 2, 3, 4, 5, 6, 0],
+      weekdayAll:[1, 2, 3, 4, 5, 6, 0],
+      weekdayShort:[1, 2, 3, 4, 5],
       weekdays: [
         { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
         { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },

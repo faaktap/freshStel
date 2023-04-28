@@ -45,6 +45,10 @@ export function doStuff(tr,task) {
         case "/bookreturn":
         case "/attview":
         case "/vglist":
+        case "/home":
+        case "/quanda":
+        case "/addphoto":
+        case "/calteach":
             return zmlReRoute(tr, task)
 
         default:

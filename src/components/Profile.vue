@@ -1,18 +1,21 @@
 <template>
-      <v-card width="600px">
+      <v-card xwidth="600px">
         <v-card-title  class="mx-2 pa-0">Profile : {{ login.fullname }} </v-card-title>
-        <span class="text-caption green text-center ma-2"> Please make note of your password, or change it.<br> Click on the eye to view your password </span>
+        <span class="text-caption green float-right ma-2">
+            Please make note of your password, or change it.<br> Click on the eye to view your password
+        </span>
         <v-card-text class="ma-0 pa-0">
         <v-form class="ma-0 pa-0">
-          <v-layout row wrap align-content-space-around class="ma-1 pa-0">
            <v-text-field
                v-model="login.username"
                prepend-icon="mdi-account"
+               class="ma-2 pa-2"
                :disabled="login.userid > 0"
                label="Username" />
            <v-text-field
             v-model="login.password"
             label="Password"
+            class="ma-2 pa-2"
             prepend-icon="mdi-lock"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
@@ -20,17 +23,16 @@
             name="password"
             autocomplete="current-password"
             required />
-           <v-text-field prepend-icon="mdi-human" v-model="login.fullname" label="Fullname" required />
-           <v-text-field prepend-icon="mdi-phone" v-model="login.phone" label="Phone"  required />
-           <v-text-field prepend-icon="mdi-email" v-model="login.email" label="Email"  required />
-          </v-layout>
+           <v-text-field prepend-icon="mdi-human" v-model="login.fullname" label="Fullname" required class="ma-2 pa-2" />
+           <v-text-field prepend-icon="mdi-phone" v-model="login.phone" label="Phone"  class="ma-2 pa-2"  />
+           <v-text-field prepend-icon="mdi-email" v-model="login.email" label="Email"  class="ma-2 pa-2" required />
           <p v-if="login.email == ''" class="text-caption red text-center"> You need an email if you forget your password </p>
         </v-form>
         </v-card-text>
         <v-card-actions class="ma-1 pa-1">
-          <v-btn color="info" @click="$emit('close')"> Close </v-btn>
+          <v-btn color="info" @click="$emit('close')" class="ma-2 pa-2"> Close </v-btn>
           <v-spacer />
-          <v-btn color="primary" @click="saveDetails"> Save </v-btn>
+          <v-btn color="primary" @click="saveDetails" class="ma-2 pa-2"> Save </v-btn>
         </v-card-actions>
       </v-card>
 </template>

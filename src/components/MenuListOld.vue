@@ -1,8 +1,8 @@
 <template>
  <!-- v-if="getZml.login.isAuthenticated && ['admin','teacher'].includes(getZml.login.type)"  -->
- <v-container fluid>
+ <v-container fluid class="ma-0 pa-0">
 
- <v-template v-if="buttonDisplay==0" row wrap align-content-center justify-space-between>
+ <v-template v-if="buttonDisplay==0" row wrap align-content-center justify-space-between max-width="350">
   <h3 title="Show different View" @click="buttonDisplay = 1">{{ functiongroup.toUpperCase() }}</h3>
   <v-template :xclass="cardColor(functiongroup)"  class="ma-2 pa-2"  v-for="l in functionList" :key="l.functionid" v-ripple  @click="click(l)">
     <v-btn small :color="cardColor(l.functionaccess)" :title="l.tip" class="ma-2 pa-2">
@@ -21,7 +21,6 @@
       </v-subheader>
 
       <v-list-item-group >
-
        <v-list-item v-for="l in functionList"
                    :key="l.functionid" v-ripple  @click="click(l)">
          <v-list-item-content>

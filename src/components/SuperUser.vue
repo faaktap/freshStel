@@ -12,6 +12,9 @@
 
    <h2> Welcome SysAdmin! </h2>
       <v-layout class="ma-2 pa-2" row wrap justify-space-between>
+               <v-btn small to="/quanda" class="ma-2"> FAQ - Questions.. </v-btn>
+               <v-btn small to="/checklog" class="ma-2"> checklog </v-btn>
+               <v-btn small to="/systemview" class="ma-2"> System Tests and Updates </v-btn>
                <v-btn small to="/loadhomework" class="ma-2"> loadhomework </v-btn>
                <v-btn small to="/vglist" class="ma-2"> vglist </v-btn>
                <v-btn small to="/jdoc" class="ma-2"> jdoc - HomeWork, Period and Day Edit </v-btn>
@@ -19,7 +22,6 @@
                <v-btn small to="/kalender" class="ma-2"> skool kalender </v-btn>
                <v-btn small to="/periodtable" class="ma-2"> Change/View Periods </v-btn>
                <v-btn small to="/ar" class="ma-2"> autoroute </v-btn>
-               <v-btn small to="/checklog" class="ma-2"> checklog </v-btn>
                <v-btn small to="/werner" class="ma-2"> werner </v-btn>
                <v-btn small to="/wernertest" class="ma-2"> wernertest </v-btn>
                <v-btn small to="/viewfunctions" class="ma-2"> functions </v-btn>
@@ -31,7 +33,7 @@
             <v-btn small to="/folderedit/GR08/Accounting_Rekeningkunde/" class="ma-2"> FE Gr8 Rek </v-btn>
             <v-btn small to="/register/:surveyidPassed" class="ma-2"> register </v-btn>
             <v-btn small @click="dateTest" class="ma-2"> dateTest </v-btn>
-            <v-btn small to="/systemview" class="ma-2"> System Tests and Updates </v-btn>
+
             <v-btn small to="/cemismenu" class="ma-2"> Cemis Menu </v-btn>
 
             <v-card class="ma-2 pa-2">
@@ -52,7 +54,6 @@
               <list-test functiongroup="all" />
           </v-expansion-panel-content>
         </v-expansion-panel>
-
         <v-expansion-panel>
           <v-expansion-panel-header>
               global tables, v-layout, v-tabs
@@ -60,10 +61,7 @@
           <v-expansion-panel-content>
             v-layout, v-tabs
             <v-layout class="ma-1" col wrap justify-space-between>
-              <v-tabs
-                v-model="vtabs"
-                slider-color="yellow"
-               >
+              <v-tabs v-model="vtabs" slider-color="yellow">
                <v-tab key="1"> grades </v-tab>
                <v-tab key="2"> subject </v-tab>
                <v-tab key="3"> calendar </v-tab>
@@ -73,6 +71,7 @@
                <v-tab key="8"> classlist </v-tab>
                <v-tab key="9"> ticklist </v-tab>
                <v-tab key="10"> login </v-tab>
+               <v-tab key="11"> students </v-tab>
 
                <v-tab-item key="1">
                <zml-data-table v-if="getZml.grades" :dataList="getZml.grades" userHeader="grades"/>
@@ -103,6 +102,9 @@
                  <br> locale--{{ getZml.locale}}
                  <br> calendar---{{ getZml.calendar }}
                  <br> thisday--{{ getZml.thisday }}
+               </v-tab-item>
+               <v-tab-item  key="11">
+               <zml-data-table v-if="getZml.students" :dataList="getZml.students" userHeader="Students" />
                </v-tab-item>
 
               </v-tabs>

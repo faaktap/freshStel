@@ -2,12 +2,12 @@
 <div>
 <!-- homestudent -->
 
-<z-menu
+<!-- <z-menu
                 :permanent="true"
                 :expandOnHover="true"
                 :floating="true"
                 :passed="['cancel', 'save', 'load']"
-        />
+        /> -->
 
 <v-toolbar color="primary">
     <v-card color="primary" width="100%" class="pa-3">
@@ -26,36 +26,39 @@
         </div>
     </v-card>
 </v-toolbar>
+
+<v-toolbar  dense  row  wrap color="primary">
+      <v-spacer />
+      <base-tool-button to="/addphoto"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-camera"
+               title="Add sport id Photo for someone"
+      >Sport ID Photo</base-tool-button>
+      <base-tool-button @click="showAttendanceBadge"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-wifi"
+               title="Attendance badge for scanning"
+      >Attendance Badge</base-tool-button>
+      <base-tool-button @click="showWiFiUsername"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-qrcode-scan"
+               title="Show and Explain Wi-fi username/password"
+      >WCGSCHOOLS WiFi</base-tool-button>
+      <base-tool-button to="/calstud"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-calendar"
+               title="Your Calendar"
+      >Calendar</base-tool-button>
+</v-toolbar>
+
 <v-dialog v-model="showPhotos" width="300" :scrollable="false" :fullscreen="$vuetify.breakpoint.smAndDown">
+ <v-card>
+  <v-btn icon absolute top right title="Click here to close" @click="showPhotos=false">
+    <v-icon color="indigo">mdi-close</v-icon>
+ </v-btn>
+
  <student-photo-list :studentid="studentid" @foundPhoto="weHaveIt" />
+
+ </v-card>
 </v-dialog>
 
-<v-row class="pa-5">
-    <v-col cols="12" class="text-center">
-        <v-btn @click="showAttendanceBadge"
-               class="ma-2 pa-2">
-            <v-icon>
-              mdi-qrcode-scan
-            </v-icon>
-          Attendance Badge
-        </v-btn>
-        <v-btn @click="showWiFiUsername"
-               class="ma-2 pa-2">
-            <v-icon>
-              mdi-wifi
-            </v-icon>
-          WCGSCHOOLS WiFi UserName
-        </v-btn>
-        <v-btn to="/calstud"
-               class="ma-2 pa-2">
-            <v-icon>
-              mdi-calendar
-            </v-icon>
-          Calendar
-        </v-btn>
 
-    </v-col>
-</v-row>
 <!-- <iframe src="https://en.wikipedia.org/wiki/HTML_element#Frames"
             frameborder="0"
             marginheight="0"
@@ -65,40 +68,24 @@
             scrolling="auto" /> -->
             <!--(homestudent){{ studentid }} -->
 
-<v-layout row wrap align-content-center justify-space-between class="ma-1 pa-1">
-    <menu-list-old functiongroup="student" />
-    <menu-list-old functiongroup="other" />
-</v-layout>
+<v-row>
+   <v-col cols="12" md="6">
+    <v-layout row wrap align-content-center justify-space-between class="ma-2 pa-2">
+     <menu-list-old functiongroup="student" />
+     <menu-list-old functiongroup="other" />
+    </v-layout>
+   </v-col>
+   <v-col cols="12" md="6">
+    <v-card><v-card-title>Emails we use for newsletters </v-card-title>
+     <student-email-list :studentid="studentid" color="primary" />
+    </v-card>
+   </v-col>
+</v-row>
 
 
  <v-layout row wrap align-content-center justify-space-between class="ma-1 pa-1">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
-   <!-- <v-expansion-panel>
-    <v-expansion-panel-header expand-icon="mdi-calendar"
-       title="A calendar for your current day. If you notice the day is wrong, please inform Werner or ms. Wiegand">
-       Calendar - ({{ getZml.login.grade }}
-    </v-expansion-panel-header>
-   <v-expansion-panel-content>
-     <calendar-student v-show="showCal" />
-   </v-expansion-panel-content>
-   </v-expansion-panel> -->
 
-
-   <v-expansion-panel>
-       <v-expansion-panel-header title="Show Email Bulletins">
-          Email Bulletins</v-expansion-panel-header>
-
-       <v-expansion-panel-content>
-        <email-bulletins emailSearch="ebull" /></v-expansion-panel-content>
-   </v-expansion-panel>
-   <v-expansion-panel>
-       <v-expansion-panel-header title="Email Addresses for Newsletters.">
-         Email Addresses for Newsletters.
-       </v-expansion-panel-header>
-       <v-expansion-panel-content>
-         <student-email-list :studentid="studentid" color="primary" />
-       </v-expansion-panel-content>
-   </v-expansion-panel>
    <v-expansion-panel>
        <v-expansion-panel-header title="Link to subjects">
           Subjects</v-expansion-panel-header>
@@ -112,9 +99,7 @@
        <v-expansion-panel-header title="Show Email Bulletins">
           Merits</v-expansion-panel-header>
        <v-expansion-panel-content>
-       <!-- <base-title-expand v-if="studentid" heading="Student Merits"> -->
         <student-merit :studentid="studentid"  xcolor="grey" />
-       <!-- </base-title-expand> -->
        </v-expansion-panel-content>
    </v-expansion-panel>
   </v-expansion-panels>
@@ -133,26 +118,24 @@ import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
 import MenuListOld from '@/components/MenuListOld.vue';
-//import CalendarStudent from '@/components/CalendarStudent';
 import StudentEmailList from '@/components/student/StudentEmailList'
-import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
+import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentMerit from '@/components/student/StudentMerit'
-import EmailBulletins from '@/components/email/EmailBulletins'
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 import Avatar from '@/components/base/Avatar'
-// import ZMenu from '@/components/base/ZMenu.vue'
+import { zmlLog } from '@/api/zmlLog.js';
+//import ZMenu from '@/components/base/ZMenu.vue'
 export default {
     name:"StudentHome",
     components:{
           MenuListOld
-        //, CalendarStudent
         , StudentEmailList
         , StudentSubjectList
-        , StudentPhotoList
         , StudentMerit
+        , StudentPhotoList
         , Avatar
-        , EmailBulletins
-        //, StudentGrade
+        , BaseToolButton
      },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -230,7 +213,7 @@ export default {
     },
     mounted() {
       console.log('mount', this.$options.name)
-        this.$cs.l('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
+      zmlLog('Home', this.getZml.login.fullname, `${this.getZml.login.schoolno}`)
         this.studentid = this.getZml.login.schoolno
         console.log('grade',this.getZml.login.grade,this.getZml.login.grade.length)
         if (this.getZml.login.grade.length == 3 ) {
