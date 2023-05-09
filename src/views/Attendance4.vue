@@ -266,7 +266,7 @@ export default {
       classListReceived(e) {
         console.log('set obj tListObj to ', e)
         this.showChoosy = false;
-        this.tListObj=e
+        this.tListObj = e
       },
       initialize() {
         this.loading = false

@@ -46,8 +46,8 @@
           v-if="herotext"
           class="ma-8 fill-height text-justify green--text">
           <v-col cols=12>
-            <h2> {{ herotext }}</h2>
-{{ text}} || {{ herotext }} ||  {{ moreText}} // {{ herobutton }}
+            <h2> {{ herotitle }}</h2>
+                {{ herotext }}
             <p> {{ moreText}} </p>
             <v-btn v-if="herobutton"
                   :to="func"

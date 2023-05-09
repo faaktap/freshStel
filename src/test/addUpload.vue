@@ -28,6 +28,8 @@
         :closeButton="false"
     >
      </typical-edit-form>
+     <!-- <v-data-table
+     /> -->
 </div>
 </template>
 

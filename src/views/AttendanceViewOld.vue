@@ -8,8 +8,8 @@
               breakup1="100"
               breakup2="20"
               color="green darken-2"
-              text="Nie regtig oud nie, maar met ou metode geneem. "
-              moretext="Word nog deur June en Jackie gebruik, en ook deur paar onderwysers - mens soek hierso vir entries"
+              xxtext="Nie regtig oud nie, maar met ou metode geneem. "
+              text="Word nog deur June en Jackie gebruik, en ook deur paar onderwysers - mens soek hierso vir entries"
                />
 
   <v-toolbar  dense  row  wrap color="primary">
@@ -43,7 +43,7 @@
         class="ma-2"
         append-icon="mdi-close"
         @click:append="period = ''" />
-       <base-date v-model="searchDate" :curValue="searchDate" instructions="FA" label="" />
+       <base-date v-model="searchDate" :curValue="searchDate" xinstructions="FA" label="" />
     </v-card>
 
     <v-progress-linear

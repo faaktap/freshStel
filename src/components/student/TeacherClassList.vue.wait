@@ -11,7 +11,7 @@
    <span v-if="!$vuetify.breakpoint.smAndDown"> Other Class Lists as needed by Teachers</span>
     <v-spacer></v-spacer>
     <v-text-field
-      v-model="options.search"
+      v-model="search"
       append-icon="mdi-magnify"
       label="Search"
       single-line
@@ -19,20 +19,20 @@
       class="ma-2"
     />
     <v-select
-      v-model="options.gradeList"
-      :items="options.otherGradeOptions"
+      v-model="gradeList"
+      :items="otherGradeOptions"
       label="Select Grade(s)"
       multiple
       class="ma-2 mt-7"
     >
      <!-- <template v-slot:selection="{ item, index }">
         <v-chip v-if="index === 0"> <span>{{ item }}</span> </v-chip>
-        <span v-if="index === 1" class="grey--text caption" >(+{{ options.gradeList.length - 1 }} others)</span>
+        <span v-if="index === 1" class="grey--text caption" >(+{{ gradeList.length - 1 }} others)</span>
      </template> -->
     </v-select>
 
-    <v-btn class="ma-2" small icon @click="options.showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
-    <v-btn class="ma-2" small icon @click="options.showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+    <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
+    <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
 
       <v-btn class="ma-2" icon @click="newList" title="Create a new list" color="primary"> <v-icon>mdi-database-plus</v-icon> New </v-btn>
       <v-btn class="ma-2" icon @click="initialize"> <v-icon>mdi-refresh</v-icon> </v-btn>
@@ -41,11 +41,12 @@
 
 <v-container fluid>
 
-           <v-data-table v-if="options.showAs=='list'"
+           <v-data-table v-if="showAs=='list'"
                   class="elevation-1"
                  :headers="tlistHeader"
                  :items="teacherListFilter"
                  :items-per-page="30"
+                 :search="search"
                  mobile-breakpoint="0"
          >
          <!--https://blog.devgenius.io/vuetify-edit-table-content-cd57d11ae850-->
@@ -75,7 +76,7 @@
 
 
   <!-- </v-layout> -->
-  <v-layout v-if="options.showAs=='card'" row wrap align-content-start justify-space-between class="ma-2 pa-2">
+  <v-layout v-if="showAs=='card'" row wrap align-content-start justify-space-between class="ma-2 pa-2">
   <v-card v-for="t in teacherListFilter" :key="t.id" class="ma-2 pa-2" color="secondary lighten-3" elevation="4">
     <v-card-title>{{ t.teacher }}  </v-card-title>
     <p>{{ t.listname }}</p>
@@ -98,7 +99,7 @@
                           :items="getZml.persMenemonic"
                           :item-text="teacherInitSurname"
                           :item-value="teacherInitSurname"  />
-          <v-combobox v-model="rec.grade" :items="options.otherGradeOptions" label="grade"/>
+          <v-combobox v-model="rec.grade" :items="otherGradeOptions" label="grade"/>
           <v-radio-group v-model="rec.share" label="Shared" outlined dense  row>
             <v-radio label="Yes" value="Y" />
             <v-radio label="No" value="N" />
@@ -157,14 +158,10 @@ export default {
   props:{},
   components: { SelStudentSubs },
   data: () => ({
-    options:{
-            otherGradeOptions:['G07','G08','G09','G10','G11','G12'],
-            gradeList: [],
-            search: '',
-            showAs: 'list'
-    },
+    gradeList: [],
+    otherGradeOptions:['G07','G08','G09','G10','G11','G12'],
     getZml: getters.getState({ object: "gZml" }),
-
+    search: '',
     tList: [],
     tlistHeader: [{text: 'Id', value: 'id'}
                  ,{text: 'Teacher', value: 'teacher'}
@@ -180,14 +177,15 @@ export default {
     showForm: false,
     passedListID: '',
     basedOnOtherList: false,
+    showAs: 'list',
     saveIni: 'zmlTCLShowAS',
   }),
   methods:{
     initialize() {
       console.log('initialize')
-      if (ls.test(this.saveIni)) {
-         console.log('MCInit: load local options')
-         this.options = ls.load(this.saveIni)
+      if (ls.test('zmlTCL-GradeList') && ls.test('zmlTCL-Search')) {
+        this.gradeList = ls.load('zmlTCL-GradeList')
+        this.search = ''
       }
       let ts = {}
       ts.task = 'PlainSql'
@@ -250,6 +248,7 @@ export default {
       console.log('error on fetch', response)
     },
     loadList(listID) {
+      ls.save('zmlTCL-GradeList',this.gradeList)
       this.passedListID = listID
       this.$router.push({ name: 'TeacherClassEdit', params: {listID: listID}})
     },
@@ -263,17 +262,17 @@ export default {
       if (!this.tList.length) return [];
       let answer = this.tList
 
-      if (this.options.gradeList.length > 0 && this.options.gradeList.length < 4) {
-         answer = this.tList.filter( ele => this.options.gradeList.some(e => (e == ele.grade) ))
+      if (this.gradeList.length > 0 && this.gradeList.length < 4) {
+         answer = this.tList.filter( ele => this.gradeList.some(e => (e == ele.grade) ))
       }
 
-      if (this.options.search.length ) {
+      if (this.search.length ) {
         let newanswer = answer.filter(ele => {
           //console.log(ele.teacher.toUpperCase(),this.search.toUpperCase() )
-          if (ele.teacher.toUpperCase().indexOf(this.options.search.toUpperCase()) > -1) return true
-          if (ele.listname.toUpperCase().indexOf(this.options.search.toUpperCase()) > -1) return true
-          if (ele.id.indexOf(this.options.search) > -1) return true
-          if (ele.create_timestamp.indexOf(this.options.search) > -1) return true
+          if (ele.teacher.toUpperCase().indexOf(this.search.toUpperCase()) > -1) return true
+          if (ele.listname.toUpperCase().indexOf(this.search.toUpperCase()) > -1) return true
+          if (ele.id.indexOf(this.search) > -1) return true
+          if (ele.create_timestamp.indexOf(this.search) > -1) return true
           return false
         });
         //alert('search must still be implemented')
@@ -283,33 +282,16 @@ export default {
     }
   },
   created() {
-    console.log('CR-----------------MC1:',this.$options.name)
+    console.log('MC:',this.$options.name)
     clWork.refreshClassLists()
     zData.quickLoadInitialData('QuickLoad',this.initialize)
-    if (ls.test(this.saveIni)) {
-      console.log('CR----------------------MC2: load local options')
-      this.options = ls.load(this.saveIni)
-    }
-  },
-  activated() {
-    if (ls.test(this.saveIni)) {
-      console.log('ACT----------------------MC2: load local options')
-      this.options = ls.load(this.saveIni)
-    }
   },
   mounted() {
-    if (ls.test(this.saveIni)) {
-      console.log('MT----------------------MC2: load local options')
-      this.options = ls.load(this.saveIni)
-      }
+    if (ls.test(this.saveIni)) this.showAs = ls.load(this.saveIni)
   },
   watch: {
-    options: {
-      deep: true,
-      handler() {
-        console.log('WT----------------------MC2: save local options')
-        ls.save(this.saveIni,this.options)
-      }
+    showAs() {
+      ls.save(this.saveIni,this.showAs)
     }
   }
 }

@@ -3,15 +3,36 @@
 <!-- homeadmin -->
 
       <v-layout row wrap align-content-start justify-space-between>
-        <v-btn small class="ma-2"
-                            @click="goToCalendar">
+        <!-- <v-btn small class="ma-2" @click="goToCalendar">
          <v-icon> mdi-calendar </v-icon>
           calendar
-        </v-btn>
-        <v-btn small class="ma-2"  to="/attload">
-        <v-icon> mdi-store-clock-outline </v-icon>
+        </v-btn> -->
+
+        <!-- <v-btn small class="ma-2"  to="/quanda">
+          <v-icon> mdi-frequently-asked-questions </v-icon>
+          FAQ
+        </v-btn> -->
+
+        <!-- <v-btn small class="ma-2"  to="/attload">
+          <v-icon> mdi-store-clock-outline </v-icon>
           Attendance
-        </v-btn>
+        </v-btn> -->
+        <base-tool-button @click="goToCalendar"
+               class="mt-1 mr-2 mb-2 ml-2" color="primary" icon="mdi-calendar"
+               title="FAQ"
+        >Calendar</base-tool-button>
+        <base-tool-button to="/quanda"
+               class="mt-1 mr-2 mb-2 ml-2" color="primary" icon="mdi-frequently-asked-questions"
+               title="FAQ"
+        >FAQ</base-tool-button>
+        <base-tool-button to="/addphoto"
+               class="mt-1 mr-2 mb-2 ml-2" color="primary" icon="mdi-camera"
+               title="Add sport id Photo for someone"
+        >Sport ID Photo</base-tool-button>
+        <base-tool-button to="/addphoto"
+               class="mt-1 mr-2 mb-2 ml-2" color="primary" icon="mdi-store-clock-outline"
+               title="Attendance"
+        >Attendance</base-tool-button>
       </v-layout>
 
   <base-tool :toolList="[]"
@@ -63,22 +84,25 @@
 
   <menu-list-new :info="menuInfo" :small="menuSmall" :type="menuType" :functionSearch="menuSearch" />
 
+  <most-used-functions />
+
 </v-container>
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
+//import { doStuff } from '@/api/buttons'
+//import { infoSnackbar } from '@/api/GlobalActions';
+//import Calendar from '@/components/Calendar.vue';
+//import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
+//import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 import { zmlFetch } from '@/api/zmlFetch.js'
-//import { doStuff } from '@/api/buttons'
-//import { infoSnackbar } from '@/api/GlobalActions';
 import MenuListNew from '@/components/MenuListNew.vue';
-//import Calendar from '@/components/Calendar.vue';
-//import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
 import baseButtonDialog from "@/components/base/baseButtonDialog.vue"
-//import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 import baseTool from '@/components/base/baseTool.vue'
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+import MostUsedFunctions from '@/components/MostUsedFunctions.vue'
 
 export default {
     name:"HomeAdmin",
@@ -87,8 +111,10 @@ export default {
              //, PersonelMenemonic
              //, BaseTitleExpand
                baseButtonDialog
+             , BaseToolButton
              , MenuListNew
              , baseTool
+             , MostUsedFunctions
     },
     data: () => ({
 
@@ -125,7 +151,7 @@ export default {
            let ts = {};
            ts.task = 'PlainSql';
            ts.sql = 'select * from dkhs_lfunction order by sortorder'
-           ts.api = zmlConfig.apiDKHS
+           //ts.api = zmlConfig.apiDKHS
            zmlFetch(ts, this.showData, this.loadError)
         },
         loadError(response) {
@@ -164,6 +190,7 @@ export default {
     created() {
       zData.quickLoadInitialData('HomeAdmin.vue : Load Data for incase', this.initialize)
       this.CallAsyncFunction()
+
     },
     mounted() {
         this.$cs.l('Mount',this.$options.name)

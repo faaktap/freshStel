@@ -354,7 +354,7 @@ export default {
             this.$i18n.locale = 'en'
           }
           //Check if the guy is a superuser, and mark this.$superUser as true
-          if (['JHMEL', 'WER', 'WERNER','TVRB'].includes(this.getZml.login.username.toUpperCase() )) {
+          if (['WER', 'WERNER','TVRB'].includes(this.getZml.login.username.toUpperCase() )) {
             infoSnackbar('You are a SUPERUSER!')
             this.getZml.login.superUser = true
             this.$super.user = true

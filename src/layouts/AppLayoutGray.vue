@@ -9,6 +9,7 @@
 
    <v-btn @click="$cs.scrollToTop()"
           fab
+          x-small
           color="primary"
           title="Scroll to top"
           class="elevation-2"

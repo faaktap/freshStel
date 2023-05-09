@@ -7,6 +7,7 @@
    Therefore - IT IS USED IN TWO PLACES!
    We call doStuff to execute any action, expect i18n translate is done in here.
 -->
+//v-if="btn.acc == 'admin' && getZml.login.type == 'student'"
 <template>
  <div>
   <!-- && !$vuetify.breakpoint.mobile -->
@@ -14,15 +15,16 @@
       <v-btn v-for="btn in btnGroup"
             :key="btn.btn"
             class="ma-2"
-            :small="$vuetify.breakpoint.mdAndDown == true"
-            :icon="$vuetify.breakpoint.smAndDown == true"
+            :small="$vuetify.breakpoint.mdAndDown"
+            :xxxicon="$vuetify.breakpoint.smAndDown"
             :title="btnTip(btn) + 's'"
             @click="doTask(btn.func)"
-            v-show="!btn.optional == 1 || true">
-        <v-icon :small="$vuetify.breakpoint.smAndDown" class="ma-1">
+            v-show="!(btn.acc == 'admin' && getZml.login.type == 'student')"
+            >
+        <v-icon class="ma-1">
           {{ btn.icon }}
         </v-icon>
-        <div v-if="$vuetify.breakpoint.smAndUp">
+        <div v-if="!$vuetify.breakpoint.smAndDown">
           {{ btnText(btn.btn) }}
         </div>
       </v-btn>
@@ -99,6 +101,7 @@
 //
 import { doStuff,buttons } from '@/api/buttons'
 import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
+import { getters } from "@/api/store";
 export default {
  name: "toolBarButtons",
  props:{ menuDisplay: { type:String, required:true},
@@ -107,6 +110,7 @@ export default {
  components: {},
  data: () => ({
    buttons: buttons,
+   getZml: getters.getState({ object: "gZml" }),
  }),
  methods: {
    btnText(p1) { return this.$t('btn.' + p1) || p1 },

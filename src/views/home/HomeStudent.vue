@@ -1,14 +1,12 @@
 <template>
 <div>
 <!-- homestudent -->
-
 <!-- <z-menu
                 :permanent="true"
                 :expandOnHover="true"
                 :floating="true"
                 :passed="['cancel', 'save', 'load']"
         /> -->
-
 <v-toolbar color="primary">
     <v-card color="primary" width="100%" class="pa-3">
         <div class="d-flex flex-no-wrap justify-space-between">
@@ -70,14 +68,28 @@
 
 <v-row>
    <v-col cols="12" md="6">
-    <v-layout row wrap align-content-center justify-space-between class="ma-2 pa-2">
      <menu-list-old functiongroup="student" />
-     <menu-list-old functiongroup="other" />
-    </v-layout>
    </v-col>
    <v-col cols="12" md="6">
-    <v-card><v-card-title>Emails we use for newsletters </v-card-title>
-     <student-email-list :studentid="studentid" color="primary" />
+    <student-email-list xclass="ma-2 pa-2" heading="Your parents emails for newsletters" :studentid="studentid" color="primary" />
+    <v-card class="pt-2">
+      <v-card-title class="blue">
+           School Photos
+      </v-card-title>
+      <v-card-text class="mt-2">
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Junior Carnaval"> Junior Carnaval</v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Bellville Sport Day - Hockey, Netball, Rugby"> Belville Sport Day  4/23</v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Patriot Netball"> Patriot Netball 3/23 </v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Hockey vs Tableview 5 May"> Hockey vs Tableview 5 May </v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Rugby vs Fishhoek - 5 May"> Rugby vs Fishhoek - 5 May </v-btn>
+      </v-card-text>
+    </v-card>
+    <most-used-functions />
+    <v-card class="pt-2">
+      <v-card-title class="blue">
+           Your Uploads
+      </v-card-title>
+      <student-uploads :studentid="studentid" />
     </v-card>
    </v-col>
 </v-row>
@@ -105,7 +117,7 @@
   </v-expansion-panels>
     </v-layout>
 
-
+<menu-list-old functiongroup="other" />
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
 
 </div>
@@ -120,11 +132,13 @@ import { getters } from "@/api/store";
 import MenuListOld from '@/components/MenuListOld.vue';
 import StudentEmailList from '@/components/student/StudentEmailList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
+import StudentUploads from '@/components/student/StudentUploads'
 import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentMerit from '@/components/student/StudentMerit'
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 import Avatar from '@/components/base/Avatar'
 import { zmlLog } from '@/api/zmlLog.js';
+import MostUsedFunctions from '@/components/MostUsedFunctions.vue'
 //import ZMenu from '@/components/base/ZMenu.vue'
 export default {
     name:"StudentHome",
@@ -134,8 +148,10 @@ export default {
         , StudentSubjectList
         , StudentMerit
         , StudentPhotoList
+        , StudentUploads
         , Avatar
         , BaseToolButton
+        , MostUsedFunctions
      },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),

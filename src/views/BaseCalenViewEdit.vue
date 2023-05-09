@@ -3,7 +3,7 @@
     <h1>Calendar ViewF</h1>
     <v-card class="mb-3">
     <v-layout row wrap align-content-start justify-space-around>
-    <base-date v-model="selectedDate" instructions="FA" />
+    <base-date v-model="selectedDate" xinstructions="FA" />
     <v-switch hide-details inset v-model="hideSunday"
              :label="`hide Sunday: ${hideSunday.toString()}`" />
     <v-switch hide-details inset  v-model="hideSaturday" dense

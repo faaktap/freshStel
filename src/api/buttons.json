@@ -4,7 +4,7 @@
           { "btn":"home"        ,"tip":"1"                 ,"func":"/"           ,"icon":"mdi-home","optional":0,"acc":"all"},
           { "btn":"help"        ,"tip":"7"                  ,"func":"/help"       ,"icon":"mdi-help","optional":3,"acc":"all"}],
  "tool": [{ "btn":"Educational_Resources"     ,"tip":"Google Drive"         ,"func":"/drive" ,"icon":"mdi-school","optional":0,"acc":"all"}
-         ,{ "btn":"admin"       ,"tip":"4"                  ,"func":"/admin"      ,"icon":"mdi-account-network","optional":0,"acc":"all"}
+         ,{ "btn":"admin"       ,"tip":"4"                  ,"func":"/admin"      ,"icon":"mdi-account-network","optional":0,"acc":"admin"}
          ,{ "btn":"home"        ,"tip":"1"                 ,"func":"/home"           ,"icon":"mdi-home","optional":0,"acc":"all"}
 
        ] ,

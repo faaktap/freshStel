@@ -12,6 +12,7 @@
           :disabled="disabled"
           :dense="dense"
           :outlined="outlined"
+          clearable
           />
           <v-dialog v-model="showDate" max-width="300" max-height="350" >
           <v-card elevation-3>
@@ -50,24 +51,25 @@ export default {
   }),
   methods:{
     checkIfInFuture(dte) {
-      console.log(this.instructions, 'before check', this.instructions == 'FA')
-      if (this.instructions == 'FA') return false;
-      console.log(this.instructions, 'fall thru')
+      // console.log(this.instructions, 'before check', this.instructions == 'FA')
+      // if (this.instructions == 'FA') return false;
+      // console.log(this.instructions, 'fall thru')
       let selected = {}
       selected.yyyy= dte.substr(0,4)
       selected.mm = dte.substr(5,2)
       selected.dd = dte.substr(8,2)
-      if (selected.yyyy > this.current.yyyy) return 1;
-      if (selected.mm > this.current.mm) return 1;
-      if (selected.dd > this.current.dd) return 1;
-      return 0
+      if (selected.yyyy > this.current.yyyy) return false;
+      if (selected.mm > this.current.mm) return false;
+      if (selected.dd > this.current.dd) return false;
+      return true
     },
     updateValue: function (pvalueT) {
-      if (this.checkIfInFuture(pvalueT)) {
-        infoSnackbar('RW - Not allowed to choose date in future.')
-        this.$emit('input', this.current.yyyy + '-' + this.current.mm + '-' + this.current.dd)
-        return
-      }
+      // if (this.checkIfInFuture(pvalueT)) {
+      //   infoSnackbar('RW - Not allowed to choose date in future.')
+      //   this.$emit('input', this.current.yyyy + '-' + this.current.mm + '-' + this.current.dd)
+      //   return
+      // }
+      console.log('basedate selected:', pvalueT)
       this.showDate = false
       this.$emit('input', pvalueT)
     }

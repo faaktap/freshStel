@@ -1,4 +1,5 @@
 // store.js
+import { addMinutes } from 'date-fns';
 import Vue from 'vue';
 
 //import { getters } from "@/api/store";
@@ -41,7 +42,7 @@ const state = Vue.observable({
            subject: '',
            subjectid: '',
            subjects: [], //subjectid, sortorder, shortname, path, beskrywing description, description beskrywing, linksubjectid, picture, color
-           functions: [],
+           functions: [], //create_timestamp,description, functionaccess=addmin,functionid,functionname,functiontype=local,grade,icon,payload,shortname,sortorder,tip,update_timestamp
            voteList:[],
            locale: 'en',
            calendar:[],

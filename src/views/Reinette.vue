@@ -75,12 +75,13 @@
                 <v-flex xs12>
                   <base-date v-model="editedItem.examdate"
                              label="ExamDate"
-                             instructions="FA"
+                             xinstructions="FA"
                   />
                 </v-flex>
               </v-layout>
             </v-card-text>
             <v-card-actions>
+              <v-btn small class="ma-2" @click="addClassList"> Create ClassList </v-btn>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="dialogEdit=false">Cancel</v-btn>
               <v-btn color="blue darken-1" text @click="save">Save</v-btn>
@@ -143,14 +144,14 @@
 <script>
 import { getters } from "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch';
-//import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import ReportsTableSmall from '@/components/ReportsTableSmall.vue'
 import AutoSelRoom from '@/components/fields/AutoSelRoom.vue'
 import BaseDate from "@/components/base/BaseDate.vue"
 import baseTool from '@/components/base/baseTool.vue'
 import HeroSection from "@/views/sections/HeroSection"
-
+import { clWork } from '@/components/homework/ClassListWork.js'
+import { infoSnackbar } from '@/api/GlobalActions';
 export default {
  name: "EksamenDruk",
   props:{},
@@ -219,6 +220,34 @@ export default {
     }
   },
   methods: {
+    addClassList() {
+       //this.printList(this.editedItem)
+       let parms = this.editedItem
+       let cKeyIdx = parms.subjectname.indexOf('.')
+       let cKey = ''
+       if (cKeyIdx > -1) {
+           cKey = parms.subjectname.substr(cKeyIdx+1,1)
+       }
+      // Create this sql, so we can use it as ease with dkhs.php(zmldbfunctions.php) OneShotAdd function to insert list.
+      // Remember to bind lastid to the newly created list
+      let sql = `select null, :lastid, s.studentid, null from dkhs_student s, dkhs_subjectgroup g, dkhs_studsub ss\
+ where s.studentid = ss.studentid\
+   and g.hodsubjectid = ss.hodsubjectid\
+   and g.teacher = ss.teacher\
+   and g.teacher = '${parms.teacher}'\
+   and g.subjectname = '${parms.subjectname}'\
+   and ss.ckey = '${cKey}'\
+   and s.grade = '${parms.grade}'\
+   and g.grade = '${parms.grade}'`
+      let listname = `${parms.teacher}:${parms.grade}:${parms.subjectname}`
+      //alert('now call create clas list with this criteria..' + listname + '     ' + sql)
+      clWork.addListAndStudentsInOnShot({listname: listname, sql:sql, parms:parms, continue: this.addListResult})
+    },
+    addListResult(response) {
+      //alert('some add list result:' + JSON.stringify(response))
+      infoSnackbar(`A new classlist was successfully created for :  ${this.editedItem.teacher}`)
+      this.dialogEdit = false;
+    },
     editItem(item) {
       console.log('editItem', item)
       this.editedIndex = this.subjectListFilter.indexOf(item)

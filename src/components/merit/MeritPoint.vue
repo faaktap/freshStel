@@ -148,7 +148,7 @@ export default {
     },
     open (e) {
       this.updateNeeded = {u1:e.point, u2:e.defaultdescription}
-      console.log('beackup before we start : ', this.updateNeeded)
+      console.log('backup before we start : ', this.updateNeeded)
       return
     },
 
@@ -213,9 +213,8 @@ export default {
       //this.sqlSelect = `SELECT s.meritstudentid, s.meritid, s.studentid, s.meritdte, s.confirmdte, s.persmenemonic \
       this.sqlSelect = `SELECT s.meritstudentid, s.meritid, s.studentid, s.meritdte, s.confirmdte, s.persmenemonic \
       ,s.description, l.point \
- FROM dkhs_meritstudent s, dkhs_meritlink l, dkhs_meritlevel m \
-WHERE s.meritid = l.meritid\
-  and m.meritid = l.meritid`
+ FROM dkhs_meritstudent s, dkhs_meritlink l \
+WHERE s.meritid = l.meritid`
   //and l.meritid = ${parms.meritid}`
       this.reportHeader = `MeritPrintList: ${parms.meritid}`
       //this.showSelection = false

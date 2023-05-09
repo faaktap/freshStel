@@ -56,20 +56,20 @@
         >
         <v-dialog v-model="drawer">
         <v-card class="ma-2 pa-2">
-        <v-btn @click="getFiles(ignoreDir)">
+        <v-btn small @click="getFiles(ignoreDir)">
           Reset          </v-btn>
-        <v-btn          @click="moveStart">
+        <v-btn  small  @click="moveStart">
           Select
           <template v-if="moving.length > 0">            + {{ moving.length }}          </template>        </v-btn>
-        <v-btn          @click="deleteStart"          class="ma-2">
+        <v-btn small      @click="deleteStart"          class="ma-2">
            Delete        </v-btn>
-        <v-btn          @click="createFolderStart"          class="ma-2">
+        <v-btn small      @click="createFolderStart"          class="ma-2">
           Create Folder        </v-btn>
-        <v-btn            @click="renameStart"            class="ma-2">
+        <v-btn small      @click="renameStart"            class="ma-2">
          Rename Item        </v-btn>
-        <v-checkbox v-model="showFoldersInFileList"  label="Show Folders"        />
-        <v-btn            @click="uploadStart"       class="ma-2">
+        <v-btn small      @click="uploadStart"       class="ma-2">
           Upload Files        </v-btn>
+        <v-checkbox small v-model="showFoldersInFileList"  label="Show Folders"        />
         </v-card>
         </v-dialog>
         </v-navigation-drawer>
@@ -210,9 +210,9 @@
     </v-simple-table>
               </base-title-expand>
             </v-card>
-            <div v-else>
+            <!-- <div v-else>
               <small class="text-caption"> no operation active </small>
-            </div>
+            </div> -->
           </v-card>
         </v-col>
     </v-row>

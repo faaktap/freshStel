@@ -6,7 +6,8 @@
                  placeholder="search"
                 :value="value"
                 @input="updateValue"
-   />
+   >
+   </v-text-field>
 </template>
 
 <script>

@@ -2,7 +2,7 @@ module.exports = {
   publicPath: '/',
   //publicPath: '/virtual-school/',
   outputDir:'dist',
-  assetsDir:'sasset',
+  assetsDir:'dkhasset',
   "transpileDependencies": [
     "vuetify"
   ],

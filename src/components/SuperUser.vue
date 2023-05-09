@@ -1,5 +1,6 @@
 <template>
 <v-container fluid>
+
     <hero-section name="forDB"
               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall088.jpg"
               :title="`Superuser Menu : ${getZml.login.fullname}`"
@@ -11,6 +12,9 @@
 
 
    <h2> Welcome SysAdmin! </h2>
+
+<v-btn @click="showCamera = !showCamera"> ShowCam </v-btn>
+   <camera-button v-if="showCamera" />
       <v-layout class="ma-2 pa-2" row wrap justify-space-between>
                <v-btn small to="/quanda" class="ma-2"> FAQ - Questions.. </v-btn>
                <v-btn small to="/checklog" class="ma-2"> checklog </v-btn>
@@ -147,6 +151,7 @@ import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 import HeroSection from "@/views/sections/HeroSection.vue"
 import zmlDataTable from '@/components/zmlDataTable.vue'
+import CameraButton from '@/test/CameraButton.vue';
 
 // import Calendar from '@/components/Calendar.vue';
 // import PersonelMenemonic from '@/components/staff/PersonelMenemonic.vue';
@@ -170,6 +175,7 @@ export default {
             //  MenuListNew
              HeroSection
            , zmlDataTable
+           , CameraButton
     },
     data: () => ({
 
@@ -187,6 +193,7 @@ export default {
         menuSmall: false,
         menuType: 'all',
         menuSearch:false,
+        showCamera: false
     }),
     computed:{
     },

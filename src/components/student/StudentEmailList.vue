@@ -1,6 +1,7 @@
 <template>
- <v-card xmax-width="500" class="mx-auto" :color="color" elevation="2">
-   <v-card-title class="headline ma-1"> Emails </v-card-title>
+ <!-- https://blog.logrocket.com/guide-css-word-wrap-overflow-wrap-word-break/ -->
+ <v-card xmax-width="500" class="mx-auto" :color="color" elevation="2" style="word-wrap: break-word;overflow-wrap: break-word;">
+   <v-card-title class="headline ma-1" > {{ heading }} </v-card-title>
    <v-card-text v-if="emailList">
    <v-data-table
          :headers="emailHeader"
@@ -22,7 +23,11 @@ import { zmlFetch } from "@/api/zmlFetch";
 import { getters } from "@/api/store";
 export default {
     name:"StudentEmailList",
-    props: ['studentid','color'],
+    props: {
+      studentid:{default:null}
+     ,color: {default:'blue'}
+     ,heading: {default:'EBulletin Emails'}
+      },
     data: () => ({
       getZml: getters.getState({ object: "gZml" }) ,
       emailList:null,
@@ -31,11 +36,11 @@ export default {
           {text: 'email',    align: 'start',  value: 'email' },
         //{text: 'impNumber',align: 'start',  value: 'impnumber' },
         //{text: 'fullname', align: 'start',  value: 'name' },
-          {text: 'OptOut',   align: 'start',  value: 'description' },
-          {text: 'Inserted', align: 'start',  value: 'insertdate' },
-          {text: 'Changed',  align: 'start',  value: 'changedate' },
         //{text: 'Note',     align: 'start',  value: 'extra' },
           {text: 'Group',    align: 'start',  value: 'grpname' },
+          {text: 'Inserted', align: 'start',  value: 'insertdate' },
+          {text: 'Changed',  align: 'start',  value: 'changedate' },
+          {text: 'OptOut',   align: 'start',  value: 'description' },
         //{text: 'SubID',    align: 'start',  value: 'subid' },
         ]
     }),

@@ -6,8 +6,8 @@ import { ls } from "@/api/localStorage.js"
 import { zLoadCal } from "@/api/loadCalendar.js"
 import { errorSnackbar, infoSnackbar } from "@/api/GlobalActions"
 
-function l() { //(...args) {
-    //console.log('zGB',...args)
+function l(...args) {
+    console.log('zGB',...args)
 }
 
 export const zData = {
@@ -54,7 +54,7 @@ export const zData = {
     },
     wernerTest(r) {l('no func passed',r)},
     checkIfAllLoaded() {
-        infoSnackbar('Check System Properties 1')
+        //infoSnackbar('Check System Properties 1')
         l('checkIfAllLoaded:', getters.getState({ object: "gZml" }).subjects.length
         , getters.getState({ object: "gZml" }).persMenemonic.length            , getters.getState({ object: "gZml" }).functions.length
         , getters.getState({ object: "gZml" }).place.length            , getters.getState({ object: "gZml" }).meritLevel.length
@@ -74,7 +74,7 @@ export const zData = {
          }
     },
     quickLoadInitialData: (whatever, afterwardsFunction) => {
-        infoSnackbar('Check System Properties 2')
+        //infoSnackbar('Check System Properties 2')
         if (zData.checkIfAllLoaded() == true) {
             l('InitialData-Quickload-------------------------------------------NotNeeded',zData.loadingCache, whatever)
             if (afterwardsFunction) afterwardsFunction()

@@ -6,6 +6,7 @@
         :disabled="disabled"
         :loading="loading"
         :to="to"
+        :icon="$vuetify.breakpoint.smAndDown"
  >
 
        <v-badge color="warning" v-if="badge.length > 0" :title="badgeTitle" left inline>

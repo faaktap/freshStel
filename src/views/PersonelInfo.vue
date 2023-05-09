@@ -6,20 +6,20 @@
             toolbarName="De Kuilen High School Personel"
            :background="false"
             >
-          <v-btn small @click="showAs='list'" class="mr-2" title="Show as a list">
+          <v-btn small @click="showAs='list'" class="mr-2" title="Show as a list" icon>
                         <v-icon> mdi-view-list </v-icon>          </v-btn>
-          <v-btn small  @click="showAs='card'"  class="mr-2">
+          <v-btn small  @click="showAs='card'"  class="mr-2" icon>
                        <v-icon> mdi-card </v-icon>          </v-btn>
-          <v-btn small @click="showAs='picture'"  class="mr-2" title="Show only picture">
+          <v-btn small @click="showAs='picture'"  class="mr-2" title="Show only picture" icon>
                        <v-icon> mdi-image </v-icon>          </v-btn>
-          <v-btn small @click="loadPersonelList" class="mr-2" title="refresh - reflect new changes">
+          <v-btn small @click="loadPersonelList" class="mr-2" title="refresh - reflect new changes" icon>
                        <v-icon> mdi-refresh </v-icon>          </v-btn>
-
-<v-btn small v-if="personelList.length"
+    <v-btn small v-if="personelList.length"
         title="Trying to get images to print"
+        icon
         @click="doPrint()"
     >
-     T
+     <v-icon> mdi-printer </v-icon>
   </v-btn>
 </base-tool>
 

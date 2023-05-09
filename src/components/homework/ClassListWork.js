@@ -1,7 +1,7 @@
-// import { getters } from "@/api/store";
+import { getters } from "@/api/store";
 import { errorSnackbar } from '@/api/GlobalActions';
 import { zFetch, zmlFetch } from '@/api/zmlFetch';
-//import { zmlLog } from '@/api/zmlLog.js';
+import { zmlLog } from '@/api/zmlLog.js';
 
 export const clWork = {
     hello: (p1) => {console.log('hello from (StudentAttendanceList.JS) ' , p1)}
@@ -107,6 +107,7 @@ export const clWork = {
                  set listname = '${listObj.listname}'\
                , share = '${listObj.share}'\
                , grade = '${listObj.grade}'\
+               , teacher = '${listObj.teacher}'\
                , jdocstructure = '${listObj.jdocstructure}'\
                where id = ${listObj.id}`
     clWork.executeSql(sql)
@@ -120,11 +121,40 @@ export const clWork = {
     return 'DONE'
    },
    deleteStudentFromList: (listID, sid) => {
-    let sql = `DELETE FROM hw_classliststudent
+      let sql = `DELETE FROM hw_classliststudent
                 WHERE classlistid = ${listID}
                  AND studentid = ${sid}`
-    clWork.executeSql(sql)
-    return 'DONE'
+      clWork.executeSql(sql)
+      return 'DONE'
+   },
+   addListAndStudentsInOnShot: (pData) => {
+      let p = zFetch({task:'MeritOneShotAdd', data: pData})
+      p.then((r) => {
+        if (r.status >= 200 && r.status <= 299) {
+          //we do not need the json, we assume the add/insert went fine zmlzmlzml
+          pData.continue()
+          zmlLog('', clWork.name, `AddOneShotClassLst:${pData.listname},${pData.parms}`)
+          clWork.refreshClassLists()
+
+        } else { throw Error(r.statusText) }
+      })
+      console.log('initiate a fetch/update/insert classlist', pData)
+   },
+   refreshClassLists: () => {
+      getters.getState({ object: "gZml" }).classList.length = 0
+      let p = zFetch({task:'LoadClassLists'})
+      p.then((r) => {
+         if (r.status >= 200 && r.status <= 299) {
+            return r.json();
+         } else {
+            throw Error(r.statusText)
+         }
+      })
+      p.then(data => {
+         console.log('Update ClassLists after add', data.length)
+         getters.getState({ object: "gZml" }).classList = data
+         if (getters.getState({ object: "gZml" }).classList.length) ls.save('zmlClassList', data)
+      })
    },
    executeSql: (sql) => {
      let p = zFetch({task:'PlainSql', sql:sql})

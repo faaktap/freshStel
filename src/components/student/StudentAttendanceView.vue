@@ -13,6 +13,7 @@
             >
     <v-btn class="ma-2" small icon @click="srch.showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
     <v-btn class="ma-2" small icon @click="srch.showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+    <v-btn icon @click="refresh"><v-icon> mdi-refresh</v-icon>  </v-btn>
     <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn>
  </base-tool>
 
@@ -44,7 +45,7 @@
              append-icon="mdi-magnify"
              outlined
           />
-          <base-date v-model="srch.searchDate" :curValue="srch.searchDate" xinstructions="FA" label="Date" class="mt-0 ma-2 pa-2" :outlined="true" />
+          <base-date v-model="srch.searchDate" :xxcurValue="srch.searchDate" label="Date" class="mt-0 ma-2 pa-2" :outlined="true" />
          </v-card>
 
 
@@ -58,6 +59,7 @@
              class="elevation-1"
             color="purple lighten-3"
             @dblclick:row.prevent="loadSessionData"
+            mobile-breakpoint="0"
         >
         </v-data-table>
 
@@ -109,6 +111,7 @@ import BaseDate from '@/components/base/BaseDate.vue'
 import { printJSON } from "@/api/zmlPrint.js"
 //import { infoSnackbar } from '@/api/GlobalActions';
 import { ls } from "@/api/localStorage.js"
+import { todayStr } from "@/api/util.js"
 //import StudentAttendanceSession from '@/components/student/StudentAttendanceSession.vue'
 export default {
     name:'StudentAttendanceView',
@@ -179,26 +182,19 @@ export default {
       refresh() {
         console.log('Refresh Data')
         this.loading = true
+        let dateFilter = ''
+        if (this.srch.searchDate) {
+          dateFilter = ` and substr(a.attendancedate,1,10) = substr('${this.srch.searchDate}',1,10) `
+        }
         let ts = {task: 'PlainSql',
                   sql: `SELECT substr(a.attendancedate,1,10) date \
-     , SUBSTRING_INDEX(sessionid, ".", 1) day
-     , period\
-     , sessionid  \
-     , l.user_name presenter  \
-     , p.name place  \
-     , count(*) students \
-     , min(s.grade) grade \
-  FROM dkhs_attendance a, s_place p, dkhs_learner l, dkhs_student s  \
- where a.userid = l.userid \
-   and a.studentid = s.studentid
-   and p.placeid = a.placeid\
-   and substr(a.attendancedate,1,10) = substr('${this.srch.searchDate}',1,10) \
+     , SUBSTRING_INDEX(sessionid, ".", 1) day \
+     , period, sessionid, l.user_name presenter, p.name place, count(*) students, min(s.grade) grade \
+  FROM dkhs_attendance a, s_place p, dkhs_learner l, dkhs_student s \
+ where a.userid = l.userid and a.studentid = s.studentid \
+   and p.placeid = a.placeid ${dateFilter}\
  group by substr(attendancedate,1,10)  \
-         , SUBSTRING_INDEX(sessionid, ".", 1)
-         , sessionid  \
-         , l.user_name \
-         , p.name  \
-ORDER BY date DESC`
+         , SUBSTRING_INDEX(sessionid, ".", 1), sessionid, l.user_name, p.name ORDER BY date DESC`
              }
         zmlFetch(ts, this.loadAttendanceData, this.errorLoading)
       },
@@ -240,7 +236,15 @@ ORDER BY date DESC`
         if (this.getZml.place.length < 5) alert('we have not loaded places yet! - please startat attload')
         if (ls.test(this.$options.name)) this.srch = ls.load(this.$options.name)
         //if (!this.srch.searchString) this.srch.searchString = this.getZml.login.username
-        //this.srch.searchDate = Intl.DateTimeFormat('af-ZA').format(new Date()), //create a default yyyy-mm-dd date for first search
+
+        // https://stackoverflow.com/questions/3552461/how-do-i-format-a-date-in-javascript#34015511
+        // let options = { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' };
+        // let today  = new Date()
+        // console.log(today.toLocaleDateString("af-ZA", options))
+        // if (!this.srch.searchDate) this.srch.searchDate = today.toLocaleDateString("af-ZA", options) //(does not work in Tanya's laptop) Intl.DateTimeFormat('af-ZA').format(new Date()), //create a default yyyy-mm-dd date for first search
+
+        this.srch.searchDate = todayStr()
+
         this.refresh()
     },
     watch:{

@@ -12,7 +12,9 @@
 <v-toolbar  dense  row  wrap>
    Also known as .. Frequently asked Questions
     <v-spacer/>
-
+   <base-search @clear="search=''"
+                v-model="search"
+                :outlined="false" />
     <v-btn icon @click="load()" title="refresh (load new data)">
       <v-icon color="success"> mdi-refresh </v-icon>
     </v-btn>
@@ -24,7 +26,7 @@
 
     <template v-if="faqList">
       <blockquote
-        v-for="c in faqList"
+        v-for="c in faqListFilter"
         :key="c.id"
         class="blockquote"
         style="background-color: #f1f3f4"
@@ -33,7 +35,7 @@
           <b>Q: {{ c.name }}?</b>
           <v-btn
             color="info"
-            class="float-right"
+            xclass="float-right"
             icon
             small
             @click="showForm(c.id)"
@@ -64,10 +66,10 @@
                 transition="slide-x-transition"
                 class="ma-1 pa-1"
               >
-                <v-icon class="ma-1 pa-1">{{ c.icon }} </v-icon>
               </v-badge>
             </v-hover>
           </small>
+          <v-icon class="ma-1 pa-1 float-right">{{ c.icon }} </v-icon>
         </footer>
       </blockquote>
     </template>
@@ -115,8 +117,14 @@ import { zmlFetch } from "@/api/zmlFetch.js";
 import HeroSection from "@/views/sections/HeroSection.vue"
 import VBack from '@/components/base/VBack.vue'
 import { questionSchema } from '@/api/faqFormSchema.js'
+import { util } from '@/api/util.js'
+import BaseSearch from '@/components/base/baseSearch.vue'
 export default {
-  components: { HeroSection, VBack },
+  components: {
+      HeroSection
+    , VBack
+    , BaseSearch
+  },
   name: "QandAPage",
   data: () => ({
     faqModel: {},
@@ -126,8 +134,17 @@ export default {
     task: { workDone: "", progress: false, action: "", task: "" },
     curRecord: {},
     faqList: {},
-    questionSchema
+    questionSchema,
+    search:''
   }),
+  computed: {
+    faqListFilter() {
+        if (this.faqList.length == 0) return []
+        let theList = this.faqList
+        if (this.search) theList = util.findMultipleSearch(theList,this.search)
+        return theList
+    }
+  },
   methods: {
     showMore(id) {
       let p = this.faqList.find(e => e.id == id)
@@ -159,9 +176,11 @@ export default {
       this.faqList = JSON.parse(JSON.stringify(response))
       this.faqList = []
       if (response && response.length) {
+        this.$cs.l('after load : ',  response)
         response.forEach((e) => {
-          e.model = JSON.parse(e.jdocstructure);
-          e.model.faqAnswer = e.model.faqAnswer.replace(/\n/g, "<br />");
+          e.model = JSON.parse(e.jdocstructure)
+          this.$cs.l('after load : ',e.id,  e.model)
+          if (e.model.faqAnswer) e.model.faqAnswer = e.model.faqAnswer.replace(/\n/g, "<br />");
           this.faqList.push(e)
         });
       }
@@ -170,8 +189,6 @@ export default {
       this.$cs.l("loaderror", e);
     },
   },
-  computed: {},
-  created() {},
   mounted() {
     this.$cs.l("faq mount");
     this.user = this.$super.fullname

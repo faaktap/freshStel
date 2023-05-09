@@ -9,6 +9,20 @@ export function cl(...args) {
     console.info(...args);
 }
 
+export const todayStr = () => {
+    let today = new Date()
+    return anyDayStr(today)
+}
+
+//date muse be javascript date!
+export const anyDayStr = (date) => {
+    if (typeof(date) != 'object') cl('anyday parm must be object!', date)
+    let dd = String(date.getDate()).padStart(2, '0');
+    let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = date.getFullYear();
+    return yyyy + '-' + mm + '-' + dd
+}
+
 
 export const util = {
     cl: function (...args) {
@@ -129,7 +143,6 @@ const zDateFunction = ( parm ) => {
     util.cl('this is the end extra function ' , dt)
     util.cl(dt)
     return dt
-
 }
 
 
