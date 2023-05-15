@@ -18,7 +18,6 @@
                label="Calendar"
                color="secondary"
                icon="mdi-calendar"
-               xx:badge="meritCount"
                :loading="loading"
                :disabled="loading"
                xxbadgeTitle="`You have ${meritCount} merits to confirm`"
@@ -141,27 +140,27 @@ export default {
         loadYourMeritWork() {
           this.$router.push({ name: 'PersMeritList'})
         },
-        loadError(response) {
-          this.$cs.l(this.$options.name,'ErrorA', response)
-          this.loading = false
-        },
-        showData(response) {
-          this.getZml.functions = response
-          this.loadWorkToDo()
-          this.loading = false
-        },
-        loadFunctions() {
-           if (this.getZml.functions.length) return
-           this.loading = true
-           let ts = {};
-           ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction order by sortorder'
-           ts.api = zmlConfig.apiDKHS
-           zmlFetch(ts, this.showData, this.loadError)
-        },
+        // loadError(response) {
+        //   this.$cs.l(this.$options.name,'ErrorA', response)
+        //   this.loading = false
+        // },
+        // showData(response) {
+        //   this.getZml.functions = response
+        //   this.loadWorkToDo()
+        //   this.loading = false
+        // },
+        // loadFunctions() {
+        //    if (this.getZml.functions.length) return
+        //    this.loading = true
+        //    let ts = {};
+        //    ts.task = 'PlainSql';
+        //    ts.sql = 'select * from dkhs_lfunction order by sortorder'
+        //    ts.api = zmlConfig.apiDKHS
+        //    zmlFetch(ts, this.showData, this.loadError)
+        // },
     },
     created() {
-      this.loadFunctions()
+      //this.loadFunctions()
     },
     mounted() {
       this.$cs.l('Mounted', this.$options.name)

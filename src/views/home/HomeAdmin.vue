@@ -72,13 +72,13 @@
         >
           <v-icon> mdi-information </v-icon>
         </v-btn>
-        <v-btn
+        <!-- <v-btn
          icon class="ma-2"
          title="Click here to refresh"
          @click="loadFunctions"
         >
           <v-icon> mdi-refresh </v-icon>
-        </v-btn>
+        </v-btn> -->
 
   </base-tool>
 
@@ -146,23 +146,23 @@ export default {
         if (this.menuType == 'student') { this.menuType = 'other'; return}
         if (this.menuType == 'other') { this.menuType = 'all'; return}
       },
-        loadFunctions() {
-           this.loading = true
-           let ts = {};
-           ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction order by sortorder'
-           //ts.api = zmlConfig.apiDKHS
-           zmlFetch(ts, this.showData, this.loadError)
-        },
-        loadError(response) {
-            //this.$cs.l(response)
-            this.loading = false
-            alert(response)
-        },
-        showData(response) {
-           this.getZml.functions = response
-           this.loading = false
-        },
+        // loadFunctions() {
+        //    this.loading = true
+        //    let ts = {};
+        //    ts.task = 'PlainSql';
+        //    ts.sql = 'select * from dkhs_lfunction order by sortorder'
+        //    //ts.api = zmlConfig.apiDKHS
+        //    zmlFetch(ts, this.showData, this.loadError)
+        // },
+        // loadError(response) {
+        //     //this.$cs.l(response)
+        //     this.loading = false
+        //     alert(response)
+        // },
+        // showData(response) {
+        //    this.getZml.functions = response
+        //    this.loading = false
+        // },
         async CallAsyncFunction() {
           if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
            this.loading = true
@@ -184,7 +184,7 @@ export default {
           }
         },
         initialize() {
-          if (!this.getZml.functions.length) this.loadFunctions()
+          //if (!this.getZml.functions.length) this.loadFunctions()
         }
     },
     created() {

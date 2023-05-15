@@ -165,6 +165,22 @@
                      label="History we can display on Internet - optional"
                      title="Something short - where you where born and where you studied."/>
         </v-flex>
+        <v-flex  xs12 lg6  v-if="getZml.login.username=='WER'">
+         <v-text-field v-model="pers.initSurname"
+                     label="Link up with cemis init/surname - only werner"
+                     title="Something short - where you where born and where you studied."/>
+        </v-flex>
+        <v-flex  xs12 lg6  v-if="getZml.login.username=='WER'">
+         <v-text-field v-model="pers.IDNumber"
+                     label="ID"
+                     title="ID - only werner."/>
+        </v-flex>
+        <v-flex  xs12 lg6  v-if="getZml.login.username=='WER'">
+         <v-textarea v-model="pers.address"
+                     label="Address"
+                     title="Address - only werner."/>
+        </v-flex>
+
         </v-layout>
         </v-flex>
       </v-layout>

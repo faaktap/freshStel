@@ -1,5 +1,5 @@
 const PROJECT_NAME = "dkLearn"
-const PROJECT_VERSION = "54.4h"
+const PROJECT_VERSION = "54.5c"
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"
@@ -34,7 +34,7 @@ export const zmlConfig = {
   defaultLayout: DEFAULT_LAYOUT,
   // eslint-disable-next-line
   cl: function (...args) {
-     //console.info(...args);
+     console.info(...args);
   },
   randomColor: function() {return Math.floor(Math.random()*16777215).toString(16)},
   copyToClipboard : function(text) {navigator.clipboard.writeText(text)},

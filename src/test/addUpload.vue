@@ -35,14 +35,16 @@
 
 <script>
 import { getters } from "@/api/store.js"
+import { zmlFetch } from '@/api/zmlFetch';
+import { uploads } from '@/api/uploads.js'
+import { zmlLog } from '@/api/zmlLog.js';
 import HeroSection from "@/views/sections/HeroSection.vue"
 import VBack from '@/components/base/VBack.vue'
-function cl(...args) {console.log('addFaq:' ,...args)}
-import { uploads } from '@/api/uploads.js'
 import TypicalEditForm from "@/components/vfbase/TypicalEditForm.vue"
-import { zmlFetch } from '@/api/zmlFetch';
 import { studentUploadSchema} from "@/api/faqFormSchema.js";
-import { zmlLog } from '@/api/zmlLog.js';
+
+function cl(...args) {console.log('addFaq:' ,...args)}
+
 export default {
   name: "addUpload",
 

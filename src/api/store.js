@@ -57,6 +57,8 @@ const state = Vue.observable({
           }
     });
 
+    // mutations.setState({ object: "gZml", objectPath: login.class })
+    //mutations.setState( {object: "gZml", objectPath: [id, "classList"], value: whatever} );
 const mutations = {
   setState({ object, objectPath, value, upsert = false } = {}) {
     if (state[object] === undefined || value === undefined)
@@ -79,6 +81,10 @@ const mutations = {
   }
   // other specific mutations ...
 };
+
+const mySet = function(obj, prop, value)  {
+   Vue.set(state[obj], prop, value)
+}
 
 const getters = {
   getState({ object, objectPath } = {}) {
@@ -106,4 +112,4 @@ const actions = {
   },
 };
 
-export { getters, mutations, state, actions };
+export { getters, mutations, state, actions, mySet };

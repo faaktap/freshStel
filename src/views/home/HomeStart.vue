@@ -82,9 +82,9 @@
 
  <v-btn class="ma-2" color="primary" to="/latest/100"> Latest Uploads </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/attload"> Attendance </v-btn>
+ <!-- <v-btn class="ma-2" color="primary" to="/attload"> Attendance </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/attendance"> Old Attendance View </v-btn>
+ <v-btn class="ma-2" color="primary" to="/attendance"> Old Attendance View </v-btn> -->
 
 </base-title-expand>
 </v-container>

@@ -84,6 +84,9 @@ export default {
       }
       return list
      },
+   },
+   mounted() {
+       console.log('PNCD',this.surname, this.initial, this.user,this.$route.params)
    }
 }
 </script>

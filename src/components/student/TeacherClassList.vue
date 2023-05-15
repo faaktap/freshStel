@@ -52,7 +52,8 @@
          <!-- <template v-slot:[`top`]> top </template> -->
          <template v-slot:[`item.actions`]="{ item }">
              <v-btn x-small @click="loadList(item.id)" title="View or Add Students in List" color="primary" class="ma-2"> View </v-btn>
-             <v-btn x-small @click="editListName(itemt.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn>
+             <v-btn x-small @click="editListName(item.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn>
+             <v-btn x-small @click="deleteListName(item.id)" color="warning"> Delete </v-btn>
          </template>
            </v-data-table>
 
@@ -68,6 +69,7 @@
         <td class="ma-2 pa-2">{{ t.grade }}</td>
         <td> <v-btn x-small @click="loadList(t.id)" title="View or Add Students in List" color="primary" class="ma-2"> View </v-btn>
              <v-btn x-small @click="editListName(t.id)" title="Edit Listname or Shared" color="primary" class="ma-2 pa-2"> Edit </v-btn>
+             <v-btn x-small @click="deleteListName(t.id)" title="Delete List" color="primary" class="ma-2 pa-2"> Edit </v-btn>
         </td>
       </tr>
       </tbody>
@@ -80,8 +82,9 @@
     <v-card-title>{{ t.teacher }}  </v-card-title>
     <p>{{ t.listname }}</p>
     <v-card-actions>
-      <v-btn small @click="loadList(t.id)" color="primary"> View </v-btn>
-      <v-btn small @click="editListName(t.id)" color="primary"> Edit </v-btn>
+      <v-btn x-small @click="loadList(t.id)" color="primary"> View </v-btn>
+      <v-btn x-small @click="editListName(t.id)" color="primary"> Edit </v-btn>
+      <v-btn x-small @click="deleteListName(t.id)" color="primary"> Delete </v-btn>
       <v-spacer />
       <span class="float-right text-caption"> {{ t.id }} </span>
     </v-card-actions>
@@ -91,7 +94,7 @@
 
     <v-dialog v-model="showForm"  :fullscreen="$vuetify.breakpoint.mobile" width="50%">
       <v-card  class="ma-2 pa-2">
-        <v-card-title> Teacher Class List {{ formTitle }} </v-card-title>
+        <v-card-title> TLISTS ::  {{ formTitle }} </v-card-title>
         <v-card-text column align-content-start justify-space-around>
           <v-text-field v-model="rec.listname" label="List Name" outlined dense />
           <v-autocomplete v-model="rec.teacher" label="Teacher" outlined dense
@@ -105,10 +108,13 @@
           </v-radio-group>
         </v-card-text>
         <v-card-actions>
-          <v-btn small @click="save" color="primary"> save </v-btn>
+          <v-btn small @click="save" color="primary">
+            <span v-if="formTitle == DELETE_LIST_TITLE"> delete </span>
+             <span v-else> save </span>
+          </v-btn>
           <v-btn small @click="showForm = false"> ignore </v-btn>
           <v-spacer />
-          <v-btn v-if="rec.id"
+          <v-btn v-if="rec.id && !(formTitle == DELETE_LIST_TITLE)"
                  small @click="basedOnOtherList = !basedOnOtherList"
                  title="Add students based on other list, you can delete some of them later"
                  class="primary">
@@ -143,7 +149,7 @@
 
 <script>
 import { zmlFetch } from '@/api/zmlFetch.js';
-import { getters } from "@/api/store";
+import { mySet,getters } from "@/api/store";
 import { clWork } from "@/components/homework/ClassListWork.js"
 import { zData } from "@/api/zGetBackgroundData.js"
 import { ls } from "@/api/localStorage.js"
@@ -152,6 +158,7 @@ import { infoSnackbar } from '@/api/GlobalActions';
 import SelStudentSubs from '@/components/fields/SelStudentSubs.vue'
 
 const ADD_LIST_TITLE = "Create New List"
+const DELETE_LIST_TITLE = "Delete List"
 export default {
   name: "TeacherClassList",
   props:{},
@@ -161,7 +168,7 @@ export default {
             otherGradeOptions:['G07','G08','G09','G10','G11','G12'],
             gradeList: [],
             search: '',
-            showAs: 'list'
+            showAs: 'list',
     },
     getZml: getters.getState({ object: "gZml" }),
 
@@ -181,6 +188,7 @@ export default {
     passedListID: '',
     basedOnOtherList: false,
     saveIni: 'zmlTCLShowAS',
+    DELETE_LIST_TITLE
   }),
   methods:{
     initialize() {
@@ -215,6 +223,11 @@ export default {
       this.formTitle = "Edit : " + listID
       this.showForm = true
     },
+    deleteListName(listID) {
+      this.rec = this.tList.find(e => e.id == listID)
+      this.formTitle = DELETE_LIST_TITLE
+      this.showForm = true
+    },
     addStudentsToList(id) {
       if (!this.rec.listname || this.rec.listname == this.defaultListname) {
         infoSnackbar('please fill in a new name, and make sure all other information is filled in, we wil...')
@@ -234,6 +247,8 @@ export default {
     save() {
       if (this.formTitle == ADD_LIST_TITLE) {
          clWork.addList(this.rec)
+      } else if (this.formTitle == DELETE_LIST_TITLE) {
+         clWork.deleteList(this.rec)
       } else {
          //if (this.rec.jdocstructure) this.rec.jdocstructure = JSON.stringify(this.rec.jdocstructure)
          // alert('Before save:' + this.rec.jdocstructure)
@@ -242,8 +257,11 @@ export default {
       this.showForm = false
     },
     loadData(response) {
-      console.log('loaddata')
+      console.log('ClassList Loaded : loaddata', response)
       this.tList = response
+      ls.save('zmlClassList', response)
+      mySet('gZml','classList', response)
+      //getters.getState({ object: "gZml" }).classList = response
     },
     errorLoading(response) {
       alert('some error')

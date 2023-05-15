@@ -77,9 +77,9 @@ export default {
     }),
     methods:{
       itemRowBackground(item) {
-    //    console.log('itemRowBackground','grade' in item , item.grade.indexOf('A')>-1)
+        console.log('itemRowBackground','grade' in item)
         if ('learnassist' in item && item.learnassist) { return 'blue'}
-        if ('grade' in item && item.grade.indexOf('A')>-1) {return 'red'}
+        if ('grade' in item && item.grade && item.grade.indexOf('A')>-1) {return 'red'}
         return ''
       },
       clickOnRow(p1,p2) {

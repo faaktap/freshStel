@@ -2,7 +2,7 @@
 <v-container fluid>
   <v-card >
     <v-card-actions v-if="showAdd==false">
-      <v-btn  @click="showAdd = !showAdd"> Add </v-btn>
+      <v-btn  @click="showAdd = !showAdd"> {{ title }} </v-btn>
     </v-card-actions>
   <v-chip-group mandatory column v-if="showAdd">
     <v-chip v-for="tag in meritFilter"
@@ -23,7 +23,9 @@ import { getters } from "@/api/store"
 import { zData } from "@/api/zGetBackgroundData.js"
   export default {
     name: 'MeritChip',
-    props:['studentid'],
+    props:{studentid:{default:''}
+        , title: {default: 'Add Merit'}
+    },
     components:{
     },
     data () {

@@ -215,10 +215,7 @@ export default {
             alert(response)
       },
       showData(response) {
-        let f1 = response.filter(e => e.functionaccess == 'other')
-        let f2 = response.filter(e => e.functionaccess != 'other')
-        this.getZml.functions.length = 0
-        this.getZml.functions = f2.concat(f1)
+        this.getZml.functions = response
       }
     },
     activated:function() {

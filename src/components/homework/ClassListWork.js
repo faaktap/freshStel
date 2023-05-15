@@ -1,5 +1,6 @@
-import { getters } from "@/api/store";
-import { errorSnackbar } from '@/api/GlobalActions';
+import { mySet, getters } from "@/api/store";
+
+import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import { zFetch, zmlFetch } from '@/api/zmlFetch';
 import { zmlLog } from '@/api/zmlLog.js';
 
@@ -102,6 +103,18 @@ export const clWork = {
     clWork.executeSql(sql)
     return 'DONE'
    },
+   deleteList: (listObj) => {
+      let sn = { task: 'plainSql' , sql: `delete from hw_classlist where id = ${listObj.id}` }
+      zmlFetch(sn, clWork.doneDeleteProcedure, clWork.reportError)
+      return 'DONE'
+   },
+   doneDeleteProcedure(response) {
+      if (response && response.errorcode && response.errorcode != 0) {
+         errorSnackbar('List was NOT Deleted:' + response.result + ' ' + response.errorcode)
+      } else {
+         infoSnackbar('List was deleted!')
+      }
+   },
    updateList: (listObj) => {
     let sql = `update hw_classlist \
                  set listname = '${listObj.listname}'\
@@ -128,7 +141,7 @@ export const clWork = {
       return 'DONE'
    },
    addListAndStudentsInOnShot: (pData) => {
-      let p = zFetch({task:'MeritOneShotAdd', data: pData})
+      let p = zFetch({task:'ClassListOneShotAdd', data: pData})
       p.then((r) => {
         if (r.status >= 200 && r.status <= 299) {
           //we do not need the json, we assume the add/insert went fine zmlzmlzml
@@ -141,19 +154,18 @@ export const clWork = {
       console.log('initiate a fetch/update/insert classlist', pData)
    },
    refreshClassLists: () => {
-      getters.getState({ object: "gZml" }).classList.length = 0
-      let p = zFetch({task:'LoadClassLists'})
-      p.then((r) => {
-         if (r.status >= 200 && r.status <= 299) {
-            return r.json();
+      let sn = { task: 'plainSql' , sql:`select * from  hw_classlist`}
+      zmlFetch(sn, (jdata) => {
+         console.log('Update ClassLists after add', jdata, jdata.length)
+         if (jdata.length) {
+           mySet("gZml","classList", jdata)
+           if (getters.getState({ object: "gZml" }).classList.length) {
+              ls.save('zmlClassList', jdata)
+              console.log('Update ClassList SAVED to LS: ', getters.getState({ object: "gZml" }).classList.length)
+           }
          } else {
-            throw Error(r.statusText)
+            console.log('Update ClassLists FAILED')
          }
-      })
-      p.then(data => {
-         console.log('Update ClassLists after add', data.length)
-         getters.getState({ object: "gZml" }).classList = data
-         if (getters.getState({ object: "gZml" }).classList.length) ls.save('zmlClassList', data)
       })
    },
    executeSql: (sql) => {

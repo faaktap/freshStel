@@ -1,203 +1,233 @@
 <template>
-<div>
-<v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
-    You are not logged in, or you are not a teacher!
-</v-container>
-
-
-<v-container fluid id="printMe">
-  <v-toolbar   row  wrap color="primary">
-      Merit System Edit Text
+<v-container fluid>
+<v-row>
+  <v-col cols="12">
+    <v-toolbar   row  wrap color="primary">
+      Merit Score Allocation Section
       <v-spacer />
-      <v-btn icon @click="printMerit"> <v-icon> mdi-printer </v-icon></v-btn>
+      <v-btn icon @click="testprint"> <v-icon> mdi-printer </v-icon></v-btn>
       <v-back />
   </v-toolbar>
+  </v-col>
+</v-row>
 
-<p class="ma-3"> Double click to go deeper, or press Edit button to change title, info or points.  </p>
-  <merit-form  v-if="id && id > 0"
-              :id="id"
-              @done="doneEditing" />
-  <v-divider />
+ <v-row>
+  <v-col cols="12">
+   <v-card elevation="-2">
+    <v-container fluid color="gray--text text--lighten-5">
+     <v-row >
+      <v-col>
+       <v-text-field
+           v-model="search"
+           append-icon="mdi-magnify"
+           label="Search"
+           single-line
+           hide-details
+       />
+      </v-col>
+     </v-row>
 
-  <v-card class="noprint">{{ treeString }}</v-card>
-  <v-card v-html="printHeader('Merit Table')" class="hide"></v-card>
-   <v-data-table  v-if="aTable.length"
-     :headers="headers"
-     :items="tableItemFilter"
-     @dblclick:row.prevent="meritDblClick"
-     mobile-breakpoint="0"
-   >
-      <template v-slot:[`footer.page-text`]>
-       <v-btn v-if="index != 0"
-             @click="backClick()"
-             align="center" class="ma-2 pa-2" >
-          back
-      </v-btn>
-      </template>
-      <template v-slot:[`item.points`]="{ item }">
-        <div v-if="item.forward == 0"> {{ item.points}} </div>
-      </template>
-      <template v-slot:[`item.description`]="{ item }"  >
-       <template v-if="!$vuetify.breakpoint.mobile">
-         {{ item.description }}
-        </template>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn-toggle v-model="toggle">
-         <v-btn icon x-small
-                @click="meritDblClick($event,item)"
-                title="Delve">
-             <v-icon small color="red" class="my-1">mdi-arrow-right-circle-outline</v-icon>
-         </v-btn>
-         <!-- <v-btn  icon x-small
-                @click="retrieveForDelete(item)"
-                title="Delete">
-             <v-icon small color="red" class="my-1">mdi-delete</v-icon>
-         </v-btn> -->
-         <v-btn  x-small icon
-                @click="retrieveForEdit(item)"
-                title="Edit">
-             <v-icon small color="green" class="my-1">mdi-circle-edit-outline</v-icon>
-         </v-btn>
+     <v-row dense>
+      <v-col cols="12">
+       <v-card color="blue lighten-5" class="ma-1">
+         <v-data-table class="elevation-1"
+                 :headers="meritHeader"
+                 :items="meritListFilter"
+                 :items-per-page="30"
+                 :search="search"
+         >
+         <!--https://blog.devgenius.io/vuetify-edit-table-content-cd57d11ae850-->
+         <template v-slot:[`top`]>
+          <v-dialog v-model="dialogEdit" max-width="500px">
+           <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-layout row wrap align-content-start justify-space-around class="ma-2 pa-2">
+                <v-flex xs12>
+                  <v-text-field label="Points" v-model="editedItem.point" />
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea v-model="editedItem.defaultdescription"
+                               label="Default Description" />
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialogEdit=false">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+         </v-dialog>
+         </template>
+         <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+          <!-- <v-icon small class="mr-2" @click="doubleClickOnTableRow(item)">mdi-spade</v-icon> -->
+         </template>
+         <template v-slot:no-data>
+          <v-btn color="primary">No Data to display</v-btn>
+         </template>
+        </v-data-table>
+       </v-card>
+      </v-col>
+     </v-row>
+    </v-container>
+   </v-card>
+  </v-col>
+ </v-row>
 
-        </v-btn-toggle>
-      </template>
-   </v-data-table>
-   <!-- <v-data-table  v-if="aTable.length"
-     :headers="aTableHeaderForPrint"
-     :items="aTable"
-     mobile-breakpoint="0"
-   /> -->
+
 
 
 </v-container>
-</div>
 </template>
 
-<docs>
-Here is some documentation
-</docs>
 <script>
 import { getters } from "@/api/store"
-import { zData } from "@/api/zGetBackgroundData.js"
-import { infoSnackbar } from "@/api/GlobalActions"
-import MeritForm from '@/components/merit/MeritForm.vue'
-import { printHeader, printPage, printJSON } from "@/api/zmlPrint.js"
+import { zmlFetch } from '@/api/zmlFetch';
+//import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
+//import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
+import { printJSON } from "@/api/zmlPrint.js"
 import VBack from '@/components/base/VBack.vue'
 export default {
-    name: 'MeritTable',
-    components:{
-      MeritForm
-     ,VBack
-    },
-    data () {
-      return {
-        getZml: getters.getState({ object: "gZml" }),
-        printHeader: printHeader,
-        drawer: false,
-        showMeritPoint: false,
-        docs:  this.__docs,
-        id:0,
-        action:'',
-        toggle:'',
-        index: 0,  //start with first menu, on v-datatable
-        aTable: [], // we keep all data from sql here
-        treeString: '', //display our selection
-        headers: [{ text:"the name", value: "title", align: "left"},
-                 //{ text:"back", value: "back", align: "left"},
-                 //{ text:"forward", value: "forward", align: "left"},
-                 { text:"", value: "points", align: "center"},
-                 { text:"", value: "description", align: "left"},
-                 { text:"", value: "actions", align: "right"}],
-        aTableHeaderForPrint: [{ text:"id", value: "id", align: "left"}
-                              ,{ text:"the name", value: "title", align: "left"}
-                              ,{ text:"", value: "description", align: "left"}
-                              ,{ text:"f", value: "forward", align: "left"}
-                              ,{ text:"b", value: "back", align: "left"}
+ name: "meritTable",
+  props:{},
+  components: {
+    VBack
+//    FrontJsonToCsv
+//    ReportsTableSmall
+//   ReportsTable
 
-                              ]
-    }},
-    computed: {
-       tableItemFilter() {
-        // console.log('iFilt=', this.index)
-        if (!this.aTable.length) return []
-          return this.aTable.filter(e => {
-                    if (e.back == this.index) { return true } else { return false }
-                 })
-       },
-    },
-    methods: {
-      printMerit() {
-        printJSON(this.aTable, this.aTableHeaderForPrint, 'Merit List')
-        if (this.index==110)  printPage('printMe', false)
-      },
-      doneEditing(e) {
-        console.log('afterEdit:', e)
-        this.id = 0
-        this.initialize()
-      },
-      retrieveForDelete(i) {
-        this.action = 'Delete'
-        console.log('retrieveForDelete:',i)
-        },
-      retrieveForEdit(i) {
-        this.action = 'Edit'
-        console.log('retrieveForEdit',i)
-        this.id = i.id
-        console.log('CurrentRec was loaded',this.id)
-        },
-      chgSubMenu(i,tag) {
-        if (tag.forward == 0) {
-          //we reach a workable tag
-          infoSnackbar('we reached the end - ask for student, and do assignment here - can enter many students at a time, or import?')
-        }
-        //Get the record, where our id is in back list
-        let id = this.aTable [this.aTable.findIndex(e => e.id == tag.forward)]
-        console.log(id)
+  },
+  data: () => ({
+   dialogEdit:false,
+   editedIndex: -1,
+   editedItem: {},
+   getZml: getters.getState({ object: "gZml" }),
+   reportHeader: null,
+   sqlSelect: null,
+   search: '',
+   meritList:[],
+   meritHeader:[{text: 'meritNo', value: 'meritid'}
+              //, {text: 'Teacher', value: 'defaultpersmenemonic'}
+              , {text: 'Description', value: 'defaultdescription'}
+              , {text: 'Points', value: 'point'}
+              ],
+   selectedForPrint: {},
+   showPrint:false,
+   updateNeeded: {},
+   updateSql: null,
 
-      },
-       backClick() {
-         this.treeString = ''
-         this.index = 0
-      },
-      meritDblClick(e,i) {
-        //going forward
-        // When we click on the icon, and not use dblclick, we need to define i.item as i
-        // (Diffenent info is passed down)
-        console.log(e,i)
-        if (!i.item) i.item = i
-
-        this.treeString += i.item.title + (i.item.forward == 0 ? '.' : ', ')
-        if (i.item.forward == 0) {
-          infoSnackbar('we reached the end - ask for student, and do assignment here - can enter many students at a time, or import?')
-          return
-        }
-        let id = this.aTable [this.aTable.findIndex(e => e.id == i.item.forward)]
-        if (id == -1) alert('we have a problem with out indexes')
-        this.index = id.back
-      },
-      initialize(data) {
-        //Although we have the data, we rather read from store
-        console.log('INITIALIZE START')
-        if (this.getZml.meritLevel.length < 10) {
-           this.aTable = data
-           console.log('still too small',this.getZml.meritLevel)
-        } else {
-           this.aTable = this.getZml.meritLevel
-           console.log('BIG ENOUGH',this.getZml.meritLevel)
-        }
-      },
+  }),
+  computed: {
+    filterMeritList() {
+      return this.meritList
     },
-    mounted() {
-      if (this.getZml.meritLevel.length < 10) {
-            console.timeLog('we need to load it...')
-            let sqlStatement = `SELECT * from dkhs_meritlevel`
-            zData.loadSql(this.loading, sqlStatement,this.initialize)
-            console.timeLog('timer','mm')
-      } else {
-           console.timeLog('already there....')
-           this.aTable = this.getZml.meritLevel
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    },
+    makeAFooter() {
+      return `<br>`
+    },
+    meritListFilter() {
+      return this.meritList;
+    }
+  },
+  methods: {
+    testprint() {
+      printJSON(this.meritList, this.meritHeader, 'Merit List Point Range')
+    },
+    editItem(item) {
+      console.log('editItem', item)
+      this.open(item)
+      this.editedIndex = this.meritList.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogEdit = true;
+    },
+    open (e) {
+      this.updateNeeded = {u1:e.point, u2:e.defaultdescription}
+      console.log('backup before we start : ', this.updateNeeded)
+      return
+    },
+
+    save () {
+      let e = this.editedItem
+      console.log('save it 1', e, this.editedIndex)
+      console.log('save it 2', this.editedItem)
+      console.log('save it 3', this.updateNeeded)
+      this.updateSql = null
+      //console.log('before update - point = ', e.point)
+      if (this.updateNeeded !== null
+          && (this.updateNeeded.u1 !== e.point || this.updateNeeded.u2 !== e.defaultdescription) ) {
+          this.updateSql = `update dkhs_meritlink \
+                           set point = ${e.point}\
+                             , defaultdescription = "${e.defaultdescription}"\
+                           where meritid = ${e.meritid}`
       }
+      if (this.updateSql) {
+         let ts = {task: 'PlainSql',sql: this.updateSql}
+         zmlFetch(ts, this.noNeedToDoAnything)
+      }
+      this.dialogEdit = false
     },
-  }
+    noNeedToDoAnything(response) {
+        if (response.errorcode !== 0) {
+          alert('some error occured on update')
+          console.error('after update error: ', response)
+        }
+        console.log('hewe we could do the final update to the memory list')
+        console.log('replace this ids data', this.editedItem.id)
+        let index = this.meritList.findIndex(ele => ele.id == this.editedItem.id)
+        console.log('index = ', index)
+        this.meritList[index].point =  this.editedItem.point
+    },
+    close() {
+      this.dialog = false
+      this.updateNeeded = null
+      this.$nextTick(() => {
+        //this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+    loadData(response) {
+      this.meritList = []
+      if (response !== undefined && response.errorcode && response.errorcode != 0) {
+        alert('we had a loading error :-(')
+        return
+      } else {
+        this.meritList = response
+        this.meritHeader.push({ text: "Actions", value: "actions", sortable: false })
+      }
+      //console.log(this.subjectHeader)
+    },
+    doubleClickOnTableRow(i) {
+      this.selectedForPrint = {meritid: i.meritid
+     }
+     this.hello(this.selectedForPrint)
+    },
+
+    hello(parms) {
+      console.log('Hello:',parms)
+      //this.sqlSelect = `SELECT s.meritstudentid, s.meritid, s.studentid, s.meritdte, s.confirmdte, s.persmenemonic \
+      this.sqlSelect = `SELECT s.meritstudentid, s.meritid, s.studentid, s.meritdte, s.confirmdte, s.persmenemonic \
+      ,s.description, l.point \
+ FROM dkhs_meritstudent s, dkhs_meritlink l \
+WHERE s.meritid = l.meritid`
+  //and l.meritid = ${parms.meritid}`
+      this.reportHeader = `MeritPrintList: ${parms.meritid}`
+      //this.showSelection = false
+      alert('here we call next step')
+    }
+  },
+  mounted: function() {
+    let ts = {task: 'PlainSql',
+               sql: 'select * from dkhs_meritlink'
+             }
+    zmlFetch(ts, this.loadData)
+  },
+  watch:{}
+
+}
 </script>

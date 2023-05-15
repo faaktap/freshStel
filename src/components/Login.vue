@@ -163,7 +163,7 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlLog } from '@/api/zmlLog.js';
 //import router from '@/router';
-import { getters } from "@/api/store";
+import { mySet, getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 import { ls } from "@/api/localStorage.js"
 import Profile from "@/components/Profile.vue"
@@ -333,6 +333,7 @@ export default {
       // this.$cs.l(this.$options.name,'p-doneLogin')
       this.submitting = false;
       if ('fullname' in response && response.error == '') {
+          mySet('gZml','login', response)
           this.getZml.login = response;
           this.getZml.login.isAuthenticated = true;
           this.getZml.login.grade = response.grade;
@@ -421,7 +422,8 @@ export default {
     loadFromLocalStorage() {
       //Check localstorage...
       if (ls.test('login')) {
-         this.getZml.login = ls.load('login')
+         //this.getZml.login = ls.load('login')
+         mySet('gZml','login', ls.load('login'))
          this.loginObj.username = this.getZml.login.username
       } else if (ls.test('zmllogin')) {
          this.getZml.login = ls.load('zmllogin')

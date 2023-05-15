@@ -265,7 +265,7 @@ const routes = [
     meta: {layout: la[3], authentication: "public" }
   },  {
     component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelNameCardDemo.vue'),
-      path: '/personel/:persName?',
+      path: '/personel/:surname?/:initial?/:user?',
       name: 'PersonelCard',
       props: true,
       params: {persName: 'what'},
@@ -420,9 +420,9 @@ const routes = [
     meta: {layout: la[3], authentication: "student" }
   },
   {
-    path: '/meritpoint',
-    name: 'MeritPoint',
-    component: () => import(/* webpackChunkName: "pers" */ '@/components/merit/MeritPoint.vue'),
+    path: '/merittable',
+    name: 'MeritTable',
+    component: () => import(/* webpackChunkName: "pers" */ '@/components/merit/MeritTable.vue'),
     meta: {layout: la[3], authentication: "teacher" }
   },
   {
@@ -435,12 +435,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "pers" */ '@/components/staff/PersonelMeritList.vue'),
     path: '/persmeritlist',
     name: 'PersMeritList',
-    meta: {layout: la[3], authentication: "teacher" }
-  },
-  {
-    component: () => import(/* webpackChunkName: "pers" */ '@/components/merit/MeritTable.vue'),
-    path: '/merittable',
-    name: 'MeritTable',
     meta: {layout: la[3], authentication: "teacher" }
   },
   {

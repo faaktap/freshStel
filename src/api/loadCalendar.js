@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { zmlConfig } from '@/api/constants';
-import { getters } from "@/api/store";
+import { mySet,getters } from "@/api/store";
 import { zFetch } from '@/api/zmlFetch';
 import { zDate } from '@/api/zDate.js'
 
@@ -21,7 +21,6 @@ export const zLoadCal = {
 
         zLoadCal.startDate = zDate.getMondayPast()
         zLoadCal.getDayNum(zLoadCal.startDate)
-        getters.getState({ object: "gZml" }).calendar = []
 
         // ------- laai die dae nommers (dayNum)
         zLoadCal.doStuff()
@@ -115,7 +114,7 @@ export const zLoadCal = {
       })
       .then((response) => {
           if (!response) { throw Error('No Base Loaded') }
-          getters.getState({ object: "gZml" }).baseCalendar = response
+          mySet("gZml","baseCalendar", response)
       })
       l('End',whatever || 'getBaseCalendar', getters.getState({ object: "gZml" }).baseCalendar.length)
 

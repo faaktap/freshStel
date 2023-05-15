@@ -71,7 +71,7 @@
 
          </v-card-text>
         </v-card>
-        <v-card v-if="getZml.login.username=='WER'"> onlyWER:{{ meritList }} </v-card>
+        <!-- <v-card v-if="getZml.login.username=='WER'"> onlyWER:{{ meritList }} </v-card> -->
 
    <v-dialog v-model="showDialog" max-width="400" color="secondary" style="position: relative;">
    <v-card>

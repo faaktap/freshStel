@@ -16,19 +16,19 @@
 <v-btn @click="showCamera = !showCamera"> ShowCam </v-btn>
    <camera-button v-if="showCamera" />
       <v-layout class="ma-2 pa-2" row wrap justify-space-between>
-               <v-btn small to="/quanda" class="ma-2"> FAQ - Questions.. </v-btn>
-               <v-btn small to="/checklog" class="ma-2"> checklog </v-btn>
-               <v-btn small to="/systemview" class="ma-2"> System Tests and Updates </v-btn>
-               <v-btn small to="/loadhomework" class="ma-2"> loadhomework </v-btn>
-               <v-btn small to="/vglist" class="ma-2"> vglist </v-btn>
-               <v-btn small to="/jdoc" class="ma-2"> jdoc - HomeWork, Period and Day Edit </v-btn>
-               <v-btn small to="/basecalendaredit" class="ma-2"> calen edit/view </v-btn>
-               <v-btn small to="/kalender" class="ma-2"> skool kalender </v-btn>
-               <v-btn small to="/periodtable" class="ma-2"> Change/View Periods </v-btn>
-               <v-btn small to="/ar" class="ma-2"> autoroute </v-btn>
-               <v-btn small to="/werner" class="ma-2"> werner </v-btn>
-               <v-btn small to="/wernertest" class="ma-2"> wernertest </v-btn>
-               <v-btn small to="/viewfunctions" class="ma-2"> functions </v-btn>
+            <v-btn small to="/quanda" class="ma-2"> FAQ - Questions.. </v-btn>
+            <v-btn small to="/checklog" class="ma-2"> checklog </v-btn>
+            <v-btn small to="/systemview" class="ma-2"> System Tests and Updates </v-btn>
+            <v-btn small to="/loadhomework" class="ma-2"> loadhomework </v-btn>
+            <v-btn small to="/vglist" class="ma-2"> vglist </v-btn>
+            <v-btn small to="/jdoc" class="ma-2"> jdoc - HomeWork, Period and Day Edit </v-btn>
+            <v-btn small to="/basecalendaredit" class="ma-2"> calen edit/view </v-btn>
+            <v-btn small to="/kalender" class="ma-2"> skool kalender </v-btn>
+            <v-btn small to="/periodtable" class="ma-2"> Change/View Periods </v-btn>
+            <v-btn small to="/ar" class="ma-2"> autoroute </v-btn>
+            <v-btn small to="/werner" class="ma-2"> werner </v-btn>
+            <v-btn small to="/wernertest" class="ma-2"> wernertest </v-btn>
+            <v-btn small to="/viewfunctions" class="ma-2"> functions </v-btn>
             <v-btn small to="/dkhsawards" class="ma-2"> dkhs awards </v-btn>
             <v-btn small to="/studentawards" class="ma-2"> student awards </v-btn>
             <v-btn small to="/about" class="ma-2"> about </v-btn>
@@ -50,14 +50,14 @@
             </v-card>
       </v-layout>
        <v-expansion-panels>
-        <v-expansion-panel>
+        <!-- <v-expansion-panel>
           <v-expansion-panel-header>
-              list-test functiongroup="all"  Tester
+              <list-test functiongroup="all" /> Tester
           </v-expansion-panel-header>
           <v-expansion-panel-content>
               <list-test functiongroup="all" />
           </v-expansion-panel-content>
-        </v-expansion-panel>
+        </v-expansion-panel> -->
         <v-expansion-panel>
           <v-expansion-panel-header>
               global tables, v-layout, v-tabs
@@ -84,6 +84,7 @@
                <zml-data-table v-if="getZml.subjects" :dataList="getZml.subjects" userHeader="subjects"/>
                </v-tab-item>
                <v-tab-item key="3">
+                cal={{ getZml.calendar }}
                <zml-data-table v-if="getZml.calendar" :dataList="getZml.calendar" userHeader="calendar"/>
                </v-tab-item>
                <v-tab-item  key="4">
@@ -292,23 +293,23 @@ export default {
             }
 
         },
-        loadFunctions() {
-           this.loading = true
-           let ts = {};
-           ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction order by sortorder'
-           ts.api = zmlConfig.apiDKHS
-           zmlFetch(ts, this.showData, this.loadError)
-        },
-        loadError(response) {
-            //this.$cs.l(response)
-            this.loading = false
-            alert(response)
-        },
-        showData(response) {
-           this.getZml.functions = response
-           this.loading = false
-        },
+        // loadFunctions() {
+        //    this.loading = true
+        //    let ts = {};
+        //    ts.task = 'PlainSql';
+        //    ts.sql = 'select * from dkhs_lfunction order by sortorder'
+        //    ts.api = zmlConfig.apiDKHS
+        //    zmlFetch(ts, this.showData, this.loadError)
+        // },
+        // loadError(response) {
+        //     //this.$cs.l(response)
+        //     this.loading = false
+        //     alert(response)
+        // },
+        // showData(response) {
+        //    this.getZml.functions = response
+        //    this.loading = false
+        // },
         async CallAsyncFunction() {
           if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
            this.loading = true
@@ -330,7 +331,7 @@ export default {
           }
         },
         initialize() {
-          if (!this.getZml.functions.length) this.loadFunctions()
+          //if (!this.getZml.functions.length) this.loadFunctions()
         }
     },
     created() {
