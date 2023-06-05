@@ -1,6 +1,6 @@
 # zmlrekenaars
 
-### This is some text about the product - based on freshnuxt, currently (2023) in the freshWait folder,  has a router.js that runs it from the Stellenberg (stel) folder.
+### This project - based on fresh and nuxt, currently (2023) in the freshWait folder,  has a router.js that runs it from the Stellenberg (stel) folder.
 ## Project setup
 ```
 npm install
