@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-container fluid>
   <base-tool toolbarName="Email Delivery"
             :background="false"
             :back="true"

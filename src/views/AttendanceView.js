@@ -13,7 +13,7 @@ export const tableWork = {
         //this.$notifier.showMessage({ content: txt, color: 'info' })
         infoSnackbar(txt)
     },
-    hello: (p1) => {console.log('hello from (JS) ' , p1)},
+    hello: (p1) => {zmlConfig.cl('Atj','hello from (JS) ' , p1)},
     getIndex: (itemID,table) => {
         let index = table.findIndex(ele => ele.attendanceid == itemID)
         if (index == -1) {
@@ -28,7 +28,7 @@ export const tableWork = {
         }
     },
     getData: (key, pCallback, passedSearchDate ) => {
-        console.log('getDATA:',key, passedSearchDate)
+        zmlConfig.cl('Atj','getDATA:',key, passedSearchDate)
         let searchDate
         if (!passedSearchDate) {
             let today = new Date()
@@ -39,7 +39,7 @@ export const tableWork = {
         } else {
             searchDate = passedSearchDate
         }
-        console.log('We are searching on : ', searchDate)
+        zmlConfig.cl('Atj','We are searching on : ', searchDate)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = `select a.attendanceid,\
@@ -60,7 +60,7 @@ export const tableWork = {
         zmlFetch(ts, pCallback, errorFetch)
     },
     getPeriod: (key, pCallback) => {
-        console.log(key)
+        zmlConfig.cl('Atj',key)
         let ts = {}
         ts.task = 'PlainSql'
         ts.sql = `select a.period, count(*) recs \
@@ -95,7 +95,7 @@ export const tableWork = {
 }
 
 function doneFetch (response) {
-    console.log('doneLoading:', response)
+    zmlConfig.cl('Atj','doneLoading:', response)
     if ( response.error ) {
         //errorSnackbar(response.error)
     } else {
@@ -104,6 +104,6 @@ function doneFetch (response) {
 }
 
 function errorFetch (response) {
-    console.log('error:', response)
+    zmlConfig.cl('Atj','error:', response)
     //errorSnackbar('We had an error saving your data!' + response)
 }

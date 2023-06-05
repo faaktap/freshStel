@@ -13,7 +13,7 @@
         :disabled="item.disabled"
         :title="item.href"
        >
-       <span class="headline">
+       <span class="text-lg-h6 text-sm-caption">
         {{ item.text }}
        </span>
       </v-breadcrumbs-item>

@@ -1,104 +1,83 @@
 <template>
- <v-container class="ma-2 pa-3">
-   <v-container class="grey lighten-5" fluid>
+<div>
+   <v-text-field dense
+    class="ma-2"
+    :background-color="value"
+    :label="label"
+    :value="value"
+    prepend-icon="mdi-select-color"
+    @focus="showColor = !showColor"
+    @click:prepend="showColor = !showColor"
+    v-on:input="updateValue($event)"
+  >
+   </v-text-field>
+
+ <v-container class="ma-1 pa-2" fluid v-if="showColor">
+   <!-- <v-container class="grey lighten-5" fluid> -->
      <v-row xno-gutters>
      <v-layout v-for="(c,i) in baseColors" :key="i" >
-
-     <v-card color="yellow" class="text-center ma-0">
+     <v-card xcolor="yellow" class="text-center ma-0" elevation="0">
+      <v-card-title>
+        <v-btn small class="ml-2 pa-2" :class="c" outlined width="80%" :title="c" :dark="dark" @click="colorSelected(c)">
+           {{ c }}
+        </v-btn>
+        <v-spacer/>
+        <v-chip :color="col" class="ma-1 pa-1" width="8%" max-width=70 :dark="dark" :title="`Current Selection is ${col}`">
+           Selection
+        </v-chip>
+      </v-card-title>
      <v-row no-gutters>
-      <v-layout v-for="(t,j) in tint" :key="j">
-       <v-card color="gray lighten-5" class="text-center ma-1">
+      <v-layout v-for="(t,j) in tint" :key="j" row wrap align-content-start justify-space-between class="mx-2 pa-1">
+       <v-card color="gray lighten-5" class="text-center ml-1 mb-0" elevation="0">
          <!-- on small it is 4 columsn, on md it is taken up 3 cols and on large it is 2 columns-->
          <v-row no-gutters>
-          <v-layout v-for="(v,k) in variant" :key="k" class="ma-1 pa-1">
+          <v-layout v-for="(v,k) in variant" :key="k" class="ma-1 pa-1" row wrap align-content-start justify-space-between>
            <template v-if="v=='1' && t=='darken'">
-             <v-card class="ma-1 text-center"
-                    :color="c + ' ' + t + '-' + v" > {{c}}  {{t}} {{v}}</v-card>
-            </template>
-            <template v-else>
-            <v-card min-width=70
-                     :color="c + ' ' + t + '-' + v"
-                     @click="colorSelected(c + ' ' + t + '-' + v)"
-                     class="ma-1 text-center"
-            > {{c.substr(0,2) }}   {{ t.substr(0,1) + v}}    </v-card>
-            </template>
-
+             <v-card min-width=70 class="pa-1 text-center" :color="c + ' ' + t + '-' + v" @click="colorSelected(c + ' ' + t + '-' + v)" :dark="dark">
+              {{t}} {{v}}
+             </v-card>
+           </template>
+           <template v-else>
+            <v-card min-width=70 class="pa-1 text-center" :color="c + ' ' + t + '-' + v" @click="colorSelected(c + ' ' + t + '-' + v)" :dark="dark">
+               {{ t }} {{ v }}
+            </v-card>
+           </template>
          </v-layout>
         </v-row>
-         </v-card>
+       </v-card>
       </v-layout>
      </v-row>
      </v-card>
     </v-layout>
      </v-row>
-   </v-container>
-
-       <!-- important grid tip - use cols for the v-for!!!! -->
-   important grid tip - use cols for the v-for!!!!
-   <v-container class="grey lighten-5">
-      <v-row no-gutters>
-       <v-col cols="12" md="2" lg="1'"
-              color="blue"
-              v-for="(v,k) in [1,2,3,4,5,6,7]" :key="k"
-              class="ma-2 pa-0">
-         <v-card color="red"> Playground {{v}} of 7 cards
-          <v-row>
-           <v-col cols="12" md="6" v-for="(w,i) in [1,2,3,4]" :key="i">
-            <v-card
-                    color="green"
-                    tile
-                    class="ma-1 pa-0 text-center"
-            >
-               inside playground {{i}} of 3
-            </v-card>
-           </v-col>
-         </v-row>
-         </v-card>
-       </v-col>
-     </v-row>
-    </v-container>
-
-   below is sm=4 (3 cards in a row), and inside is sm=6 (2 cards in a row)
-   maar hy fit net 2 kaarte in 'n ry - hoekom?
-   <v-container class="grey lighten-5" fluid>
-      <v-row no-gutters>
-       <v-col cols="12" sm="4" v-for="(v,k) in [1,2,3,4]" :key="k" class="ma-2 pa-0">
-         <v-card color="red" tile > {{k}} of  {{v}} cards sm=4 </v-card>
-          <v-row>
-           <v-col cols="3" sm="6" v-for="(w,i) in [1,2,3,4,5]" :key="i">
-            <v-card
-                    color="green"
-                    tile
-                    class="ma-1 pa-0 text-center"
-            >
-                {{i}} of {{w}} cards sm=6
-            </v-card>
-           </v-col>
-         </v-row>
-       </v-col>
-     </v-row>
-    </v-container>
-
+     <v-btn small  icon @click="dark = !dark" width="5%"><v-icon> mdi-theme-light-dark </v-icon>  </v-btn>
  </v-container>
+ </div>
 </template>
 
 
 <script>
 export default {
    name:"TextColorPicker",
-   props:[],
+   props:{
+    label: {    default: "Color" },
+    value: {    default: "" }
+   },
    data: () => ({
-      loading:false,
-      baseColors:['red','pink','lightpink','green','teal','lime','yellow'
-                ,'amber','orange'
-                ,'purple','magenta'
+    showColor: false,
+    loading:false,
+    baseColors:['red','green','teal','lime'
+                ,'amber'
+                ,'magenta'
                 ,'indigo','blue', 'lightblue','darkblue', 'darkblueshade'
                 ,'gray','neutralgray'
-                ,'lightgray','white','brown'
-                ],
-      tint:['darken','lighten','accent'],
-      variant:[1,2,3,4],
-      col:null
+                ,'lightgray'
+                ,'lightpink','yellow','amber','orange','purple','pink','white'
+               ],
+    tint:['darken','lighten','accent'],
+    variant:[1,2,3,4],
+    col:null,
+    dark:false,
    }),
    computed: {
         interface: {
@@ -110,11 +89,21 @@ export default {
             }
         }
     },
+    mounted() {
+      this.col = this.value
+    },
     methods:{
-       colorSelected(color) {
+      updateValue: function (pvalueT) {
+        console.log('update color start : ', pvalueT)
+        this.showColor = false
+        this.$emit('input', pvalueT )
+        console.log('update color end : ', pvalueT )
+    }      ,
+    colorSelected(color) {
           this.col = color
-          //this.$emit('input', color)
-       }
+          this.updateValue(this.col)
+          this.$emit('input', color)
+    }
    },
 }
 </script>

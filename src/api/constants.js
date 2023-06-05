@@ -1,5 +1,9 @@
 const PROJECT_NAME = "dkLearn"
+<<<<<<< HEAD
 const PROJECT_VERSION = "54.5i"
+=======
+const PROJECT_VERSION = "54.5c"
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
 const PROJECT_ID = PROJECT_NAME + PROJECT_VERSION
 const MEASUREMENT_ID = "Z-ZML"+PROJECT_VERSION
 const DEFAULT_LAYOUT = "AppLayoutDefault"

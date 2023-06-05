@@ -4,11 +4,18 @@
     v-bind="getRow"
     v-resize.quiet="onResize"
   >
+<<<<<<< HEAD
+=======
+  <!-- {{ flatCombinedArraySorted }} -->
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     <!-- FORM-BASE TOP SLOT -->
     <slot :name="getFormTopSlot()" :id= "id"/>
     <!-- main loop over components/controls -->
     <template v-for="(obj, index) in flatCombinedArraySorted">
+<<<<<<< HEAD
        <!-- {{ obj }} -->
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       <!-- Tooltip Wrapper -->
       <v-tooltip
         :key="index"
@@ -42,7 +49,11 @@
               <!-- slot replaces complete item of defined KEY -> <div slot="slot-item-key-[propertyName]">-->
               <slot :name="getKeyItemSlot(obj)" v-bind= "{ obj, index, id }">
 
+<<<<<<< HEAD
                   <!--div class="caption">
+=======
+                  <!-- <div class="caption">
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
                     OBJ:{{obj}}
                     <br>
                     FORM:{{getFormTopSlot()}}
@@ -60,7 +71,11 @@
                     Slots: {{getInjectedScopedSlots(id, obj)}}
                     <br>
                     VAL:{{setValue(obj)}}
+<<<<<<< HEAD
                   </div -->
+=======
+                  </div> -->
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
 
               <!-- RADIO -->
                 <v-radio-group
@@ -75,10 +90,14 @@
                     v-bind="bindOptions(option)"
                   >
                     <!-- component doesn't work with #[s]="slotData" " -->
+<<<<<<< HEAD
                     <template v-for="s in getInjectedScopedSlots(id, obj)" #[s]>
                       <slot :name= "getKeyInjectSlot(obj, s)"
                            v-bind= "{ id, obj, index, idx, option }"/>
                       </template>
+=======
+                    <template v-for="s in getInjectedScopedSlots(id, obj)" #[s]><slot :name= "getKeyInjectSlot(obj, s)" v-bind= "{ id, obj, index, idx, option }"/></template>
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
                   </v-radio>
                 </v-radio-group>
               <!-- END RADIO -->
@@ -233,6 +252,7 @@
                   v-bind="bindSchema(obj)"
                   @change="onInput($event, obj)"
                 >
+<<<<<<< HEAD
                 wschecknpx
                   <!-- component doesn't work with #[s]="slotData" " -->
                   <template v-for="s in getInjectedScopedSlots(id, obj)" #[s]>
@@ -241,6 +261,12 @@
                 </component>
               <!-- END CHECKBOX | SWITCH -->
 
+=======
+                  <!-- component doesn't work with #[s]="slotData" " -->
+                  <template v-for="s in getInjectedScopedSlots(id, obj)" #[s]><slot :name="getKeyInjectSlot(obj, s)" v-bind= "{ id, obj, index }"/></template>
+                </component>
+              <!-- END CHECKBOX | SWITCH -->
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
               <!-- FILE -->
                 <v-file-input
                   v-else-if="obj.schema.type === 'file' "
@@ -253,7 +279,10 @@
                   <template v-for="s in getInjectedScopedSlots(id, obj)" #[s]="scopeData"><slot :name="getKeyInjectSlot(obj, s)" v-bind= "{ id, obj, index, ...scopeData}" /></template>
                 </v-file-input>
               <!-- END FILE -->
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
               <!-- ICON -->
                 <v-icon
                   v-else-if="obj.schema.type === 'icon'"
@@ -274,7 +303,10 @@
                   <!-- <template v-for="s in getInjectedScopedSlots(id, obj)" #[s]="scopeData"><slot :name="getKeyInjectSlot(obj, s)" v-bind= "{ id, obj, index, ...scopeData}" /></template> -->
                 </v-slider>
               <!-- END SLIDER -->
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
               <!-- IMG -->
                 <v-img
                   v-else-if="obj.schema.type === 'img'"
@@ -307,7 +339,10 @@
                   </v-btn>
                 </v-btn-toggle>
               <!-- END BTN-TOGGLE -->
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
               <!-- BTN -->
                 <v-btn
                   v-else-if="obj.schema.type === 'btn'"
@@ -340,6 +375,7 @@
               <!-- END BTN -->
 
               <!-- MASK  -->
+<<<<<<< HEAD
                   <!-- v-mask="obj.schema.mask"
                   removed v-mask for the moment... (ZML)-->
                 <component
@@ -367,6 +403,12 @@
                 </component>
               <!-- END MASK -->
 
+=======
+  <!-- v-mask="obj.schema.mask"
+                  removed v-mask for the moment... (ZML)              -->
+
+              <!-- END MASK -->
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
               <!-- DEFAULT all other Types -> typeToComponent -->
                 <component
                   v-else
@@ -394,12 +436,18 @@
               <!-- END DEFAULT -->
               </slot>
             </slot>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
             <!-- slot at bottom of item  -> <div slot="slot-bottom-key-[deep-nested-key-name]"> -->
             <slot :name="getTypeBottomSlot(obj)" v-bind= "{ obj, index, id }"/>
             <slot :name="getKeyBottomSlot(obj)" v-bind= "{ obj, index, id }"/>
           </v-col>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
           <!-- schema.spacer:true - push next item to the right and fill space between items -->
           <v-spacer
             v-if="obj.schema.spacer"
@@ -417,6 +465,7 @@
     <slot :name="getFormBottomSlot()" :id= "id"/>
   </v-row>
 </template>
+<<<<<<< HEAD
 
 <script>
 // Import
@@ -433,6 +482,14 @@
     }
   })
   */
+=======
+<script>
+// Import
+  import Vue from 'vue'
+  import  { VCard,VAutocomplete, VCombobox } from 'vuetify/lib'
+  import { get, isPlainObject, isFunction, isString, isNumber, isEmpty, orderBy, delay } from 'lodash'
+
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
 //
 // Declaration
   const typeToComponent = {
@@ -484,9 +541,13 @@
 
       2)
         use it in Schema
+<<<<<<< HEAD
 
         mySchema: { myCustom: { type: 'custom-component' }
 
+=======
+        mySchema: { myCustom: { type: 'custom-component' }
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       3) // custom-component.vue
         <template>
           <v-text-field v-model="inp"  label="Basic"></v-text-field>
@@ -511,13 +572,19 @@
   const defaultID = 'form-base'
   const isPicker = 'date|time|color'
   const onEventDelay = 1 // ms
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   const mouse = 'mouseenter|mouseleave'
   const change = 'input|click'              // event change collects events 'input|click'
   const watch = 'focus|input|click|blur'    // event watch collects events 'focus|input|click|blur'
   const display = 'resize|swipe|intersect'  // event watch collects events 'resize|swipe|intersect'
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   const topAppendix = 'top'
   const bottomAppendix = 'bottom'
   const slotAppendix = 'slot'
@@ -528,10 +595,15 @@
   const keyClassAppendix = 'key'
   const arrayClassAppendix = 'array'
   const propertyClassAppendix = 'prop'
+<<<<<<< HEAD
 
   const injectSlotAppendix = `${slotAppendix}-${injectAppendix}`
 /* eslint-disable */
 //  const arraySlotAppendix = `${slotAppendix}-${arrayClassAppendix}`
+=======
+  const injectSlotAppendix = `${slotAppendix}-${injectAppendix}`
+  //zml const arraySlotAppendix = `${slotAppendix}-${arrayClassAppendix}`
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   const topSlotAppendix = `${slotAppendix}-${topAppendix}`
   const itemSlotAppendix = `${slotAppendix}-${itemClassAppendix}`
   const bottomSlotAppendix = `${slotAppendix}-${bottomAppendix}`
@@ -551,16 +623,25 @@
   const hour = 'hour'
   const minute = 'minute'
   const second = 'second'
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   // symbol on drop
   const dropEffect = 'move' // 'copy, link, move
   // Default row setting if no row-attribute defined
   const rowDefault = { noGutters:true } // { noGutters:true, justify:'center', align:'center' }
+<<<<<<< HEAD
 
   // Default col setting, overrideable by prop col or by schema.col definition
   // Default col setting, overrideable by prop flex or by schema.flex definition (flex is DEPRECATED use col instead)
   const colDefault = { cols:'auto' } // { cols:12, sm: 6, md:4, lg:3, xl:2}
 
+=======
+  // Default col setting, overrideable by prop col or by schema.col definition
+  // Default col setting, overrideable by prop flex or by schema.flex definition (flex is DEPRECATED use col instead)
+  const colDefault = { cols:'auto' } // { cols:12, sm: 6, md:4, lg:3, xl:2}
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   // Mapper for Autogeneration of Schema from Value
   const defaultSchemaIfValueIsNullOrUndefined = key => ({ type:'text', label: key })
   const defaultSchemaIfValueIsString = key => ({ type:'text', label: key })
@@ -573,14 +654,29 @@
   const defaultInternGroupType = 'v-card'
 //
 export default {
+<<<<<<< HEAD
   name: 'VFormBase',
+=======
+<<<<<<<< HEAD:src/components/vfbase/VFormBase.vue.working
+  name: 'VFormBase', 
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   components:{
     VCheckbox,
     VSwitch,
     VCard,
     VSelect,
+<<<<<<< HEAD
   },
   props: {
+=======
+  },  
+  props: {   
+========
+  name: 'VFormBase',
+  components:{VCard, VAutocomplete, VCombobox},
+  props: {
+>>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8:src/components/vfbase/vFormBase.vue
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     id: {
       type: String,
       default: defaultID
@@ -709,7 +805,10 @@ export default {
       // schema.searchInput ->   bind 'search-input'
       return (typeof obj.schema.searchInput !== 'undefined') ? 'search-input' : ''
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     // EXT TYPE
     checkExtensionType(obj) {
       // For native <INPUT> type use prop 'ext'
@@ -745,7 +844,10 @@ export default {
       // arrayTasks: { type:'array', key:['trace','label'], schema:{ trace: { type:'text'}, label: { type:'text'} } }  -> KEY trace_label      100_A
 
       // IMPORTANT! Key should not contain an EDITABLE prop, because of re-iteration on any change
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       const k= obj.schema.key
       return k ? Array.isArray(k) ? k.map(i => item[i]).join('_') : item[k] : (!isNaN(index)) ? `${id}-${obj.key}-${index}` : index
     },
@@ -765,7 +867,11 @@ export default {
   // TOOLTIP
     getShorthandTooltip(schemaTooltip){
       // check if tooltip is typeof string ->  shorthand { bottom:true, label: obj.schema.tooltip} otherwise take original object
+<<<<<<< HEAD
       return isString(schemaTooltip) ? { bottom:false, label:schemaTooltip} : schemaTooltip
+=======
+      return isString(schemaTooltip) ? { bottom:true, label:schemaTooltip} : schemaTooltip
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     },
     getShorthandTooltipLabel(schemaTooltip){
       // check if tooltip is typeof string ->  return Label
@@ -803,9 +909,15 @@ export default {
       // matches Key specific Tooltip | name by replacing '.' with '-' and prepending 'slot-bottom'  -> 'slot-tooltip-key-formbase-address-city'
       return this.getKeyClassNameWithAppendix(obj, `${tooltipSlotAppendix}-${keyClassAppendix}`)
     },
+<<<<<<< HEAD
     /* eslint-disable */
     getTooltipSlot (obj) {
       // default tooltip slot matches all keys
+=======
+    getTooltipSlot (obj) {
+      // default tooltip slot matches all keys
+      console.log(obj)
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       return `${tooltipSlotAppendix}`
     },
   //
@@ -886,11 +998,17 @@ export default {
       // col:{ cols|sm|md|lg|xl } - value:number|string
       // order:{ order|sm|md|lg|xl|order-sm|order-md|order-lg|order-xl } - value:number|string
       // offset:{ offset|sm|md|lg|xl|offset-sm|offset-md|offset-lg|offset-xl } - value:number|string
+<<<<<<< HEAD
 
       const colSchema = obj.schema.col || obj.schema.flex || 12
 
       const colAttr = this.col || this.flex || colDefault
  //zml - not needed -  console.log('........',obj.key , colSchema, colAttr)
+=======
+      const colSchema = obj.schema.col || obj.schema.flex
+      const colAttr = this.col || this.flex || colDefault
+
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       let colObject = colSchema
       // if available use schema definition of cols
       ? (isPlainObject(colSchema) ? colSchema : isNumber(colSchema) || isString(colSchema) ? { cols: colSchema} : { cols: 'auto' })
@@ -898,7 +1016,10 @@ export default {
       : colAttr ? (isPlainObject(colAttr) ? colAttr : isNumber(colAttr) || isString(colAttr) ? { cols: colAttr} : { cols: 'auto' })
       // if no definition set cols to 'auto'
       : { cols:'auto'}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       this.gridReplaceXS(colObject, 'cols')
 
       // schema definition of offset
@@ -906,7 +1027,10 @@ export default {
       let offsetObject = offset ? (isPlainObject(offset) ? offset : { offset }) : offset
       this.gridMapper(offsetObject, 'offset-')
       this.gridReplaceXS(offsetObject, 'offset')
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       // schema definition of offset
       const order = obj.schema.order
       let orderObject = order ? (isPlainObject(order) ? order : { order}) : order
@@ -962,11 +1086,17 @@ export default {
 
       event.dataTransfer.dropEffect = dropEffect
       event.dataTransfer.effectAllowed = dropEffect
+<<<<<<< HEAD
 
       const dragEvent = this.onEvent(event, obj)
       event.dataTransfer.setData('text', JSON.stringify(dragEvent))
     },
 
+=======
+      const dragEvent = this.onEvent(event, obj)
+      event.dataTransfer.setData('text', JSON.stringify(dragEvent))
+    },
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     dragover(event,obj){ return obj.schema.drop ? event.preventDefault() : null },
 
     drop(event, obj){
@@ -983,15 +1113,23 @@ export default {
 
       event.preventDefault()
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     dropValue (obj, event) {
       return this.dropCtrl({ value: obj.dragEvent.value, obj, event, data: this.storeStateData, schema: this.storeStateSchema })
     },
   //
   // Set Value
     setValue (obj, type ) {
+<<<<<<< HEAD
       // Use 'schema.toCtrl' Function for setting a modified Value
      // console.log(type)
+=======
+      console.log(type)
+      // Use 'schema.toCtrl' Function for setting a modified Value
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       return obj.schema.type === 'wrap' ?
         this.toCtrl({ value: this.storeStateData, obj, data: this.storeStateData, schema: this.storeStateSchema }) :
         this.toCtrl({ value: obj.value, obj, data: this.storeStateData, schema: this.storeStateSchema })
@@ -1003,12 +1141,19 @@ export default {
       // Value after change in Control
       value = this.fromCtrl({ value, obj, data: this.storeStateData, schema: this.storeStateSchema })
       // harmonize undefined or empty strings => null, because 'clearable' in vuetify controls resets to null and not to empty string!
+<<<<<<< HEAD
       value = !value || value === '' ? null : value
+=======
+      value = (value === undefined || value === '') ? null : value
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       // if schema type is number convert to number
       value = obj.schema.type === 'number' ? Number(value) : value
       // update deep nested prop(key) with value
       this.setObjectByPath(this.storeStateData, obj.key, value)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       const emitObj = {
         on: type,
         id: this.id,
@@ -1048,7 +1193,10 @@ export default {
       }
 
       delay(() => { this.emitValue(event.type, emitObj), onEventDelay })
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       return emitObj
     },
     onClickOutside (event, obj) {
@@ -1072,7 +1220,10 @@ export default {
     emitValue(event, val) {
 
       let emitEvent = change.includes(event) ? 'change' : watch.includes(event) ? 'watch' : mouse.includes(event) ? 'mouse' : display.includes(event) ? 'display' : event
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       if (this.$listeners[`${emitEvent}:${this.id}`] ) {
         this.deprecateEventCustomID(emitEvent)
         this.deprecateCombinedEvents(emitEvent, event)
@@ -1131,12 +1282,18 @@ export default {
       Object.keys(sch).forEach(key => {
         // convert string definition of name:'text' into object name:{type:'text'}
         sch[key] = this.sanitizeShorthandType(key, sch[key])
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
         const bothArray = Array.isArray(dat[key]) && Array.isArray(sch[key])
         const datObjectWithoutSchemaType = isPlainObject(dat[key]) && !sch[key].type
         const datObjectContainsTypeKey = (dat[key] && dat[key].type && (sch[key] && sch[key].type))
         const notInstanceOfFileObject = !(dat[key] instanceof File)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
         if (bothArray || datObjectWithoutSchemaType || (datObjectContainsTypeKey && notInstanceOfFileObject)) {
           let { data: flatData, schema: flatSchema } = this.flattenObjects(dat[key], sch[key])
           Object.keys(flatData).forEach(ii => {
@@ -1180,10 +1337,15 @@ export default {
       // assign root props to avoid manipulating prop: schema
       Object.keys(schema).forEach(key => this.schema[key] = schema[key])
     },
+<<<<<<< HEAD
 
     tryAutogenerateModelStructure (model, schema) {
       // generate or complete an empty model based on schema structure
 
+=======
+    tryAutogenerateModelStructure (model, schema) {
+      // generate or complete an empty model based on schema structure
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       Object.keys(schema).forEach(key => {
 
         // model must be at least an empty Object. It doesn't work with 'null', 'undefined' or any 'primitive value'
@@ -1216,7 +1378,10 @@ export default {
     rebuildArrays (model, schema) {
       // undefined, null or primitive value for model can't work because you need reference to object for working on
       if (!model) throw `Property 'model' is null or undefined. Use '<v-form-base :model="myModel" :schema="mySchema" />'. myModel must be at least an empty Object.`
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       // noise if async loading
       if (isEmpty(schema) && isEmpty(model)) {
         console.warn(`At least one of the properties 'model' or 'schema' in <v-form-base /> must be at least an empty Object. Ignore this Warning on async loading 'model' or 'schema' `)
@@ -1237,6 +1402,7 @@ export default {
     this.rebuildArrays(this.valueIntern, this.schema)
   }
 }
+<<<<<<< HEAD
 </script>
 
 <style scoped>
@@ -1250,3 +1416,6 @@ export default {
   hyphens: auto;
 }
 </style>
+=======
+</script>
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8

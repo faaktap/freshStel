@@ -1,4 +1,5 @@
 // store.js
+import { addMinutes } from 'date-fns';
 import Vue from 'vue';
 
 //import { getters } from "@/api/store";
@@ -21,9 +22,9 @@ const state = Vue.observable({
                   , fullname:''
                   , surname:''
                   , firstname:''
+                  , username:''
                   , phone:''
                   , email:''
-                  , username:''
                   , studentid:''
                   , schoolno:0
                   , userid:''
@@ -31,7 +32,8 @@ const state = Vue.observable({
                   , menemonic:''
                   , lastdate:''
                   , type:'guest'
-                  , login:''},
+                  , login:''
+                  , superUser: false},
            grade: '',
            grades:[{id:8 ,text: "G08",name: 'Grade 8'} ,{id:9 ,text: "G09",name: 'Grade 9'}
                   ,{id:10,text: "G10",name: 'Grade 10'},{id:11,text: "G11",name: 'Grade 11'}
@@ -39,18 +41,24 @@ const state = Vue.observable({
                   ],
            subject: '',
            subjectid: '',
-           subjects: [],
-           functions: [],
+           subjects: [], //subjectid, sortorder, shortname, path, beskrywing description, description beskrywing, linksubjectid, picture, color
+           functions: [], //create_timestamp,description, functionaccess=addmin,functionid,functionname,functiontype=local,grade,icon,payload,shortname,sortorder,tip,update_timestamp
            voteList:[],
-           locale: 'af',
+           locale: 'en',
            calendar:[],
+           baseCalendar:[], //day  dayOfWeek day_name dayno fulldate holiday_flag idDate month month_name quarter week weekend year 2024
            meritLevel:[{id:10, back:10, forward: 20, points:0, title:"hllo", description:"jsdfsdf"}],
-           persMenemonic:[],   //SELECT user_name, userid FROM `dkhs_learner` WHERE user_type = 'teacher'
+           persMenemonic:[],   //userid:"144", persid: "144", user_name: "JBRES", "user_fullname": "Me. J. Bresler", "surname": "Bresler", name,title,workemail,"room": "Sport 2", "user_type": "teacher"
            place: [],  //p.placeid, p.name, w.name workarea, p.description,p.ownerid concat(p.name, ' - ',w.name) concatsearch"
+           classList: [],   //id, teacher (init + surname),listname, share,jdocstructure,create_timestamp,update_timestamp, grade,ckey,hodsubjectid
+           tickList: [],
+           students: [],  //studentid, name, surname, grade class
            thisday: null
           }
     });
 
+    // mutations.setState({ object: "gZml", objectPath: login.class })
+    //mutations.setState( {object: "gZml", objectPath: [id, "classList"], value: whatever} );
 const mutations = {
   setState({ object, objectPath, value, upsert = false } = {}) {
     if (state[object] === undefined || value === undefined)
@@ -73,6 +81,10 @@ const mutations = {
   }
   // other specific mutations ...
 };
+
+const mySet = function(obj, prop, value)  {
+   Vue.set(state[obj], prop, value)
+}
 
 const getters = {
   getState({ object, objectPath } = {}) {
@@ -100,4 +112,4 @@ const actions = {
   },
 };
 
-export { getters, mutations, state, actions };
+export { getters, mutations, state, actions, mySet };

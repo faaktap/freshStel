@@ -1,8 +1,28 @@
 <template>
-<div>
+<v-container fluid>
+    <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall098.jpg"
+              :title="`Admin Menu : ${getZml.login.fullname}`"
+              text=""
+              breakup1="100"
+              breakup2="20"
+              color="green darken-1"
+               />
+<!-- ADMIN  -->
+<div v-if="getZml.login.superUser">Jy is 'n SuperUser! - Kyk Onder</div>
 <v-toolbar color="primary" row  wrap :loading="loading">
-      Menu functions for  {{ getZml.login.fullname}} / {{ getZml.login.username}}
+      {{ getZml.login.fullname}} / {{ getZml.login.username}}
       <v-spacer />
+      <base-tool-button
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Calendar"
+               color="secondary"
+               icon="mdi-calendar"
+               :loading="loading"
+               :disabled="loading"
+               xxbadgeTitle="`You have ${meritCount} merits to confirm`"
+               to="/calteach"
+      >Calendar</base-tool-button>
       <base-tool-button
                xv-if="meritCount > 0"
                class="mt-1 mr-2 mb-2 ml-2"
@@ -15,75 +35,68 @@
                badgeTitle="`You have ${meritCount} merits to confirm`"
                @click="loadYourMeritWork"
       >Merit Approval</base-tool-button>
+      <base-tool-button
+               class="mt-1 mr-2 mb-2 ml-2"
+               label="Home"
+               color="secondary"
+               icon="mdi-home"
+               :loading="loading"
+               :disabled="loading"
+               to="/home"
+      >Home</base-tool-button>
   </v-toolbar>
-
-
+<!-- <test-composition-api /> -->
 
 <v-row>
- <v-col cols="12">
-     <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students">
-     <v-row><v-col cols="12" md="6" >
-           <list-test functiongroup="admin" />
-           </v-col><v-col cols="12" md="6">
-           <list-test functiongroup="teacher" />
-           </v-col><v-col cols="12" md="6">
-           <list-test functiongroup="student" />
+ <v-col cols="12" class="mt-2 ma-0 pa-0">
+     <base-title-expand openOrClose="open" heading="Functions for Admin, Staff and Students" class="ma-0 pa-0">
+     <v-row class="ma-0 pa-0"><v-col cols="12" md="6" lg="4" class="ma-0 pa-0">
+           <menu-list-old functiongroup="admin" />
+           </v-col><v-col cols="12" md="6" lg="4">
+           <menu-list-old functiongroup="teacher" />
+           </v-col><v-col cols="12" md="6" lg="4">
+           <menu-list-old functiongroup="student" />
+           </v-col><v-col cols="12" md="6" lg="4">
+           <menu-list-old functiongroup="other" />
            </v-col>
      </v-row>
      </base-title-expand>
  </v-col>
 </v-row>
 
-
-  <div v-if="getZml.login.isAuthenticated && getZml.login.username=='werner'">
-     <v-expansion-panels>
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-              Stuff that only Werner should be able to see *Admin.vue
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <list-test functiongroup="all" />
-            <v-layout class="ma-1" row wrap justify-space-between>
-            <v-btn to="/viewfunctions"> functions </v-btn>
-            <v-btn to="/dkhsawards"> dkhs awards </v-btn>
-            <v-btn to="/studentawards"> student awards </v-btn>
-            <v-btn to="/about"> about </v-btn>
-            <v-btn to="/hover"> hover </v-btn>
-            <v-btn to="/loadhomework"> loadhomework </v-btn>
-            <v-btn to="/folderedit/GR08/Accounting_Rekeningkunde/"> FE Gr8 Rek </v-btn>
-            {{ joke }}
-            <v-window>
-            xs={{$vuetify.breakpoint.xs}} <br>
-            sm={{$vuetify.breakpoint.sm}}<br>
-            md={{$vuetify.breakpoint.md}}<br>
-            lg={{$vuetify.breakpoint.lg}}<br>
-            xl={{$vuetify.breakpoint.xl}}<br>
-            </v-window>
-            </v-layout>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-     </v-expansion-panels>
-      </div>
-</div>
+  <v-container fluid v-if="getZml.login.superUser">
+    <super-user />
+  </v-container>
+</v-container>
 </template>
 
 <script>
 import { zmlConfig } from '@/api/constants';
 import { getters } from "@/api/store";
 import { zmlFetch } from '@/api/zmlFetch.js'
-import { zData } from '@/api/zGetBackgroundData.js';
 import { doStuff } from '@/api/buttons'
 import { infoSnackbar } from '@/api/GlobalActions';
 
-import ListTest from '@/components/ListTest.vue';
+import MenuListOld from '@/components/MenuListOld.vue';
+
+//Superuser
+import SuperUser from '@/components/SuperUser.vue';
+
+//import ListTest from '@/components/ListTest.vue';
+
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue';
 import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
+import HeroSection from "@/views/sections/HeroSection"
+
+//import testCompositionApi from "@/components/testCompositionApi.vue";
 export default {
-    name:"AdminHome",
+    name:"Admin",
     components:{
-      ListTest
-      ,BaseTitleExpand
-      ,BaseToolButton
+        MenuListOld
+      , BaseTitleExpand
+      , BaseToolButton
+      , HeroSection
+      , SuperUser
       },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -127,38 +140,30 @@ export default {
         loadYourMeritWork() {
           this.$router.push({ name: 'PersMeritList'})
         },
-        loadError(response) {
-          this.$cs.l(this.$options.name,'ErrorA', response)
-          this.loading = false
-        },
-        showData(response) {
-          this.getZml.functions = response
-          this.loadWorkToDo()
-          this.loading = false
-        },
-        async CallAsyncFunction() {
-          if (this.getZml.login.isAuthenticated && this.getZml.login.username == 'werner') {
-            this.loading = true
-           const joke = await zData.randomChuckNorris();
-           this.joke = joke.value
-           if  (this.joke && ( this.joke.indexOf('sex')
-                            || this.joke.indexOf('prince albert')
-                            || this.joke.indexOf('condom')
-                            || this.joke.indexOf('placen')
-                            || this.joke.indexOf('fuck')
-                            || this.joke.indexOf('anal')
-                            || this.joke.indexOf('pregna')
-                            || this.joke.indexOf('bondag')
-                            || this.joke.indexOf('gay'))) {
-              this.joke = await zData.randomChuckNorris().value;
-              this.loading = false
-           }
-          }
-        },
+        // loadError(response) {
+        //   this.$cs.l(this.$options.name,'ErrorA', response)
+        //   this.loading = false
+        // },
+        // showData(response) {
+        //   this.getZml.functions = response
+        //   this.loadWorkToDo()
+        //   this.loading = false
+        // },
+        // loadFunctions() {
+        //    if (this.getZml.functions.length) return
+        //    this.loading = true
+        //    let ts = {};
+        //    ts.task = 'PlainSql';
+        //    ts.sql = 'select * from dkhs_lfunction order by sortorder'
+        //    ts.api = zmlConfig.apiDKHS
+        //    zmlFetch(ts, this.showData, this.loadError)
+        // },
+    },
+    created() {
+      //this.loadFunctions()
     },
     mounted() {
-        this.CallAsyncFunction()
-        this.loadFunctions()
+      this.$cs.l('Mounted', this.$options.name)
 
     }
 }

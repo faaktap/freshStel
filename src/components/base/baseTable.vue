@@ -12,6 +12,7 @@
          <v-flex>
           <v-text-field
              v-model="search"
+             @input="$emit('search', search)"
              append-icon="mdi-magnify"
              label="Search"
              single-line
@@ -31,7 +32,7 @@
                  :headers="headers"
                  :items="tListFilter"
                  :items-per-page="itemsPerPage"
-                 :search="search"
+
                   class="elevation-1 mytable"
                  color="purple lighten-3"
                  :style="'font-size:' + fontsize + 'px  !important'"
@@ -52,6 +53,7 @@
 
 
 <script>
+//import { util } from "@/api/util.js"
 export default {
     name:"BaseTable",
     //props: ['tList', 'tHeading', 'bHeading'],
@@ -69,8 +71,11 @@ export default {
     }),
     computed: {
       tListFilter() {
-        // Object.keys(this.tList[0]).forEach(name => {
-        // })
+        // if (this.search) {
+        //    let x = util.findMultipleSearch(this.tList, this.search)
+        //    console.log('thgis is x now.', x, !x, !!x)
+        //    //return x
+        // }
         return this.tList
       },
       headers() {

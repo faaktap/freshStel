@@ -5,7 +5,7 @@
       tile
       height="54"
       class="d-flex"
-    >      
+    >
     <v-toolbar
        flat
        :loading="loading"
@@ -61,12 +61,12 @@
           color="primary"
           type="week"
           intervalMinutes="60"
-          first-interval="7" 
+          first-interval="7"
           interval-height="35"
-          
+
           @change="updateRange"
           @click:event="showEvent"
-        > 
+        >
          <template v-slot:day-body="{ date, week }">
             <div
                class="v-current-time"
@@ -131,13 +131,13 @@
 
 
 
-        
+
       </v-sheet>
       <!--v-model(calValue) = {{ calValue }} <br>
       calToday = {{ calToday }} <br>{{ events }}
 
       -->
-      
+
     </v-col>
     <v-col cols=12>
 <ul>
@@ -163,7 +163,7 @@
 <li class="black">black</li>
 <li class="white">white</li>
 <li class="transparent">transparent</li>
-</ul>        
+</ul>
     </v-col>
     {{getZml.subjects }}
     <hr>
@@ -196,7 +196,7 @@ export default {
       checkChange() {this.$refs.calendar.checkChange()},
       updateRange(whatweget) {
          console.info('Range Check', whatweget)
-         
+
       },
       addEvent() {
         let s = new Date();
@@ -204,7 +204,7 @@ export default {
         s.setHours(s.getHours() - 1);
         this.events.push({
             name: "quickOne",
-            end: e,            
+            end: e,
             start: s,
             color: 'green',
             timed: true,
@@ -235,15 +235,15 @@ export default {
         ts.sql = 'select * from rooster where user_name = "' + this.personeelMenemonic + '"';
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
-        zmlFetch(ts, this.afterRoosterSelect);   
+        zmlFetch(ts, this.afterRoosterSelect);
       },
       getPeriodStartTime(hm,element, dateLooking) {
-         let perStart = zDate.dayType.find(dt =>  dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )  
+         let perStart = zDate.dayType.find(dt =>  dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )
          hm.h = parseInt(perStart.start.substr(0,2))
          hm.m = parseInt(perStart.start.substr(3,2))
       },
       subjectColor(subjectShortName) {
-        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )  
+        let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
@@ -260,8 +260,8 @@ export default {
         for (let t=0; t < 5; t++) {
            template = zDate.addOneDay(template)
            //Look for template's date and link to a dayno.
-           const sday = this.getZml.calendar.find(cal => 
-              cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'                
+           const sday = this.getZml.calendar.find(cal =>
+              cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'
            )
            response.forEach(ele => {
              let n = ''
@@ -285,8 +285,8 @@ export default {
                const grade = lines[1]
                const evt = {
                        name: per + ' ' + ele.periodno + ' ' + grade.substr(0,4)
-                     , start: template.setHours(hm.h, hm.m, 0, 0) 
-                     , end:   template.setHours(hm.h, hm.m + 45, 0, 0) 
+                     , start: template.setHours(hm.h, hm.m, 0, 0)
+                     , end:   template.setHours(hm.h, hm.m + 45, 0, 0)
                      , color: this.subjectColor( n.substr(0,3) )
                      , timed: true
                      , details: n
@@ -335,7 +335,7 @@ export default {
       },
       activateCalendar() {
           //if (this.$refs.calendar !== undefined) {
-          if (this.calReady == false) {  
+          if (this.calReady == false) {
             console.info('Calendar is Ready!!: ' , this.$refs.calendar)
             this.$refs.calendar.checkChange()
             this.calReady = true
@@ -351,7 +351,7 @@ export default {
          if (!this.calReady) {
           setTimeout(() => { this.rinseRepeat() }, 4000)
          }
-      }       
+      }
     },
     computed: {
       cal () {
@@ -360,17 +360,19 @@ export default {
       nowY () {
         return this.cal ? this.cal.timeToY(this.cal.times.now) + 'px' : '-10px'
       },
-    },    
+    },
+    created() {
+      zData.quickLoadInitialData('Confirm subject data loaded.',this.afterwards)
+    },
     mounted () {
-      zData.initialData('Load Subject Data')
       this.events = []
       this.today = new Date()
       this.today.setHours(0,0,0,0)
-      this.calToday = zDate.format(this.today,'yyyy-MM-dd') 
+      this.calToday = zDate.format(this.today,'yyyy-MM-dd')
       zData.calendarData('Load Holiday and Birthday Data')
       .then(this.loadCalendar)
       .then(this.activateCalendar)
-      
+
       this.rinseRepeat()
       }
   }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { zmlConfig } from '@/api/constants';
-import { getters } from "@/api/store";
+import { mySet,getters } from "@/api/store";
 import { zFetch } from '@/api/zmlFetch';
 import { zDate } from '@/api/zDate.js'
 
@@ -21,7 +21,6 @@ export const zLoadCal = {
 
         zLoadCal.startDate = zDate.getMondayPast()
         zLoadCal.getDayNum(zLoadCal.startDate)
-        getters.getState({ object: "gZml" }).calendar = []
 
         // ------- laai die dae nommers (dayNum)
         zLoadCal.doStuff()
@@ -72,7 +71,7 @@ export const zLoadCal = {
         zFetch({task: 'PlainSql',
                   sql: `select  menemonic, persid,public_preferredname\
                       , concat('${year}-', substr(IDNumber,3,2), '-', substr(IDNumber,5,2)) StartDate\
-                        from dkhs_personel where IDNumber > 0 and public_preferredname is not null\
+                        from dkhs_personel where IDNumber > 0 and public_preferredname is not null  and room != 'WEG'\
                         order by StartDate asc`,
                   api: zmlConfig.apiDKHS
         })
@@ -100,6 +99,26 @@ export const zLoadCal = {
             errorLoading(error)
         })
     },
+    getBaseCalendar(whatever) {
+      l('Start',whatever || 'getBaseCalendar')
+      zFetch({task: 'PlainSql',
+               sql: `SELECT * FROM dkhs_date \
+                 where substr(fulldate,1,4) = year(now())\
+                   or substr(fulldate,1,4) = year(now() + interval 1 year)  \
+                   or substr(fulldate,1,4) = year(now() - interval 1 year)  \
+                 ORDER BY idDate  ASC`,
+                 api: zmlConfig.apiDKHS
+      })
+        .then((r) => {
+          if (r.status >= 200 && r.status <= 299) {return r.json() } else {throw Error(r.statusText)}
+      })
+      .then((response) => {
+          if (!response) { throw Error('No Base Loaded') }
+          mySet("gZml","baseCalendar", response)
+      })
+      l('End',whatever || 'getBaseCalendar', getters.getState({ object: "gZml" }).baseCalendar.length)
+
+    },
     getHolidays() {
         zFetch({task: 'PlainSql',
                  sql: `select * from dkhs_holiday`,
@@ -109,10 +128,10 @@ export const zLoadCal = {
             if (r.status >= 200 && r.status <= 299) {return r.json() } else {throw Error(r.statusText)}
         })
         .then((response) => {
-            if (!response) { throw Error('no birthdays!') }
+            if (!response) { throw Error('no holidays!') }
             response.forEach(element => {
                 const evt= {name: element.holidayname
-                    , start: element.fulldate  //klaar in yyy-nn-dd formaat
+                    , start: element.fulldate  //klaar in yyy-mm-dd formaat
                     , type: 'Holiday'
                     , color: 'green'
                 }
@@ -123,7 +142,7 @@ export const zLoadCal = {
     },
     loadSchoolsDays() {
         // We always start calendar on a monday, and monday is always schoolDayNum = 1
-        l('Loading Cal:' +  zLoadCal.dayNum)
+        l('Loading Schooldays events Cal:' +  zLoadCal.dayNum)
 
         let dayCnt = zLoadCal.dayNum
         l('Startinbg SchoolsDays:',dayCnt, zLoadCal.startDate)

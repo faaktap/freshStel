@@ -1,5 +1,7 @@
 let zml = 'zml'
 
+import {Buffer} from 'buffer';
+
 function encode (data) {
 //  console.log('encode stringify',JSON.stringify(data))
 //  console.log('encode',Buffer.from(JSON.stringify(data)).toString('base64'))
@@ -63,23 +65,24 @@ export const ls = {
           ls.cl('Now we return payload, but what about next time?',payload)
           return payload
         }
-        alert('ok, we have a problem - we want to load - but nothing exist? Please inform Werner')
-        ls.cl('LSLOADf: It does not exist :-( Add it', zml + ' ' + name)
-        ls.makeNewZMLReplacement(name)
-        ls.cl('LSLOADg: ZML-Now it SHOULD exist!TryAgainLOAD', zml + name)
-        if (localStorage.getItem(zml + name)) {
-          try {
-            ls.cl('LSLOADh: SORTED3', zml + name)
-            //payload = JSON.parse(atob(localStorage.getItem(zml + name)));
-            payload = decode(localStorage.getItem(zml + name))
-          } catch(e) {
-            localStorage.removeItem(zml + name)
-          }
-          ls.cl('LSLOADz: SORTED9', payload)
-          return payload
-        } else {
-          alert('Daar is groot fout!')
-        }
+        return false
+        // alert('ok, we have a problem - we want to load - but nothing exist? Please inform Werner')
+        // ls.cl('LSLOADf: It does not exist :-( Add it', zml + ' ' + name)
+        // ls.makeNewZMLReplacement(name)
+        // ls.cl('LSLOADg: ZML-Now it SHOULD exist!TryAgainLOAD', zml + name)
+        // if (localStorage.getItem(zml + name)) {
+        //   try {
+        //     ls.cl('LSLOADh: SORTED3', zml + name)
+        //     //payload = JSON.parse(atob(localStorage.getItem(zml + name)));
+        //     payload = decode(localStorage.getItem(zml + name))
+        //   } catch(e) {
+        //     localStorage.removeItem(zml + name)
+        //   }
+        //   ls.cl('LSLOADz: SORTED9', payload)
+        //   return payload
+        // } else {
+        //   alert('Daar is groot fout!')
+        // }
       }
       ls.cl('LSLOADi: RETURN FALSE')
       return false

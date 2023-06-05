@@ -1,11 +1,14 @@
 <template>
+<transition name="fade" mode="out-in" appear>
  <v-card color="white darken-1"
          class="text-center ma-0 pa-0" :loading="loading">
 
   <zml-close-button @btn-click="closeIt" />
-<!-- For EPUB, epub we could try and get https://github.com/Treinetic/TreineticEpubReader started
+
+  <!-- <v-btn text v-on:keypress.a="$emit('askForNext')"> . </v-btn> -->
+  <!-- For EPUB, epub we could try and get https://github.com/Treinetic/TreineticEpubReader started
      see https://stackoverflow.com/questions/16933086/how-to-read-epub-files-using-javascript#16950918
--->
+  -->
   <v-card-title class="ma-1 pa-1 text-center text-caption text-sm-body-2 text-md-body-1 text-lg-h6">
     <v-btn
       class="ma-2"
@@ -16,7 +19,9 @@
     </v-btn>
 
     <div class="mx-4 mb-0 mt-0 pa-0 text-center">
+      <v-btn icon @click="$emit('askForNext','A')" title="Try A and D for prev and next"><v-icon small >mdi-chevron-left</v-icon></v-btn>
       Preview - {{ getFilenameNoExtension(src) }}
+      <v-btn icon @click="$emit('askForNext','D')" title="Try A and D for prev and next"><v-icon small >mdi-chevron-right</v-icon></v-btn>
     </div>
 
     <v-hover v-if="['JHMEL','werner'].includes(getZml.login.username)"
@@ -37,14 +42,23 @@
 
   </v-card-title>
 
+
+                <!-- <v-responsive>
+                  <video controls>
+                    <source :src="video.videoUrl" type="video/mp4" />
+                  </video>
+                </v-responsive> -->
+
 <!-------------------------------------VIDEO-PLAYABLE------------->
   <v-card-text class="text-center ma-0 pa-0">
   <template v-if="['video-playable'].includes(typeExtName)">
+   <v-responsive>
     <video controls
            height="80%" width="70%"
            class="text-center"
            ref="video"
            :src="httpsrc"
+           type="video/mp4"
               @loaded="loaded"
               @onload="onload"
               @load="load"
@@ -52,6 +66,7 @@
       >
       Sorry, your browser doesn't support embedded videos.
     </video>
+   </v-responsive>
     <small class="text-caption">1</small>
   </template>
 
@@ -94,9 +109,9 @@
               @onload="onload"
               @load="load"
               :src="httpsrc" />
-      <small class="text-caption">4</small>              
+      <small class="text-caption">4</small>
   </template>
-  
+
 
 <!-------------------------------------GOOGLE READER------------->
   <template v-else-if="['document', 'doc','ebook','pdf'].includes(typeExtName)">
@@ -155,8 +170,10 @@
     <small class="text-caption">
        <a :href="httpSrcOfficeEmbed" target="test"> Office Embed </a>
        <a :href="httpSrcGoogleEmbed" target="test"> Google Embed </a>
+       <v-btn text v-on:keypress.a="askForNext"> . </v-btn>
     </small>
  </v-card>
+</transition>
  </template>
 
 <script>
@@ -184,6 +201,7 @@ export default {
       screenheight() {
         return screen.height+"px"
       },
+
       httpsrc() {
         if (this.src.includes('/home/')) {
            let cleanPath = this.src.replace('/home/kuilieso/public_html', '')
@@ -264,11 +282,24 @@ export default {
         });
         xx.src  = '';
        }
+      },
+      askForNext() {
+        alert('fififififififi')
       }
  },
+created() {
+    window.addEventListener('keydown', (e) => {
+      //console.log('Key Pressed : ', e.key)
+      if (e.key == 'D' || e.key == 'd' || e.key == 'a' || e.key == 'A') {
+        //console.log('ASKFORNEXTFORMZMLPREVIRE : ', e.key)
+        this.$emit('askForNext', e.key)
+      }
+    });
+  },
  mounted() {
-   console.log('M:',this.$options.name)
+   //console.log('M:',this.$options.name, this.$vue)
    this.loading = true
+
  },
  watch: {
      src() {
@@ -279,3 +310,26 @@ export default {
 }
 
 </script>
+
+<style scoped>
+/* .expand-enter defines the starting state for entering */
+/* .expand-leave defines the ending state for leaving */
+.expand-enter, .expand-leave {
+  height: 0;
+  padding: 0 10px;
+  opacity: 0;
+}
+.v-carousel .v-window-item {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+</style>

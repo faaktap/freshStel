@@ -6,33 +6,44 @@
             toolbarName="De Kuilen High School Personel"
            :background="false"
             >
-          <v-btn small @click="showAs='list'" class="mr-2" title="Show as a list">
+          <v-btn small @click="showAs='list'" class="mr-2" title="Show as a list" icon>
                         <v-icon> mdi-view-list </v-icon>          </v-btn>
-          <v-btn small  @click="showAs='card'"  class="mr-2">
+          <v-btn small  @click="showAs='card'"  class="mr-2" icon>
                        <v-icon> mdi-card </v-icon>          </v-btn>
-          <v-btn small @click="showAs='picture'"  class="mr-2" title="Show only picture">
+          <v-btn small @click="showAs='picture'"  class="mr-2" title="Show only picture" icon>
                        <v-icon> mdi-image </v-icon>          </v-btn>
-          <v-btn small @click="loadPersonelList" class="mr-2" title="refresh - reflect new changes">
+          <v-btn small @click="loadPersonelList" class="mr-2" title="refresh - reflect new changes" icon>
                        <v-icon> mdi-refresh </v-icon>          </v-btn>
+<<<<<<< HEAD
 
 <v-btn small v-if="personelList.length"
         title="Trying to get images to print"
         @click="doPrint()"
     >
      T
+=======
+    <v-btn small v-if="personelList.length"
+        title="Trying to get images to print"
+        icon
+        @click="doPrint()"
+    >
+     <v-icon> mdi-printer </v-icon>
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   </v-btn>
 </base-tool>
 
 <v-container fluid>
   <v-layout>
       <v-col xs12 md6>
-       <v-text-field
+       <v-text-field dense
             label="Search" placeholder="Search on Surname"
             v-model="searchInfo" solo clearable
             @click:clear="searchInfo = ''"
+            class="ma-0 pa-0"
        />
       </v-col>
   </v-layout>
+<<<<<<< HEAD
  <v-divider />
 </v-container>
 <!-- <v-container v-else>
@@ -53,6 +64,27 @@
     </tr>
   </v-simple-table-->
 
+=======
+ </v-container>
+<!-- <v-container v-else>
+   Your are not logged in - limited functionality
+</v-container> -->
+
+<v-container fluid class="ma-0 pa-0">
+
+  <!--v-simple-table >
+    <tr><th>Public Name</th><th>Name</th><th>Surname</th><th>Picture Path</th><th>Class</th><th>WorkArea</th></tr>
+    <tr v-for="d in personelList" :key="d.data.persid">
+      <td>{{d.data.public_preferredname}} </td>
+      <td>{{d.data.name}}</td>
+      <td>{{d.data.surname}}</td>
+      <td>https://kuiliesonline.co.za/bib/assets/staff/{{d.data.photo}}</td>
+      <td>{{d.data.room}}</td>
+      <td>{{d.data.workarea}}</td>
+    </tr>
+  </v-simple-table-->
+
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   <template v-if="showAs == 'list' && ['admin','teacher'].includes(getZml.login.type)">
        <personel-name-list :staffList="filteredItems"
                            @pictureUpload="loadAPicture"

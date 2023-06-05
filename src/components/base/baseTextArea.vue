@@ -1,26 +1,21 @@
-<template lang="html">
-<v_textarea class="{{ name }}" v-model="editableValue" :maxlength="maxlength"></v_textarea>
+<template>
+<v-textarea
+    v-model="editableValue"
+    :maxlength="maxlength"
+    outlined
+    :label="label"
+/>
 </template>
 
 <script>
 export default {
-  name: '{{ name }}',
-  props: {
-    value: {
-      type: String,
-      default: '',
-      required: true
-    },
-    maxlength: {
-      type: Number,
-      default: 0,
-      required: true
-    }
-  },
-  data () {
-    return {
-      editableValue: this.value
-    }
+  name: 'BaseTextArea',
+  props: ['value','label','maxlength'],
+  data: () => ({
+      editableValue: ''
+  }),
+  mounted() {
+    if (this.editableValue) this.editableValue = this.value
   },
   watch: {
     value (newValue) {
@@ -36,6 +31,7 @@ export default {
   },
   computed: {
     leftChars () {
+      if (!this.editableValue) return this.maxlength
       return this.maxlength - this.editableValue.length
     }
   }

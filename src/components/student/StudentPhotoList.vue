@@ -1,10 +1,11 @@
-<docs>
-Carousel of all photos linked to student. (awards and school photos)
-</docs>
 <template>
-   <v-card max-width="300" class="mx-auto" v-if="studentid && photoList" :color="color" elevation="2">
+<!--
+Carousel of all photos linked to student. (awards and school photos)
+-->
+   <v-card max-width="300" class="mx-auto" v-if="studentid" :color="color" elevation="2">
+
      <v-card-title> Photos </v-card-title>
-     <v-card-text>
+     <v-card-text v-if="photoList.length">
         <v-carousel
               :show-arrows="false"
               :hide-delimiter-background="false"
@@ -14,15 +15,16 @@ Carousel of all photos linked to student. (awards and school photos)
             <v-row  class="fill-height"
                 align="center"
                 justify="center">
-             <div class="xxdisplay-3">
-              <img :src="'https://kuiliesonline.co.za/' + p.photo"
-                        xwidth="300" contain
-                       :title="p.type + ' ' +  p.photo" >
+             <div>
+              <img :src="'https://kuiliesonline.co.za/' + p.photo" max-width="300" contain :title="p.type + ' ' +  p.photo" >
              </div>
             </v-row>
            </v-sheet>
           </v-carousel-item>
           </v-carousel>
+      </v-card-text>
+      <v-card-text v-else>
+        NO PHOTOS AVALIABLE
       </v-card-text>
      </v-card>
 
@@ -33,7 +35,7 @@ export default {
     name:"StudentPhotoList",
     props: ['studentid','color'],
     data: () => ({
-      photoList:null,
+      photoList:[],
     }),
     methods:{
       getPhotos() {

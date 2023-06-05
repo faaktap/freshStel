@@ -1,7 +1,6 @@
 <template>
   <div>
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
-
       <v-card>
         <v-card-text>
           <v-row>
@@ -11,21 +10,28 @@
                       label="Log Date" />
            </v-col>
           <v-col cols="12" md="4">
-           <v-text-field v-model="search"
-                        label="Search"
+           <v-text-field v-model="searchText"
+                        label="DB Search"
                         dense
                         class="ma-2" />
            </v-col>
-           <v-col cols="12" md="4">
+           <v-col cols="12" md="2">
            <v-btn @click="buildSelect"> Refresh Logs </v-btn>
            </v-col>
+           <v-col cols="12" md="2">
+          <v-btn @click="showResult = !showResult">
+           E
+          </v-btn>
+          </v-col>
+
           </v-row>
          <base-table v-if="logList"
-                     :tList="logList"
-                     :tHeading="'Log List - Records = ' + logList.length"
+                     :tList="logListFilter"
+                     :tHeading="'Log List - Records = ' + logListFilter.length"
                      bHeading="Show Logs"
                      @edit="tableDblClick"
                      @select="tableSelect"
+                     @search="search=$event"
          />
         </v-card-text>
         <v-card-actions>
@@ -36,25 +42,28 @@
       </v-btn>
       </v-card-actions>
       </v-card>
+su= {{ $super.user }} {{ $super.test }} {{ $super }}
+      Distinct Users : {{ distinctUsers }}
 
 <v-dialog v-model="showResult">
  <v-card color="red" v-if="showResult && logList">
-  <front-json-to-csv :json-data="logList"
-                     csv-title="User Log List"
-                     @hideModal="showResult = false">
+  <front-json-to-csv :json-data="logListFilter"
+                     :csv-title="'User Log List ' + (searchText.length ? `(search: ${search} )` : '')"
+                     @hideModal="showResult = false; search=''">
   </front-json-to-csv>
  </v-card>
 </v-dialog>
-
+<!-- {{ search }}  {{ searchText }}
+{{ logListFilter }} -->
   </div>
 </template>
 
 <script>
-import { getters } from  "@/api/store"
-import { zmlFetch } from '@/api/zmlFetch'
+import { getters } from "@/api/store.js"
+import { zmlFetch } from '@/api/zmlFetch.js'
 import { zDate } from '@/api/zDate.js'
-import BaseDate from    '@/components/base/BaseDate'
-import BaseTable from    '@/components/base/baseTable'
+import BaseDate from '@/components/base/BaseDate.vue'
+import BaseTable from '@/components/base/baseTable.vue'
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 
 export default {
@@ -78,32 +87,48 @@ export default {
                 },
         logList:[],
         logDate:null,
-        search:''
+        search:'',
+        searchText:'',
+        distinctUsers:[]
        }
 
    },
    computed: {
+    logListFilter() {
+        if (!this.search) {
+           return this.logList
+        }
+        //convert obj to array, join array, and uppercase it - then search for any text inside.
+        let x = this.logList.filter(
+          str => Object.values(str).join().toUpperCase().includes( this.search.toUpperCase() )
+        )
+        // if (x.length == 0) {
+        //   return this.logList
+        // }
+        return x
+    }
    },
    methods: {
      tableDblClick(evt,item) {
-         console.log('Table Double Click: ', item.item)
+         this.$cs.l('Table Double Click: ', item.item)
      },
      tableSelect(evt,item) {
-         console.log('Table select:',item.item, evt)
+         this.$cs.l('Table select:',item.item, evt)
      },
      buildSelect () {
-        if (this.search || this.logDate) {
+        this.search = '' //reset searchvalue
+        if (this.searchText || this.logDate) {
           let searchWhere = '1 = 1'
           let dateWhere = '1 = 1'
           if (this.logDate) {
             dateWhere = this.logDate ? `log_dte like '%${this.logDate}%'` : ''
           }
-          if (this.search) {
-           searchWhere =  `(ip like '%${this.search}%'\
-                 or details like '%${this.search}%'\
-                 or function like '%${this.search}%'\
-                 or user like '%${this.search}%'\
-                 or referer like '%${this.search}%')`
+          if (this.searchText) {
+           searchWhere =  `(ip like '%${this.searchText}%'\
+                 or details like '%${this.searchText}%'\
+                 or function like '%${this.searchText}%'\
+                 or user like '%${this.searchText}%'\
+                 or referer like '%${this.searchText}%')`
           }
           this.getData.where = ' where ' + dateWhere + ' and ' + searchWhere
         } else {
@@ -124,7 +149,7 @@ export default {
            from dkhs_log\
         ${this.getData.where}\
         ORDER BY log_id DESC`
-        console.log(' sql = ', this.getData.sql)
+        this.$cs.l(' sql = ', this.getData.sql)
         this.loadLogs()
      },
      loadLogs() {
@@ -142,11 +167,11 @@ export default {
        //Use loglines and add all users in an array
        let output = this.logList.map( (s) => (s.user) );
        //Use it to create ditinct users
-       let distinctUsers = [...new Set(output)]
-       console.log('ddddddddddddddddddddddddd',distinctUsers)
+       this.distinctUsers = [...new Set(output)]
+       this.$cs.l('Distinct Users',this.distinctUsers)
      },
      filterColumns(resp,colArray) {
-       console.log(colArray)
+       this.$cs.l(colArray)
        resp.forEach(e => {
          // if details was saved as json, unstringify it..
          if (e.details[0] == '"'  && e.details.length > 80  ) {
@@ -169,9 +194,25 @@ export default {
      }
    },
    mounted() {
-     console.log('mount ' , this.$options.name)
-     console.log('params = ', this.search)
+     this.$cs.l('mount ' , this.$options.name)
+     this.$cs.l('params = ', this.search, this.searchText)
+    //  this.$super.user = true
+    //  this.$super.message = 'some message'
+    //  this.$super.test = 'some test'
+    //  this.$super.newOne = 'newOne'
      this.buildSelect()
+   },
+   watch: {
+    search() {
+      console.log('watch' ,  this.logListFilter.length == 0 , this.search.length > 0)
+      if ( this.logListFilter.length == 0 && this.search.length > 0) {
+           //this.search.slice(0, -1)  //removing last character...
+           this.search =  this.search.replace(/.$/, '')  //removing last character...
+           //this.search = this.search.substring(0, this.search.length - 1);  //removing last character..
+           console.log('removed an character', this.search)
+
+      }
+    }
    }
 }
 </script>

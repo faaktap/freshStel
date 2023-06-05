@@ -1,0 +1,3646 @@
+
+> zmlrekenaars@0.1.0 serve
+> vue-cli-service serve
+
+ INFO  Starting development server...
+[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[10%] building (import loader babel-loader/lib/index.js)
+[2K[1A[2K[G[10%] building (0/5 modules)
+[2K[1A[2K[G[24%] building (12/22 modules)
+[2K[1A[2K[G[24%] building (import loader @vue/vue-loader-v15/lib/index.js)
+[2K[1A[2K[G[24%] building (17/28 modules)
+[2K[1A[2K[G[24%] building (21/33 modules)
+[2K[1A[2K[G[24%] building (import loader @vue/vue-loader-v15/lib/loaders/pitcher.js)
+[2K[1A[2K[G[24%] building (21/37 modules)
+[2K[1A[2K[G[38%] building (25/39 modules)
+[2K[1A[2K[G[38%] building (import loader vuetify-loader/lib/loader.js)
+[2K[1A[2K[G[38%] building (import loader @vue/vue-loader-v15/lib/loaders/templateLoader.js)
+[2K[1A[2K[G[38%] building (25/53 modules)
+[2K[1A[2K[G[38%] building (import loader vue-style-loader/index.js)
+[2K[1A[2K[G[38%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[38%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[38%] building (25/53 modules)
+[2K[1A[2K[G[38%] building (28/130 modules)
+[2K[1A[2K[G[51%] building (32/130 modules)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/stylePostLoader.js
+)
+[2K[1A[2K[1A[2K[G[51%] building (32/130 modules)
+[2K[1A[2K[G[51%] building (35/205 modules)
+[2K[1A[2K[G[51%] building (36/300 modules)
+[2K[1A[2K[G[51%] building (38/439 modules)
+[2K[1A[2K[G[51%] building (43/481 modules)
+[2K[1A[2K[G[51%] building (47/547 modules)
+[2K[1A[2K[G[51%] building (47/554 modules)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (53/585 modules)
+[2K[1A[2K[G[51%] building (56/647 modules)
+[2K[1A[2K[G[51%] building (67/710 modules)
+[2K[1A[2K[G[51%] building (78/826 modules)
+[2K[1A[2K[G[51%] building (78/891 modules)
+[2K[1A[2K[G[51%] building (104/1054 modules)
+[2K[1A[2K[G[51%] building (107/1100 modules)
+[2K[1A[2K[G[51%] building (115/1170 modules)
+[2K[1A[2K[G[51%] building (139/1278 modules)
+[2K[1A[2K[G[51%] building (200/1412 modules)
+[2K[1A[2K[G[51%] building (214/1475 modules)
+[2K[1A[2K[G[51%] building (292/1541 modules)
+[2K[1A[2K[G[51%] building (300/1656 modules)
+[2K[1A[2K[G[51%] building (362/1691 modules)
+[2K[1A[2K[G[51%] building (390/1700 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(random(1000), 1000) or calc(random(1000) / 1000)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+46 │         --size: #{random(1000) / 1000};
+   │                   ^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 46:19  root stylesheet
+
+[2K[1A[2K[G[51%] building (392/1718 modules)
+[2K[1A[2K[G[51%] building (485/1781 modules)
+[2K[1A[2K[G[51%] building (515/1810 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($gutter, 2) or calc($gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+30 │             padding: $gutter / 2
+   │                      ^^^^^^^^^^^
+   ╵
+    stdin 30:22  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$gutter, 2) or calc(-1 * $gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+33 │           margin: -$gutter / 2
+   │                   ^^^^^^^^^^^^
+   ╵
+    stdin 33:19  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$gutter, 2) or calc(-1 * $gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+36 │           margin: auto (-$gutter / 2)
+   │                         ^^^^^^^^^^^^
+   ╵
+    stdin 36:25  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$gutter, 2) or calc(-1 * $gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+40 │             margin-top: -$gutter / 2
+   │                         ^^^^^^^^^^^^
+   ╵
+    stdin 40:25  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$gutter, 2) or calc(-1 * $gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+43 │             margin-bottom: -$gutter / 2
+   │                            ^^^^^^^^^^^^
+   ╵
+    stdin 43:28  root stylesheet
+
+WARNING: 4 repetitive deprecation warnings omitted.
+
+[2K[1A[2K[G[51%] building (524/1831 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(map-get($size, "height"), 2) or calc(map-get($size, "height") / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+202 │       border-radius: #{map-get($size, 'height') / 2}px
+    │                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    stdin 202:24  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($size, 2.25) or calc($size / 2.25)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+83 │         padding: 0 #{$size / 2.25}px
+   │                      ^^^^^^^^^^^^
+   ╵
+    stdin 83:22  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($size, 2) or calc($size / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+219 │           bottom: -#{$size / 2}px
+    │                      ^^^^^^^^^
+    ╵
+    stdin 219:22  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($size, 2) or calc($size / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+222 │           top: -#{$size / 2}px
+    │                   ^^^^^^^^^
+    ╵
+    stdin 222:19  root stylesheet
+
+[2K[1A[2K[G[51%] building (542/1857 modules)
+[2K[1A[2K[G[51%] building (797/1884 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$toolbar-btn-icon-size, 4) or calc(-1 * $toolbar-btn-icon-size / 4)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+37 │         margin-left: -$toolbar-btn-icon-size / 4
+   │                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 37:22                                          @content
+    node_modules\vuetify\src\styles\tools\_rtl.sass 7:5  ltr()
+    stdin 36:7                                           root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$toolbar-btn-icon-size, 4) or calc(-1 * $toolbar-btn-icon-size / 4)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+40 │         margin-right: -$toolbar-btn-icon-size / 4
+   │                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 40:23                                          @content
+    node_modules\vuetify\src\styles\tools\_rtl.sass 3:5  rtl()
+    stdin 39:7                                           root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$toolbar-btn-icon-size, 4) or calc(-1 * $toolbar-btn-icon-size / 4)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+51 │         margin-right: -$toolbar-btn-icon-size / 4
+   │                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 51:23                                          @content
+    node_modules\vuetify\src\styles\tools\_rtl.sass 7:5  ltr()
+    stdin 50:7                                           root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$toolbar-btn-icon-size, 4) or calc(-1 * $toolbar-btn-icon-size / 4)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+54 │         margin-left: -$toolbar-btn-icon-size / 4
+   │                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 54:22                                          @content
+    node_modules\vuetify\src\styles\tools\_rtl.sass 3:5  rtl()
+    stdin 53:7                                           root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($progress-linear-stream-border-width, 2) or calc($progress-linear-stream-border-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+113 │   top: calc(50% - #{$progress-linear-stream-border-width / 2})
+    │                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    stdin 113:21  root stylesheet
+
+[2K[1A[2K[G[51%] building (817/1900 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($switch-track-inset-height, 2) or calc($switch-track-inset-height / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+116 │       top: calc(50% - #{$switch-track-inset-height / 2})
+    │                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    stdin 116:25  root stylesheet
+
+[2K[1A[2K[G[51%] building (832/1930 modules)
+[2K[1A[2K[G[51%] building (885/1962 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($dot-size, 2) or calc($dot-size / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+  ╷
+3 │   left: calc(50% - #{$dot-size / 2})
+  │                      ^^^^^^^^^^^^^
+  ╵
+    node_modules\vuetify\src\components\VTimeline\_mixins.sass 3:22  timeline-dots()
+    stdin 57:3                                                       root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($dot-size - $inner-dot-size, 2) or calc(($dot-size - $inner-dot-size) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+  ╷
+8 │     margin: ($dot-size - $inner-dot-size) / 2
+  │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ╵
+    node_modules\vuetify\src\components\VTimeline\_mixins.sass 8:13  timeline-dots()
+    stdin 57:3                                                       root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($timeline-divider-width, 2) or calc($timeline-divider-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+74 │   max-width: calc(#{$timeline-divider-center} - #{$timeline-divider-width / 2})
+   │                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 74:51  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($timeline-divider-width, 2) or calc($timeline-divider-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+83 │         max-width: calc(#{100% - $timeline-divider-center} - #{$timeline-divider-width / 2})
+   │                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 83:64  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($timeline-divider-width, 2) or calc($timeline-divider-width / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+89 │         max-width: calc(#{$timeline-divider-center} - #{$timeline-divider-width / 2})
+   │                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 89:57  root stylesheet
+
+WARNING: 6 repetitive deprecation warnings omitted.
+
+[2K[1A[2K[G[51%] building (893/2007 modules)
+[2K[1A[2K[G[51%] building (925/2032 modules)
+[2K[1A[2K[G[51%] building (956/2053 modules)
+[2K[1A[2K[G[51%] building (986/2087 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$banner-y-padding, 2) or calc(-1 * $banner-y-padding / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+26 │   margin-bottom: -$banner-y-padding / 2
+   │                  ^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 26:18  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($banner-y-padding, 2) or calc($banner-y-padding / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+85 │     padding-top: $banner-y-padding / 2
+   │                  ^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 85:18  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($banner-y-padding, 2) or calc($banner-y-padding / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+86 │     padding-bottom: $banner-y-padding / 2
+   │                     ^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 86:21  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($alert-padding, 2) or calc($alert-padding / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+141 │   padding-top: $alert-padding / 2
+    │                ^^^^^^^^^^^^^^^^^^
+    ╵
+    stdin 141:16  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($alert-padding, 2) or calc($alert-padding / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+142 │   padding-bottom: $alert-padding / 2
+    │                   ^^^^^^^^^^^^^^^^^^
+    ╵
+    stdin 142:19  root stylesheet
+
+[2K[1A[2K[G[51%] building (1000/2113 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$slider-thumb-size, 2) or calc(-1 * $slider-thumb-size / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+50 │   left: -$slider-thumb-size / 2
+   │         ^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 50:9  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$slider-thumb-focused-size-increase, 2) or calc(-1 * $slider-thumb-focused-size-increase / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+67 │     left: -$slider-thumb-focused-size-increase / 2
+   │           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 67:11  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$slider-thumb-focused-size-increase, 2) or calc(-1 * $slider-thumb-focused-size-increase / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+68 │     top: -$slider-thumb-focused-size-increase / 2
+   │          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 68:10  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-($slider-thumb-size - 4), 2) or calc(-1 * ($slider-thumb-size - 4) / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+    ╷
+254 │     left: -($slider-thumb-size - 4) / 2
+    │           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ╵
+    stdin 254:11  root stylesheet
+
+[2K[1A[2K[G[51%] building (1042/2127 modules)
+[2K[1A[2K[G[51%] building (1100/2130 modules)
+[2K[1A[2K[G[51%] building (1272/2140 modules)
+[2K[1A[2K[G[51%] building (1400/2143 modules)
+[2K[1A[2K[G[51%] building (1500/2195 modules)
+[2K[1A[2K[G[51%] building (1677/2196 modules)
+[2K[1A[2K[G[51%] building (1900/2197 modules)
+[2K[1A[2K[G[51%] building (2100/2197 modules)
+[2K[1A[2K[G[65%] building (2197/2197 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:47:29
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[GBuild finished at 10:47:29 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify-loader/lib/loader.js??ruleSet[1].rules[0].use!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[0]!./node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[4]!./node_modules/@vue/cli-service/node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/App.vue?vue&type=template&id=7ba5bd90& 3:0-58 15:9-19
+ @ ./src/App.vue?vue&type=template&id=7ba5bd90& 1:0-411 1:0-411
+ @ ./src/App.vue 1:0-82 11:2-8 12:2-17 31:66-36:5 33:16-22 34:25-40 31:4-36:6
+ @ ./src/main.js 2:0-28 77:17-20
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:51:57
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/3 modules)
+[2K[1A[2K[G[38%] building (18/11 modules)
+[2K[1A[2K[G[51%] building (39/14 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (183/345 modules)
+[2K[1A[2K[G[51%] building (1150/910 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:52:00
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[GBuild finished at 10:52:00 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:53:16
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/2 modules)
+[2K[1A[2K[G[38%] building (33/89 modules)
+[2K[1A[2K[G[51%] building (46/91 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (284/492 modules)
+[2K[1A[2K[G[51%] building (1400/999 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:53:19
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[GBuild finished at 10:53:19 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:55:09
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (30/14 modules)
+[2K[1A[2K[G[51%] building (39/89 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (184/434 modules)
+[2K[1A[2K[G[51%] building (1138/969 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:55:11
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[GBuild finished at 10:55:11 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:56:36
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (30/14 modules)
+[2K[1A[2K[G[51%] building (39/89 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (188/434 modules)
+[2K[1A[2K[G[51%] building (1872/1136 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:56:38
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[GBuild finished at 10:56:38 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:57:21
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (27/88 modules)
+[2K[1A[2K[G[51%] building (35/90 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (284/490 modules)
+[2K[1A[2K[G[51%] building (842/626 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:57:22
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:22 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:57:55
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (30/14 modules)
+[2K[1A[2K[G[51%] building (39/89 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (188/434 modules)
+[2K[1A[2K[G[51%] building (1563/998 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:57:57
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[GBuild finished at 10:57:57 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...10:58:52
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (27/88 modules)
+[2K[1A[2K[G[51%] building (35/90 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (284/490 modules)
+[2K[1A[2K[G[51%] building (1210/900 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[G ERROR  Failed to compile with 1 error10:58:54
+
+ error  in ./node_modules/vuetify/src/components/VGrid/VGrid.sass
+
+Syntax Error: SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet
+
+
+Build finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[GBuild finished at 10:58:54 by 0.000s
+[2K[1A[2K[G[1m[31mERROR[39m[22m in [1m./node_modules/vuetify/src/components/VGrid/VGrid.sass[39m[22m (./node_modules/@vue/cli-service/node_modules/css-loader/dist/cjs.js??clonedRuleSet-29.use[1]!./node_modules/@vue/cli-service/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-29.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-29.use[3]!./node_modules/vuetify/src/components/VGrid/VGrid.sass)
+[1mModule build [1m[31mfailed[39m[22m[1m (from ./node_modules/sass-loader/dist/cjs.js):
+SassError: Expected digit.
+   ╷
+17 │   margin: calc(-$gutter / 2)
+   │                 ^
+   ╵
+  node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  @import
+  R:\Develop\NodeDev\real\fresh\node_modules\vuetify\src\components\VGrid\VGrid.sass 2:9                                                     root stylesheet[39m[22m
+ @ ./node_modules/vuetify/src/components/VGrid/VGrid.sass 4:14-284 15:3-20:5 16:22-292
+ @ ./node_modules/vuetify/lib/components/VGrid/VContainer.js 2:0-50
+ @ ./node_modules/vuetify/lib/components/VGrid/index.js 1:0-38 7:0-59 10:4-14
+ @ ./node_modules/vuetify/lib/components/index.js 33:0-24 33:0-24
+ @ ./node_modules/vuetify/lib/index.js 1:0-29 1:0-29
+ @ ./src/plugins/vuetify.js 3:0-116 5:8-15 7:4-11 8:4-13 9:4-11 10:4-14 11:4-13 12:4-17 13:4-13 25:19-26
+ @ ./src/main.js 3:0-40 72:8-15 75:2-9
+
+webpack compiled with [1m[31m1 error[39m[22m
+ WAIT  Compiling...11:01:15
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/2 modules)
+[2K[1A[2K[G[38%] building (42/89 modules)
+[2K[1A[2K[G[51%] building (45/89 modules)
+[2K[1A[2K[G[51%] building (import loader css-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader postcss-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (import loader sass-loader/dist/cjs.js)
+[2K[1A[2K[G[51%] building (188/434 modules)
+[2K[1A[2K[G[51%] building (1289/978 modules)
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($gutter, 2) or calc($gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+17 │   margin: -calc($gutter / 2)
+   │                 ^^^^^^^^^^^
+   ╵
+    node_modules\vuetify\src\components\VGrid\_mixins.sass 17:17  make-row()
+    stdin 15:3                                                    root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($grid-gutter, 2) or calc($grid-gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+18 │     margin-top: $grid-gutter / 2
+   │                 ^^^^^^^^^^^^^^^^
+   ╵
+    stdin 18:17  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($form-grid-gutter, 2) or calc($form-grid-gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+21 │       margin-top: $form-grid-gutter / 2
+   │                   ^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 21:19  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div(-$form-grid-gutter, 2) or calc(-1 * $form-grid-gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+24 │     margin: -$form-grid-gutter / 2
+   │             ^^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 24:13  root stylesheet
+
+DEPRECATION WARNING: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+Recommendation: math.div($form-grid-gutter, 2) or calc($form-grid-gutter / 2)
+
+More info and automated migrator: https://sass-lang.com/d/slash-div
+
+   ╷
+28 │       padding: $form-grid-gutter / 2
+   │                ^^^^^^^^^^^^^^^^^^^^^
+   ╵
+    stdin 28:16  root stylesheet
+
+WARNING: 2 repetitive deprecation warnings omitted.
+
+[2K[1A[2K[G[65%] building (2197/1172 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 2582ms11:01:18
+
+Build finished at 11:01:18 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+  Note that the development build is not optimized.
+  To create a production build, run npm run build.
+
+Build finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[GBuild finished at 11:01:18 by 0.000s
+[2K[1A[2K[G WAIT  Compiling...11:02:09
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (27/88 modules)
+[2K[1A[2K[G[51%] building (35/90 modules)
+[2K[1A[2K[G[51%] building (962/800 modules)
+[2K[1A[2K[G[65%] building (2197/1170 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 1302ms11:02:11
+
+Build finished at 11:02:11 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+Build finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[GBuild finished at 11:02:11 by 0.000s
+[2K[1A[2K[G WAIT  Compiling...11:06:09
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (30/14 modules)
+[2K[1A[2K[G[51%] building (39/89 modules)
+[2K[1A[2K[G[51%] building (781/500 modules)
+[2K[1A[2K[G[51%] building (1800/1096 modules)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/index.js)
+[2K[1A[2K[G[51%] building (2170/1158 modules)
+[2K[1A[2K[G[51%] building (import loader vuetify-loader/lib/loader.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/pitcher.js)
+[2K[1A[2K[G[51%] building (import loader babel-loader/lib/index.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/templateLoader.js)
+[2K[1A[2K[G[51%] building (2170/1160 modules)
+[2K[1A[2K[G[65%] building (2197/1182 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 4958ms11:06:14
+
+Build finished at 11:06:14 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+Build finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[GBuild finished at 11:06:14 by 0.000s
+[2K[1A[2K[G WAIT  Compiling...11:08:46
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/2 modules)
+[2K[1A[2K[G[38%] building (33/14 modules)
+[2K[1A[2K[G[51%] building (45/89 modules)
+[2K[1A[2K[G[51%] building (988/929 modules)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/index.js)
+[2K[1A[2K[G[51%] building (2170/1158 modules)
+[2K[1A[2K[G[51%] building (import loader vuetify-loader/lib/loader.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/pitcher.js)
+[2K[1A[2K[G[51%] building (import loader babel-loader/lib/index.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/templateLoader.js)
+[2K[1A[2K[G[51%] building (2170/1160 modules)
+[2K[1A[2K[G[65%] building (2197/1182 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 1723ms11:08:48
+
+Build finished at 11:08:48 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+Build finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[GBuild finished at 11:08:48 by 0.000s
+[2K[1A[2K[G WAIT  Compiling...11:17:31
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (15/11 modules)
+[2K[1A[2K[G[38%] building (16/11 modules)
+[2K[1A[2K[G[51%] building (596/15 modules)
+[2K[1A[2K[G[51%] building (949/691 modules)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/index.js)
+[2K[1A[2K[G[51%] building (2148/1158 modules)
+[2K[1A[2K[G[51%] building (import loader vuetify-loader/lib/loader.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/pitcher.js)
+[2K[1A[2K[G[51%] building (import loader babel-loader/lib/index.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/templateLoader.js)
+[2K[1A[2K[G[51%] building (2170/1160 modules)
+[2K[1A[2K[G[65%] building (2197/1182 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 2240ms11:17:33
+
+Build finished at 11:17:33 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+Build finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:33 by 0.000s
+[2K[1A[2K[G WAIT  Compiling...11:17:56
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (27/78 modules)
+[2K[1A[2K[G[51%] building (35/90 modules)
+[2K[1A[2K[G[51%] building (1400/947 modules)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/index.js)
+[2K[1A[2K[G[51%] building (1410/974 modules)
+[2K[1A[2K[G[51%] building (import loader vuetify-loader/lib/loader.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/pitcher.js)
+[2K[1A[2K[G[51%] building (import loader babel-loader/lib/index.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/templateLoader.js)
+[2K[1A[2K[G[51%] building (2038/1158 modules)
+[2K[1A[2K[G[65%] building (2197/1182 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 1679ms11:17:57
+
+Build finished at 11:17:57 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+Build finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[GBuild finished at 11:17:57 by 0.000s
+[2K[1A[2K[G WAIT  Compiling...11:18:24
+
+Compiling...
+
+[2K[1A[2K[G[1%] cache (end idle)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[3%] setup (watch run webpack-dev-middleware)
+[2K[1A[2K[G[3%] setup (watch run)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[4%] setup (normal module factory CaseSensitivePathsPlugin)
+[2K[1A[2K[G[4%] setup (normal module factory)
+[2K[1A[2K[G[5%] setup (context module factory)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[6%] setup (before compile ProgressPlugin)
+[2K[1A[2K[G[6%] setup (before compile)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[7%] setup (compile ExternalsPlugin)
+[2K[1A[2K[G[7%] setup (compile)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[8%] setup (compilation CopyPlugin)
+[2K[1A[2K[G[8%] setup (compilation ArrayPushCallbackChunkFormatPlugin)
+[2K[1A[2K[G[8%] setup (compilation JsonpChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation StartupChunkDependenciesPlugin)
+[2K[1A[2K[G[8%] setup (compilation ImportScriptsChunkLoadingPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation FetchCompileAsyncWasmPlugin)
+[2K[1A[2K[G[8%] setup (compilation WorkerPlugin)
+[2K[1A[2K[G[8%] setup (compilation SplitChunksPlugin)
+[2K[1A[2K[G[8%] setup (compilation ResolverCachePlugin)
+[2K[1A[2K[G[8%] setup (compilation HtmlWebpackPlugin)
+[2K[1A[2K[G[8%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[9%] setup (compilation vue-loader-plugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ChunkPrefetchPreloadPlugin)
+[2K[1A[2K[G[9%] setup (compilation ModuleInfoHeaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation EvalSourceMapDevToolPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation JsonModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AssetModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation RuntimePlugin)
+[2K[1A[2K[G[9%] setup (compilation InferAsyncModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation DataUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation FileUriPlugin)
+[2K[1A[2K[G[9%] setup (compilation CompatibilityPlugin)
+[2K[1A[2K[G[9%] setup (compilation HarmonyModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation AMDPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireJsStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation CommonJsPlugin)
+[2K[1A[2K[G[9%] setup (compilation LoaderPlugin)
+[2K[1A[2K[G[9%] setup (compilation NodeStuffPlugin)
+[2K[1A[2K[G[9%] setup (compilation APIPlugin)
+[2K[1A[2K[G[9%] setup (compilation ExportsInfoApiPlugin)
+[2K[1A[2K[G[9%] setup (compilation WebpackIsIncludedPlugin)
+[2K[1A[2K[G[9%] setup (compilation ConstPlugin)
+[2K[1A[2K[G[9%] setup (compilation UseStrictPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireIncludePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireEnsurePlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportPlugin)
+[2K[1A[2K[G[9%] setup (compilation RequireContextPlugin)
+[2K[1A[2K[G[9%] setup (compilation SystemPlugin)
+[2K[1A[2K[G[9%] setup (compilation ImportMetaPlugin)
+[2K[1A[2K[G[9%] setup (compilation URLPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsFactoryPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPresetPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefaultStatsPrinterPlugin)
+[2K[1A[2K[G[9%] setup (compilation JavascriptMetaInfoPlugin)
+[2K[1A[2K[G[9%] setup (compilation EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[9%] setup (compilation RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[9%] setup (compilation SideEffectsFlagPlugin)
+[2K[1A[2K[G[9%] setup (compilation FlagDependencyExportsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedModuleIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation NamedChunkIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation DefinePlugin)
+[2K[1A[2K[G[9%] setup (compilation TemplatedPathPlugin)
+[2K[1A[2K[G[9%] setup (compilation RecordIdsPlugin)
+[2K[1A[2K[G[9%] setup (compilation WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[9%] setup (compilation EntryPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProvidePlugin)
+[2K[1A[2K[G[9%] setup (compilation HotModuleReplacementPlugin)
+[2K[1A[2K[G[9%] setup (compilation ProgressPlugin)
+[2K[1A[2K[G[9%] setup (compilation)
+[2K[1A[2K[G[10%] building 
+[2K[1A[2K[G[10%] building (0/0 modules)
+[2K[1A[2K[G[24%] building (1/4 modules)
+[2K[1A[2K[G[38%] building (27/78 modules)
+[2K[1A[2K[G[51%] building (35/90 modules)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/index.js)
+[2K[1A[2K[G[51%] building (1217/918 modules)
+[2K[1A[2K[G[51%] building (import loader vuetify-loader/lib/loader.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/pitcher.js)
+[2K[1A[2K[G[51%] building (import loader babel-loader/lib/index.js)
+[2K[1A[2K[G[51%] building (import loader @vue/vue-loader-v15/lib/loaders/templateLoader.js)
+[2K[1A[2K[G[51%] building (2128/1158 modules)
+[2K[1A[2K[G[65%] building (2197/1182 modules)
+[2K[1A[2K[G[65%] building 
+[2K[1A[2K[G[69%] building (finish)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[70%] sealing (finish module graph ResolverCachePlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph InferAsyncModulesPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph FlagDependencyExportsPlugin)
+[2K[1A[2K[G[70%] sealing (finish module graph)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (plugins WarnCaseSensitiveModulesPlugin)
+[2K[1A[2K[G[71%] sealing (plugins)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[71%] sealing (dependencies optimization SideEffectsFlagPlugin)
+[2K[1A[2K[G[71%] sealing (dependencies optimization)
+[2K[1A[2K[G[72%] sealing (after dependencies optimization)
+[2K[1A[2K[G[73%] sealing (chunk graph)
+[2K[1A[2K[G[73%] sealing (after chunk graph)
+[2K[1A[2K[G[74%] sealing (optimizing)
+[2K[1A[2K[G[74%] sealing (module optimization)
+[2K[1A[2K[G[75%] sealing (after module optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (chunk optimization EnsureChunkConditionsPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization MergeDuplicateChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization SplitChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization RemoveEmptyChunksPlugin)
+[2K[1A[2K[G[76%] sealing (chunk optimization)
+[2K[1A[2K[G[76%] sealing (after chunk optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[77%] sealing (module and chunk tree optimization PersistentChildCompilerSinglet
+onPlugin)
+[2K[1A[2K[1A[2K[G[77%] sealing (module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (after module and chunk tree optimization)
+[2K[1A[2K[G[78%] sealing (chunk modules optimization)
+[2K[1A[2K[G[79%] sealing (after chunk modules optimization)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (module reviving RecordIdsPlugin)
+[2K[1A[2K[G[80%] sealing (module reviving)
+[2K[1A[2K[G[80%] sealing (before module ids)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[81%] sealing (module ids NamedModuleIdsPlugin)
+[2K[1A[2K[G[81%] sealing (module ids)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[82%] sealing (module id optimization)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (chunk reviving RecordIdsPlugin)
+[2K[1A[2K[G[83%] sealing (chunk reviving)
+[2K[1A[2K[G[83%] sealing (before chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[84%] sealing (chunk ids NamedChunkIdsPlugin)
+[2K[1A[2K[G[84%] sealing (chunk ids)
+[2K[1A[2K[G[85%] sealing (chunk id optimization)
+[2K[1A[2K[G[85%] sealing (after chunk id optimization)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[86%] sealing (record modules RecordIdsPlugin)
+[2K[1A[2K[G[86%] sealing (record modules)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (record chunks RecordIdsPlugin)
+[2K[1A[2K[G[87%] sealing (record chunks)
+[2K[1A[2K[G[87%] sealing (module hashing)
+[2K[1A[2K[G[88%] sealing (code generation)
+[2K[1A[2K[G[89%] sealing (runtime requirements)
+[2K[1A[2K[G[89%] sealing (hashing)
+[2K[1A[2K[G[90%] sealing (after hashing)
+[2K[1A[2K[G[91%] sealing (record hash)
+[2K[1A[2K[G[91%] sealing (module assets processing)
+[2K[1A[2K[G[92%] sealing (chunk assets processing)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[92%] sealing (asset processing copy-webpack-plugin)
+[2K[1A[2K[G[92%] sealing (asset processing HotModuleReplacementPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing PersistentChildCompilerSingletonPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing HtmlWebpackPlugin)
+[2K[1A[2K[G[92%] sealing (asset processing)
+[2K[1A[2K[G[93%] sealing (after asset optimization)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (recording HotModuleReplacementPlugin)
+[2K[1A[2K[G[94%] sealing (recording)
+[2K[1A[2K[G[94%] sealing (after seal)
+[2K[1A[2K[G[95%] emitting (emit)
+[2K[1A[2K[G[98%] emitting (after emit)
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[G DONE  Compiled successfully in 1586ms11:18:26
+
+Build finished at 11:18:26 by 0.000s
+[2K[1A[2K[G
+  App running at:
+  - Local:   http://localhost:8083/virtual-school/ 
+  - Network: http://192.168.1.111:8083/virtual-school/
+
+Build finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:18:26 by 0.000s
+[2K[1A[2K[GBuild finished at 11:43:41 by 0.000s
+[2K[1A[2K[GBuild finished at 11:43:41 by 0.000s
+[2K[1A[2K[GBuild finished at 11:43:41 by 0.000s
+[2K[1A[2K[GBuild finished at 11:43:41 by 0.000s
+[2K[1A[2K[GBuild finished at 11:43:41 by 0.000s
+[2K[1A[2K[GTerminate batch job (Y/N)? ^C

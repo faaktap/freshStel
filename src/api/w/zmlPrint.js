@@ -15,7 +15,7 @@ function zmlHeader() {
 
  // eslint-disable-next-line
 function zmlStyle(name) {
-    console.log('apply style ', name)
+    zmlConfig.cl('apply style ', name)
     switch (name) {
     case 'footie' :
       return `footer {font-size: 9px;color: #f00;text-align: center;}\
@@ -71,7 +71,7 @@ export function printHeader(title) {
        <strong>High School De Kuilen Hoërskool</strong><br>${ title }}
      </td>
      <td width="25%" style="float: right; text-align: right;border: 0px;border-radius: 0;">
-       <img width="35" src="img/logo.png" />
+       <img width="35" src="https://kuiliesonline.co.za/virtual-school/img/logo.png" />
      </td>
     </tr>
     </table>`
@@ -80,15 +80,20 @@ export function printHeader(title) {
 
 export function printJSON(table, header, title) {
     let properties = cleanUp(header)
+    zmlConfig.cl(table)
+    zmlConfig.cl(header)
+    zmlConfig.cl(properties)
+    zmlConfig.cl(title)
     printJS({
         printable: table,
         type: "json",
         properties: properties,
         repeatTableHeader: true,
         gridHeaderStyle: "color: black;  border: 1px solid #3971A5;font-weight: bold",
-        gridStyle: 'border: 1px solid lightgray; margin-bottom: -1px;',
+        //gridStyle: 'border: 1px solid lightgray; margin-bottom: -1px;',
+        gridStyle: 'border-style: none solid dotted dashed; border-width: 1px ;border-color: lightblue; margin-bottom: 1px; padding-top: 2px',
         header: zmlHeader() + ' ' + title || '..no title',
-        style: ".ltrd { direction: ltr; text-align: right; } * { font-size: 100%; }",
+        style: ".ltrd { direction: ltr; text-align: right; } * { font-size: 101%; }",
         showModal: true,
         modalMessage: 'Retrieving Document...',
         documentTitle: 'DKLearnDoc'
@@ -160,8 +165,8 @@ export function printPage( htmlRef, small ) {
        type: "html",
        style: style,
        scanStyles: false,
-       onPrintDialogClose: () => console.log("The print dialog was closed"),
-       onError: e => console.log(e)
+       onPrintDialogClose: () => zmlConfig.cl("The print dialog was closed"),
+       onError: e => zmlConfig.cl(e)
       });
     //   header: 'zmlHeader()',
     //   headerStyle: `align: center;font:Garamond`,

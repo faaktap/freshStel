@@ -1,6 +1,4 @@
 <template>
-  <div>
-
     <v-tabs v-model="tab" class="ma-1 pa-1" height="29">
       <v-tab
         key="DIR1"
@@ -36,6 +34,7 @@
                   class="text-caption mr-2 pl-2"
                   :color="getFolderColor(f.filename)"
                   @click="passBackFolderOnButton(f.filename)"
+                  :x-small="$vuetify.breakpoint.smAndDown"
                 >
                   <v-icon left small :color="f.color">
                     mdi-folder
@@ -51,18 +50,13 @@
         </v-tab-item>
         <v-tab-item key="DIR2">
           <v-card :loading="loading">
-            <base-tool-button
-              small
-              @click="getTreeFolders()"
-            >
-              refresh
-            </base-tool-button>
+
             <v-card-text v-if="folderItems.length">
               <v-treeview
                 :loading="loading"
                 :items="folderItems"
                 item-key="href"
-                dense
+                :dense="$vuetify.breakpoint.smAndDown"
                 hoverable
                 rounded
                 selection-type="independent"
@@ -73,7 +67,9 @@
                 @input="onSelected"
                 @click="passBackFolderOnTree"
               >
-                <!-- <template v-slot:prepend="{ open }"><v-icon :color="open ? 'green' : 'gray'">{{ open ? 'mdi-folder-open' : 'mdi-folder' }}</v-icon></template> -->
+                <!-- <template v-slot:prepend="{ open }">
+                <v-icon :color="open ? 'green' : 'gray'">{{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+                </v-icon></template> -->
                 <template #label="{ item,open }">
                   <span @click="treeClick(item.href)">
                     <v-icon :color="open ? 'green' : 'gray'">
@@ -85,11 +81,16 @@
               </v-treeview>
                <!-- {{ folderSelected }} and  <br>TreeOS{{ treeOS }} <br>TreeAct{{treeActive}}<br>{{ tree }} -->
             </v-card-text>
+            <base-tool-button
+              small="$vuetify.breakpoint.smAndDown"
+              @click="getTreeFolders()"
+            >
+              refresh
+            </base-tool-button>
           </v-card>
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
-  </div>
 </template>
 
 <script>
@@ -148,7 +149,11 @@ export default {
       this.noColor = !this.noColor
     },
     treeClick (ik) {
-      this.$cs.l('treeClick', ik)
+      // Prevent student access at certain places...
+      if (ik.indexOf('TEACHERS') > -1 &&  getters.getState({ object: "gZml" }).login.type == 'student') {
+        this.$cs.l('treeClick', ik, ik.indexOf('TEACHERS') )
+        return
+      }
       this.treeOS.push(ik)
       // get the folder from the tree!!! via href value
       // Remove https://kuiliesonline.co.za  from the value. like "IgnoreDir" and send it back
@@ -156,7 +161,7 @@ export default {
       this.$emit('moreFolder', folder)
     },
     onOpen (e1) {
-      this.$cs.l('onopen1', e1)
+      // this.$cs.l('onopen1', e1)
       // this.$cs.l('onopen2',this.treeActive,this.treeOS)
     },
     onSelected (e1, e2) {
@@ -167,7 +172,7 @@ export default {
       this.$emit('folder', folder)
     },
     passBackFolderOnTree (folder) {
-      // this.$cs.l('clicked on tree folder', folder, ' emityting.')
+      this.$cs.l('clicked on tree folder', folder, ' emityting.')
       this.$emit('folder', folder)
     },
     getTreeFolders (foldername) {

@@ -1,8 +1,13 @@
 <template>
 <v-container grid-list-lg v-if="subjectList.length" >
+
+  <v-dialog max-width="400" v-model="showPers" scrollable>
+  <personel-name-card-demo :initial="initial" :surname="surname" />
+  </v-dialog>
+
    <v-toolbar dense row>
     <v-toolbar-title>
-      <span class="d-none d-sm-block"> Student Subject </span>
+      <span class="d-none d-sm-block"> Student Subjects </span>
     </v-toolbar-title>
     <v-overlay v-if="loading" :value="loading">
       <v-progress-circular indeterminate size="84">
@@ -12,7 +17,6 @@
     <v-spacer />
      <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
      <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
-
    </v-toolbar>
 
      <v-layout row wrap v-if="showAs == 'card'">
@@ -20,8 +24,10 @@
           <v-card>
             <!--v-img src="img/logo.png" height="260px "></v-img-->
             <!-- <v-img class="float-right" width="100px" src="/img/logo.png" /> -->
-            <v-card class="float-right ma-2" height="50" width="50">
-             <z-show name="persphoto" :id="lookupPersid(s.teachersurname, s.teacherinitial)" />
+            <v-card class="float-right ma-2" height="50" width="50"
+                    @click="showIt(s.teachersurname, s.teacherinitial)" >
+             <z-show name="persphoto"
+                    :id="lookupPersid(s.teachersurname, s.teacherinitial)" />
             </v-card>
 
             <v-card-title primary-title class='blue--text wordbreak'>
@@ -31,17 +37,19 @@
               {{s.teachersurname}}, {{s.teacherinitial}}
             </v-card-subtitle>
             <v-card-text class='body-2'>
-              We can place the next examdate and venue here..or some other note
+              <span v-if="s.examdate"> ExamDate : {{ s.examdate }}<br>
+                {{ s.subexam }}, {{ s.menemonic }}, venue: {{ s.venue }} </span>
               <!-- {{ s.ckey }} -->
                 <!-- Next Exam : {{s.examdate}} -->
               <!-- M.S at {{teacher.ms}} <br> M.S.C at {{teacher.msc}} -->
+
             </v-card-text>
 
             <v-card-actions>
               <v-btn x-small outlined color='blue'
                      @click="showTeacher(`${s.teachersurname}, ${s.teacherinitial}`)"
                      :title="`Show ${s.teachersurname}, ${s.teacherinitial}`">
-                More...
+              More...
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn x-small outlined color='green'>
@@ -74,22 +82,31 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 //import { finder } from '@/api/finder.js';
 import ZShow from '@/components/base/ZShow.vue'
+import PersonelNameCardDemo from '@/components/staff/PersonelNameCardDemo.vue'
 export default {
     name:"StudentSubjectCard",
     props: ['studentid', 'color'],
     components: {
-      //PersonelNameCardDemo,
+      PersonelNameCardDemo,
       ZShow
     },
     data: () => ({
       subjectList:{},
       persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
       loading: false,
-      showAs: 'card'
+      showAs: 'list',
+      surname: '',
+      initial: '',
+      showPers:false
     }),
     computed: {
     },
     methods:{
+      showIt(surname,initial) {
+         this.showPers = true
+         this.surname = surname
+         this.initial = initial
+      },
       lookupPersid(surname, initial) {
           let idx = this.persMenemonic.findIndex(e => {
               //console.log(e.surname.toLowerCase() , surname.toLowerCase() , e.name.substr(0,1).toLowerCase(), initial.toLowerCase())
@@ -111,7 +128,13 @@ export default {
                this.loading = true
                let ts = {}
                ts.task = 'PlainSql'
-               ts.sql = "select *  from dkhs_studsub where studentid = " + this.studentid
+               ts.sql = `select ss.studentid,ss.ckey, ss.subjectname , ss.hodsubjectid, ss.menemonic, g.subjectname subexam , g.venue, g.examdate, g.teacher
+               , ss.teacherinitial, ss.teachersurname
+      from dkhs_studsub ss
+      left join dkhs_student s on s.studentid = ss.studentid
+      left join dkhs_subjectgroup g on s.grade = g.grade and concat(ss.subjectname,'.',ckey) = g.subjectname
+        and ss.teacher = g.teacher
+      where ss.studentid = ${this.studentid}`
                ts.api = zmlConfig.apiDKHS
                zmlFetch(ts, this.assignData);
             }

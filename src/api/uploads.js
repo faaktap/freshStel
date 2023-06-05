@@ -1,7 +1,11 @@
 import { zmlConfig } from '@/api/constants.js';
 
 function cl(...args) {
+<<<<<<< HEAD
         console.log('uploads.js:' ,...args);
+=======
+        //console.log('uploads.js:' ,...args);
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
 }
 
 
@@ -56,16 +60,25 @@ export const uploads = {
           let ignore = false
           if (!file.type && file.size%4096 == 0) {
             // The file is a folder
+<<<<<<< HEAD
             cl('file is a folder')
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
             ignore = true
           }
           if (!ignore && file.name == undefined) {
             ignore = true
+<<<<<<< HEAD
             cl('file.name is undef')
             //alert('file.name is undefined ', JSON.stringify(file))
           }
           if (!ignore && file.name.indexOf('.') == -1) {
             cl('file.name has no extension')
+=======
+            //alert('file.name is undefined ', JSON.stringify(file))
+          }
+          if (!ignore && file.name.indexOf('.') == -1) {
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
             ignore = true
           }
           if (!ignore) {
@@ -73,6 +86,7 @@ export const uploads = {
             file.ext = file.name.split('.').pop().toLowerCase()
             //file.realname = file.name
             fileList.push(file);
+<<<<<<< HEAD
             cl('we PUSHED ',file)
           } else {
             cl('we ignored ',file)
@@ -80,6 +94,11 @@ export const uploads = {
           }
         })
         cl('addToQueue : ProblemFiles : ' , problemFiles, 'in list:', fileList.length)
+=======
+          }
+        })
+        cl('addToQueue : ProblemFiles : ' , problemFiles)
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
         return problemFiles
     },
     uploadStart(callbackGood) {

@@ -94,10 +94,13 @@ import { zmlConfig } from '@/api/constants'
 import { zmlFetch } from "@/api/zmlFetch"
 import { errorSnackbar, infoSnackbar } from '@/api/GlobalActions'
 import SubjectEdit from '@/components/learn/SubjectEdit'
-import VBack from '@/components/base/VBack.vue'
+//import VBack from '@/components/base/VBack.vue'
 export default {
     name:"ViewSubjects",
-    components:{SubjectEdit, VBack},
+    components:{
+      SubjectEdit
+    //  , VBack
+    },
     props: [],
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
@@ -110,6 +113,7 @@ export default {
           {text: 'Shortname',             value: 'shortname' },
           {text: 'Description',         value: 'description' },
           {text: 'Beskrywing',         value: 'beskrywing' },
+          {text: 'color',             value: 'color' },
           {text: 'linkid',             value: 'linksubjectid' },
           {text: 'Sort',             value: 'sortorder' },
           {text: "edit",             value: "action", sortable: false }
@@ -155,12 +159,13 @@ export default {
         this.$cs.l('ERROR on subject list : ' , response)
       },
       updateSubject() {
-        let sl = { task: 'plainSql'
-                 , sql: "update dkhs_learner "
-                      + "   set user_password = 'password' "
-                      + " where userid = " + this.curItem.userid
-                 }
-        zmlFetch(sl, this.processAfterReset, this.processError);
+        alert('no used')
+        // let sl = { task: 'plainSql'
+        //          , sql: "update dkhs_learner "
+        //               + "   set user_password = 'password' "
+        //               + " where userid = " + this.curItem.userid
+        //          }
+        // zmlFetch(sl, this.processAfterReset, this.processError);
       },
       processAfterReset(response) {
           if (!response.error == 0) {

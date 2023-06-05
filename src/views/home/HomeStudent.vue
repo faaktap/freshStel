@@ -1,6 +1,12 @@
 <template>
 <div>
 <!-- homestudent -->
+<!-- <z-menu
+                :permanent="true"
+                :expandOnHover="true"
+                :floating="true"
+                :passed="['cancel', 'save', 'load']"
+        /> -->
 <v-toolbar color="primary">
     <v-card color="primary" width="100%" class="pa-3">
         <div class="d-flex flex-no-wrap justify-space-between">
@@ -13,34 +19,44 @@
                :src="photo" />
     </div>
     <div class="float-right ma-2">
-         {{ getZml.login.fullname}} / {{ getZml.login.grade }} - {{ getZml.login.gclass }}
+         {{ getZml.login.fullname}} / {{ getZml.login.grade }}  ( {{ getZml.login.logins}} )
     </div>
         </div>
     </v-card>
 </v-toolbar>
+
+<v-toolbar  dense  row  wrap color="primary">
+      <v-spacer />
+      <base-tool-button to="/addphoto"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-camera"
+               title="Add sport id Photo for someone"
+      >Sport ID Photo</base-tool-button>
+      <base-tool-button @click="showAttendanceBadge"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-wifi"
+               title="Attendance badge for scanning"
+      >Attendance Badge</base-tool-button>
+      <base-tool-button @click="showWiFiUsername"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-qrcode-scan"
+               title="Show and Explain Wi-fi username/password"
+      >WCGSCHOOLS WiFi</base-tool-button>
+      <base-tool-button to="/calstud"
+               class="mt-1 mr-2 mb-2 ml-2" color="secondary" icon="mdi-calendar"
+               title="Your Calendar"
+      >Calendar</base-tool-button>
+</v-toolbar>
+
 <v-dialog v-model="showPhotos" width="300" :scrollable="false" :fullscreen="$vuetify.breakpoint.smAndDown">
+ <v-card>
+  <v-btn icon absolute top right title="Click here to close" @click="showPhotos=false">
+    <v-icon color="indigo">mdi-close</v-icon>
+ </v-btn>
+
  <student-photo-list :studentid="studentid" @foundPhoto="weHaveIt" />
+
+ </v-card>
 </v-dialog>
 
-<v-row class="pa-5">
-    <v-col cols="12" class="text-center">
-        <v-btn @click="showAttendanceBadge"
-               class="ma-2 pa-2">
-            <v-icon>
-              mdi-qrcode-scan
-            </v-icon>
-          Attendance Badge
-        </v-btn>
-        <v-btn @click="showWiFiUsername"
-               class="ma-2 pa-2">
-            <v-icon>
-              mdi-wifi
-            </v-icon>
-          WCGSCHOOLS WiFi UserName
-        </v-btn>
 
-    </v-col>
-</v-row>
 <!-- <iframe src="https://en.wikipedia.org/wiki/HTML_element#Frames"
             frameborder="0"
             marginheight="0"
@@ -49,41 +65,39 @@
             height="100%"
             scrolling="auto" /> -->
             <!--(homestudent){{ studentid }} -->
+
 <v-row>
- <v-col cols="12">
+   <v-col cols="12" md="6">
+     <menu-list-old functiongroup="student" />
+   </v-col>
+   <v-col cols="12" md="6">
+    <student-email-list xclass="ma-2 pa-2" heading="Your parents emails for newsletters" :studentid="studentid" color="primary" />
+    <v-card class="pt-2">
+      <v-card-title class="blue">
+           School Photos
+      </v-card-title>
+      <v-card-text class="mt-2">
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Junior Carnaval"> Junior Carnaval</v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Bellville Sport Day - Hockey, Netball, Rugby"> Belville Sport Day  4/23</v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Patriot Netball"> Patriot Netball 3/23 </v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Hockey vs Tableview 5 May"> Hockey vs Tableview 5 May </v-btn>
+        <v-btn class="ma-2 pa-2" to="/folder/sport/Rugby vs Fishhoek - 5 May"> Rugby vs Fishhoek - 5 May </v-btn>
+      </v-card-text>
+    </v-card>
+    <most-used-functions />
+    <v-card class="pt-2">
+      <v-card-title class="blue">
+           Your Uploads
+      </v-card-title>
+      <student-uploads :studentid="studentid" />
+    </v-card>
+   </v-col>
+</v-row>
+
+
+ <v-layout row wrap align-content-center justify-space-between class="ma-1 pa-1">
   <v-expansion-panels v-if="getZml.login.isAuthenticated">
-   <v-expansion-panel>
-    <v-expansion-panel-header expand-icon="mdi-calendar"
-       title="A calendar for your current day. If you notice the day is wrong, please inform Werner or ms. Wiegand">
-       Calendar - ({{ gradeToShow.g }} {{ gradeToShow.c }} / {{ weekOrDay }})
-    </v-expansion-panel-header>
-   <v-expansion-panel-content>
-     <calendar-student v-if="gradeToShow.c" v-show="showCal"
-              :weekOrDay="weekOrDay"
-              :studentGradeClass="gradeToShow.g +  gradeToShow.c" />
-   </v-expansion-panel-content>
-   </v-expansion-panel>
 
-
-   <v-expansion-panel>
-       <v-expansion-panel-header
-         title="A list of all the places you can go to on this webpage.">
-         Functions (Click here to see available functions)
-       </v-expansion-panel-header>
-       <v-expansion-panel-content>
-          <list-test functiongroup="student" />
-          <list-test functiongroup="other" />
-       </v-expansion-panel-content>
-   </v-expansion-panel>
-
-   <v-expansion-panel>
-       <v-expansion-panel-header title="Email Addresses for Newsletters.">
-         Email Addresses for Newsletters.
-       </v-expansion-panel-header>
-       <v-expansion-panel-content>
-         <student-email-list :studentid="studentid" color="primary" />
-       </v-expansion-panel-content>
-   </v-expansion-panel>
    <v-expansion-panel>
        <v-expansion-panel-header title="Link to subjects">
           Subjects</v-expansion-panel-header>
@@ -92,86 +106,58 @@
        </v-expansion-panel-content>
    </v-expansion-panel>
 
-   <v-expansion-panel>
-       <v-expansion-panel-header title="Show Email Bulletins">
-          Email Bulletins</v-expansion-panel-header>
-
-       <v-expansion-panel-content>
-        <email-bulletins emailSearch="ebull" /></v-expansion-panel-content>
-   </v-expansion-panel>
 
    <v-expansion-panel>
        <v-expansion-panel-header title="Show Email Bulletins">
           Merits</v-expansion-panel-header>
        <v-expansion-panel-content>
-       <!-- <base-title-expand v-if="studentid" heading="Student Merits"> -->
         <student-merit :studentid="studentid"  xcolor="grey" />
-       <!-- </base-title-expand> -->
        </v-expansion-panel-content>
    </v-expansion-panel>
   </v-expansion-panels>
+    </v-layout>
 
-
- </v-col>
-
-<!--
-{ "functionid": "2", "sortorder": "50"
-, "functionname": "Display Student Content"
-, "shortname": "Teach"
-, "payload": "/sh"
-, "functiontype": "local"
-, "functionaccess": "student"
-, "tip": "Select a grade and subject, and display content for students.."
-, "grade": null
-, "icon": "mdi-school"
-, "description": null}
-{ "functionid": "10", "sortorder": "55", "functionname": "RCL Campaigns", "shortname": "Sign Up", "payload": "/campaigns", "functiontype": "local", "functionaccess": "student", "tip": "DKHS Candidates Register and Voting System", "grade": null, "icon": "mdi-vote", "description": "De Kuilen Candidates Register and Voting System", "create_timestamp": "2021-03-01 15:24:45", "update_timestamp": "2021-03-18 15:49:57" }
-    -->
-</v-row>
-
+<menu-list-old functiongroup="other" />
  <!--student-name-card :studentList="studentList"  maybe add the current student namecard here.. -->
 
-    <div v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-        <v-btn to="/viewfunctions"> functions </v-btn>
-        <v-btn to="/dkhsawards"> awards </v-btn>
-    </div>
 </div>
 </template>
 
 <script>
-import { zmlConfig } from '@/api/constants';
-import { zmlFetch } from '@/api/zmlFetch.js';
+import { zData } from "@/api/zGetBackgroundData.js"
 import { doStuff } from '@/api/buttons'
 import { util } from '@/api/util'
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
-import ListTest from '@/components/ListTest.vue';
-import CalendarStudent from '@/components/CalendarStudent';
+import MenuListOld from '@/components/MenuListOld.vue';
 import StudentEmailList from '@/components/student/StudentEmailList'
-import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentPhotoList from '@/components/student/StudentPhotoList'
+import StudentUploads from '@/components/student/StudentUploads'
+import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentMerit from '@/components/student/StudentMerit'
-import EmailBulletins from '@/components/email/EmailBulletins'
+import BaseToolButton from '@/views/new/base/BaseToolButton.vue'
 import Avatar from '@/components/base/Avatar'
+import { zmlLog } from '@/api/zmlLog.js';
+import MostUsedFunctions from '@/components/MostUsedFunctions.vue'
+//import ZMenu from '@/components/base/ZMenu.vue'
 export default {
     name:"StudentHome",
     components:{
-          ListTest
-        , CalendarStudent
+          MenuListOld
         , StudentEmailList
         , StudentSubjectList
-        , StudentPhotoList
         , StudentMerit
+        , StudentPhotoList
+        , StudentUploads
         , Avatar
-        , EmailBulletins
-        //, StudentGrade
+        , BaseToolButton
+        , MostUsedFunctions
      },
     data: () => ({
         getZml: getters.getState({ object: "gZml" }),
          showCal:true,
          cards: ['Today', 'Yesterday'],
          gradeToShow:{g:'', c:''},
-         weekOrDay:"day",
          photo:'',
          studentid:'',
          showPhotos:false,
@@ -181,7 +167,7 @@ export default {
             if (!this.getZml) return 0;
             return this.getZml.functions.filter(a => function()
             {
-                if (a.accesstype == this.getZml.login.type)
+                if (a.accesstype == 'student' || a.accesstype == 'other')
                     return 1
                 else
                     return 0
@@ -206,13 +192,6 @@ export default {
             this.$cs.l('arrived!!', ev)
             this.photo=ev
         },
-       weekOrDayChange() {
-           if (this.weekOrDay == 'day') {
-               this.weekOrDay = 'week'
-           } else {
-               this.weekOrDay = 'day'
-           }
-       },
        cardColor(type) {
            switch (type) {
                case 'teacher' : return "light-green lighten-3"
@@ -231,23 +210,26 @@ export default {
             }
 
         },
-        loadFunctions() {
-           let ts = {};
-           ts.task = 'PlainSql';
-           ts.sql = 'select * from dkhs_lfunction where functionaccess = "student" order by sortorder'
-           ts.api = zmlConfig.apiDKHS
-           zmlFetch(ts, this.showData, this.loadError)
-        },
         loadError(response) {
-            //this.$cs.l(response)
             alert(response)
         },
         showData(response) {
            this.getZml.functions = response
+        },
+        initialize() {
+        this.$cs.l(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
+        this.gradeToShow.c = this.getZml.login.gclass
+        this.$cs.l('home2:', this.gradeToShow.g + this.gradeToShow.c)
+        this.showCal = true;
+        //this.loadFunctions()
         }
     },
-    mounted: function() {
-        this.$cs.l('home:', this.getZml.login.grade, this.getZml.login, this.getZml.login.grade.length)
+    created() {
+         zData.quickLoadInitialData('Load Data for incase', this.initialize)
+    },
+    mounted() {
+      console.log('mount', this.$options.name)
+      zmlLog('Home', this.getZml.login.fullname, `${this.getZml.login.schoolno}`)
         this.studentid = this.getZml.login.schoolno
         console.log('grade',this.getZml.login.grade,this.getZml.login.grade.length)
         if (this.getZml.login.grade.length == 3 ) {
@@ -255,11 +237,6 @@ export default {
         } else {
            this.gradeToShow.g = 'G'.concat(this.getZml.login.grade)
         }
-        this.$cs.l(util.getNum('009'), this.getZml.login.schoolno, this.getZml.login.username )
-        this.gradeToShow.c = this.getZml.login.gclass
-        this.$cs.l('home2:', this.gradeToShow.g + this.gradeToShow.c)
-        this.showCal = true;
-        this.loadFunctions()
 
     }
 }

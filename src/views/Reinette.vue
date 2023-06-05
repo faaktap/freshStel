@@ -1,21 +1,30 @@
 <template>
 <v-container fluid>
-
-<base-tool :toolList="[]"
+  <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall042.jpg"
+              title="Reinette se afrol lyste vir eksamen"
+              text=""
+              breakup1="100"
+              breakup2="20"
+              color="purple darken-1"
+               />
+<!-- <base-tool :toolList="[]"
             toolbarName="Reinette se afrol lyste vir eksamen"
            :loading="loading"
             >
             <v-btn icon @click="showExport = !showExport">
             E
            </v-btn>
-</base-tool>
+</base-tool> -->
 
 
 <v-container v-if="showSelection" fluid color="gray--text text--lighten-5">
 <base-tool
             toolbarName="Options"
            :background="false"
+           :loading="loading"
             back="false"
+            class="ma-0 pa-0"
             >
 
        <v-text-field
@@ -34,6 +43,7 @@
            <v-switch inset dense color="warning" v-model="g10" hide-details class="mr-2 ml-2" label="10" />
            <v-switch inset dense color="warning" v-model="g9"  hide-details class="mr-2 ml-2" label="9" />
            <v-switch inset dense color="warning" v-model="g8"  hide-details class="mr-2 ml-2" label="8" />
+           <v-btn icon @click="showExport = !showExport">            E           </v-btn>
 
 </base-tool>
 
@@ -43,6 +53,7 @@
                  :items-per-page="30"
                  :search="search"
                  @dblclick:row="doubleClickOnTableRow"
+                  mobile-breakpoint="0"
       >
          <!--https://blog.devgenius.io/vuetify-edit-table-content-cd57d11ae850-->
          <template v-slot:[`top`]>
@@ -64,12 +75,13 @@
                 <v-flex xs12>
                   <base-date v-model="editedItem.examdate"
                              label="ExamDate"
-                             instructions="FA"
+                             xinstructions="FA"
                   />
                 </v-flex>
               </v-layout>
             </v-card-text>
             <v-card-actions>
+              <v-btn small class="ma-2" @click="addClassList"> Create ClassList </v-btn>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="dialogEdit=false">Cancel</v-btn>
               <v-btn color="blue darken-1" text @click="save">Save</v-btn>
@@ -132,19 +144,20 @@
 <script>
 import { getters } from "@/api/store"
 import { zmlFetch } from '@/api/zmlFetch';
-//import { infoSnackbar, errorSnackbar } from '@/api/GlobalActions';
 import FrontJsonToCsv from '@/api/csv/FrontJsonToCsv.vue'
 import ReportsTableSmall from '@/components/ReportsTableSmall.vue'
-import AutoSelRoom from '@/components/AutoSelRoom.vue'
+import AutoSelRoom from '@/components/fields/AutoSelRoom.vue'
 import BaseDate from "@/components/base/BaseDate.vue"
 import baseTool from '@/components/base/baseTool.vue'
-
+import HeroSection from "@/views/sections/HeroSection"
+import { clWork } from '@/components/homework/ClassListWork.js'
+import { infoSnackbar } from '@/api/GlobalActions';
 export default {
  name: "EksamenDruk",
   props:{},
   components: {
     ReportsTableSmall,
-    //ZAutoPlace,
+    HeroSection,
     AutoSelRoom ,
     BaseDate,
     baseTool,
@@ -176,16 +189,16 @@ export default {
     makeAFooter() {
       return `<br><br>\
               <table class="table ma-2 pa-2" BORDER=2 BORDERCOLOR="#4a6053" width=96% style='text-align: right; border-spacing: 2px;'>\
-               <tr>
-                <th>EDUCATOR:</th><td align=left>${this.selectedForPrint.teacher} :: ${this.selectedForPrint.totalstudents}</td>\
-                <th>VENUE:</th><th align=left>${this.selectedForPrint.venue} </th>\
+               <tr >
+                <th>EDUCATOR:</th><td align=left style="padding-left: 10px;">${this.selectedForPrint.teacher} :: ${this.selectedForPrint.totalstudents}</td>\
+                <th>VENUE:</th><th align=left style="padding-left: 10px;">${this.selectedForPrint.venue || ''} </th>\
                </tr>\
                <tr>\
-                <th>SUBJECT:${this.selectedForPrint.grade}</th><td align=left>${this.selectedForPrint.subject} </td>\
+                <th>SUBJECT:${this.selectedForPrint.grade}</th><td align=left style="padding-left: 10px;">${this.selectedForPrint.subject} </td>\
                 <th width=20%>Checked By:</th><td width=30%></td>\
                </tr>\
                <tr>\
-                <th>EXAMINATION DATE:</th><td align=left>${this.selectedForPrint.examdate}</td>\
+                <th>EXAMINATION DATE:</th><td align=left style="padding-left: 10px;">${this.selectedForPrint.examdate || ''}</td>\
                 <th width=20%>Invigilator/Toesighouer:</th><td width=30%></td>\
                 </tr>\
               </table>`
@@ -207,6 +220,34 @@ export default {
     }
   },
   methods: {
+    addClassList() {
+       //this.printList(this.editedItem)
+       let parms = this.editedItem
+       let cKeyIdx = parms.subjectname.indexOf('.')
+       let cKey = ''
+       if (cKeyIdx > -1) {
+           cKey = parms.subjectname.substr(cKeyIdx+1,1)
+       }
+      // Create this sql, so we can use it as ease with dkhs.php(zmldbfunctions.php) OneShotAdd function to insert list.
+      // Remember to bind lastid to the newly created list
+      let sql = `select null, :lastid, s.studentid, null from dkhs_student s, dkhs_subjectgroup g, dkhs_studsub ss\
+ where s.studentid = ss.studentid\
+   and g.hodsubjectid = ss.hodsubjectid\
+   and g.teacher = ss.teacher\
+   and g.teacher = '${parms.teacher}'\
+   and g.subjectname = '${parms.subjectname}'\
+   and ss.ckey = '${cKey}'\
+   and s.grade = '${parms.grade}'\
+   and g.grade = '${parms.grade}'`
+      let listname = `${parms.teacher}:${parms.grade}:${parms.subjectname}`
+      //alert('now call create clas list with this criteria..' + listname + '     ' + sql)
+      clWork.addListAndStudentsInOnShot({listname: listname, sql:sql, parms:parms, continue: this.addListResult})
+    },
+    addListResult(response) {
+      //alert('some add list result:' + JSON.stringify(response))
+      infoSnackbar(`A new classlist was successfully created for :  ${this.editedItem.teacher}`)
+      this.dialogEdit = false;
+    },
     editItem(item) {
       console.log('editItem', item)
       this.editedIndex = this.subjectListFilter.indexOf(item)
@@ -255,14 +296,6 @@ export default {
         this.subjectList[index].examdate =  this.editedItem.examdate
 
     },
-    // cancel () {
-    //     this.updateNeeded = null
-    //     return
-    // },
-    // open (e) {
-    //     this.updateNeeded = {u1:e.examdate, u2:e.venue}
-    //     return
-    // },
     close() {
       this.dialog = false
       this.updateNeeded = null
@@ -325,14 +358,14 @@ export default {
    and g.teacher = ss.teacher\
    and g.teacher = '${parms.teacher}'\
    and g.subjectname = '${parms.subject}'\
-   and ss.ckey = ${cKey}\
+   and ss.ckey = '${cKey}'\
    and s.grade = '${parms.grade}'\
    and g.grade = '${parms.grade}'`
-      this.reportHeader = `ExamPrintList: ${parms.grade} ${parms.teacher} in ${parms.venue} on ${parms.examdate}`
+      this.reportHeader = `ExamPrintList: ${parms.grade} ${parms.teacher}` // in ${parms.venue} on ${parms.examdate}`
       this.showSelection = false
     }
   },
-  mounted: function() {
+  created: function() {
     this.loading = true
     let ts = {task: 'PlainSql',
                sql: `select id, subjectname,teacher,examdate,venue,grade,totalstudents \
@@ -340,6 +373,9 @@ export default {
                     order by grade, subjectname, teacher`
              }
     zmlFetch(ts, this.loadData)
+  },
+  mounted: function() {
+    console.log('Mounted:', this.$options.name)
   }
 
 }

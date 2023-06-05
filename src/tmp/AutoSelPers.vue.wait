@@ -1,0 +1,67 @@
+<template>
+    <v-autocomplete
+        v-if="itemObj && itemObj.length > 0"
+        cache-items
+        clearable
+        open-on-clear
+        message
+        outlined
+        v-model="what"
+        v-on:input="inputDone"
+        :value="searchText"
+        :search-input.sync="search"
+        :items="itemObj"
+        :item-text="itemDisplay"
+        :item-value="itemValue"
+         xxreturn-object
+        :label="asLabel">
+    </v-autocomplete>
+</template>
+
+
+<script>
+export default {
+   name: "AutoSelPers",
+   props: {itemObj: {type: Array,required:true}
+          ,asLabel: {type:String, default:'xxxx'}
+          ,initialValue: {default:1}
+          },
+   data: () => ({
+    search: null,
+    what: null,
+    itemValue: 'user_name'
+  }),
+  methods: {
+    inputDone(e1) {
+      console.log('eeeeeeeeeeeeeeeeeeeeeemite pers',e1, this.what)
+      this.$emit('input', e1);
+      let obj = this.itemObj.find(e => e.user_name.toUpperCase() == this.what)
+      //this.$emit('objInput', this.itemObj[0])
+      this.$emit('objInput', obj)
+    },
+    finished() {
+      //The role of what is somewhat f**cked - here when we return it, it is an object
+      //but in inputDone function we return it as "itemValue" which is username
+      this.what = this.itemObj.find(e => e.user_name.toUpperCase() == this.initialValue.toUpperCase())
+      if (this.what !== undefined) {
+        this.$emit('objInput', this.what)
+      }
+    }
+  },
+  mounted() {
+    //this.finished()
+    console.log('Mount', this.$options.name,this.what && this.initialValue,this.what , this.initialValue)
+    if (this.what && this.initialValue) {
+        this.what = this.itemObj.find(e => e.user_name.toUpperCase() == this.initialValue.toUpperCase()  )
+        this.$emit('objInput', this.what)
+        console.log(this.$options.name,'eeeeeeeeeeeeeeeeeeeeeemite pers',this.what.user_name)
+        this.$emit('input', this.what.user_name)
+    }
+  },
+  computed: {
+    searchText() {      return this.itemObj[0] || ''    },
+    itemDisplay() {     return item => item.user_name + ' — ' + item.user_fullname    }
+  },
+  watch: {    initialValue() {    if (this.initialValue)   this.finished()    }   }
+}
+</script>

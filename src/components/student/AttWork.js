@@ -37,7 +37,7 @@ export const AttWork = {
        }
    }
    ,saveAttendance: (studentList, presentList, attDet) => {
-       console.log('start transaction',attDet.userid, attDet.placeid, attDet.sessionID)
+      console.log('start transaction',attDet.userid, attDet.placeid, attDet.sessionID)
       let sql = ''
       let cnt = 0
       studentList.forEach(e => {
@@ -74,6 +74,30 @@ export const AttWork = {
     }
    })
   }
+  ,updateGenList(rec) {
+    let sql = `update dkhs_genlistdata set status = "${rec.status}" where listdataid = ${rec.listdataid}`
+    return AttWork.executeSql(sql)
+  }
+  ,saveGenList: (studentList, presentList, genDet) => {
+    console.log('start transaction',genDet.userid, genDet.placeid, genDet.sessionID)
+    let sql = ''
+    let cnt = 0
+    studentList.forEach(e => {
+      if (presentList[cnt] != 'Ignore') {
+       const line = `insert into dkhs_genlistdata values(\
+           null,${genDet.userid},\
+           ${genDet.placeid},'${genDet.period}','${genDet.day}',\
+           ${e.studentid},'${genDet.sessionID}',now(),'${presentList[cnt]}');`
+        sql += line
+      }
+      cnt ++  //important - to match up
+    })
+    if (sql) {
+       AttWork.executeSql(sql)
+       return "DONE"
+    }
+    return 'NOROWS'
+ },
 }
 
 

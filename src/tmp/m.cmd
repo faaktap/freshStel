@@ -1,0 +1,9 @@
+move R:\Develop\NodeDev\real\fresh\src\components\Drop.vue.old
+move R:\Develop\NodeDev\real\fresh\src\components\ReportsTable.vue.old
+move R:\Develop\NodeDev\real\fresh\src\components\base\BaseColor.vue.old
+move R:\Develop\NodeDev\real\fresh\src\components\fields\notused\ZAutoPlace.vue.old
+move R:\Develop\NodeDev\real\fresh\src\components\learn\GradeDisplayShort.vue.old
+move R:\Develop\NodeDev\real\fresh\src\components\learn\old
+move R:\Develop\NodeDev\real\fresh\src\views\home\HomeTeacher.vue.old
+move R:\Develop\NodeDev\real\fresh\src\views\learn\Grade.vue.old
+move R:\Develop\NodeDev\real\fresh\src\views\learn\SelectGrade.vue.old

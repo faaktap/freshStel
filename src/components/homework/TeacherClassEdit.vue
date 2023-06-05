@@ -103,7 +103,6 @@
 </v-container>
 </template>
 <script>
-import { zmlFetch } from "@/api/zmlFetch";
 import { getters } from "@/api/store";
 import { clWork } from "@/components/homework/ClassListWork.js"
 import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
@@ -146,19 +145,8 @@ export default {
       getStudents() {
         if (this.listID) {
            this.loading = true
-           let sn = { task: 'plainSql'
-                    , sql:`select * from  hw_classlist \
-                          where id = ${this.listID}`
-                   }
-           zmlFetch(sn, this.processListDetail)
-           let sl = { task: 'plainSql'
-                    , sql:`select l.studentid,s.*   \
-                          from dkhs_student s, hw_classliststudent l \
-                          where l.classlistid = ${this.listID} \
-                           and l.studentid = s.studentid
-                           order by s.surname, s.firstname, s.studentid`
-                   }
-           zmlFetch(sl, this.processAfterFetch);
+           clWork.getList(this.listID, this.processListDetail)
+           clWork.getStudentsInList(this.listID, this.processAfterFetch)
         }
       },
       processListDetail(response) {

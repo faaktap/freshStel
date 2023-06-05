@@ -1,9 +1,16 @@
 <template>
+<<<<<<< HEAD
 <v-parallax background height="1000px" src="img/school.jpg" class="filter-img" >
 <h1>FRESHWAIT</h1>
 <v-container fluid justify="center" align="center" xclass="filter-div mt-5 pa-5" >
  <v-layout wrap class="ma-0"> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
    <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.4)">
+=======
+<v-parallax background src="img/school.jpg" class="filter-div ma-0 pa-0" width="100%" height="100%" >
+<v-container fluid justify="center" align="center"  class="ma-0 pa-0" xclass="mt-md-5 pa-md-2 pa-sm-1" >
+ <v-layout wrap class="ma-1" justify-space-between>
+   <v-card class="ma-1 pa-1" color="rgba(106, 196, 226, 0.4)" width="100%">
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
      <v-card-title  class="blue--text">
       <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
       <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />
@@ -28,7 +35,11 @@
              </ul>
           </p>
           </v-card>
-          <blockquote class="blockquote darken-3 purple--text ma-1" cite="Shakespeare">
+          <blockquote class="blockquote darken-3 purple--text ma-2 pa-2"
+                      @mouseover="hover = true"
+                      @mouseleave="hover = false"
+                     :class="{ active: hover }"
+                      cite="Shakespeare">
             {{ q.quote }}
            <span v-if="q.author">– {{ q.author }}</span>
           </blockquote>
@@ -56,30 +67,33 @@
           </v-card>
           </v-col>
           </v-row>
+          <br><br><br><br><br><br><br><br><br><br><br>
       </v-card-text>
       <v-card-actions>
           <v-spacer />
-          <v-btn
+          <v-btn class="mr-4"
             color="primary"
             to="/home"
           >
             Continue
           </v-btn>
       </v-card-actions>
+
    </v-card>
 </v-layout>
-<base-title-expand class="ma-0 pt-1 px-0" heading="More">
- <v-btn class="ma-2" color="primary" to="/newsletters/2022"> Newsletters </v-btn>
+<base-title-expand class="ma-0 pt-1 px-0" heading="More"  color="rgba(106, 196, 226, 0.4)">
+ <v-btn class="ma-2" color="primary" to="/newsletters/202"> Newsletters </v-btn>
 
  <v-btn class="ma-2" color="primary" to="/personel"> Teachers & Supporting Staff </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/virtualawards"> Awards </v-btn>
+ <!-- <v-btn class="ma-2" color="primary" to="/virtualawards"> Awards </v-btn> -->
 
  <v-btn class="ma-2" color="primary" to="/latest/100"> Latest Uploads </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/attload"> Attendance </v-btn>
+ <!-- <v-btn class="ma-2" color="primary" to="/attload"> Attendance </v-btn>
 
- <v-btn class="ma-2" color="primary" to="/attendance"> Old Attendance View </v-btn>
+ <v-btn class="ma-2" color="primary" to="/attendance"> Old Attendance View </v-btn> -->
+
 </base-title-expand>
 </v-container>
 </v-parallax>
@@ -98,23 +112,26 @@ import { zmlConfig } from '@/api/constants';
 import { zmlLog } from '@/api/zmlLog.js';
 
 export default {
-  name: "PagesIndex",
+  name: "HomeStart",
 //layout: 'default',
   layout(context) {
-    console.log('context in layout..',context)
+    this.$cs.l('context in layout..',context)
     return 'default'
   },
   components: {BaseTitleExpand,DkhsILogo, DkhsRLogo, DkhsLogo},
   data: () => ({
      range:[130,150],
      q :{quote:'And this our life, exempt from public haunt, finds tongues in trees, books in running brooks, sermons in stones, and good in everything.'
-        ,author:'Shakespeare'}
+        ,author:'Shakespeare'},
+     hover:false
   }),
   computed: {
       ran() {
         return Math.floor(Math.random() * 4)
       }
   },
+  activated() {     this.$cs.l(this.$options.name,' - activated')  },
+  deactivated() {   this.$cs.l(this.$options.name,' - deactivated')  },
   methods:{
     getQuote() {
       let token = {headers: {'Authorization': 'Token 4f9248d8208d5554e8f508d126eaada5ad4b9ca6'}}
@@ -123,11 +140,12 @@ export default {
       requestFetch(apiUrl, token)
       .then((response) => {return response.json();})
       .then((data) => {
-        //console.log(data);
-        //console.log(data.results.length);
+        //this.$cs.l(data);
+        //this.$cs.l(data.results.length);
         let r = Math.floor(Math.random() * 5)
         this.q.quote = data.results[r].quote
         this.q.author = data.results[r].author
+        localStorage.setItem('quote', JSON.stringify(this.q))
       })
     },
   },
@@ -138,7 +156,7 @@ export default {
    //require('dotenv').config()
    // zData.l('starting', this.$options.name,zData.someGlobals, 'Calling zData as a test.')
    this.$cs.l('M',this.$options.name)
-   console.log('Process=',process)
+   // this.$cs.l('Process=',process)
    //var env = process.env.NODE_ENV || 'development';
    zmlLog(null, 'HomeStart',{version: zmlConfig.projectID} )
   },
@@ -161,17 +179,6 @@ export default {
       }
     }
 
-.bg {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: url( 'https://cdn.pixabay.com/photo/2016/03/26/13/09/organic-1280537_1280.jpg') no-repeat center center;
-    background-size: cover;
-    background-color: red;
-    transform: scale(1.1);
-  }
 
 
   .flip-enter-active {
@@ -187,5 +194,8 @@ export default {
     opacity: 0;
 
   }
+  .active {
+  background: white;
+ }
 
 </style>

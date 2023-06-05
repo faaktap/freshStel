@@ -15,13 +15,11 @@ export function doStuff(tr,task) {
             return zmlReRoute(tr, task + "/Grade")
         case "/hover":
         case "/reports":
-        case "/translate":
         case "/login":
         case "/att":
         case "/admin":
         case "/emailcheck":
         case "/choosesubjects":
-        case "/nested/dialog":
         case "/drive":    //student start
         case "/folderedit":    //student start
         case "/folder":    //student start
@@ -46,6 +44,14 @@ export function doStuff(tr,task) {
         case "/attendance":
         case "/bookreturn":
         case "/attview":
+<<<<<<< HEAD:src/api/w/buttons.js
+=======
+        case "/vglist":
+        case "/home":
+        case "/quanda":
+        case "/addphoto":
+        case "/calteach":
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8:src/api/buttons.js
             return zmlReRoute(tr, task)
 
         default:

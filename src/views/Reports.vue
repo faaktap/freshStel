@@ -32,7 +32,7 @@
    <v-back/>
  </v-toolbar>
 
- <v-card>
+ <v-card v-if="!loading && (reports && reports.length)">
     <v-tabs-items v-model="tab">
       <v-tab-item  v-for="rep in reports" :key="rep.id" :href="rep.id">
         <v-card flat>
@@ -67,8 +67,15 @@
      :reportHeader="reportHeader"
      :sqlSelect="sqlSelect"
   />
+<<<<<<< HEAD
   <div  v-if="getZml.login.username == 'WER'">
     {{ reports}}
+=======
+  <br>
+  <v-btn x-small v-if="getZml.login.superUser" @click="showDebug=!showDebug"> SU </v-btn>
+  <div v-if="getZml.login.superUser && showDebug" >
+    Reports : {{ reports}}
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
   </div>
 </v-container>
 </div>
@@ -80,7 +87,6 @@ import BaseTableReport from    '@/components/base/baseTableReport'
 import VBack from '@/components/base/VBack.vue'
 import { zmlFetch } from '@/api/zmlFetch.js'
 import { getters } from "@/api/store";
-
 export default {
   name: 'Report',
   components:{
@@ -96,11 +102,13 @@ export default {
     reports: [{id:0, answer:'', ans:'', sqlCount:'', sqlReports:'', order:0}],
     reportValueToCount:[],
     sqlSelect:null,
-    reportHeader:null
+    reportHeader:null,
+    showDebug:false
   }),
   computed:{},
   methods: {
     tabSelected(tabNo) {
+<<<<<<< HEAD
       if (this.reports,length < 2) this.loadInitialData()
       this.tab = tabNo
       this.sqlSelect = ''
@@ -111,6 +119,22 @@ export default {
       this.getCount()
     },
 
+=======
+      if (tabNo == undefined) return
+      if (this.loading) return
+      if (!this.reports || !this.reports.length) return
+      //if (this.reports.length < 2) this.loadInitialData()
+      this.tab = tabNo
+      this.sqlSelect = ''
+      this.curReport = this.reports[tabNo]
+      console.log(this.curReport, tabNo, this.reports.length)
+      this.reports[tabNo].answer = 'dd'
+      this.curReport.answer = "cc"
+      console.log('tab selected:',tabNo, this.curReport.name)
+      console.log('calling getcount from tabselected -   tabSelect', tabNo, this.curReport)
+      this.getCount()
+    },
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     //Not used = but would be nice if we can have string interpolation call a function when we need it.
     //javascript template strings with string interpolation
     //also read https://stackoverflow.com/questions/22607806/defer-execution-for-es6-template-literals#comment112302403_22619256 aandagtig
@@ -132,7 +156,10 @@ export default {
        return acc + values[tags[i]] + curr;
      }, fisrt);
     },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     objectSelected(e) {
       console.log('objSelected = ',e)
       this.curReport.obj = e
@@ -145,6 +172,11 @@ export default {
       zmlFetch(ts, this.doneAdd )
     },
     getCount() {
+<<<<<<< HEAD
+=======
+      if (this.loading) return
+      console.log('calling updat4count  ===  fetch, from getCount')
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       if (this.curReport.count == null) {
         this.loading = true
         let ts = {}
@@ -153,18 +185,27 @@ export default {
         zmlFetch(ts, this.updateCount)
         //this.saveToDatabase(this.curReport)
       } else {
+        console.log('call showcount from getcount')
         this.showCount()
       }
     },
     updateCount(response) {
       this.loading = false
       this.curReport.count = response[0].items
+<<<<<<< HEAD
+=======
+      console.log('call showcount from updatecount')
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       this.showCount()
     },
     showCount() {
       this.reports[this.tab].answer = this.curReport.ans.replaceAll('**items**', this.curReport.count)
+<<<<<<< HEAD
       console.log('replace items', this.curReport.answer, this.curReport.ans, this.curReport.count)
 
+=======
+      console.log('called 3 times!!! replace items', this.curReport.answer, this.curReport.ans, this.curReport.count)
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       //play
       // let a = this.fmt`Test with ${0}, ${1}, ${2} and ${0} again`(['A', 'B', 'C']);
       // console.log(a)
@@ -177,6 +218,7 @@ export default {
       this.sqlSelect = this.curReport.sqlreport.replaceAll('**username**', this.getZml.login.username)
       this.reportHeader = this.curReport.name
       console.log('sqlRep=',this.sqlSelect)
+<<<<<<< HEAD
     },
     initialize(response) {
       response.forEach(e =>  e.answer = 'bb')
@@ -196,19 +238,40 @@ export default {
       //They have been nowhere else = but should not be a problem
     }
     this.loadInitialData()
+=======
+    },
+    initialize(response) {
+      console.log('start initialize')
+      response.forEach(e =>  e.answer = 'bb')
+      this.reports = response
+      this.reports.sort((a,b) => a.order - b.order)
+      this.reports.forEach(e =>  e.answer = 'ee')
+      console.log('end initialize - calling getcount')
+      this.getCount()
+    },
+    loadInitialData() {
+      console.log('start LOAD INITIAL DATA - hich calls initialize')
+      let ts = {task: 'PlainSql',sql: 'select * from dkhs_reports'}
+      zmlFetch(ts, this.initialize, this.moan )
+    }
+  },
+  created() {
+     this.loadInitialData()
+  },
+  mounted() {
+    console.log('mount', this.$options.name)
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
 
   },
   watch:{
     reportValueToCount() {
       this.curReport.f()
     },
-
   }
 }
 </script>
 
 <style scoped>
-
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 3s;
@@ -219,7 +282,6 @@ export default {
 .fade-enter-active {
   transition: all 3s ease;
 }
-
 .v-carousel .v-window-item {
   position: absolute;
   top: 0;

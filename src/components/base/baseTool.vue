@@ -15,8 +15,9 @@
   (don't think my users will understan collapse)
   -->
   <v-toolbar elevation="3"
-             color="primary"
+             :color="color || 'primary'"
              :src="showImg ? 'img\\toolbar.jpg' : ''"
+<<<<<<< HEAD
              :collapse="$vuetify.breakpoint.smAndDown"
              class="ml-0 mr-0 pl-0 pr-0 mb-4">
     <v-app-bar-nav-icon @click="appBar = !appBar"> </v-app-bar-nav-icon>
@@ -28,21 +29,58 @@
         v-model="appBar"
         absolute
         temporary
+=======
+             :xcollapse="$vuetify.breakpoint.mobile"
+             dense
+             class="ml-0 mr-0 pl-0 pr-0 mb-4">
+    <v-app-bar-nav-icon
+        v-if="toolList && toolList.length > 0"
+        @click="appBar = !appBar"
+    >
+    <v-icon> mdi-menu</v-icon>
+    </v-app-bar-nav-icon>
+    <v-toolbar-title v-if="toolbarName">
+      {{ toolbarName }}
+    </v-toolbar-title>
+<v-dialog
+        floating
+        :fullscreen="false"
+        v-model="appBar"
+        temporary
+        width="500"
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       >
       <v-card>
         <v-list
           dense
           rounded
         >
+<<<<<<< HEAD
         <v-list-item v-for="(t,i) in toolList" :key="t.name" @click="$emit('toolClick',t.task||t.name||t.icon||i)">
          <v-list-item-content>
           <v-list-item-title>{{ t.task||t.name||t.icon||i }}</v-list-item-title>
+=======
+        <v-list-item v-for="(t,i) in toolList" :key="t.name" @click="$emit('toolClick',t.task || t.name || t.icon || i);appBar=false">
+         <v-list-item-content>
+          <v-list-item-title>
+            <v-icon v-if="t.icon" color="t.color || 'white'">     {{t.icon || i }} </v-icon>
+            <span v-if="'name' in t"> {{ t.name }} </span>
+            <span v-else> {{ t }} </span>
+          </v-list-item-title>
+
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
         </v-list-item-content>
 
         </v-list-item>
         </v-list>
+<<<<<<< HEAD
       </v-card>
 </v-navigation-drawer>
+=======
+        {{ toolList }}
+      </v-card>
+</v-dialog>
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     <v-overlay v-if="loading" :value="loading">
       <v-progress-circular indeterminate size="84">
         Thinking ...
@@ -51,7 +89,7 @@
     <v-spacer />
     <!-- <v-toolbar-items v-if="$vuetify.breakpoint.mdAndUp && toolList.length" class="ma-2 pa=2"> -->
 
-         <v-btn small class="mr-1"
+         <v-btn small class="ml-1 pa-1"
                 v-for="(t,i) in toolList" :key="t.name"
                 :color="t.color || 'white'"
                 :icon="(!grootGenoeg || !t.name) ? true : false"
@@ -76,17 +114,22 @@
 </template>
 
 <script>
-import VBack from '@/components/base/VBack.vue'
+//import VBack from '@/components/base/VBack.vue'
 export default {
     name:"baseTool",
+<<<<<<< HEAD
     props:["toolList","toolbarName","loading","background","back"],
     components:{VBack},
+=======
+    props:["toolList","toolbarName","loading","background","back","color"],
+    //components:{VBack},
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
     data: () => ({
         appBar: false
     }),
     computed: {
       grootGenoeg() {
-        return this.$vuetify.breakpoint.smAndUp && this.toolList.length
+        return this.$vuetify.breakpoint.mobile && this.toolList.length
       },
       showBack() {
         if (this.back == undefined) return true

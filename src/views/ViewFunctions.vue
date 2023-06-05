@@ -33,6 +33,8 @@
     :items="getZml.functions"
     :items-per-page="15"
     :search="search"
+     multi-sort
+     mobile-breakpoint="0"
      class="elevation-1"
      color="blue lighten-3"
      @click:row="editFunc"
@@ -213,10 +215,14 @@ export default {
             alert(response)
       },
       showData(response) {
+<<<<<<< HEAD
         let f1 = response.filter(e => e.functionaccess == 'other')
         let f2 = response.filter(e => e.functionaccess != 'other')
         this.getZml.functions.length = 0
         this.getZml.functions = f2.concat(f1)
+=======
+        this.getZml.functions = response
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
       }
     },
     activated:function() {

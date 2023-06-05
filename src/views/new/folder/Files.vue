@@ -23,7 +23,10 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
       </template> -->
 
     <v-data-table
-      class="style-0"
+      v-if="displayTable"
+      :hide-default-header="true"
+      class="text-sm-caption"
+      :dense="$vuetify.breakpoint.smAndDown"
       :headers="selectedHeaders"
       :items="tableItems"
       :items-per-page="50"
@@ -40,21 +43,6 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
        <td>  {{ item }} <br> {{ on }} {{ attrs }} </td>
        </tr>
       </template> -->
-      <template #[`footer`]>
-        <v-select
-          v-if="headers"
-          class="text-caption caption blue--text"
-          v-model="headerValue"
-          :items="headers"
-          dense
-          multiple
-          return-object
-          deletable-chips
-          hide-selected
-          small-chips
-          filled
-        />
-      </template>
       <template #[`item.icon`]="{ item }">
         <v-icon
           title="Click on icon to 'play' the file"
@@ -75,11 +63,56 @@ https://stackoverflow.com/questions/57961043/how-does-one-style-a-specific-row-o
           @changeFolder="$emit('changeFolder')"
         />
       </template>
+      <template #[`header`]>
+        <v-layout row wrap align-content-start justify-space-around class="ma-0 pa-0">
+        <v-select
+          v-if="headers && showColChange"
+          class="text-caption caption blue--text"
+          v-model="headerValue"
+          :items="headers"
+          multiple
+          color="blue"
+          return-object
+          deletable-chips
+          xhide-selected
+          small-chips
+          filled
+          dense
+          no-data-text="Click on a chip to delete one"
+        />
+        <v-btn x-small text @click="displayTable = !displayTable" title="change display Type">
+          <template v-if="displayTable"> thumbs </template>
+          <template v-else> names </template>
+        </v-btn>
+        <v-btn x-small text @click="showColChange = !showColChange" title="change column entries">
+          <template v-if="showColChange"> hide column selector </template>
+          <template v-else> columns  </template>
+        </v-btn>
+        </v-layout>
+      </template>
       <template #[`no-data`]>
         NO FILES HERE - See folders on lefthand side!
       </template>
 
     </v-data-table>
+    <template v-else>
+      <v-btn x-small text @click="displayTable = !displayTable" title="change display Type"> Files </v-btn>
+      <v-layout row wrap align-content-start justify-space-around class="ma-0 pa-0">
+      <v-card v-for="t in tableItems" :key="t.filename"
+              @click="$emit('clickIcon', t)"
+              class="ma-1">
+        <!-- 012345678901234567890123456 on /home/kuilieso/public_html/ -->
+        <!-- <v-img :src="'https://kuiliesonline.co.za' + t.dirpath.substring(26) + '/' + t.filename" -->
+        <v-img :src="thumbLookup + t.dirpath.substring(26) + '/' + t.filename"
+                width="300"  cover
+                :title="t.filename"
+        />
+        <span class="text-caption"> {{ t.filename }} </span>
+         <!-- {{ thumbLookup + t.dirpath.substring(26) + '/' + t.filename }} -->
+      </v-card>
+      </v-layout>
+
+    </template>
 
   </div>
 </template>
@@ -105,7 +138,10 @@ export default {
       // { text: 'checkbox' }
       // { text: "Requested", value: "requested", sort: (a, b) => a.localeCompare(b) },
     ],
-    selectedHeaders: []
+    selectedHeaders: [],
+    showColChange:false,
+    displayTable: true,
+    thumbLookup: 'https://kuiliesonline.co.za/api/thumb/?name='
 
   }),
   computed: {
@@ -190,7 +226,7 @@ export default {
     // this.$cs.l('mounted:', this.$options.name, this.headers)
     this.headerValue.push(this.headers[0])
     this.headerValue.push(this.headers[1])
-    this.headerValue.push(this.headers[2])
+    this.headerValue.push(this.headers[3])
   },
   watch: {
     headerValue (val) {

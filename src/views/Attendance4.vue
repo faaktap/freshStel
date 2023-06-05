@@ -1,22 +1,45 @@
 <template>
-<!-- this.$router.push({ name: 'AttendanceList' -->
- <div>
-  <base-title-expand color="white" heading="ATTENDANCE CLASS LIST SELECT">
+<v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
+  <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall042.jpg"
+              title="Create Attendance Session"
+              text=""
+              breakup1="100"
+              breakup2="20"
+              color="purple darken-1"
+               />
+  <!-- <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall011.jpg"
+              title="Create Attendance Session"
+              breakup1="100"
+              breakup2="20"
+              color="purple darken-1"
+               />
+  <hero-section   bgpicture="https://www.zmlrekenaars.co.za/test/img/wall039.jpg"
+              title="Create Attendance Session"
+              color="white"/>
+<hero-section   bgpicture="https://www.zmlrekenaars.co.za/test/img/wall032.jpg"
+              title="Create Attendance Session"
+              color="white"/>
+<hero-section   bgpicture="https://www.zmlrekenaars.co.za/test/img/wall062.jpg"
+              title="Create Attendance Session"
+              color="white"/> -->
+
+  <!-- <base-title-expand color="white" heading="ATTENDANCE CLASS LIST SELECT">
    <p>
     Attendance lists are beinge read from classlists. So whenever you add  a classlist, that list will be selectable here.
     Once you have selected a day, period, classroom, person and list, you will be taken to the list where you can mark students as absent, etc.
-
-    {{ login }}
     <br>
     {{ persMenemonic}}
     </p>
-  </base-title-expand>
+  </base-title-expand> -->
 
   <base-tool :toolList="[]"
            :toolbarName="`Attendance 4 ${login.fullname} / ${ login.username}`"
            :loading="loading"
            :background="false"
            :back="true"
+           class="ma-2"
   >
     <div v-if="period && tListObj && 'grade' in tListObj && $vuetify.breakpoint.smAndUp" class="text-caption text-center">
      {{ login.userid }}, {{ location }}-{{ placeid }}, {{ period }}, {{ day }}, {{ tListObj.grade }}, {{ tListObj.subjectname }}, sID={{ sessionID }}
@@ -53,23 +76,24 @@
         dense
        />
 
-       <v-combobox
+       <v-autocomplete
         class="ma-1"
+        v-if="locationList && locationList.length"
         v-model="location"
         :items="locationList"
         label="Location"
         :title="locationTitle"
-        prepend-inner-icon="mdi-office-building"
+        prepend-inner-icon="mdi-google-classroom"
         outlined
         clearable
-        @click.once="userSelectedLocation"
         @blur="userSelectedLocation"
+        @click.once="userSelectedSomething"
         dense
        >
         <template slot="selection" slot-scope="{item}">  <!-- DISPLAY , item-text -->
          {{ item }}
        </template>
-       </v-combobox>
+       </v-autocomplete>
 
        <!-- <v-btn class="ma-1 mt-4"   @click="showRooster = true"> <v-icon> mdi-timetable</v-icon></v-btn> -->
 
@@ -81,7 +105,7 @@
         :items="periodList"
         outlined
         clearable
-        append-icon="mdi-magnify"
+        append-icon="mdi-timetable"
         @click:append="showRooster = true"
         @click.once="userSelectedSomething"
         dense
@@ -89,37 +113,48 @@
        <v-text-field
         class="ma-1"
         v-model="day"
+        label="Day"
         outlined
-        label="Day" max-width="60" min-width="60"
-        append-icon="mdi-magnify"
+        max-width="60" min-width="60"
+        append-icon="mdi-timetable"
         clearable
         @click:append="showRooster = true"
+        @click.once="userSelectedSomething"
         dense
        />
 
 
-       <v-combobox
+       <v-autocomplete
         class="ma-1"
         v-if="tList && tList.length"
         v-model="tListObj"
         :items="tList"
         label="Attendance List"
+
+        item-text="listname"
+
         prepend-inner-icon="mdi-pen-plus"
+        append-outer-icon="mdi-magnify"
         outlined
+
+        @click:append-outer="showChoosy = true"
         @click.once="userSelectedSomething"
         dense
+        return-object
        >
-        <!-- <template slot="append-outer">
+        <!-- <template slot="append-outer" >
         TL
-        </template> -->
-        <template slot="item" slot-scope="{item}"> <!-- ITEM DISPLAY (DROP DOWN ) -->
-          {{ item.listname }}
         </template>
-        <template slot="selection" slot-scope="{item}">  <!-- DISPLAY , item-text -->
+        -->
+        <!-- ITEM DISPLAY (DROP DOWN ) -->
+        <template slot="item" slot-scope="{item}">
+          {{ item.listname }} - {{ item.grade }}
+        </template>
+        <!-- DISPLAY , item-text -->
+        <!-- <template slot="selection" slot-scope="{item}">
          {{ item.listname }}
-        </template>
-       </v-combobox>
-
+        </template> -->
+       </v-autocomplete>
 
        <v-card v-else class="mt-3 pa-2" height="50" color="red lighten-2">
         <v-icon> mdi-info </v-icon>
@@ -131,7 +166,6 @@
         <v-icon> mdi-info </v-icon>
         To add a new list, go to "Class Lists" There are no teacherLists avaliable for {{ surname }} <v-btn small title="See all lists" @click="showAllLists"> More </v-btn>
        </v-card>
-
       </v-layout>
 
      </v-card-text>
@@ -139,18 +173,30 @@
       <v-spacer />
       <v-btn @click="areWeReady" class="ma-2" color="primary"> Continue </v-btn>
      </v-card-actions>
-     <v-card-actions v-else> Be sure and fill all options, click <v-btn icon @click="showRooster=true"><v-icon>mdi-timetable</v-icon></v-btn>
-     to set the day. </v-card-actions>
+     <v-card-text v-else> Be sure and fill all options, click <v-btn icon @click="showRooster=true"><v-icon>mdi-timetable</v-icon></v-btn>
+     to set the day. CurrentSelection: S={{responsiblePerson.persid || 'e'}}, C={{placeid}}, D={{day}}, P={{period}}
+     <v-btn icon @click="userSelectedSomething"><v-icon>mdi-glasses</v-icon></v-btn>
+     </v-card-text>
    </v-card>
   </v-col>
   </v-row>
 
  <v-dialog v-if="menemonic" v-model="showRooster" width="auto">
+  <keep-alive>
   <rooster :user_name="menemonic"
            @selected="roosterSelected" />
+  </keep-alive>
 </v-dialog>
 
- </div>
+<v-dialog v-model="showChoosy"  width="450" :fullscreen="$vuetify.breakpoint.smAndDown">
+  <keep-alive>
+     <choosy v-model="choosyStuff"
+             :items="tList"
+             @objectSelected="classListReceived" />
+  </keep-alive>
+</v-dialog>
+
+</v-container>
 </template>
 
 <script>
@@ -159,26 +205,34 @@ import { zmlFetch } from '@/api/zmlFetch.js';
 import { getters } from "@/api/store";
 import  {zmlLog } from "@/api/zmlLog.js"
 import { zData } from "@/api/zGetBackgroundData.js"
-import { ls } from "@/api/localStorage.js"
+//import { ls } from "@/api/localStorage.js"
+import HeroSection from "@/views/sections/HeroSection"
 import baseTool from '@/components/base/baseTool.vue'
-import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
+//import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import rooster from "@/components/learn/rooster.vue"
+import Choosy from '@/components/Choosy.vue'
 import { errorSnackbar, infoSnackbar } from '../api/GlobalActions';
 export default {
     name:'Attendance4',
     transition: 'page-slide',
     components: {
-      rooster
+      HeroSection
+    , rooster
     , baseTool
-    , BaseTitleExpand
+    //, BaseTitleExpand
+    , Choosy
     },
     data: () => ({
        loading: false,
        login: getters.getState({ object: "gZml" }).login,
        persMenemonic: getters.getState({ object: "gZml" }).persMenemonic,
+       getZml:getters.getState({ object: "gZml" }),
        responsiblePerson:'',
        surname:'',
        menemonic:null,
+
+       choosyStuff: '',
+       showChoosy: false,
 
        place: getters.getState({ object: "gZml" }).place,
        curPlace: {},
@@ -194,9 +248,10 @@ export default {
        sessionID:0,
        staffList:['Wiegand','Pollie','Alex'],
        periodList:['Admin','1','2','3','4','5','6','7','8','9','Late'],
-       tListObj: {grade:'', subjectname: '', ckey:0},
+       tListObj: {},
        tList: [],
        tLists: false,
+       lastLoadedListTeacherName: '',
        studentData: [],
        lastScan:'',
        showRooster:false,
@@ -208,14 +263,24 @@ export default {
     computed: {
     },
     methods: {
+      classListReceived(e) {
+        console.log('set obj tListObj to ', e)
+        this.showChoosy = false;
+        this.tListObj = e
+      },
       initialize() {
         this.loading = false
         if (this.persMenemonic.length < 10) {
-          infoSnackbar('we are not done yet???')
+          errorSnackbar('we are not done yet? - no personel loaded')
+        }
+        if (this.place.length < 4) {
+          errorSnackbar('we are not done yet? - no locations loaded')
+          this.$router.push({ name: 'HomeStart' , meta: {layout: "AppLayoutDefault" }})
+          return
         }
         this.staffList = []
         this.locationList = []
-        console.log('ASSIGNING LOOKUP VALUES')
+        //console.log('ASSIGNING LOOKUP VALUES')
         this.persMenemonic.forEach(e => {
              this.staffList.push({name:e.user_name + ' ' + e.surname + ' ' + e.name.substr(0,1), persid: e.persid})
              if (e.user_name == this.login.username) {
@@ -226,16 +291,15 @@ export default {
              }
         });
         this.locationList.sort()
-        this.locationList.push('Admin')
         this.locationList.push('TEST')
-        console.log('assigned to responsible person on initialize : ', this.responsiblePerson)
-
+        //console.log('assigned to responsible person on initialize : ', this.responsiblePerson)
+        this.loadTeacherLists()
       },
       viewAttendance() {
         this.$router.push('/attview')
       },
       userSelectedStaff() {
-         console.log(this.responsiblePerson.name, 'was selected??')
+         console.log(this.responsiblePerson, 'was selected??')
          let persid = this.responsiblePerson.persid
          let idx = this.persMenemonic.findIndex(e => e.persid == persid)
          if (idx > -1) {
@@ -251,13 +315,16 @@ export default {
          this.checkIfAllSelected()
       },
       userSelectedLocation(){
+        if (!this.location) return
+
+        //console.log('userSelectedLocation : ', this.location, this.place)
         this.curPlace = this.place.find(e => {
-          if (e.name.trim().toUpperCase() == this.location.trim().toUpperCase()) return true
+          //console.log ('Link Class to Pers',e.name , e.name.trim().toUpperCase() ,'==', this.location.trim().toUpperCase())
+          if (e.name && e.name.trim().toUpperCase() == this.location.trim().toUpperCase()) return true
         })
-        console.log('userSelectedLocation() fired:',this.curPlace)
         if (!this.curPlace) {
           console.log('we did not get a lookup value!!!!', this.curPlace)
-          errorSnackbar('That location is not familiar to me?')
+          errorSnackbar('That location is not in our lookuplist?', this.location)
           this.location = ''
           this.placeid = ''
           return
@@ -267,74 +334,67 @@ export default {
         this.placeid = this.curPlace.placeid
         this.checkIfAllSelected()
       },
-      userSelectedSomething() {
-         this.checkIfAllSelected()
-      },
+       userSelectedSomething() {
+      //   alert('do we get here?')
+          this.checkIfAllSelected()
+       },
       checkIfAllSelected() {
         if (this.day && this.period && this.placeid) {
           this.sessionID = `${this.day}.${this.period}.${this.placeid}-${Math.floor(Math.random()*1615).toString(5)}`
-          console.log('Saving our variables for later use!')
-          ls.save('attPeriod',this.period)
-          ls.save('attPlaceID',this.placeid)
-          ls.save('attDay',this.day)
+          // console.log('Saving our variables for later use!')
+          // ls.save('attPeriod',this.period)
+          // ls.save('attPlaceID',this.placeid)
+          // ls.save('attDay',this.day)
         } else {
-          console.log(`All not selected yet ..  Day${this.day}.Per${this.period}.Place${this.placeid}-`)
+          // console.log(`All not selected yet ..  Day${this.day}.Per${this.period}.Place${this.placeid}-`)
         }
       },
       showAllLists() {
-        console.log('loading ALL teacher list for everyone')
-        this.loading = true
-        //s.listname , s.ckey, s.grade
-        let ts = {task: 'PlainSql',
-               sql: `SELECT *\
-                      FROM hw_classlist s\
-                     WHERE share = 'Y'\
-                     order by listname desc`
-             }
-        zmlFetch(ts, this.loadTeacherListData, this.errorLoading)
+        this.loadTeacherListData(this.getZml.classList)
       },
       loadTeacherLists() {
-        console.log('loading teacher list for', this.surname)
-        this.loading = true
-        //s.listname , s.ckey, s.grade
-        let ts = {task: 'PlainSql',
-               sql: `SELECT *\
-                      FROM hw_classlist s\
-                     WHERE upper(substr(teacher,instr(teacher,' ')+1))  = upper('${this.surname}')\
-                     order by s.grade`
-             }
-        zmlFetch(ts, this.loadTeacherListData, this.errorLoading)
+        if (!this.surname) return
+        if (this.lastLoadedListTeacherName == this.surname) return
+        this.lastLoadedListTeacherName = this.surname
+        this.loadTeacherListData(this.getZml.classList)
       },
       loadTeacherListData(response) {
-        console.log('we did get passed sql !!')
-        if ('error' in response && response.error.length > 10) {
-          if (response.error.indexOf('no rows returned') > -1) {
-            this.tList = []
-            this.tListObj = []
+        this.tList = response
+        //Move current teachers list(s) to the top
+        this.tList.forEach( (item,i) => {
+          if (item.teacher.toUpperCase().indexOf(this.surname.toUpperCase()) > -1) {
+            this.tList.splice(i, 1);
+            this.tList.unshift(item);
           }
-        } else {
-          this.tList = response
-          this.tListObj = response[0]
-          console.log('teacher list loaded = ', response)
+        });
+        // Link to first item
+        this.tListObj = response[0]
+        infoSnackbar('Teacher list loaded')
+        if (this.tList.length == 0) {
+          //Try to fix it a final time....
+          this.tList = this.getZml.classList
+          this.tListObj = this.tList[0]
         }
         this.loading = false
+
 
       },
       roosterSelected(a,b,c,d,e) {
        //alert('selected day=' + a + 'per=' + b + "sel=" + c)
-        console.log('day',a,'per',b,'grd',c,'row',d,'?',e)
+        console.log('day',a,'per',b,'grd',c,'row',d,'?',e, this.tListObj)
         this.showRooster = false
         this.period = b
         this.day = a
+        this.tListObj = {grade:'G' + c.substr(0,2), subjectname: '', ckey:0},
         this.checkIfAllSelected()
         //let r = Math.floor(Math.random()*1615).toString(5)
         //this.sessionID = `${a}-${b}-${c}-${r}`
       },
       areWeReady() {
-        infoSnackbar('are we ready?')
+        // infoSnackbar('are we ready?')
         //Check all the details, and see if we have any students to display
         // we will use tListObj.ckey, tListObj.grade, tListObj.subjectname to extract students
-        console.log('sql for',this.tListObj.ckey, this.tListObj.grade, this.tListObj.subjectname)
+        //console.log('sql for',this.tListObj.ckey, this.tListObj.grade, this.tListObj.subjectname)
         this.loading = true
         let ts = {task: 'PlainSql',
                sql: `SELECT l.studentid, l.surname, l.firstname, l.grade, l.gclass, l.studentid \
@@ -346,7 +406,6 @@ export default {
         zmlFetch(ts, this.loadStudentData, this.errorLoading)
       },
       loadStudentData(response) {
-        console.log('hello is jh daaR??????')
         if ('error' in response && response.error.length > 5) {
           this.studentData = []
         } else {
@@ -367,7 +426,7 @@ export default {
                                            ,listname:this.tListObj.listname
                                            ,listid:this.tListObj.id
                                            ,other:this.tListObj}
-                       , checkList: ["Present","Absent", "Late", "Ignore"]
+                       , checkList: ["Present","Absent", "Late","AWR", "Bunk","Ignore"]
                        }
                       })
       },
@@ -379,19 +438,29 @@ export default {
       playSound () {
         this.confirmSound.play();
       },
+      assignDayNo(response) {
+        this.day = response.dayno
+      }
+    },
+    created() {
+      this.loading = true
+      zData.quickLoadInitialData('Load Data for incase', this.initialize)
+      zData.loadSql(this.loading, "SELECT dayno FROM dkhs_date WHERE fulldate = CURDATE()"
+                  , this.assignDayNo)
     },
     mounted() {
-      zmlLog(null, "Att4Tanya " + this.responsiblePerson, 'Started')
+      zmlLog(null, "Att5Tanya ", 'Started ' + this.login.username +' '+ this.login.userid)
+      console.log('Attendance4 Started', this.tList)
       //Load lookups for place if not loaded yet....
-      if (this.place.length < 4 && ls.test('lookupPlace')) this.place = ls.load('lookupPlace')
+      //if (this.place.length < 4 && ls.test('zmlLookupPlace')) this.place = ls.load('zmlLookupPlace')
 
-      console.log('CHECK SAVE BEFORE : ', ls.test('attPeriod'), ls.test('attDay'), ls.test('attPlaceID'))
-      if (!this.period && ls.test('attPeriod'))        this.period = ls.load('attPeriod')
-      if (!this.day && ls.test('attDay')) this.day = ls.load('attDay')
-      if (!this.placeid && ls.test('attPlaceID')) this.placeid = ls.load('attPlaceID')
-      console.log('CHECK SAVE AFTER : ', this.period, this.day, this.placeid)
-      this.loading = true
-      zData.initialData('Load Important Data', this.initialize)
+      // console.log('CHECK SAVE BEFORE : ', ls.test('attPeriod'), ls.test('attDay'), ls.test('attPlaceID'))
+      // if (!this.period && ls.test('attPeriod'))        this.period = ls.load('attPeriod')
+      // if (!this.day && ls.test('attDay')) this.day = ls.load('attDay')
+      // if (!this.placeid && ls.test('attPlaceID')) this.placeid = ls.load('attPlaceID')
+      // console.log('CHECK SAVE AFTER : ', this.period, this.day, this.placeid)
+
+
     },
     watch:{
       responsiblePerson() {

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="mr-6 ma-2" v-if="$vuetify.breakpoint.smAndUp">
     <v-hover v-slot:default="{ hover }" open-delay="200">
     <v-btn :elevation="hover ? 12 : 2"
             :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"

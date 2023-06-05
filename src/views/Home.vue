@@ -1,8 +1,8 @@
 <template>
-<div class="home">
-<!-- homeMain -->
+<v-container fluid class="home">
+<!-- HOME -->
  <v-container v-if="getZml.login.isAuthenticated==false" fluid>
-
+ <!------------------------------------------------ NO LOGIN YET-->
     <hero-section name="forDB"
        bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
        title="Virtual School Gateway"
@@ -14,20 +14,19 @@
 
  </v-container>
 
-
- <v-container v-if="getZml.login.type=='student'" fluid>
+<!------------------------------------------------ STUDENT LOGGED IN -->
+ <v-container v-else-if="getZml.login.type=='student'" fluid>
   <hero-section name="forDB"
-               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall009.jpg"
+               bgpicture="https://www.zmlrekenaars.co.za/test/img/wall046.jpg"
                title="Student's Home"
                />
   <hr />
-
   <student-home />
-
   </v-container>
 
 
-  <v-container v-show="getZml.login.type=='teacher' || getZml.login.type=='admin'">
+<!------------------------------------------------ TEACHER LOGGED IN -->
+  <v-container v-else-if="getZml.login.type=='teacher' || getZml.login.type=='admin'" fluid>
   <hero-section name="forDB"
                bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
                title="Teacher & Admin Home"
@@ -36,13 +35,19 @@
   <admin-home />
   </v-container>
 
+  <v-container v-else fluid>
+  <hero-section name="forDB"
+               bgpicture="https://kuiliesonline.co.za/img/vlaghys6842.jpg"
+               title="Unknown Home"
+               color="indigo darken-4"
+               />
+    </v-container>
 
- <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-   <h2> Welcome Werner! </h2>
-               <v-btn to="/loadhomework"> loadhomework </v-btn>
- </v-container>
+<base-title-expand heading="Profile">
+  <profile />
+</base-title-expand>
 
-  </div>
+</v-container>
 </template>
 
 <script>
@@ -52,6 +57,8 @@ import HeroSection from "@/views/sections/HeroSection.vue"
 import StudentHome from "@/views/home/HomeStudent"
 import AdminHome from "@/views/home/HomeAdmin"
 import Login from '@/components/Login'
+import Profile from '@/components/Profile'
+import BaseTitleExpand from '@/components/base/BaseTitleExpand.vue'
 import { zData } from '@/api/zGetBackgroundData.js';
 export default {
   name: 'Home',
@@ -60,6 +67,8 @@ export default {
            , AdminHome
            , StudentHome
            , Login
+           , BaseTitleExpand
+           , Profile
   },
   data: () => ({
     buttons: buttons,
@@ -85,8 +94,8 @@ export default {
       if (!doStuff(this.$router,task)) { console.log(task) }
    }
   },
-  mounted() {
-    zData.initialData('Load all the Data')
+  created() {
+    zData.quickLoadInitialData('Home.Vue : QuickLoad')
   }
 }
 </script>

@@ -23,22 +23,39 @@ Vue.prototype.$playSound = (path, volume = .5) => {
   audio.play();
 }
 
+
+
 // eslint-disable-next-line
-export const cs = {
+Vue.prototype.$cs = {
   // eslint-disable-next-line
   l: (...args) => {
-       // console.log(...args);
+        console.log('mj',...args);
     },
   scrollToTop: (containerID) => {
       let e = document.getElementById(containerID || "app")
       if (e) { e.scrollIntoView({ behavior: "smooth" })} else { cs.l('ELEMENT DOES NOT EXIST')}
-  }
+  },
 }
 
+<<<<<<< HEAD
 Vue.component('BaseDate', () => import('@/components/base/BaseDate.vue') )
 
+=======
+>>>>>>> 121ea14dcce9c3f036da38d4cab97fb8f18a92e8
 Vue.prototype.$history = window.history;
-Vue.prototype.$cs = cs;
+//Vue.prototype.$cs = cs;
+Vue.prototype.$super = Vue.observable({
+  user: false,
+  fullname: '',
+  userid: '',
+  message: 'message',
+  test: 'test'
+});
+//Vue.prototype.$superUser = false;  //we will attempt to link this when we logged in
+//Vue.prototype.$test = "This is a test message"  //we will attempt to link this when we logged in
+
+// How to add components globally so all can see them - testing with small one
+Vue.component('v-back', resolve => { require(['@/components/base/VBack.vue'], resolve) })
 
 
 Vue.use(vuetify);

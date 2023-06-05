@@ -10,7 +10,7 @@
         <span v-if="!studentList.length"> - (Select a class below) </span>
         <span v-else> : {{this.gradeClass.g}} -  {{this.gradeClass.c}} </span>
     <v-spacer></v-spacer>
-    <base-tool-button
+    <!-- <base-tool-button
        v-if="studentList.length"
        icon="mdi-select-group"
        class="mr-2"
@@ -19,7 +19,7 @@
        @click="attendancePrep"
     >
       ATTENDANCE
-    </base-tool-button>
+    </base-tool-button> -->
     <base-tool-button
        v-if="studentList.length"
        icon="mdi-file-export"
@@ -120,7 +120,7 @@
   </div>
 </v-container> -->
 
-<v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
+<v-dialog v-model="showListPrint" width="auto " :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
    <zml-close-button @btn-click="showListPrint = !showListPrint" />
   <front-json-to-csv v-if="studentList"
                     :jsonData="studentList"
@@ -132,7 +132,7 @@
   </front-json-to-csv>
 </v-dialog>
 
- <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
+ <v-dialog v-model="showStudentCard"  max-width="650" :fullscreen="$vuetify.breakpoint.smAndDown" :scrollable="false">
    <zml-close-button @btn-click="showStudentCard = false" />
    <student-name-card :studentList="singleStudent" />
  </v-dialog>
@@ -194,7 +194,7 @@ export default {
         this.showAttendance = !this.showAttendance
         if (this.showAttendance == false) {
           this.attendanceList.length = 0
-          this.classListHeader = `Student List for ${this.gradeClass.g}${this.gradeClass.c}`
+          this.classListHeader = `Student Attendance List for ${this.gradeClass.g}${this.gradeClass.c}`
         }
       },
       attSelected(aList,aProp) {
@@ -202,11 +202,11 @@ export default {
         this.attendanceList = aList
         this.classListHeader = `Student List for ${this.gradeClass.g}${this.gradeClass.c} \
                                 Room (${aProp.location}) Period (${aProp.period}) - ${aProp.staff}`
-        console.log('use',aList,' to do a fetch on all students', aProp)
+        this.$cs.l('use',aList,' to do a fetch on all students', aProp)
       },
       studentCardColor(id) {
         if (this.attendanceList.length == 0) return 'gray lighten-4'
-        console.log('List=',this.attendanceList)
+        this.$cs.l('List=',this.attendanceList)
         if (this.attendanceList.findIndex(a => a.studentid == id) > -1) {
           return "green darken-1"
         } else {
@@ -215,7 +215,7 @@ export default {
       },
       showEmails(id) {
         let em = this.studentList.find(e => e.studentid == id)
-        console.log('show emails',em)
+        this.$cs.l('show emails',em)
         if (!em.emails) {
           return ["No Emails Found"]
         }
@@ -251,12 +251,12 @@ export default {
       }
      },
     mounted() {
-      console.log('SC(mounted)1 : ', this.$options.name)
-      console.log('SC(mounted)2 : ', this.$router.params)
-      console.log('SC(mounted)3 : ', this.gc)
+      this.$cs.l('SC(mounted)1 : ', this.$options.name)
+      this.$cs.l('SC(mounted)2 : ', this.$router.params)
+      this.$cs.l('SC(mounted)3 : ', this.gc)
       if (this.gc && this.gc.c && this.gc.g) {
         // {"g": "G08", "c": "E1" }
-        console.log('gc exist', this.gc)
+        this.$cs.l('gc exist', this.gc)
         this.gradeClass = {g:this.gc.g, c:this.gc.c}
       }
     },

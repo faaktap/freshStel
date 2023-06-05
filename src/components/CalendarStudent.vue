@@ -1,6 +1,15 @@
 <template>
 <div>
-  <v-row v-if="studentGradeClass">
+  <hero-section name="forDB"
+              bgpicture="https://www.zmlrekenaars.co.za/test/img/wall041.jpg"
+              :title="`Calendar :  ${weekOrDay}`"
+              text=""
+              breakup1="100"
+              breakup2="20"
+              color="green darken-1"
+               />
+
+  <v-row>
     <v-col>
     <v-sheet
       tile
@@ -9,6 +18,7 @@
     >
     <v-toolbar
        flat
+       dense
        :loading="loading"
     >
         <v-btn
@@ -19,18 +29,35 @@
         <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
 
-        <v-btn
-            outlined
-            class="mr-4"
-            color="grey darken-2"
-            @click="setToday"
-          >
-            Today
-          </v-btn>
-
+        <v-btn v-if="!$vuetify.breakpoint.mobile"
+               :x-small="!$vuetify.breakpoint.mdAndUp"
+               class="ma-sm-0 ma-2" color="primary" @click="setToday">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> Today</span>
+          <v-icon v-else small> mdi-calendar-today</v-icon>
+        </v-btn>
+        <v-spacer />
           <v-toolbar-title v-if="$refs.calendar"> {{ $refs.calendar.title }} </v-toolbar-title>
           <v-spacer />
-          <v-spacer />
+
+         <v-btn-toggle small v-model="toggleView" >
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'day'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> day</span>
+          <span v-else>d</span>
+         </v-btn>
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'week'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> week</span>
+          <span v-else>w</span>
+         </v-btn>
+         <v-btn class="ma-0" :x-small="!$vuetify.breakpoint.mdAndUp" color="primary" @click="weekOrDay = 'month'">
+          <span v-if="$vuetify.breakpoint.mdAndUp"> month</span>
+          <span v-else>m</span>
+         </v-btn>
+         </v-btn-toggle>
+
+
+          <!-- <v-btn color="primary" class="ma-2" @click="weekOrDay == 'day' ? weekOrDay = 'week' : weekOrDay = 'day'" small title="Click to Swop">
+             {{ weekOrDay }}
+          </v-btn> -->
         <v-btn icon class="ma-2"  @click="$refs.calendar.next()" >
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
@@ -48,20 +75,21 @@
           color="primary"
           :type="weekOrDay"
           intervalMinutes="60"
-          first-time="07:30"
+          first-time="07:00"
           interval-count="8"
           interval-height="35"
           short-intervals
+          :weekdays="$vuetify.breakpoint.mdAndUp ? weekdayAll : weekdayShort"
           @change="updateRange"
           @click:event="showEvent"
         > <!-- weekdays=[1,2,3,4,5,6,0] -->
-         <template v-slot:day-body="{ date, week }">
+         <!-- <template v-slot:day-body="{ date, week }">
             <div
                class="v-current-time"
               :class="{ first: date === week[0].date }"
               :style="{ top: nowY }"
             ></div>
-         </template>
+         </template> -->
 
         </v-calendar>
 
@@ -73,42 +101,37 @@
           :activator="selectedElement"
           offset-x
         >
-        {{ selectedOpen}}
           <v-card
             color="blue-grey lighten-4"
             min-width="350px"
             flat
           >
             <v-toolbar
-              color="selectedEvent.color"
+              color="cyan"
               dark
             >
-              <v-btn icon>
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-toolbar-title v-if="selectedEvent" v-html="selectedEvent.name"></v-toolbar-title>
+              <v-toolbar-title v-if="selectedEvent"> {{ selectedEvent.name }} </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <span v-if="selectedEvent" v-html="selectedEvent.details"></span>
-              <v-text-field v-model="pStudentGradeClass" label="Student Class" />
+              <span v-if="selectedEvent"> {{ selectedEvent.details }} </span>
             </v-card-text>
           </v-card>
         </v-menu>
-
-
-
       </v-sheet>
     </v-col>
   </v-row>
-  <v-container fluid v-if="getZml.login.isAuthenticated && getZml.login.username=='WER'">
-    <v-row>
-        <v-col cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
+
+  <!-- <v-container fluid v-if="getZml.login.superUser">
+    <v-row dense class="ma-0 pa-0">
+        <v-col  class="ma-0 pa-0" cols="6" lg="3" v-for="(f,i) in getZml.calendar" :key="i">
         <v-card color="blue" class="ma-2 pa-1" >
         {{ i }} {{ f.name }} - {{ f.start }} {{ f.end }} {{ f.type }}
+        <hr>
+        {{ f }}
          </v-card>
         </v-col>
    </v-row>
-  </v-container>
+  </v-container> -->
 </div>
 </template>
 
@@ -119,11 +142,14 @@ import { zDate } from '@/api/zDate.js'
 import { zData } from '@/api/zGetBackgroundData.js'
 import { zmlConfig } from '@/api/constants.js';
 import { zmlFetch } from '@/api/zmlFetch.js';
+import HeroSection from "@/views/sections/HeroSection"
 export default {
   name: 'Calendar',
-  props: ['studentGradeClass','weekOrDay'],
+  props: ['studentid'],
+  components:{HeroSection},
   data: () => ({
       getZml: getters.getState({ object: "gZml" }),
+      studentidToView:'',
       loading:false,
       today: null,
       calToday: null,
@@ -133,7 +159,10 @@ export default {
       selectedEvent: null,
       selectedElement: null,
       selectedOpen: null,
-      pStudentGradeClass: ''
+      weekOrDay: "week",
+      weekdayAll:[1, 2, 3, 4, 5, 6, 0],
+      weekdayShort:[1, 2, 3, 4, 5],
+      toggleView:0,
   }),
   methods:{
       updateRange(whatweget) {
@@ -149,6 +178,7 @@ export default {
                   , color: ele.color
                   , type: ele.type
                   , timed: ele.timed
+                  , details: `${ele.subject}, ${ele.user_name}, ${ele.dayno}, ${ele.periodno}, ${ele.length}`
                     }
              this.events.push(evt)
           } else {
@@ -159,53 +189,44 @@ export default {
       },
       loadRooster(){
         this.selectedOpen = false
-        this.pStudentGradeClass = this.studentGradeClass
-        if (this.pStudentGradeClass == '') this.pStudentGradeClass = 'GR10A1';
-
-
-        if (this.pStudentGradeClass.substr(0,1) !== 'G') {
-          //This is not a personeel mnemonic, it's a grade,
-          //so our select statement need to change
-          alert('we need a studentGradeClass not,'+this.pStudentGradeClass )
-          return
-        }
-        //Massage the grade if it is in G08A2 to be GR08A2
-        //Since rooster store them like that.
-        if (this.pStudentGradeClass.substr(0,2) !== 'GR') {
-            this.pStudentGradeClass = this.pStudentGradeClass[0] + 'R' + this.pStudentGradeClass.substr(1)
-        }
-        console.log('getting calendar data (rooster) for ',this.pStudentGradeClass)
+        console.log('getting calendar data (rooster) for ',this.getZml.login.username)
 
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = "SELECT * FROM rooster WHERE "
-               + "   day1 like '%" + this.pStudentGradeClass + "%'"
-               + "or day2 like '%" + this.pStudentGradeClass + "%'"
-               + "or day3 like '%" + this.pStudentGradeClass + "%'"
-               + "or day4 like '%" + this.pStudentGradeClass + "%'"
-               + "or day5 like '%" + this.pStudentGradeClass + "%'"
-               + "or day6 like '%" + this.pStudentGradeClass + "%'"
-               + "or day7 like '%" + this.pStudentGradeClass + "%'"
-               + "or day8 like '%" + this.pStudentGradeClass + "%'"
-               + "or day9 like '%" + this.pStudentGradeClass + "%'"
-               + "or day10 like '%" + this.pStudentGradeClass + "%'"
-               + "or day11 like '%" + this.pStudentGradeClass + "%'";
+        ts.sql = `select  dt.fulldate startdate\
+     , dt.dayno, per.description\
+     , concat(dt.fulldate, ' ', per.starttime) startEvt\
+     , concat(dt.fulldate, ' ', per.endtime) endEvt\
+     , per.length, substr(per.periodname,4,1) periodno\
+     , if (periodname = 'Break', 'green lighten-1', 'green darken-2') color\
+     , l.shortname subject, l.description subjectname, r.menemonic user_name\
+     , per.id , per.dow\
+ FROM dkhs_date dt , dkhs_dayperiod per, dkhs_rooster r, dkhs_student s, dkhs_lsubject l, dkhs_studsub ss\
+ WHERE s.studentid = '${this.studentidToView}'\
+  AND r.gradeclass = concat(s.grade, s.gclass)\
+  AND s.studentid = ss.studentid\
+  AND per.dow = dt.dayOfWeek\
+  AND dt.iddate <  DATE(now() + INTERVAL 30 DAY)\
+  AND dt.iddate >  DATE(now() - INTERVAL 30 DAY)\
+  AND r.periodno = substr(per.periodname,4,1)\
+  AND r.dayno = dt.dayno\
+  and s.studentid = ss.studentid\
+  and l.beskrywing = ss.subjectname\
+  and r.subjectshortname = l.shortname\
+  and r.menemonic = ss.menemonic\
+  and l.linksubjectid = ss.subjectid\
+ order by startdate,dt.dayno,  per.periodname, l.shortname`
+
         ts.api = zmlConfig.apiDKHS
         this.loading = true;
         zmlFetch(ts, this.afterRoosterSelect);
-      },
-      getPeriodStartTime(hm,element, dateLooking) {
-         let perStart = zDate.dayType.find(dt =>
-                      dt.type == 'Per'+element.periodno && dt.dayNo == dateLooking.getDay() )
-         hm.h = parseInt(perStart.start.substr(0,2))
-         hm.m = parseInt(perStart.start.substr(3,2))
       },
       subjectColor(subjectShortName) {
         let colorObj = this.getZml.subjects.find(dt =>  dt.shortname == subjectShortName.substr(0,dt.shortname.length) )
         if (colorObj && colorObj.color) {
            return colorObj.color
         } else {
-          return "amber darken-2"
+          return "amber"
         }
       },
       afterRoosterSelect(response) {
@@ -214,50 +235,17 @@ export default {
         if (this.getZml.calendar.length==0) {
           alert('our calendar seem to be empty?')
         }
-        let template = zDate.todayNoHours()
-        template = zDate.gotoMonday(template)
-        //Go back one more day (to Sunday)
-        template.setDate(template.getDate() - 1);
-        for (let t=0; t < 7; t++) {
-           template = zDate.addOneDay(template)
-           //Look for template's date and link to a dayno.
-           const sday = this.getZml.calendar.find(cal =>
-              cal.start == zDate.format(template,'yyyy-MM-dd') && cal.name.substr(0,3) == 'day'
-           )
-           if (!sday) { console.log('no SDAY!!!!', sday) ; continue; }
-           response.forEach(ele => {
-             let n = ''
-
-             switch (sday.name.substr(0,4)) {
-               case 'day1': n = ele.day1; break
-               case 'day2': n = ele.day2; break
-               case 'day3': n = ele.day3; break
-               case 'day4': n = ele.day4; break
-               case 'day5': n = ele.day5; break
-               case 'day6': n = ele.day6; break
-               case 'day7': n = ele.day7; break
-               case 'day8': n = ele.day8; break
-               case 'day9': n = ele.day9; break
-               case 'day10':n = ele.day10; break
-             }
-             if (n && n.includes(this.pStudentGradeClass)) {
-               let hm = {}
-               this.getPeriodStartTime(hm,ele,template)
-               let lines = n.split(/\n/);
-               const per = lines[0]
-               const grade = lines[1]
-               const evt = {
-                       name: per + ' ' + ele.user_name + ' ' + grade
-                     , start: template.setHours(hm.h, hm.m, 0, 0)
-                     , end:   template.setHours(hm.h, hm.m + 45, 0, 0)
-                     , color: this.subjectColor( n.substr(0,3) )
-                     , timed: true
-                     , details: n
-                 }
-               this.events.push( evt )
-             }
-           })
-        }
+        response.forEach(ele => {
+          const evt = {
+                  name: ele.periodno + ' ' + ele.subjectname
+                , start: ele.startEvt
+                , end:   ele.endEvt
+                , color: this.subjectColor( ele.subject )
+                , timed: true
+                , details: `${ele.subject}, ${ele.user_name}, ${ele.dayno}, ${ele.periodno}, ${ele.length}`
+            }
+          this.events.push( evt )
+        })
         //Brilliant funcking timeout stukkie!!
         setTimeout(() => {
            this.loading = false;
@@ -324,10 +312,14 @@ export default {
         return this.cal ? this.cal.timeToY(this.cal.times.now) + 'px' : '-10px'
       },
     },
-  mounted () {
-      zData.initialData('Load Subject Data')
+  created () {
       zData.calendarData('Load Calendar Data')
+  },
+  mounted () {
+
       //this.events = [] //let's keep old events for now...
+      this.studentidToView = this.studentid
+      if (this.studentidToView == undefined) this.studentidToView = this.getZml.login.username
       this.today = new Date()
       this.today.setHours(0,0,0,0)
       this.calToday = zDate.format(this.today,'yyyy-MM-dd')
@@ -338,12 +330,6 @@ export default {
       this.rinseRepeat()
   },
   watch: {
-    pStudentGradeClass() {
-        /*
-      zData.calendarData('Load Calendar Data')
-      this.loadRooster()
-      */
-    }
   },
 }
 </script>

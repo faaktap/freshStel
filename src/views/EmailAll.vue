@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
       <v-progress-linear :active="progress" :indeterminate="progress" color="grey lighten-1" />
       <v-card>
         <v-card-text>
@@ -29,7 +29,7 @@
  </v-card>
 </v-dialog>
 
-  </div>
+  </v-container>
 </template>
 
 <script>

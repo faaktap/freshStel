@@ -37,6 +37,7 @@
                           @click="sendBack(r,j,i,r.bday[j])"
                           :title="r.bday[j]"
                           >
+                          <!-- {{ cl(r.bday[j]) }} -->
                         <template v-if="showMore==true">
                         {{ r.bday[j] }}
                         </template>
@@ -91,18 +92,19 @@ export default {
         this.$emit('selected', day,per+1,sel, row)
     },
     cl(rbdayx) {
-      if (rbdayx && rbdayx.length > 2) {
+      if (rbdayx && rbdayx.length > 1) {
+        //Maybe allow teachers to control grade colors, and allow them to change it each year, or shift it to next grade..
         switch (rbdayx.substr(0,2)) {
         case "08":   return "green accent-1"
         case "09":   return "indigo lighten-3"
         case "10":   return "gold lighten-1"
         case "11":   return "blue lighten-4"
         case "12":   return "purple lighten-3"
-        case "AF":   return "gray lighten-3"
-        default:  return "gray lighten-1"
+        case "AF":   return "white"
+        default:  return "gray lighten-2"
         }
       } else {
-        return "gray lighten-1"
+        return "gray lighten-2"
       }
     },
     tableDone(response) {
@@ -137,14 +139,14 @@ export default {
             e.bday[10] = e.day10 ?  e.day10 : 'AF'
         })
       }
-      console.log('is it here?',this.entityTable)
+      //console.log('is it here?',this.entityTable)
     },
     //--------------------------------------------------------------------------------
     clickOnForm(editTable,method){
       console.log(editTable, method)
     },
     loadError(response) {
-      console.log('loadError:',response)
+      //console.log('loadError:',response)
       if ('error' in response) errorSnackbar(response.error)
 
     },
@@ -203,7 +205,7 @@ export default {
     },
   },
   mounted() {
-     console.log('Start' , this.$options.name)
+     // console.log('Start' , this.$options.name)
      if (!this.user_name) {
        infoSnackbar("We need a UserName! - Please select staff (Responsible Person)")
      }

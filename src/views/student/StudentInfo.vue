@@ -24,12 +24,14 @@
                 v-if="!$vuetify.breakpoint.smAndDown"
                 class="mt-4"
                 color="secondary"
-                :label="`Search more than Surname: ${searchMore}`"
+                title="Search other data - like name and note"
+                :label="`Search more than Surname `"
       />
       <v-back />
     </v-toolbar-items>
   </v-toolbar>
-  <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quick(l.data.studentid)">
+  <!-- <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quick(l.data.studentid)"> -->
+  <v-chip v-for="l in live" :key="l.desc" class="ma-2" :title="l.data.studentid" @click="quickLoadStudent(l.data.studentid)">
     {{ l.data.firstname }} {{ l.data.surname }} {{ l.data.grade }}
   </v-chip>
   <v-container fluid>
@@ -53,8 +55,8 @@
        <!-- <base-title-expand v-if="studentList" heading="Basic Student Info"> -->
           <student-name-card v-if="studentList" :studentList="studentList" color="blue lighten-2" />
        <!-- </base-title-expand> -->
-       <base-title-expand v-if="studentList" heading="Student Subjects"
-                          openOrClose="open">
+       <base-title-expand v-if="studentList" heading="Student Subjects">
+           <!-- Fill in openOrClose="close" with any value, to force it open first time -->
            <student-subject-list :studentid="studentList.data.studentid" color="white darken-1" />
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Email Contacts">
@@ -66,20 +68,23 @@
        <base-title-expand v-if="studentList" heading="Student Attendance">
           <student-attendance :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
+       <base-title-expand v-if="studentList" heading="Prescribed Books on Loan" >
+         <student-prescribed-books :studentid="studentList.data.studentid"  color="white darken-1" />
+       </base-title-expand>
        <base-title-expand v-if="studentList" heading="Learn Assist">
           (We use this to mark examlists with "BUR" for separate exam venue)
           <student-learn-assist :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
        <base-title-expand v-if="studentList" heading="Student Merits"
-                          openOrClose="open">
+                          openOrClose="close">
           <student-merit :studentid="studentList.data.studentid"  color="white darken-1" />
        </base-title-expand>
       </div>
       <v-btn icon x-small @click="printIt" class="noprint"><v-icon>mdi-print</v-icon> print </v-btn>
   </v-container>
 
-<!--   another nice card layout we might use...
- <v-container grid-list-lg>
+
+   <!-- <v-container grid-list-lg>
       <v-layout row wrap>
         <v-flex v-for="teacher in teachers" :key="teacher.firstName" xs12 sm6 md4>
           <v-card>
@@ -105,8 +110,8 @@
           </v-card>
         </v-flex>
       </v-layout>
-    </v-container>
- -->
+    </v-container> -->
+
  </v-container>
 
   <router-link :to="{ name: 'PersonelInfo'}" > <v-icon> mdi-nature-people </v-icon> </router-link>
@@ -129,9 +134,11 @@ import StudentSubjectList from '@/components/student/StudentSubjectList'
 import StudentAttendance from '@/components/student/StudentAttendance'
 import StudentLearnAssist from '@/components/student/StudentLearnAssist'
 import StudentMerit from '@/components/student/StudentMerit'
+import StudentPrescribedBooks from '@/components/student/StudentPrescribedBooks.vue';
 import VBack from '@/components/base/VBack.vue'
 
 import { printHeader, printPage} from "@/api/zmlPrint.js"
+
 
 export default {
 name: "StudentInfo",
@@ -145,9 +152,11 @@ components: {HeroSection
            , StudentAttendance
            , StudentLearnAssist
            , StudentMerit
+           , StudentPrescribedBooks
            , BaseTitleExpand
            , baseTool
            , VBack
+
            },
 data: () => ({
   printHeader: printHeader,
@@ -161,9 +170,17 @@ data: () => ({
               msc:'University of Georgia', src:'https://source.unsplash.com/kmuch3JGPUM'},
             ]
 }),
+activated()   {   this.$cs.l(this.$options.name,' - activated')  },
+deactivated() {   this.$cs.l(this.$options.name,' - deactivated')  },
+computed: {
+  liveList() {
+    if (!live) return []
+    return
+  }
+},
 methods: {
   currentView(list) {
-    this.live = list
+    this.live = list.slice(0,18)
   },
    printIt() {
       printPage('printMe', true)

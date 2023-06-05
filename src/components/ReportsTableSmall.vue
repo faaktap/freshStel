@@ -1,18 +1,16 @@
 <template>
  <v-container fluid>
-
   <base-tool :toolbarName="reportHeader"
             :background="false"
             :back="false"
             >
-      <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn>
+    <v-btn small class="ma-2" @click="showPrint = true"> Export </v-btn>
   </base-tool>
   <v-data-table
           v-if="filterTable.length"
           :headers="labels"
           :items="filterTable"
    />
-
 <v-dialog v-model="showPrint" xwidth="auto" :fullscreen="$vuetify.breakpoint.smAndDown">
   <front-json-to-csv v-if="filterTable2.length"
                    :json-data="filterTable2"

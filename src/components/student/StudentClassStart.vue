@@ -9,7 +9,7 @@
        class="mr-2"
        title="Click to view attendance list"
        @click="attendancePrep"
-    >
+    />
   </v-toolbar>
 <v-container fluid v-if="['admin','teacher'].includes(getZml.login.type) == false">
     You are not logged in, or you are not a teacher!
@@ -126,7 +126,7 @@
   </v-row>
 
 
-<v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown">
+<v-dialog v-model="showListPrint" xwidth="auto " :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
    <zml-close-button @btn-click="showListPrint = !showListPrint" />
   <front-json-to-csv v-if="studentList"
                     :jsonData="studentList"
@@ -138,7 +138,7 @@
   </front-json-to-csv>
 </v-dialog>
 
- <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown">
+ <v-dialog v-model="showStudentCard"  max-width="500" :fullscreen="$vuetify.breakpoint.smAndDown" scrollable>
    <zml-close-button @btn-click="showStudentCard = false" />
    <student-name-card :studentList="singleStudent" />
  </v-dialog>
@@ -229,7 +229,7 @@ export default {
       classListLoad() {
         let ts = {}
         ts.task = 'PlainSql'
-        ts.sql = `SELECT studentid, surname, firstname, grade, gclass\
+        ts.sql = `SELECT s.studentid, surname, firstname, grade, gclass\
          , idno, GROUP_CONCAT(email) emails\
          FROM dkhs_student s\
          left join m_subscriber m on s.studentid = m.impnumber and m.outid is null\

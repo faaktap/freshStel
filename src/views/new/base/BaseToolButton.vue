@@ -5,6 +5,8 @@
         :color="color"
         :disabled="disabled"
         :loading="loading"
+        :to="to"
+        :icon="$vuetify.breakpoint.smAndDown"
  >
 
        <v-badge color="warning" v-if="badge.length > 0" :title="badgeTitle" left inline>
@@ -32,8 +34,9 @@ export default {
     , disabled:{type:Boolean, default:false}
     , icon:{ type:String, default:''}
     , value:{type:String, default:''}
-    , badge: {type:String, default: ''}
+    , badge: {default: ''}
     , badgeTitle: {type:String, default: ''}
+    , to: {type:String, default: ''}
   },
   computed: {
      testSmall() {

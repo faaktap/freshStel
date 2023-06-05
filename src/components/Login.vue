@@ -1,10 +1,15 @@
 <template>
  <v-container>
-  <v-row class="justify-center"  align="center" justify-center>
+
+  <v-layout row wrap align-content-start justify-space-between>
     <v-col v-if="getZml.login.isAuthenticated"
            class="mx-auto my-12">
-     <v-card max-width="500"
-           color=#F5F5F5>
+     <v-hover v-slot:default="{ hover }">
+     <v-card xmax-width="500"
+           style="xoverflow: auto;"
+          :elevation="hover ? 12 : 2"
+          :class="{'on-hover': hover,'overwrite-hover': $vuetify.breakpoint.xsOnly}"
+      >
       <v-card-title>
        <h2> Kuilies Session Status  </h2>
       </v-card-title>
@@ -28,15 +33,20 @@
        <v-btn @click="doBack" color="primary">
          Back
        </v-btn>
-       <v-btn color="info" @click="startLearning">
+
+       <!--@click="startLearning" -->
+       <v-btn color="info" to="/home"  >
          Continue
        </v-btn>
+
         <v-spacer />
+
        <v-btn  @click="logout" color="info">
         Logout
        </v-btn>
       </v-card-actions>
      </v-card>
+     </v-hover>
     </v-col>
 <!-- ------------------------------------ -->
      <v-col v-else
@@ -52,6 +62,7 @@
         <h2> Kuilies Login</h2>
        </v-card-title>
        <v-card-text>
+        <v-form>
         <!-- <v-form class="px-3" ref="loginForm" width="400" v-on:submit.prevent="onSubmit"> -->
          <v-text-field  label="User"
             v-model="loginObj.username"
@@ -62,15 +73,16 @@
          />
          <v-text-field
             label="Password"
-            autocomplete="current-password"
             v-model="loginObj.password"
             prepend-icon="mdi-lock"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
             :type="showPassword ? 'text' : 'password'"
             v-on:keyup.enter="onEnter"
+            name="password"
+            autocomplete="current-password"
          />
-        <!-- </v-form> -->
+        </v-form>
        </v-card-text>
        <v-card-actions>
         <v-btn @click="registrationMessage()" class="mx-0 mt-3" color="info">
@@ -95,9 +107,34 @@
        </v-card-actions>
       </v-card>
   </v-hover>
- </v-col><!-- Else End-->
-     </v-row>
-    <v-overlay
+ </v-col>
+
+     <v-col class="mx-auto my-12">
+      <v-card class="ma-2 pa-2" v-show="getZml.login.isAuthenticated == false">
+        <p><v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>If you are a learner, your login would start with your schoolno, and
+         if you are a teacher it would be your teacher login details.
+         A learner's first login his admin number will be his username with no password.
+         Request them from Werner at  082 563 9790
+         if you are unsure.</p>
+         <p><v-icon color="purple darken-2"> mdi-information </v-icon>If you forget your password, type in your username and press
+         reset - a reset link will be sent to your email account (if provided) Otherwise ask Me. van Rensburg or other teacher to reset your password.
+         </p>
+      </v-card>
+      <v-card class="ma-2 pa-2" v-show="getZml.login.isAuthenticated == true">
+          <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>
+          If you have any questions or problems on this site, feel free to share any ideas
+          with us. Drop an email to <a href="mailto:werner@zmlrekenaars.co.za"> werner </a>. If you have content problems, speak to
+          your teacher.
+      </v-card>
+     <v-card  class="ma-2 pa-2">
+       <v-icon color="green darken-2"> mdi-information </v-icon>
+       If you end up here after selecting a specific function, it usually means you do not have rights
+       to access that function.
+     </v-card>
+
+      </v-col>
+  </v-layout>
+      <v-overlay
       :opacity="1"
       :value="overlay"
     >
@@ -105,71 +142,14 @@
         Loading...
       </v-progress-circular>
     </v-overlay>
-
-    <v-row>
-     <v-col>
-      <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == false">
-        <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>If you are a learner, your login would start with your schoolno, and
-         if you are a teacher it would be your teacher login details.
-         A learner's first login his admin no will be his username and password.
-         Request them from Werner at  082 563 9790
-         if you are unsure.
-      </v-card>
-      <v-card class="ma-5 pa-4" v-show="getZml.login.isAuthenticated == true">
-          <v-icon color="purple darken-2"> mdi-help-circle-outline </v-icon>
-          If you have any questions or problems on this site, feel free to share any ideas
-          with us. Drop an email to werner@zmlrekenaars.co.za. If you have content problems, speak to
-          your teacher.
-      </v-card>
-     <v-card  class="ma-5 pa-4">
-       <v-icon color="green darken-2"> mdi-information </v-icon>
-       If you end up here after selecting a specific function, it usually means you do not have rights
-       to access that function.
-     </v-card>
-
-      </v-col>
-    </v-row>
     <v-container>
 
 
 <!-- PROFILE --------------------->
-    <v-dialog v-model="showProfile" :scrollable="false"
-              persistent width="70%"
-              :fullscreen="$vuetify.breakpoint.smAndDown"
-              >
-      <v-row>
-        <v-col cols="12" class="ma-2 pa=2">
-      <v-card>
-        <v-card-title> Registration Complete  {{ getZml.login.type }}</v-card-title>
-        <v-card-subtitle> Please make note of your password, or change it</v-card-subtitle>
-        <v-card-text>
-
-         <v-text-field
-               v-model="getZml.login.username"
-               prepend-icon="mdi-account"
-               :disabled="getZml.login.userid > 0"
-               label="Username" />
-         <v-text-field
-            v-model="getZml.login.password"
-            label="Password"
-            prepend-icon="mdi-lock"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword"
-            :type="showPassword ? 'text' : 'password'"
-            required />
-         <v-text-field v-model="getZml.login.fullname" label="Fullname" required />
-         <v-text-field v-model="getZml.login.phone" label="Phone"  required />
-         <v-text-field v-model="getZml.login.email" label="Email"  required />
-
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="info" @click="showProfile = false"> Close </v-btn>
-          <v-spacer />
-          <v-btn color="primary" @click="saveDetails"> Save </v-btn>
-        </v-card-actions>
-      </v-card>
-        </v-col>
-      </v-row>
+    <v-dialog v-model="showProfile" :scrollable="true"
+              persistent xwidth="70%"
+              :fullscreen="$vuetify.breakpoint.mobile" max-width="600" width="auto">
+   <Profile v-show="showProfile" @close="showProfile=false" />
     </v-dialog>
     </v-container>
   </v-container>
@@ -183,14 +163,15 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch';
 import { zmlLog } from '@/api/zmlLog.js';
 //import router from '@/router';
-import { getters } from "@/api/store";
+import { mySet, getters } from "@/api/store";
 import { zData } from "@/api/zGetBackgroundData.js"
 import { ls } from "@/api/localStorage.js"
+import Profile from "@/components/Profile.vue"
 
 export default {
     name: "login",
     props: ['errorMessage'],
-    components: {},
+    components: {Profile},
     computed: {
     },
     data: () => ({
@@ -352,6 +333,7 @@ export default {
       // this.$cs.l(this.$options.name,'p-doneLogin')
       this.submitting = false;
       if ('fullname' in response && response.error == '') {
+          mySet('gZml','login', response)
           this.getZml.login = response;
           this.getZml.login.isAuthenticated = true;
           this.getZml.login.grade = response.grade;
@@ -372,21 +354,34 @@ export default {
             this.getZml.login.lang = 'E'
             this.$i18n.locale = 'en'
           }
+          //Check if the guy is a superuser, and mark this.$superUser as true
+          if (['WER', 'WERNER','TVRB'].includes(this.getZml.login.username.toUpperCase() )) {
+            infoSnackbar('You are a SUPERUSER!')
+            this.getZml.login.superUser = true
+            this.$super.user = true
+          } else {
+            this.getZml.login.superUser = false
+            this.$super.user = false
+          }
+          this.$super.username = this.getZml.login.username
+          this.$super.fullname = this.getZml.login.fullname
+          this.$super.userid   = this.getZml.login.userid
 
           if (!this.goodPassword()) {
             zmlLog(this.loginObj.username, "LoginFail3", 'To easy password')
+
             this.showProfile = true
           } else {
             // this.$cs.l('welcome',response.username, this.getZml.login.lang, this.getZml.login.grade,'idx=',this.getZml.login.grade.indexOf('A'))
-            this.dropAnEmail()
-            // new user if added = 1
-            if (response.added == 1  || response.password == 'password') {
-              infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
-              this.showProfile = 1;
-            } else {
-              infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
-              this.saveLocalStorage()
 
+            // new user if added = 1
+          if (response.added == 1  || response.password == 'password') {
+            infoSnackbar('Welcome ' + this.getZml.login.fullname + ', please update your details');
+            this.showProfile = 1;
+            this.dropAnEmail()
+          } else {
+             infoSnackbar('Welcome ' + response.fullname  + '(' + response.username + ')' )
+             this.saveLocalStorage()
               // if you open this, guy goes to home page after usual login
               // this.startLearning()
             }
@@ -402,32 +397,6 @@ export default {
 
 
       }
-    },
-    saveDetails() {
-      // this.$cs.l(this.$options.name,'p-saveDet')
-      //we need to send the stuff for an update
-      if (!this.getZml.login.email || !this.getZml.login.phone) {
-          errorSnackbar('You need to supply an email address and a phone number please.')
-          return
-      }
-      const login = {
-            task: 'loginupdate',
-            api: zmlConfig.apiDKHS,
-            data: this.getZml.login}
-      zmlFetch(login,this.doneWithUpdate, this.failUpdate)
-    },
-    doneWithUpdate(response) {
-      // this.$cs.l(this.$options.name,'p-doneUpadte')
-      if (response.errorcode == 0 ) {
-        infoSnackbar('Your details has been updated ' + this.getZml.login.fullname)
-        this.showProfile = false
-        this.saveLocalStorage()
-      } else {
-        errorSnackbar('We have a problem to update your details ' + response.error)
-      }
-    },
-    failUpdate(response) {
-      errorSnackbar('We have a problem to update your details ' + response.errorcode)
     },
     dropAnEmail() {
       // this.$cs.l(this.$options.name,'p-dropEMail')
@@ -453,7 +422,8 @@ export default {
     loadFromLocalStorage() {
       //Check localstorage...
       if (ls.test('login')) {
-         this.getZml.login = ls.load('login')
+         //this.getZml.login = ls.load('login')
+         mySet('gZml','login', ls.load('login'))
          this.loginObj.username = this.getZml.login.username
       } else if (ls.test('zmllogin')) {
          this.getZml.login = ls.load('zmllogin')
@@ -479,7 +449,7 @@ export default {
     },
     saveLocalStorage() {
       if (this.getZml.login.username) {
-        ls.save('login', this.getZml.login)
+        ls.save('zmllogin', this.getZml.login)
         /*
         let loginDetails = JSON.stringify(this.getZml.login)
         localStorage.setItem('login', loginDetails)
@@ -519,7 +489,7 @@ export default {
     },
     forgotPassword() {
       if (!this.loginObj.username) {
-        errorSnackbar("Please supply an username.")
+        errorSnackbar("Please supply an username - we need your username to find your email.")
         return
       }
       let ts = {}

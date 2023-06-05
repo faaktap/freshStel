@@ -21,11 +21,12 @@ function zmlFetch(task,callback,errcallback, extraParameter) {
 
         fetch(task.api ? task.api : zmlConfig.apiPath, apiConfig)
         .then(response => {
-            if (!response.ok) {
-                zmlConfig.cl('FETCH--------------: thow response not ok error ',task.task,response.statusText)
+            if (response.ok && (response.status >= 200 && response.status <= 299)) {
+              return response.json();
+            } else {
+                zmlConfig.cl('FETCH--------------: throw response not ok error ',task.task,response.statusText)
                 throw Error(response.statusText)
             }
-            return response.json()
         })
         .then(responseAsJson => {
            //here we can decompress if return is gzipped, or we can do local callback to save globals?

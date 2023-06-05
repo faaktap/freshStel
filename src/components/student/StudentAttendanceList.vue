@@ -16,6 +16,8 @@
     </details>
     <details color="primary"><summary>Late</summary>
     If someone is late in class, ie. kids tell you he is on the way, you can mark hom as late.</details>
+    <details color="primary"><summary>AWR</summary>
+    If someone is absent in class but still in school. AWR: Absent with Reason - ie: at music, or helping other teacher.</details>
 
   </base-title-expand>
 
@@ -25,8 +27,8 @@
 
 <v-container v-else fluid>
  <v-toolbar  dense  row >
-   Attendance for {{ attendanceDetail.staffSurname }} on Day/Period {{attendanceDetail.day}}-{{ attendanceDetail.period}} at Class {{ attendanceDetail.location}}
-    from list {{ attendanceDetail.other.listname}}
+   <span>Attendance for <strong>{{ attendanceDetail.staffSurname }}</strong> on Day/Period <strong>{{attendanceDetail.day}}-{{ attendanceDetail.period}}</strong> at Class <strong>{{ attendanceDetail.location}}</strong>
+    from list <strong>{{ attendanceDetail.other.listname}}</strong></span>
     <v-spacer></v-spacer>
       <v-btn small icon @click="reset('Ignore')" class="ma-2" title="Mark all as ignore"> I </v-btn>
       <v-btn small icon @click="reset('Present')" class="ma-2" title="Mark all as Present"> P </v-btn>
@@ -164,7 +166,7 @@ export default {
     }),
     computed: {
       studentTally() {
-        console.log(this.refreshKey)
+        this.$cs.l('StudentTally', this.refreshKey)
         if (this.ss.length < 1) return []
         let tally = []
 
@@ -174,15 +176,14 @@ export default {
         //loop thru ss array, and add 1 to tally for each checklist that match
         this.ss.forEach(e => {
           const idx = tally.findIndex(t => t.name == e)
-          if (idx == -1 ) console.log('we have a problem', idx)
-          const i = tally.find(t => t.name == e)
-          console.log(i)
+          if (idx == -1 ) this.$cs.l('we have a problem', idx)
+          //const i = tally.find(t => t.name == e)
           tally[idx].value += 1
         });
         return tally
       },
       studentListReal() {
-        this.refreshKey
+        //this.refreshKey
         if (this.addList.length) {
           //return this.studentList.concat(this.addList) //did not work? might be refreshkey
           if (this.studentList.length) {
@@ -197,27 +198,9 @@ export default {
 
     },
     methods:{
-      xxstudentListReal() {
-        this.refreshKey
-        console.log('cccccccccccccccccccccc1')
-        if (this.addList.length) {
-          //return this.studentList.concat(this.addList)
-          console.log('cccccccccccccccccccccc2')
-          if (this.studentList.length) {
-            console.log('cccccccccccccccccccccc3')
-             return this.addList.concat(this.studentList)
-          } else {
-            console.log('cccccccccccccccccccccc4')
-             return this.addList
-          }
-        } else {
-          console.log('cccccccccccccccccccccc5')
-          return this.studentList
-        }
-      },
       reset(text) {
         this.ss.fill(text)
-        console.log('fill=', this.ss)
+        this.$cs.l('fill=', this.ss)
         this.refreshKey++
       },
       commitChanges() {
@@ -225,27 +208,27 @@ export default {
          this.$router.back()
       },
       studentCardColor(idx) {
-        console.log(this.refreshKey)
         switch (this.ss[idx]) {
           case 'Present': return "green lighten-1"
           case 'Absent': return "red lighten-2"
           case 'Late': return "purple lighten-1"
+          case 'AWR': return "pink lighten-1"
           default : return 'gray lighten-4'
         }
       },
       handCapture(studentReceived) {
-        console.log('handcap (received):', this.stud)
+        this.$cs.l('handcap (received):', this.stud)
         this.stud = studentReceived
       },
       addStudent() {
-        console.log('Adding in list:', this.stud.data)
+        this.$cs.l('Adding in list:', this.stud.data)
         this.addList.push(this.stud.data)
         this.ss.push('Present')
         this.showAdd = false
       }
      },
     mounted() {
-      console.log('ClassList(mounted) : ', this.studentList)
+      this.$cs.l('ClassList(mounted) : ', this.studentList)
       this.ss = Array.from({ length: this.studentList.length }, () => ('Present'))
     },
     watch: {

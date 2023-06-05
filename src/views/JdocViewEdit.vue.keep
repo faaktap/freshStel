@@ -1,0 +1,175 @@
+<template>
+  <v-container fluid>
+    <base-tool toolbarName="General List Questions Template"
+            :background="false"
+            :back="true"
+  >
+      <!-- <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn> -->
+      <!-- <v-btn class="ma-2" @click="showPrint = true"> Export </v-btn> -->
+      <v-btn icon class="ma-2" @click="refresh(0)"> <v-icon> mdi-refresh </v-icon> </v-btn>
+  </base-tool>
+
+      <v-progress-linear :active="getData[0].progress" :indeterminate="getData[0].progress" color="grey lighten-1" />
+          {{ zmlF.showDBError (getData[0].response) }}
+          good?: {{ zmlF.isGoodData(getData[0].response) }}
+          wd  : {{ getData[0].workDone }}
+          <!-- {{ getData[0].response }} -->
+         <base-table-edit
+            :tList="getData[0].response"
+            :tHeading="'General List Questions  ( Records : ' + getData[0].response.length + ')'"
+            bHeading="homework, mondeling, etc..."
+            @update="tableAction('update',$event)"
+            @delete="tableAction('delete',$event)"
+            @insert="tableAction('insert')"
+         >
+         <template v-slot:action>
+          <v-checkbox v-model="test" label="A Test to see if JSON Struct is fine" />
+         </template>
+         </base-table-edit>
+      <v-dialog v-model="showEdit" scrollable max-width="400">
+        <v-card>
+            <v-card-text>
+                <v-text-field v-model="rec.id" label="id" :readonly="getData[0].action == 'update'" />
+                <v-text-field v-model="rec.name" label="name"  />
+                <v-textarea v-model="rec.jdocstructure" label="struct" />
+            </v-card-text>
+            <v-card-actions>
+                <v-btn @click="saveRec(0)"> Save </v-btn>
+            </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- {{ getData[0] }} -->
+  </v-container>
+</template>
+
+<script>
+import { getters } from  "@/api/store"
+import { zmlF } from '@/api/zmlF.js'
+import BaseTableEdit from    '@/components/base/baseTableEdit'
+import baseTool from '@/components/base/baseTool.vue'
+export default {
+    name:"JDocViewEdit",
+    components: {
+        BaseTableEdit
+      , baseTool
+    },
+    props: [],
+    data () {
+      return {
+        zmlF:zmlF,
+        getZml: getters.getState({ object:"gZml" }),
+        uniqid:0,
+        timerHandle:null,
+        dataSequence:false,
+        getData:[
+         { id:0
+          , action:''
+          , desc: "Tick List"
+          , workDone: 0
+          , response: []
+          , processor: (action,element) => {this.doSomething(action,element)}
+          , sql:[ {action: 'refresh', sql: `SELECT * from dkhs_tickjdoc`}
+                , {action: 'update', sql: `update dkhs_tickjdoc set jdocstructure = :jdocstructure, name = :name where id = :id`}
+                , {action: 'insert', sql: `insert into dkhs_tickjdoc values(null, :name, :jdocstructure )`}
+                ]
+
+          , fields: [{ value: "id", text: "id", type: "text", ext: "date", prependInnerIcon:'mdi-card'}
+                    ,{ value: "name", text: "name", type: "text", ext: "", prependInnerIcon: 'mdi-human'}
+                    ,{ value: "jdocstructure", text: "jdoc", type: 'textarea', ext: "", prependInnerIcon: 'mdi-code-json'}
+                     ]
+         }
+        ],
+        showEdit:false,
+        rec:{},
+        archive:          { id:0
+          , desc: "ZML Constants"
+          , workDone: 0
+          , response: []
+          , processor: (action,element) => {this.doSomething(action,element)}
+          , sql:`SELECT * from dkhs_constant`
+          , fields: [{ value: "zmlid", text: "id"}
+                    ,{ value: "zmltype", text: "type"}
+                    ,{ value: "zmlname", text: "name"}
+                    ,{ value: "zmlvalue", text: "value"}
+                    ,{ value:"zmltext", text: "test@werner.com"}
+                     ]
+         },
+         test:false
+    }},
+   computed: {
+    listFilter() {
+        if (zmlF.isGoodData(this.getData[0].response)) {
+            return this.getData[0].response
+        } else {
+            return []
+        }
+    }
+   },
+   created() {
+
+   },
+   mounted() {
+    console.log('Mounted', this.$options.name)
+   },
+   methods: {
+    refresh(id) {
+       let ele = this.getData[id]
+       ele.action = 'refresh'
+       this.doSomething(ele.action,ele)
+    },
+     saveRec(id) {
+        let ele = this.getData[id]
+        ele.data = {id: this.rec.id, jdocstructure: this.rec.jdocstructure, name: this.rec.name}
+        if (ele.action == 'insert') {
+          //Important! Only bind variables that will be used: Otherwise Errorcode 91 : HY093
+          ele.data.bind = {jdocstructure: this.rec.jdocstructure, name: this.rec.name}
+        } else {
+          //It is an update - should we check action?
+          //Important! Only bind variables that will be used: Otherwise Errorcode 91 : HY093
+          ele.data.bind = {id: this.rec.id, jdocstructure: this.rec.jdocstructure, name: this.rec.name}
+        }
+        this.doSomething(ele.action,ele)
+        this.showEdit = false
+    },
+     processAllData(response) {
+       console.warn('processAllData = Data was loaded in storage, and passed to me as well.',response.length||999)
+     },
+     loadError(error) {
+        console.log('errir:', error)
+     },
+     doSomething(action,dataObject) {
+        console.warn('Here we can Do Something with object',action,dataObject)
+        dataObject.action = action
+        zmlF.ZF(dataObject, this.processAllData, this.loadError);
+
+     },
+     tableAction(action,item) {
+        if (this.test) {
+            alert('do someting else...')
+            let x = JSON.parse(item.jdocstructure)
+            console.log('is this valid?', x)
+            return
+        }
+        this.$cs.l('back at base - Action:item:',action, item )
+        switch (action) {
+        case 'insert':
+            this.getData[0].action = 'insert'
+            this.rec = {}
+            this.showEdit = true
+            break
+        case 'update':
+        {
+            this.rec  = this.getData[0].response.find(e => e.id == item.id)
+            this.getData[0].action = 'update'
+            this.showEdit = true
+            break
+        }
+        case 'delete':            alert('you wanna delete?'); break
+        default: alert('we do not know what to do?')
+        }
+        // this.$router.push({ name: 'EmailDeliveryReport', params: {deliverid: item.item.deliveryid} })
+     },
+   }
+}
+</script>

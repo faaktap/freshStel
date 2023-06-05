@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2020 (64-Bit) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="200px" height="456px" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 201 458"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003"
+ enable-background="new 0 0 500 500">
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect id="RECT" fill="#E6E7E8" width="201" height="458"/>
+  <text x="19" y="389" id="TEXT2" fill="black" font-weight="normal" font-size="22px" font-family="Arial">WORDS BELOW</text>
+  <text x="23" y="65" id="TEXT1" fill="black" font-weight="normal" font-size="21px" font-family="Arial">WORDS ABOVE</text>
+  <g id="_2112074720416">
+   <g>
+    <path fill="#E2DEDE" fill-rule="nonzero" d="M194 323l-189 0c-2,0 -3,-1 -3,-3l0 0c0,-2 1,-3 3,-3l189 0c2,0 3,1 3,3l0 0c0,2 -1,3 -3,3z"/>
+    <g>
+     <rect fill="#84B2FC" fill-rule="nonzero" x="20" y="275" width="10" height="41"/>
+     <rect fill="#4384EC" fill-rule="nonzero" x="50" y="255" width="10" height="61"/>
+     <rect fill="#84B2FC" fill-rule="nonzero" x="80" y="257" width="10" height="59"/>
+     <rect fill="#4384EC" fill-rule="nonzero" x="110" y="222" width="10" height="94"/>
+     <rect fill="#84B2FC" fill-rule="nonzero" x="140" y="209" width="10" height="107"/>
+     <rect fill="#4384EC" fill-rule="nonzero" x="170" y="185" width="10" height="132"/>
+    </g>
+    <path fill="#3FC18D" fill-rule="nonzero" d="M24 265c-1,0 -2,0 -3,-1 -1,-1 -1,-4 0,-5l30 -24c1,-1 2,-1 3,-1l28 5 29 -44c1,-1 1,-1 2,-1l29 -5 29 -31c1,-1 3,-1 5,0 1,1 1,3 0,5l-30 32c-1,1 -1,1 -2,1l-29 5 -29 45c-1,1 -2,2 -3,1l-29 -5 -29 23c-1,1 -1,1 -2,1z"/>
+   </g>
+  </g>
+ </g>
+</svg>

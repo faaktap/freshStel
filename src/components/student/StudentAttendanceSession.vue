@@ -2,6 +2,8 @@
 <div>
 
 <base-title-expand color="white" heading="ATTENDANCE VIEW SESSION">
+<p>We display all filled in attendance for a selected event here. An event is created when an attendace session is started, and a teacher, day, period, date
+  and class was selected </p>
    <p>Shall we allow them to edit? Might be a bit tricky, maybe just change status and allow delete?</p>
    {{ studentTally }}
   </base-title-expand>
@@ -18,6 +20,7 @@
     <v-btn icon small class="ma-2" @click="showPhotoList = !showPhotoList" title="show Thumbnails"><v-icon>mdi-image</v-icon></v-btn>
     <v-btn class="ma-2" small icon @click="showAs='list'" title="View as list"> <v-icon>mdi-view-list</v-icon> </v-btn>
     <v-btn class="ma-2" small icon @click="showAs='card'" title="View as cards"> <v-icon>mdi-id-card</v-icon> </v-btn>
+    <v-btn icon @click="doPrint"><v-icon> mdi-printer</v-icon>  </v-btn>
     <v-back/>
  </v-toolbar>
 </v-container>
@@ -32,30 +35,28 @@
                v-for="s in studentList"
               :key="s.studentid">
            <v-card :color="s.status == 'Present' ? 'green lighten-1' : 'purple lighten-3'" class="ma-1 pl-2">
-             <v-card-title class="text-caption">
+             <v-card-text>
               <v-layout justify-space-between>
-               <span>{{ s.surname }}, {{ s.firstname}}</span>
+               <span class="font-weight-black">{{ s.surname }}, {{ s.firstname}}</span>
                <span> {{ s.studentid }}  </span>
               </v-layout>
-             </v-card-title>
-             <v-card-text>
              <v-layout justify-space-between>
                <v-flex xs3 class="ma-1" v-show="showPhotoList==true">
                  <z-show name="studentphoto" :id="s.studentid" height="88" />
                </v-flex>
              <span class="ma-2">
-               {{ s.attendancedate.substr(0,16) }} P{{ s.period }}
+               {{ s.attendancedate.substr(0,16) }}
              </span>
-
+             <span class="ma-2 font-weight-black">P{{ s.period }}</span>
             </v-layout>
-             </v-card-text>
-             <v-card-actions class="text-caption">
+
+
               <v-layout justify-space-between>
               <span class="ma-2" v-if="'grade' in s"> {{ s.grade }}{{ s.gclass }} </span>
               <v-spacer />
               <v-btn small class="ma-2" @click="edit(s.attendanceid)"> {{ s.status }} </v-btn>
               </v-layout>
-             </v-card-actions>
+             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -77,14 +78,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="s in studentList" :key="s.studentid" :style="s.status == 'Present' ? 'color:gray' : 'background-color:lavender'">
+        <tr v-for="s in studentList" :key="s.studentid" :style="s.status == 'Present' ? 'color:gray' : 'background-color:red'">
           <td class="ma-2"> {{ s.attendanceid }} </td>
           <td class="ma-2"> {{ s.surname}} </td>
           <td class="ma-2"> {{ s.firstname}} </td>
           <td class="ma-2"> {{ s.studentid}} </td>
           <td class="ma-2"> {{ s.attendancedate.substr(0,16) }} </td>
           <td class="ma-2"> {{ s.period }} </td>
-          <td class="ma-2" :style="s.status == 'Present' ? 'color:green' : 'background-color:lavender'">
+          <td class="ma-2" :color="s.status == 'Present' ? 'color:green' : 'background-color:lavender'">
              <v-btn @click="edit(s.attendanceid)" small class="ma-2"> {{ s.status }} </v-btn>
           </td>
           <td  class="ma-2" v-show="showPhotoList==true"><z-show name="studentphoto" :id="s.studentid" height="44" /> </td>
@@ -127,6 +128,8 @@ import ZShow from '@/components/base/ZShow.vue'
 import VBack from '@/components/base/VBack.vue'
 import { AttWork } from '@/components/student/AttWork.js'
 import { infoSnackbar } from '@/api/GlobalActions';
+import { printJSON } from "@/api/zmlPrint.js"
+import { ls } from "@/api/localStorage.js"
 
 export default {
     name:"StudentAttendanceSession",
@@ -148,8 +151,8 @@ export default {
         detail:'',
         showEditDialog:false,
         slRec:{},
-        checkList: ["Present","Absent", "Late", "Ignore"],
-        originalStatus: ''
+        checkList: ["Present","Absent", "Late", "Bunk", "Ignore"],
+        originalStatus: '',
     }),
     computed: {
       studentTally() {
@@ -165,11 +168,31 @@ export default {
         });
         return tally
       },
+      studentListPrint() {
+        //Create a list for printing
+        let f = []
+        let cnt = 0
+        this.studentList.forEach(e => {
+          cnt ++
+          const x = e
+          x.time = e.attendancedate.substr(10,20)
+          x.grade = e.grade + e.gclass
+          x.no = cnt
+          if (x.status != 'Present') x.status = '*' + x.status
+          f.push(x)
+        })
+        return f
+      }
     },
     methods:{
+      doPrint() {
+        let header = [{value:'no'},{value:'time'},{value:'surname'},{value:'firstname'}
+                    ,{value:'studentid'},{value:'grade'}, {value:'status'}]
+        printJSON(this.studentListPrint, header, `<center>Day: ${ this.detail[0] } Period: ${ this.detail[1] } Class Room: ${ this.place }  -- ${new Date().toJSON().slice(0,10)}</center>`)
+      },
       save() {
          if (this.originalStatus == this.slRec.status) {
-           console.log('no status change')
+           this.$cs.l('no status change')
          } else {
            //Check if it's today's date
             let currentDateWithFormat = new Date().toJSON().slice(0,10)   //.replace(/-/g,'/'); no need to change - to /
@@ -183,14 +206,14 @@ export default {
          this.showEditDialog = false
       },
       edit(attendanceid) {
-        console.log('editing:', attendanceid)
+        this.$cs.l('editing:', attendanceid)
         this.slRec = this.studentList.find(e => e.attendanceid == attendanceid)
         //get the attendance, and allow to change..
         if ('attendanceid' in this.slRec) {
           this.showEditDialog = true
           this.originalStatus = this.slRec.status
         } else {
-          console.log('some error on find slRec=', this.slRec,'SL=', this.studentList)
+          this.$cs.l('some error on find slRec=', this.slRec,'SL=', this.studentList)
         }
       },
       commitChanges() {
@@ -212,19 +235,34 @@ export default {
       errorLoading(err) {
         this.loading = false
         alert('something went wrong:'+ err.error)
-        console.log(err)
+        this.$cs.l(err)
       },
+      newData() {
+        this.refresh()
+        this.detail = this.sessionid.split(".");
+        this.$cs.l(this.detail.length)
+        if (this.detail.length == 3) {
+          this.detail[2] = this.detail[2].substr(0,this.detail[2].indexOf('-'))
+        }
+
+      }
      },
     mounted() {
-      console.log('AttViewSes(mounted) : ', this.sessionid)
-      this.refresh()
-      this.detail = this.sessionid.split(".");
-      console.log(this.detail.length)
-      if (this.detail.length == 3) {
-        this.detail[2] = this.detail[2].substr(0,this.detail[2].indexOf('-'))
-      }
+      this.$cs.l('AttViewSes(mounted) : ', this.sessionid)
+      if (ls.test(this.$options.name)) this.showAs = ls.load(this.$options.name)
+      this.newData()
     },
     watch: {
+      sessionid() {
+         this.newData()
+      },
+      place() {
+        this.newData()
+      },
+      showAs() {
+        ls.save(this.$options.name,this.showAs)
+      }
+
     }
 }
 </script>
