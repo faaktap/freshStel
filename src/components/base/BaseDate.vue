@@ -1,16 +1,20 @@
 <template>
 <div>
- <v-text-field dense
+<v-text-field
           :label="label"
           :value="value"
            append-icon="mdi-calendar"
-          @focus="showDate = !showDate"
           @click:append="showDate = !showDate"
           v-on:input="updateValue($event)"
           :required="required"
           class="ma-2"
-          />
-          <v-card elevation-3 v-if="showDate">
+          :disabled="disabled"
+          :dense="dense"
+          >
+          </v-text-field>
+          <!-- <template v-slot:clearable> -->
+          <v-dialog v-model="showDate" max-width="300" max-height="350" >
+          <v-card elevation-3>
            <v-date-picker dense
                    picker-date
                    no-title
@@ -20,7 +24,10 @@
                    :value="value">
            </v-date-picker>
           </v-card>
-          <!-- {{ current }} -->
+          </v-dialog>
+          <!-- </template> -->
+
+
 </div>
 </template>
 
@@ -28,39 +35,28 @@
 //https://paulund.co.uk/use-v-model-on-custom-vue-component
 //NB Werner!!! https://vuejs.org/v2/guide/components.html#Using-v-model-on-Components
 //https://vuejs.org/v2/guide/forms.html
-import { infoSnackbar } from "@/api/GlobalActions"
 export default {
   name: "BaseDate",
-  props:{ label: {    type: String      },
+  props:{ label: {    type: String, default:'date'},
           value: {    type: String },
-          required: { type: Boolean,  default: false},
+          dense: {    type: Boolean,  default: false },
+          disabled: { type: Boolean,  default:false },
+          required: { type: Boolean,  default: false },
           instructions: {type: String, default:""}
         },
   data: () => ({
     showDate: false,
     current:{dd:0, mm:0, yyyy:0},
-    cheatValue: null
+    cheatValue: null,
   }),
+   computed:{
+    inp:{
+      get(){  return this.value},
+      set(v){ this.$emit('input', v)}
+    }
+  } ,
   methods:{
-    checkIfInFuture(dte) {
-      console.log(this.instructions, 'before check', this.instructions == 'FA')
-      if (this.instructions == 'FA') return false;
-      console.log(this.instructions, 'fall thru')
-      let selected = {}
-      selected.yyyy= dte.substr(0,4)
-      selected.mm = dte.substr(5,2)
-      selected.dd = dte.substr(8,2)
-      if (selected.yyyy > this.current.yyyy) return 1;
-      if (selected.mm > this.current.mm) return 1;
-      if (selected.dd > this.current.dd) return 1;
-      return 0
-    },
     updateValue: function (pvalueT) {
-      if (this.checkIfInFuture(pvalueT)) {
-        infoSnackbar('RW - Not allowed to choose date in future.')
-        this.$emit('input', this.current.yyyy + '-' + this.current.mm + '-' + this.current.dd)
-        return
-      }
       this.showDate = false
       this.$emit('input', pvalueT)
     }
@@ -73,6 +69,10 @@ export default {
 
     this.cheatValue = this.value
     if (this.value == '')  this.cheatValue = this.current.yyyy + '-' + this.current.mm + '-' + this.current.dd
+  },
+  watch: {
+    value() {
+    }
   }
-};
+}
 </script>

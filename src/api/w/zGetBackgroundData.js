@@ -91,8 +91,14 @@ function finishedLoadingBasic (response) {
     //getZml = getters.getState({ object: "gZml" })
     l('finishedLoadingBasic', response)
     getters.getState({ object: "gZml" }).subjects = response.subjects;
-    // getters.getState({ object: "gZml" }).folders = response.folders;
+
     getters.getState({ object: "gZml" }).functions = response.functions;
+    // add in a proper way - "other at the bottom
+    let f1 = getters.getState({ object: "gZml" }).functions.filter(e => e.functionaccess == 'other')
+    let f2 = getters.getState({ object: "gZml" }).functions.filter(e => e.functionaccess != 'other')
+    getters.getState({ object: "gZml" }).functions.length = 0
+    getters.getState({ object: "gZml" }).functions = f2.concat(f1);
+    ls.save('zmlFuncs', getters.getState({ object: "gZml" }).functions)
 
     getters.getState({ object: "gZml" }).persMenemonic = response.pers;
     ls.save('zmlPersM', response.pers)

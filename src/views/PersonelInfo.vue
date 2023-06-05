@@ -2,7 +2,7 @@
 <!-- custom filters on v-data-table search explained... https://www.front.id/en/articles/vuetify-achieve-multiple-filtering-data-table-component-->
 <div>
 
-<base-tool
+<base-tool v-if="['admin','teacher'].includes(getZml.login.type)"
             toolbarName="De Kuilen High School Personel"
            :background="false"
             >
@@ -15,10 +15,15 @@
           <v-btn small @click="loadPersonelList" class="mr-2" title="refresh - reflect new changes">
                        <v-icon> mdi-refresh </v-icon>          </v-btn>
 
-
+<v-btn small v-if="personelList.length"
+        title="Trying to get images to print"
+        @click="doPrint()"
+    >
+     T
+  </v-btn>
 </base-tool>
 
-<v-container v-if="['admin','teacher'].includes(getZml.login.type)" fluid>
+<v-container fluid>
   <v-layout>
       <v-col xs12 md6>
        <v-text-field
@@ -30,11 +35,24 @@
   </v-layout>
  <v-divider />
 </v-container>
-<v-container v-else>
+<!-- <v-container v-else>
    Your are not logged in - limited functionality
-</v-container>
+</v-container> -->
 
 <v-container fluid>
+
+  <!--v-simple-table >
+    <tr><th>Public Name</th><th>Name</th><th>Surname</th><th>Picture Path</th><th>Class</th><th>WorkArea</th></tr>
+    <tr v-for="d in personelList" :key="d.data.persid">
+      <td>{{d.data.public_preferredname}} </td>
+      <td>{{d.data.name}}</td>
+      <td>{{d.data.surname}}</td>
+      <td>https://kuiliesonline.co.za/bib/assets/staff/{{d.data.photo}}</td>
+      <td>{{d.data.room}}</td>
+      <td>{{d.data.workarea}}</td>
+    </tr>
+  </v-simple-table-->
+
   <template v-if="showAs == 'list' && ['admin','teacher'].includes(getZml.login.type)">
        <personel-name-list :staffList="filteredItems"
                            @pictureUpload="loadAPicture"
@@ -88,6 +106,8 @@
 </v-dialog>
 
 </v-container>
+
+
 </div>
 </template>
 
@@ -96,6 +116,7 @@ import { zmlConfig } from '@/api/constants';
 import { zmlFetch } from '@/api/zmlFetch.js';
 import { infoSnackbar } from '@/api/GlobalActions';
 import { getters } from "@/api/store";
+import { printJSON } from "@/api/zmlPrint.js"
 import baseTool from '@/components/base/baseTool.vue'
 
 import PersonelNameCard from '@/components/staff/PersonelNameCard.vue'
@@ -115,6 +136,7 @@ export default {
            , baseTool
            },
  data: () => ({
+  showPrint:false,
   personelRec:null,
   getZml: getters.getState({ object:"gZml" }),
   showAddPhoto: false,
@@ -135,6 +157,16 @@ export default {
   }
  },
  methods: {
+      doPrint() {
+         let head = [{text:'id', value:'data.persid'}
+                    ,{text:"surname", value:'data.surname'}
+                    ,{text:"name", value:"data.name"}
+                    ,{text:"room", value:"data.room"}
+                    ,{text:"workarea", value:"data.workarea"}
+                    ,{text:"phone", value:"data.contactnumber"}
+                    ]
+        printJSON(this.personelList, head, 'Pers List : ')
+      },
   loadAPicture(persRecord) {
     alert('select a picture for persRecord for ' + persRecord.data.surname)
     this.personelRec = persRecord
@@ -185,6 +217,7 @@ export default {
     let ts = {};
     ts.task = 'PlainSql';
     ts.sql = `select * from dkhs_personel where room != 'WEG' or workarea != 'WEG' order by surname, name`
+    //ts.sql = `select * from dkhs_personel  order by surname, name`
     ts.api = zmlConfig.apiDKHS
     zmlFetch(ts, this.afterAllStaffLoaded)
   },

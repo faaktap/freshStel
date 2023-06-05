@@ -1,5 +1,7 @@
 module.exports = {
-  publicPath: '/', //virtual-school/
+  //publicPath: '/virtual-school/',
+  //publicPath: '/',
+  publicPath: '/venue/',
   "transpileDependencies": [
     "vuetify"
   ],

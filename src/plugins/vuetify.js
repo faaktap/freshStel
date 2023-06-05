@@ -1,10 +1,10 @@
 import Vue from 'vue';
 //import Vuetify from 'vuetify/lib/framework';
-import Vuetify, { VLayout, VCheckbox, VSelect,VTextarea } from "vuetify/lib";
+import Vuetify, { VTextField,VLayout, VCheckbox, VSelect,VTextarea,VAutocomplete, VCombobox, VSwitch } from "vuetify/lib";
 import { Ripple, Intersect, Touch, Resize } from 'vuetify/lib/directives'
 
 Vue.use(Vuetify, {
-    components: { VLayout, VCheckbox, VSelect,VTextarea },
+    components: { VTextField,VLayout, VCheckbox, VSelect,VTextarea,VAutocomplete, VCombobox,VSwitch},
     directives: { Ripple, Intersect, Touch, Resize }
 });
 
@@ -36,7 +36,10 @@ export default new Vuetify({
           lightgray: "#BDBDBD",
           lightpink: "#FFCFE3",
           white: "#FFFFFF",
-          gold: "#b99c31"
+          gold: "#b99c31",
+          stellenbergblou:"#008D83",
+          stelgray:"#B4B4B4",
+          stelred: "#852028",
         }
       }
     }

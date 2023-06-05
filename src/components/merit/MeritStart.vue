@@ -22,7 +22,7 @@
                color="secondary"
                title="Merit Confirmation"
                icon="mdi-trophy-award"
-      >Merit Confirmation</base-tool-button>
+      >Merit Approval</base-tool-button>
 
       <base-tool-button @click="showMeritTable"
                class="mt-1 mr-2 mb-2 ml-2"
@@ -40,7 +40,7 @@
     <v-card-text>
       <v-simple-table>
         <tr><td>Merit Points </td> <td> Adjust how much each merit is worth</td></tr>
-        <tr><td>Merit Confirmation </td> <td> Confirm merits added by students themselves</td></tr>
+        <tr><td>Merit Approval </td> <td> Confirm merits added by students themselves</td></tr>
         <tr><td>Merit Edit </td> <td> Edit the wording of merits.</td></tr>
 
       </v-simple-table>

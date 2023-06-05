@@ -1,5 +1,5 @@
 <template>
-<v-card class="ma-0 pa-0"  v-if="personelRecord" elevation="0" color="">
+<v-card class="ma-0 pa-0"  v-if="personelRecord" elevation="0">
  <!-- See https://grid.layoutit.com/ for gridlayouts -->
  <v-card v-if="allowEdit=='true'">
   <v-layout row wrap align-content-start justify-space-around>
@@ -16,8 +16,9 @@
 
   <!-- rgba(105, 199, 71, 0.3) -->
   <!-- rgb(205, 127, 50) -->
+  <!--185, 156, 49 gold..-->
  <v-card max-width="210" class="ma-2 text-center"
-        color="rgba(185, 156, 49, 0.9)"
+        color="primary"
         style="border-radius:50px">
   <v-card-text class="text-center">
    <div class="Photo"
@@ -25,14 +26,14 @@
    >
    <v-img v-if="personelRecord.data.photo"
           :src="'https://kuiliesonline.co.za/bib/assets/staff/' + personelRecord.data.photo + '?'+Math.random()"
-           max-width="220"
+           max-width="210"
            position="center center"
-           class="ma-2 text-center"
+           class="ma-1 text-center"
            contain
-           style="border-radius:50px">
+           style="border-radius:55px">
    </v-img>
    </div>
-  <div class="Surname headline green--text text--darken-3">
+  <div class="Surname headline white--text text--darken-1">
     <!-- {{ personelRecord.data.surname }},
     {{ personelRecord.data.name }} -->
     {{ personelRecord.data.public_preferredname }}

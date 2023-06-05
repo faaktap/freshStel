@@ -27,10 +27,10 @@
 
 
 <script>
-import { getters } from "@/api/store"
-import { zmlConfig } from '@/api/constants'
-import confirm from "@/api/DialogConfirm"
-import EventBus, { ACTIONS } from '@/api/event-bus'
+import { getters } from "@/stel/store"
+import { zmlConfig } from '@/stel/constants'
+import confirm from "@/stel/DialogConfirm"
+import EventBus, { ACTIONS } from '@/stel/event-bus'
 export default {
   name: 'ZmlApp',
   components: {confirm},

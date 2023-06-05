@@ -1,5 +1,6 @@
 <template>
-  <v-container fluid v-if="tHeader.length && tList.length">
+  <v-container fluid >
+    theaderlen {{ tHeader.length }} tlistlen{{ tList.length }} {{ tHeader }}
    <v-row >
     <v-col cols="12" v-if="tHeading">
      <h1 class="text-center grey--text"> {{ tHeading }} </h1>
@@ -26,8 +27,8 @@
               <div>
                 <v-card class="text-center ma-2 pa-2" color="primary gray--text text--lighten-3"> {{ bHeading }} </v-card>
                 <v-data-table
-                 v-if="tList && tHeader.length > 0"
-                 :headers="tHeader"
+                 xv-if="tList && tHeader.length > 0"
+                 :headers="headers"
                  :items="tListFilter"
                  :items-per-page="itemsPerPage"
                  :search="search"
@@ -71,6 +72,19 @@ export default {
         // Object.keys(this.tList[0]).forEach(name => {
         // })
         return this.tList
+      },
+      headers() {
+        if (this.tHeader.length)  return this.tHeader
+        let head = []
+        Object.keys(this.tList[0]).forEach(name => {
+          if (name == 'gclass' || name == 'jdoc' || name == 'jdocstructure') return;
+            head.push(
+                 { text:name.charAt(0).toUpperCase() + name.slice(1)
+                 , type:'text'
+                 , value: name
+                 })
+        })
+        return head
       }
     },
     methods:{
@@ -85,7 +99,6 @@ export default {
         if (!this.tList || this.tList.length == 0) {
             return
         }
-        this.tableLoading = true
         this.tHeader = []
         Object.keys(this.tList[0]).forEach(name => {
           if (name == 'gclass' || name == 'jdoc' || name == 'jdocstructure') return;
@@ -95,16 +108,20 @@ export default {
                  , value: name
                  })
         })
-        this.tableLoading = false
       },
     },
     mounted: function() {
+      console.log('mounted', this.$options.name, this.tList)
     },
     watch: {
+      // Since this watch stopped working, i made headers an computed field - seems to work fine!!
+      // Also please look at https://michaelnthiessen.com/how-to-watch-nested-data-vue/
         tList: {
             deep:true,
+            immediate: true,
             handler() {
-               this.buildHeaders()
+              console.log(this.$options.name, 'watch tList')
+              this.buildHeaders()
             }
         }
     }

@@ -1,6 +1,5 @@
 <template>
  <div>
-  <AppLayoutLinks />
    <v-main>
     <transition name="fade" mode="out-in">
     <slot />
@@ -72,13 +71,12 @@
 </template>
 
 <script>
-import AppLayoutLinks from '@/layouts/AppLayoutLinks'
-import  {zmlConfig } from '@/api/constants.js'
-import { infoSnackbar } from '@/api/GlobalActions';
+import  {zmlConfig } from '@/stel/constants.js'
+import { infoSnackbar } from '@/stel/GlobalActions';
 export default {
   name: "AppLayoutGray",
   components: {
-    AppLayoutLinks
+
   },
   data: () => ({
     appVar:'This is appVar',

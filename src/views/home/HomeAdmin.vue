@@ -10,7 +10,7 @@
         <v-btn
          icon class="ma-4 "
          title="Change menu listing (All, Student, Admin,Teacher)"
-         @click="changeType"
+         @click="menuChangeType"
         >
           <v-icon> {{menuType}} </v-icon>
         </v-btn>
@@ -193,12 +193,17 @@ export default {
     computed:{
     },
     methods:{
-      changeType() {
-        if (this.menuType == 'all') { this.menuType = 'admin'; return}
-        if (this.menuType == 'admin') { this.menuType = 'teacher'; return}
-        if (this.menuType == 'teacher') { this.menuType = 'student'; return}
-        if (this.menuType == 'student') { this.menuType = 'other'; return}
-        if (this.menuType == 'other') { this.menuType = 'all'; return}
+      menuChangeType() {
+        if (this.getZml.login.type == '' || this.getZml.login.type == 'student') {
+          if (this.menuType == 'student') { this.menuType = 'other'; return}
+          if (this.menuType == 'other') { this.menuType = 'student'; return}
+        } else {
+          if (this.menuType == 'all') { this.menuType = 'admin'; return}
+          if (this.menuType == 'admin') { this.menuType = 'teacher'; return}
+          if (this.menuType == 'teacher') { this.menuType = 'student'; return}
+          if (this.menuType == 'student') { this.menuType = 'other'; return}
+          if (this.menuType == 'other') { this.menuType = 'all'; return}
+        }
       },
       dayNum(forDate) {
         this.loading = true

@@ -1,0 +1,541 @@
+ {
+       top: { type:'wrap'
+            , label:'top'
+            , col : { cols: 12}
+            , ripple:false
+            , color:"white darken-1"
+            , class:'title pa-2 rounded elevation-1 col-12',
+        schema:{
+            group1:{
+                type: "wrap",                label: "Group 1",                color:"white darken-1",
+                title: "Date & Time",                col: { cols : 12},
+                class: "title pa-2 rounded elevation-4",
+                schema:{
+            functiondate: {  "type": "text"
+              , "ext": "date"
+              , label: `Function Date *`
+              , prependInnerIcon:"mdi-calendar-today"
+              , solo:true
+              , rules: [ required('Please enter a date') ]
+              , xcol: { cols : 12, md: 6 }
+              , class:'title pa-2 rounded col-md-6'
+              , tooltip: 'The date when the function will happen'
+              , hint: 'Please enter a date!'
+              },
+            functiontime: {  "type": "text"
+              , "ext": "time"
+              , label: `Function Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , solo:true
+              , rules: [ required('Please enter estimate time') ]
+              , xcol: { cols : 12, md: 6 }
+              , class:'title pa-2 rounded col-md-6'
+              , tooltip: 'The time when the function will happen'
+              , hint: 'Please enter a time!'
+              },
+            }},
+            group2:{
+                label: "Group 2",
+                type: "wrap",
+                title:"Coordinator Detail",
+                col: { cols : 12},
+                class: "title pa-2 rounded elevation-4",
+                schema:{
+           coordinatorname: { type: 'text'
+              , label: `Coordinator name / Koordineerdernaam *`
+              , prependInnerIcon:"mdi-account-question-outline"
+              , solo:true
+              , rules: [ required('Please enter your name and surname') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded col-md-4'
+              , tooltip: 'Your name / U Naam'
+              , hint: 'Please enter your first name and surname'
+              },
+           coordinatoremail: { type: 'email'
+              , label: 'Your Email *'
+              , rules: [rules.requiredEmail, rules.validEmail]
+              , prependInnerIcon:"mdi-email"
+              , solo:true
+              , col: { cols: 12, md: 4 }
+              , class:'xtitle pa-2 rounded col-md-4'
+              , xripple:{ center:true, class: 'item blue--text' }
+              , tooltip: "Please enter a valid email address."
+              , hint:'email needed here'
+              },
+           coordinatorno: { type: 'tel'
+              , label: 'Coordinator Number'
+              , prependInnerIcon:"mdi-phone"
+              , solo:true
+              , col: { cols: 12, md: 4 }
+              , class:'xtitle pa-2 rounded col-md-4'
+              , ripple:{ center:true, class: 'item blue--text' }
+              , tooltip: "Please enter your contact number."
+              , hint:'Coordinator number'
+              },
+            }},
+            group3:{
+                type: "wrap",
+                title:"Contact Detail",
+                label: "Group 3",
+                ripple:false,
+                col: { cols : 12},
+                class: "title pa-2 rounded elevation-4",
+                schema:{
+           contactname: { type: 'text'
+              , label: `Kontaknaam / Contactname`
+              , prependInnerIcon:"mdi-account-question-outline"
+              , solo:true
+              , rules: [ required(`Please enter preferred contact's name`) ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded col-md-4'
+              , tooltip: 'Contact Name'
+              , hint: 'Name of contact'
+              },
+           contactemail: { type: 'email'
+              , label: 'Contact Email *'
+              , rules: [rules.requiredEmail, rules.validEmail]
+              , prependInnerIcon:"mdi-email"
+              , solo:true
+              , col: { cols: 12, md: 4 }
+              , class:'xtitle pa-2 rounded col-md-4'
+              , ripple:{ center:true, class: 'item blue--text' }
+              , tooltip: "Please enter a valid email address."
+              , hint:'email needed here'
+              },
+           contactno: { type: 'tel'
+              , label: 'Contact Number'
+              , prependInnerIcon:"mdi-phone"
+              , solo:true
+              , col: { cols: 12, md: 4 }
+              , class:'xtitle pa-2 rounded col-md-4'
+              , ripple:{ center:true, class: 'item blue--text' }
+              , tooltip: "Please enter your contact number."
+              , hint:'Contact number'
+              },
+            }},
+            group4:{
+                type: "wrap",
+                title:"SETUP",
+                label: "Group 4",
+                ripple:false,
+                col: { cols : 12},
+                class: "title pa-2 rounded elevation-4",
+                schema:{
+              setupdate: {  "type": "text"
+              , "ext": "date"
+              , label: 'Setup Date *'
+              , prependInnerIcon:"mdi-calendar-today"
+              , xsolo:true
+              , rules: [ required('Please enter a date') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a setup date!'
+              },
+               setupstarttime: {  "type": "text"
+              , "ext": "time"
+              , label: `Setup Start Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter estimate time') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a setup start time!'
+              },
+               setupendtime: {  "type": "text"
+              , "ext": "time"
+              , label: `Setup End Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter estimate time') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a setup END time!'
+              },
+            }},
+            group5:{ type: "wrap",      title:"FUNCTION",               label: "Group 5",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                subtitle:"Arrival, Start, End, Guest Leave Times",
+                ripple:false,
+                schema:{
+              guestarrivaltime: {  "type": "text"
+              , "ext": "time"
+              , label: `Guest Arrival Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter estimate time of guest arrival') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a time!'
+              },
+              functionstarttime: {  "type": "text"
+              , "ext": "time"
+              , label: `Function Start Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter estimate') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a time when function will start!'
+              },
+              functionendtime: {  "type": "text"
+              , "ext": "time"
+              , label: `Function Finish Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter estimate') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a time when function will end!'
+              },
+              functiondeparturetime: {  "type": "text"
+              , "ext": "time"
+              , label: `Departure Time`
+              , prependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter estimate') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter time when guests all went away!'
+              },
+            }},
+            group6:{ type: "wrap",      title:"CLEAN-UP",               label: "Group 6",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                ripple:false,
+                schema:{
+              cleanupdate: {  "type": "text"
+              , "ext": "date"
+              , label: `Cleanup Date`
+              , xprependInnerIcon:"mdi-timeline-clock"
+              , xsolo:true
+              , rules: [ required('Please enter date of cleanup') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              },
+              cleanupstarttime: {  "type": "text"
+              , "ext": "time"
+              , label: `Cleanup Start Time`
+              , xprependInnerIcon:"mdi-timeline-clock"
+              , rules: [ required('Please enter estimate start time') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              },
+              cleaunupendtime: {  "type": "text"
+              , "ext": "time"
+              , label: `Cleaunup Finish Time`
+              , xprependInnerIcon:"mdi-timeline-clock"
+              , rules: [ required('Please enter estimate') ]
+              , col: { cols : 12, md: 4 }
+              , class:'title pa-2 rounded'
+              , hint: 'Please enter a time to end cleanup!'
+              },
+            }},
+            group7:{ type: "wrap",      title:"EVENTTYPE",               label: "Group 7",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                schema:{
+              eventtype: { type: 'radio'
+              , label: ''
+              , prependInnerIcon:"mdi-marker-check"
+              , xsolo:true
+              , col: { cols: 12, md: 12 }
+              , row: true
+              , class:'caption d-flex py-3 ma-4'
+              , xripple:{ center:true, class: 'item blue--text' }
+              , options: ["BREAKFAST","LUNCH","DINNER","COCKTAIL","REFRESHMENTS ONLY","BARBEQUE","PRESENTATION","MEETING","CONFERENCE"]
+              , hint:'Is it a Braai or a Breakfast?'
+              },
+            }},
+            group8:{ type: "wrap",      title:"ITEMS REQUIRED",               label: "Group 8",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                ripple:false,
+                schema:{
+                    group8a:{ type: "wrap",      subtitle:"FURNITURE",               label: "Group 8a",
+                    col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                    ripple:false,
+                    schema:{
+                        chairs: { type: 'text', ext: 'number',
+                                  label: `Chairs Needed`
+                                 , prependInnerIcon:"mdi-table-chair"
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , tooltip: 'How many chairs do you need?'
+                                , hint: 'Chairs Needed'
+                               },
+                        tablerect: { type: 'text', ext: 'number',
+                                  label: `Rectangular Tables`
+                                 , xprependInnerIcon:"mdi-table-chair"
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , tooltip: 'How many rectangular tables?'
+                               },
+                        tableround: { type: 'text', ext: 'number',
+                                  label: `Round Tables`
+                                 , xprependInnerIcon:"mdi-table-chair"
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , tooltip: 'How many round tables?'
+                               },
+                        tablelinenroundblack: { type: 'text', ext: 'number',
+                                  label: `Black Round Tablecloths`
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                 , hint: 'How many round black table cloths?'
+                               },
+                        tablelinenroundwhite: { type: 'text', ext: 'number',
+                                  label: `White Round Tablecloths`
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                 , hint: 'How many white round table cloths?'
+                               },
+
+                        tablelinenrectangularblack: { type: 'text', ext: 'number',
+                                  label: `Black Rectangular Tablecloths`
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                 , hint: 'How many rectangular black table cloths'
+                               },
+                        tablelinenrectangularwhite: { type: 'text', ext: 'number',
+                                  label: `White Rectangular Tablecloths`
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                 , hint: 'How many rectangular WHITE table cloths'
+                               },
+
+                        podium: { type: 'radio'
+                        , label: 'Podium'
+                        , col: { cols: 12, md: 4 }
+                        , row: true
+                        , class:'caption d-flex py-3 ma-4'
+                        , options: ["YES","NO"]
+                        , hint:'Is it a Podium type event?'
+                        },
+                        registrationtable: { type: 'radio'
+                        , label: 'Registration Table'
+                        , col: { cols: 12, md: 4 }
+                        , row: true
+                        , class:'caption d-flex py-3 ma-4'
+                        , options: ["YES","NO"]
+                        , hint:'Will you need a registration table?'
+                        },
+                        registrationtables: { type: 'text', ext: 'number',
+                                  label: `Amount of Registration Tables`
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many registration tables?'
+                        },
+                        chairsperregistrationtable: { type: 'text', ext: 'number',
+                                  label: `Amount of Chairs at each table`
+                                 , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many people at a registration tables will need to sit?'
+                        },
+
+                    }},
+                    group8c:{ type: "wrap",      subtitle:"GLASSWARE",               label: "Group 8c",
+                    col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                    ripple:false,
+                    schema:{
+                        glasseschampagne: { type: 'text', ext: 'number',
+                                  label: `Champagne Glasses`
+                                , prependInnerIcon: "mdi-glass-flute"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many champagne glasses?'
+                        },
+                        glasseswine: { type: 'text', ext: 'number',
+                                  label: `Wine Glasses`
+                                , prependInnerIcon: "mdi-glass-wine"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many wine glasses?'
+                        },
+                        glassescooldrinktall: { type: 'text', ext: 'number',
+                                  label: `Tall Cooldrink Glasses`
+                                , prependInnerIcon: "mdi-glass-pint-outline"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many tall glasses?'
+                        },
+                        glassescooldrinktumble: { type: 'text', ext: 'number',
+                                  label: `Tumbler Cooldrink Glasses`
+                                  , prependInnerIcon: "mdi-glass-pint-outline x-small"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many short glasses?'
+                        },
+
+                    }},
+                    group8d:{ type: "wrap",      title:"CROCKERY",               label: "Group 8d",
+                    col: { cols : 12},      class: "title pa-2 rounded elevation-4",ripple:false,
+                    schema:{
+                        crockcup: { type: 'text', ext: 'number',
+                                  label: `Cups`, prependInnerIcon: "mdi-glass-mug"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many  cups?'                        },
+                        crocksources: { type: 'text', ext: 'number',
+                                  label: `How many sources`
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crockteapot: { type: 'text', ext: 'number',
+                                  label: `Teapots`, prependInnerIcon: "mdi-kettle-steam"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crockcoffeepot: { type: 'text', ext: 'number',
+                                  label: `Coffe Pots` , prependInnerIcon: "mdi-kettle-steam-outline"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crocksugarbowl: { type: 'text', ext: 'number',
+                                  label: `Sugar Bowls` , prependInnerIcon: ""
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                       },
+                        crockmilkjug: { type: 'text', ext: 'number',
+                                  label: `Milk Jugs`
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crockwaterjug: { type: 'text', ext: 'number',
+                                  label: `Water Jugs` , prependInnerIcon: "mdi-cup-water"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crockicebucket: { type: 'text', ext: 'number',
+                                  label: `Ice Bucket` , prependInnerIcon: "mdi-delete-variant"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crocksmallplate: { type: 'text', ext: 'number',
+                                  label: `Plates (Small)` , prependInnerIcon: "mdi-circle-medium"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crocklargeplate: { type: 'text', ext: 'number',
+                                  label: `Plates (Large)` , prependInnerIcon: "mdi-circle-outline"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        crockservingplate: { type: 'text', ext: 'number',
+                                  label: `Plates (Serving)` , prependInnerIcon: "mdi-circle"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                    }},
+                    group8e:{ type: "wrap",      title:"CUTLERY",               label: "Group 8e",
+                    col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                    ripple:false,
+                    schema:{
+                        cutleryknives: { type: 'text', ext: 'number',
+                                  label: `Knives`, prependInnerIcon: "mdi-knife"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        cutleryforks: { type: 'text', ext: 'number',
+                                  label: `Forks`, prependInnerIcon: "mdi-silverware-fork"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        cutleryspoons: { type: 'text', ext: 'number',
+                                  label: `Spoons`, prependInnerIcon: "mdi-silverware-spoon"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        cutleryteaspoons: { type: 'text', ext: 'number',
+                                  label: `Tea Spoons`, prependInnerIcon: "mdi-silverware-spoon"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        cutleryservingspoons: { type: 'text', ext: 'number',
+                                  label: `Serving Spoons`, prependInnerIcon: "mdi-silverware-spoon"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        cutleryicetongs: { type: 'text', ext: 'number',
+                                  label: `Ice Tongs`, prependInnerIcon: "mdi-ice-pop"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                    }},
+                    group8f:{ type: "wrap",      title:"OTHER",               label: "Group 8f",
+                    col: { cols : 12},      class: "title pa-2 rounded elevation-4",ripple:false,
+                    schema:{
+                        oitemsurn: { type: 'text', ext: 'number',
+                                  label: `Urn(s)`, prependInnerIcon: "mdi-kettle-outline"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        oitemshottray: { type: 'text', ext: 'number',
+                                  label: `Hot Trays`, prependInnerIcon: "mdi-chili-hot"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: ''                        },
+                        oitemsmplugs: { type: 'text', ext: 'number',
+                                  label: `Multi Plugs`, prependInnerIcon: "mdi-electric-switch-closed"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'How many multiplugs do you need?'                        },
+                        oitemsextlead: { type: 'text', ext: 'number',
+                                  label: `Extension Leads`, prependInnerIcon: "mdi-electric-switch"
+                                , col: { cols : 12, md: 4 } , class:'title pa-2 rounded'
+                                , hint: 'Inquire about length - should work'                        }
+                    }},
+              }  },
+            schema: {
+             layouttype: { type: 'radio'
+                        , label: 'LAYOUT'
+                        , col: { cols: 12, md: 12 }
+                        , row: true
+                        , xclass:'caption d-flex py-6 ma-8'
+                        , class: "title pa-2 rounded elevation-4"
+                        , options: ["BOARDROOM STYLE (LONG TABLE)","COCKTAIL","CONFERENCE","REGTANGULAR","ROUND TABLES","SCHOOLROOM","U-SHAPE", "OTHER"]
+                        , hint:'Select the type of arrangement you will need?'
+                        , tooltip:'Select the type of arrangement you will need?'
+            },
+             lightreq: { type: 'textarea'
+                        , label: 'Light Requirements'
+                        , col: { cols: 12, md: 12 }
+                        , class:'caption'
+                        , hint:'Select the type of arrangement you will need?'
+                        , tooltip:'Select the type of arrangement you will need?'
+            }},
+            group10:{ type: "wrap",      title:"SOUND",               label: "Group 10",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                schema:{
+             audioreq: { type: 'textarea'
+                        , xxext: 'textarea'
+                        , label: 'SOUND: Audio Requirements'
+                        , col: { cols: 12, md: 12 }
+                        , xclass:'caption d-flex py-6 ma-8'
+                        , hint:'Select the type of arrangement you will need?'
+                        , tooltip:'Select the type of arrangement you will need?'
+            },
+
+            }},
+            group12:{ type: "wrap",      title:"PRESENTATION",               label: "Group 12",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",
+                schema:{
+                        whitescreen: { type: 'radio'
+                        , label: 'Whitescreen needed?'
+                        , col: { cols: 12, md: 4 }
+                        , row: true
+                        , class:'caption d-flex py-3 ma-4'
+                        , options: ["YES","NO"]
+                        , hint:'Do you need a white screen?'
+                        },
+            }},
+            group13:{ type: "wrap",      title:"PARKING",               label: "Group 13",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",ripple:false,
+                schema:{
+             parkingreq: { type: 'textarea'
+                        , label: 'Parking Requirements?'
+                        , col: { cols: 12, md: 12 }
+                        , xclass:'caption d-flex py-6 ma-8'
+                        , hint:'How many cars, where, gate access, etc..'},
+
+            }},
+            group14:{ type: "wrap",      title:"SECURITY",               label: "Group 14",
+                col: { cols : 12},      class: "title pa-2 rounded elevation-4",ripple:false,
+                schema:{
+                     parking1: { type: 'checkbox', label: 'Entrance:  Main gate', col: { cols: 12, md: 3 }, hint:''},
+                     parking2: { type: 'checkbox', label: 'Entrance:  Activity centre', col: { cols: 12, md: 3 }, hint:''},
+                     parking3: { type: 'checkbox', label: 'Entrance:  Panorama Avenue', col: { cols: 12, md: 3 }, hint:''},
+                     parking4: { type: 'text' , label: 'Other', col: { cols: 12, md: 3 }, hint:''},
+                     securitystarttime: {  "type": "text" , "ext": "time"
+                        , label: `Time From`, prependInnerIcon:"mdi-timeline-clock"
+                        , col: { cols : 12, md: 4 }
+                        , class:'title pa-2 rounded'},
+                     securityendtime: {  "type": "text" , "ext": "time"
+                        , label: `Time From`, prependInnerIcon:"mdi-timeline-clock"
+                        , col: { cols : 12, md: 4 }
+                        , class:'title pa-2 rounded'},
+            }},
+            group105:{
+                type: "wrap",
+                title:"FUNCTION",
+                label: "Group 105",
+                col: { cols : 12},
+                class: "title pa-2 rounded elevation-4",
+                schema:{
+            }},
+
+           gclass: { type: 'select'
+              , label: 'Class'
+              , prependInnerIcon:"mdi-marker-check"
+              , solo:true
+              , col: { cols: 12, md: 6 }
+              , class:'xtitle pa-2 rounded col-md-6'
+              , ripple:{ center:true, class: 'item blue--text' }
+              , items: ["A1", "A2", "E1", "E2", "E3", "E4", "E5", "E6", "E7","E8"]
+              , hint:'Class in Grade 8'
+              },
+        }}
+}

@@ -1,25 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
-import router from './router'
+import router from './stel/router.js'
 
 //import VueFriendlyIframe from 'vue-friendly-iframe';
 //Vue.component('vue-friendly-iframe', VueFriendlyIframe);
 
-//https://html2canvas.hertzen.com/
-// used in fundraiser.vue
-// eslint-disable-next-line
-import VueHtml2Canvas from 'vue-html2canvas'
-import "regenerator-runtime/runtime"
-Vue.use(VueHtml2Canvas)
-
-import AppLayout from '@/layouts/AppLayout'
+import AppLayout from '@/stel/layouts/AppLayout'
 Vue.component('AppLayout', AppLayout)
 
 Vue.config.productionTip = false
-
-import VueI18n from 'vue-i18n'
-Vue.use(VueI18n)
 
 
 window.onerror = function(message, url, lineNumber) {
@@ -45,25 +35,14 @@ export const cs = {
   }
 }
 
+Vue.component('BaseDate', () => import('@/components/base/BaseDate.vue') )
 
 Vue.prototype.$history = window.history;
 Vue.prototype.$cs = cs;
 
-import { af,en } from '@/api/translate'
-const messages = {
-  en,
-  af
-}
-let i18n = new VueI18n({
-  locale: 'af',
-  fallbackLocale: 'en',
-  formatFallbackMessages: true,
-  messages: messages
-})
 
 Vue.use(vuetify);
 new Vue({
-  i18n,
   vuetify,
   router,
   render: h => h(App)

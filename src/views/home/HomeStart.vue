@@ -1,8 +1,9 @@
 <template>
-<v-parallax background height="1000px" src="img/school.jpg" xclass="filter-img" >
-<v-container fluid justify="center" align="center" class="filter-div mt-5 pa-5" >
+<v-parallax background height="1000px" src="img/school.jpg" class="filter-img" >
+<h1>FRESHWAIT</h1>
+<v-container fluid justify="center" align="center" xclass="filter-div mt-5 pa-5" >
  <v-layout wrap class="ma-0"> <!-- class="filter-div" color="rgba(255, 0, 1, 0.5)" > -->
-   <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.7)">
+   <v-card class="justify-center ma-0 pa-0" color="rgba(106, 196, 226, 0.4)">
      <v-card-title  class="blue--text">
       <dkhs-logo   class="ma-0 pa-1" :width="range[1]" :height="range[0]"  />
       <dkhs-r-logo v-show="!$vuetify.breakpoint.mobile" class="ma-0 pa-1" :width="range[1]" :height="range[0]" />

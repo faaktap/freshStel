@@ -29,13 +29,6 @@ const routes = [
     authentication: "public"}
   },
   {
-    component: Home,
-    path: '/home',
-    name: 'Home',
-    meta: {layout: la[3],
-    authentication: "public"}
-  },
-  {
     component: login,
     path: '/login/:forgot?',
     name: 'Login',
@@ -46,22 +39,16 @@ const routes = [
   {
     component: Home,
     path: '/home',
-    name: 'RealHome',
+    name: 'Home',
     meta: {layout: la[3],
     authentication: "public"}
   },
   // {
-  //   path: '/ff',
-  //   name: 'ff',
-  //   component: () => import(/* webpackChunkName: "test" */ '@/components/vfbase/vfbasetest'),
+  //   component: Home,
+  //   path: '/home',
+  //   name: 'RealHome',
   //   meta: {layout: la[3],
-  //   authentication: "public" }
-  // },
-  // {
-  //   path: '/wernertest',
-  //   name: 'WernerTest',
-  //   component: () => import(/* webpackChunkName: "test" */ '@/views/test/WernerTest'),
-  //   meta: {layout: la[3], authentication: "admin" }
+  //   authentication: "public"}
   // },
   { path: '/drive', redirect: '/folder' },
   {
@@ -103,6 +90,14 @@ const routes = [
     meta: {layout: la[3], authentication: "public" }
   },
   {
+    path: '/register/:surveyidPassed',
+    name: 'register',
+    props:true,
+    params: {surveyidPassed: '20113'},
+    component: () => import(/* webpackChunkName: "pers" */ '@/components/vfbase/register'),
+    meta: {layout: la[0], authentication: "public" }
+  },
+  {
     component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
     path: '/about', name: 'About',
     meta: {layout: la[3], authentication: "werner" }
@@ -110,7 +105,7 @@ const routes = [
   {
     path: '/dkhsawards',   name: 'dkhsawards',
     component: () => import(/* webpackChunkName: "awards" */ '@/views/awards/AwardStories.vue'),
-    meta: {layout: la[0], authentication: "werner" }
+    meta: {layout: la[1], authentication: "werner" }
   },
   {
     //award - edit
@@ -332,7 +327,7 @@ const routes = [
     path: '/helloworld/:menemonic?',
     name: 'HelloWorld',
     props:true,
-    meta: {layout: la[3], authentication: "teacher" }
+    meta: {layout: la[0], authentication: "teacher" }
   },
   {
     path: '/attendance/:date?',    name: 'AttendanceView',
